@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createCategory } from '../api/categoryService'
+import toast from 'react-hot-toast'
 
 function NewCategoryPage() {
     const navigate = useNavigate()
@@ -17,9 +18,12 @@ function NewCategoryPage() {
 
         try {
             await createCategory({ name, description })
+
+            toast.success('Category created successfully')
+
             navigate('/categories')
         } catch {
-            setError('Could not create category. Check if the name already exists.')
+            toast.error('Could not create category')
         } finally {
             setCreating(false)
         }

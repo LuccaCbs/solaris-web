@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { getCategories } from '../api/categoryService'
 import { getProductById, updateProduct } from '../api/productService'
 import type { Category } from '../types/category'
+import toast from 'react-hot-toast'
 
 type ProductFormState = {
     name: string
@@ -87,9 +88,11 @@ function EditProductPage() {
                     : null,
             })
 
+            toast.success('Product updated successfully')
+
             navigate('/products')
         } catch {
-            setError('Could not update product. Check the form data.')
+            toast.error('Could not update product')
         } finally {
             setSaving(false)
         }

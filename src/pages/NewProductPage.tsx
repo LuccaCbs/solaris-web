@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { createProduct } from '../api/productService'
 import { getCategories } from '../api/categoryService'
 import type { Category } from '../types/category'
+import toast from 'react-hot-toast'
+
 
 type ProductFormState = {
     name: string
@@ -67,9 +69,11 @@ function NewProductPage() {
                     : null,
             })
 
+            toast.success('Product created successfully')
+
             navigate('/products')
         } catch {
-            setError('Could not create product.')
+            toast.error('Could not create product')
         } finally {
             setCreating(false)
         }

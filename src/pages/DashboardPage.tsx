@@ -6,6 +6,18 @@ import type { DashboardSummary } from '../types/dashboard'
 import type { Product } from '../types/product'
 import type { StockMovement } from '../types/stockMovement'
 import { Link } from 'react-router-dom'
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Cell,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from 'recharts'
 
 function DashboardPage() {
     const [summary, setSummary] = useState<DashboardSummary | null>(null)
@@ -43,6 +55,30 @@ function DashboardPage() {
             .slice(0, 5)
     }, [movements])
 
+    const stockByProductData = useMemo(() => {
+        return products.map((product) => ({
+            name: product.name,
+            stock: product.stockQuantity,
+            lowStock: product.lowStock,
+        }))
+    }, [products])
+
+    const movementsByTypeData = useMemo(() => {
+        const counts = movements.reduce(
+            (acc, movement) => {
+                acc[movement.type] += 1
+                return acc
+            },
+            { IN: 0, OUT: 0, ADJUSTMENT: 0 }
+        )
+
+        return [
+            { name: 'IN', value: counts.IN },
+            { name: 'OUT', value: counts.OUT },
+            { name: 'ADJUSTMENT', value: counts.ADJUSTMENT },
+        ]
+    }, [movements])
+
     if (loading) {
         return <div>Loading dashboard...</div>
     }
@@ -65,9 +101,116 @@ function DashboardPage() {
 
             <section className="mt-8 grid gap-6 xl:grid-cols-2">
                 <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+                    <h2 className="text-xl font-semibold">Stock by Product</h2>
+                    <p className="mt-1 text-sm text-slate-400">
+                        Current inventory units by product.
+                    </p>
+
+                    <div className="mt-6 h-96 overflow-y-auto overflow-x-hidden pr-2">
+                        <div
+                            style={{
+                                height: Math.max(stockByProductData.length * 52, 320),
+                                width: '100%',
+                            }}
+                        >
+                            <BarChart
+                                layout="vertical"
+                                width={620}
+                                height={Math.max(stockByProductData.length * 52, 320)}
+                                data={stockByProductData}
+                                margin={{ top: 8, right: 24, left: 24, bottom: 8 }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+
+                                <XAxis
+                                    type="number"
+                                    stroke="#94a3b8"
+                                    tick={{ fontSize: 12 }}
+                                />
+
+                                <YAxis
+                                    type="category"
+                                    dataKey="name"
+                                    stroke="#94a3b8"
+                                    tick={{ fontSize: 12 }}
+                                    width={170}
+                                />
+
+                                <Tooltip
+                                    formatter={(value) => [`${value} units`, 'Stock']}
+                                    labelFormatter={(label) => `Product: ${label}`}
+                                    contentStyle={{
+                                        backgroundColor: '#020617',
+                                        border: '1px solid #334155',
+                                        borderRadius: '12px',
+                                        color: '#ffffff',
+                                    }}
+                                />
+
+                                <Bar dataKey="stock" radius={[0, 8, 8, 0]}>
+                                    {stockByProductData.map((entry) => (
+                                        <Cell
+                                            key={entry.name}
+                                            fill={entry.lowStock ? '#ef4444' : '#2563eb'}
+                                        />
+                                    ))}
+                                </Bar>
+                            </BarChart>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+                    <h2 className="text-xl font-semibold">Movements by Type</h2>
+                    <p className="mt-1 text-sm text-slate-400">
+                        Distribution of inventory operations.
+                    </p>
+
+                    <div className="mt-6 h-80">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={movementsByTypeData}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    innerRadius={70}
+                                    outerRadius={110}
+                                    paddingAngle={4}
+                                >
+                                    {movementsByTypeData.map((entry) => (
+                                        <Cell
+                                            key={entry.name}
+                                            fill={
+                                                entry.name === 'IN'
+                                                    ? '#22c55e'
+                                                    : entry.name === 'OUT'
+                                                        ? '#ef4444'
+                                                        : '#eab308'
+                                            }
+                                        />
+                                    ))}
+                                </Pie>
+                                <Tooltip
+                                    formatter={(value) => [`${value} units`, 'Stock']}
+                                    labelFormatter={(label) => `Product: ${label}`}
+                                    contentStyle={{
+                                        backgroundColor: '#020617',
+                                        border: '1px solid #334155',
+                                        borderRadius: '12px',
+                                        color: '#ffffff',
+                                    }}
+                                />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            </section>
+
+            <section className="mt-8 grid gap-6 xl:grid-cols-2">
+                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
                     <h2 className="text-xl font-semibold">Low Stock Products</h2>
                     <p className="mt-1 text-sm text-slate-400">
-                        Products with 5 units or less.
+                        Products below their configured low stock threshold.
                     </p>
 
                     <div className="mt-6 space-y-3">

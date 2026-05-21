@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getCategoryById, updateCategory } from '../api/categoryService'
+import toast from 'react-hot-toast'
 
 function EditCategoryPage() {
     const navigate = useNavigate()
@@ -38,9 +39,12 @@ function EditCategoryPage() {
 
         try {
             await updateCategory(Number(id), { name, description })
+
+            toast.success('Category updated successfully')
+
             navigate('/categories')
         } catch {
-            setError('Could not update category.')
+            toast.error('Could not update category')
         } finally {
             setSaving(false)
         }

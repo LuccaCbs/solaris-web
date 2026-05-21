@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getSystemSettings, updateSystemSettings } from '../api/systemSettingsService'
 import type { SystemSettings } from '../types/systemSettings'
+import toast from 'react-hot-toast'
 
 function AdminSettingsPage() {
     const [settings, setSettings] = useState<SystemSettings | null>(null)
@@ -37,9 +38,10 @@ function AdminSettingsPage() {
             })
 
             setSettings(updatedSettings)
-            setSuccess('Settings updated successfully.')
+
+            toast.success('Settings updated successfully')
         } catch {
-            setError('Could not update settings.')
+            toast.error('Could not update settings')
         } finally {
             setSaving(false)
         }

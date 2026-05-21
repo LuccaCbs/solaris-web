@@ -4,6 +4,7 @@ import { createStockMovement } from '../api/stockMovementService'
 import { getProducts } from '../api/productService'
 import type { Product } from '../types/product'
 import type { StockMovement } from '../types/stockMovement'
+import toast from 'react-hot-toast'
 
 type StockMovementType = StockMovement['type']
 
@@ -75,9 +76,11 @@ function NewStockMovementPage() {
                 reason: form.reason,
             })
 
+            toast.success('Stock movement created successfully')
+
             navigate('/stock-movements')
         } catch {
-            setError('Could not create stock movement. Check stock availability and form data.')
+            toast.error('Could not create stock movement')
         } finally {
             setCreating(false)
         }

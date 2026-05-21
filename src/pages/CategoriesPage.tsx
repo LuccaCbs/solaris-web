@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { deleteCategory, getCategories } from '../api/categoryService'
 import type { Category } from '../types/category'
+import toast from 'react-hot-toast'
 
 type SortField = 'name' | 'description' | 'createdAt'
 type SortDirection = 'asc' | 'desc'
@@ -33,8 +34,15 @@ function CategoriesPage() {
 
         if (!confirmed) return
 
-        await deleteCategory(id)
-        await loadCategories()
+        try {
+            await deleteCategory(id)
+
+            toast.success('Category deleted successfully')
+
+            await loadCategories()
+        } catch {
+            toast.error('Could not delete category')
+        }
     }
 
     function handleSort(field: SortField) {

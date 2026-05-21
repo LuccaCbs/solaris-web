@@ -5,6 +5,7 @@ import { deleteProduct, getProducts } from '../api/productService'
 type SortField = 'name' | 'sku' | 'categoryName' | 'price' | 'stockQuantity'
 type SortDirection = 'asc' | 'desc'
 type StockStatusFilter = 'all' | 'low' | 'normal'
+import toast from 'react-hot-toast'
 
 function ProductsPage() {
     const [products, setProducts] = useState<Product[]>([])
@@ -28,8 +29,15 @@ function ProductsPage() {
 
         if (!confirmed) return
 
-        await deleteProduct(id)
-        await loadData()
+        try {
+            await deleteProduct(id)
+
+            toast.success('Product deleted successfully')
+
+            await loadData()
+        } catch {
+            toast.error('Could not delete product')
+        }
     }
 
     function handleSort(field: SortField) {
