@@ -12,6 +12,9 @@ import NewCategoryPage from '../pages/NewCategoryPage'
 import EditCategoryPage from '../pages/EditCategoryPage'
 import NewStockMovementPage from '../pages/NewStockMovementPage'
 import AdminSettingsPage from '../pages/AdminSettingsPage'
+import SalesPage from '../pages/SalesPage'
+import NewSalePage from '../pages/NewSalePage'
+import SaleDetailPage from '../pages/SaleDetailPage'
 
 
 function AppRouter() {
@@ -19,26 +22,29 @@ function AppRouter() {
         <BrowserRouter>
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
+                <Route element={<ProtectedRoute />}>
+                    <Route element={<AppLayout />}>
+                        <Route path="/" element={<DashboardPage />} />
+                        <Route path="/products" element={<ProductsPage />} />
+                        <Route path="/products/new" element={<NewProductPage />} />
+                        <Route path="/products/:id/edit" element={<EditProductPage />} />
 
-                <Route
-                    element={
-                        <ProtectedRoute>
-                            <AppLayout />
-                        </ProtectedRoute>
-                    }
-                >
-                    <Route path="/" element={<DashboardPage />} />
-                    <Route path="/products" element={<ProductsPage />} />
-                    <Route path="/categories" element={<CategoriesPage />} />
-                    <Route path="/stock-movements" element={<StockMovementsPage />} />
-                    <Route path="/products/new" element={<NewProductPage />} />
-                    <Route path="/products/:id/edit" element={<EditProductPage />} />
-                    <Route path="/categories/new" element={<NewCategoryPage />} />
-                    <Route path="/categories/:id/edit" element={<EditCategoryPage />} />
-                    <Route path="/stock-movements/new" element={<NewStockMovementPage />} />
-                    <Route path="/admin/settings" element={<AdminSettingsPage />} />
+                        <Route path="/categories" element={<CategoriesPage />} />
+                        <Route path="/categories/new" element={<NewCategoryPage />} />
+                        <Route path="/categories/:id/edit" element={<EditCategoryPage />} />
+
+                        <Route path="/stock-movements" element={<StockMovementsPage />} />
+                        <Route path="/stock-movements/new" element={<NewStockMovementPage />} />
+
+                        <Route path="/sales" element={<SalesPage />} />
+                        <Route path="/sales/new" element={<NewSalePage />} />
+                        <Route path="/sales/:id" element={<SaleDetailPage />} />
+
+                        <Route path="/admin/settings" element={<AdminSettingsPage />} />
+                    </Route>
                 </Route>
             </Routes>
+
         </BrowserRouter>
     )
 }

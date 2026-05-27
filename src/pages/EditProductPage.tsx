@@ -189,10 +189,10 @@ function EditProductPage() {
 
                 {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
 
-                <div className="mt-6 flex gap-3">
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                     <button
                         disabled={saving}
-                        className="rounded-xl bg-blue-600 px-5 py-3 font-semibold hover:bg-blue-500 disabled:opacity-60"
+                        className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
                     >
                         {saving ? 'Saving...' : 'Save Changes'}
                     </button>
@@ -200,7 +200,7 @@ function EditProductPage() {
                     <button
                         type="button"
                         onClick={() => navigate('/products')}
-                        className="rounded-xl border border-slate-700 px-5 py-3 text-slate-300 hover:bg-slate-800"
+                        className="w-full rounded-xl border border-slate-700 px-5 py-3 text-slate-300 hover:bg-slate-800 sm:w-auto"
                     >
                         Cancel
                     </button>

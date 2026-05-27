@@ -80,14 +80,14 @@ function DashboardPage() {
     }, [movements])
 
     if (loading) {
-        return <div>Loading dashboard...</div>
+        return <DashboardSkeleton />
     }
 
     return (
         <div>
             <h1 className="text-4xl font-bold">Solaris Dashboard</h1>
 
-            <p className="mt-2 text-slate-400">
+            <p className="mt-2 solaris-muted">
                 Real-time business overview from Solaris API.
             </p>
 
@@ -100,9 +100,8 @@ function DashboardPage() {
             </section>
 
             <section className="mt-8 grid gap-6 xl:grid-cols-2">
-                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
-                    <h2 className="text-xl font-semibold">Stock by Product</h2>
-                    <p className="mt-1 text-sm text-slate-400">
+                <div className="solaris-panel">    <h2 className="text-xl font-semibold">Stock by Product</h2>
+                    <p className="mt-1 text-sm solaris-muted">
                         Current inventory units by product.
                     </p>
 
@@ -160,9 +159,9 @@ function DashboardPage() {
                     </div>
                 </div>
 
-                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+                <div className="solaris-panel">
                     <h2 className="text-xl font-semibold">Movements by Type</h2>
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="mt-1 text-sm solaris-muted">
                         Distribution of inventory operations.
                     </p>
 
@@ -207,9 +206,9 @@ function DashboardPage() {
             </section>
 
             <section className="mt-8 grid gap-6 xl:grid-cols-2">
-                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+                <div className="solaris-panel">
                     <h2 className="text-xl font-semibold">Low Stock Products</h2>
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="mt-1 text-sm solaris-muted">
                         Products below their configured low stock threshold.
                     </p>
 
@@ -222,7 +221,7 @@ function DashboardPage() {
                             lowStockProducts.map((product) => (
                                 <div
                                     key={product.id}
-                                    className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950 px-4 py-3"
+                                    className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950"
                                 >
                                     <div>
                                         <p className="font-medium text-white">{product.name}</p>
@@ -247,9 +246,9 @@ function DashboardPage() {
                     </div>
                 </div>
 
-                <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+                <div className="solaris-panel">
                     <h2 className="text-xl font-semibold">Recent Stock Movements</h2>
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="mt-1 text-sm solaris-muted">
                         Latest inventory operations.
                     </p>
 
@@ -262,7 +261,7 @@ function DashboardPage() {
                             recentMovements.map((movement) => (
                                 <div
                                     key={movement.id}
-                                    className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950 px-4 py-3"
+                                    className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950"
                                 >
                                     <div>
                                         <p className="font-medium text-white">{movement.productName}</p>
@@ -276,7 +275,7 @@ function DashboardPage() {
                       {movement.type}
                     </span>
 
-                                        <p className="mt-1 text-sm text-slate-400">
+                                        <p className="mt-1 text-sm solaris-muted">
                                             {movement.previousStock} → {movement.currentStock}
                                         </p>
                                     </div>
@@ -298,10 +297,10 @@ type MetricCardProps = {
 
 function MetricCard({ title, value, description }: MetricCardProps) {
     return (
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
-            <p className="text-sm text-slate-400">{title}</p>
+        <div className="solaris-panel">
+            <p className="text-sm solaris-muted">{title}</p>
             <p className="mt-3 text-3xl font-bold">{value}</p>
-            <p className="mt-2 text-sm text-slate-500">{description}</p>
+            <p className="mt-2 text-sm solaris-subtle">{description}</p>
         </div>
     )
 }
@@ -310,6 +309,62 @@ function getTypeStyles(type: StockMovement['type']) {
     if (type === 'IN') return 'bg-green-500/10 text-green-300'
     if (type === 'OUT') return 'bg-red-500/10 text-red-300'
     return 'bg-yellow-500/10 text-yellow-300'
+}
+
+function DashboardSkeleton() {
+    return (
+        <div>
+            <div className="h-10 w-72 animate-pulse rounded-xl bg-slate-800" />
+            <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-800" />
+
+            <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+                {Array.from({ length: 5 }).map((_, index) => (
+                    <div
+                        key={index}
+                        className="solaris-panel"
+                    >
+                        <div className="h-4 w-24 animate-pulse rounded-lg bg-slate-800" />
+                        <div className="mt-4 h-8 w-16 animate-pulse rounded-lg bg-slate-800" />
+                        <div className="mt-3 h-4 w-32 animate-pulse rounded-lg bg-slate-800" />
+                    </div>
+                ))}
+            </section>
+
+            <section className="mt-8 grid gap-6 xl:grid-cols-2">
+                {Array.from({ length: 2 }).map((_, index) => (
+                    <div
+                        key={index}
+                        className="solaris-panel"
+                    >
+                        <div className="h-6 w-48 animate-pulse rounded-lg bg-slate-800" />
+                        <div className="mt-3 h-4 w-72 animate-pulse rounded-lg bg-slate-800" />
+                        <div className="mt-6 h-80 animate-pulse rounded-2xl bg-slate-800" />
+                    </div>
+                ))}
+            </section>
+
+            <section className="mt-8 grid gap-6 xl:grid-cols-2">
+                {Array.from({ length: 2 }).map((_, index) => (
+                    <div
+                        key={index}
+                        className="solaris-panel"
+                    >
+                        <div className="h-6 w-56 animate-pulse rounded-lg bg-slate-800" />
+                        <div className="mt-3 h-4 w-72 animate-pulse rounded-lg bg-slate-800" />
+
+                        <div className="mt-6 space-y-3">
+                            {Array.from({ length: 4 }).map((_, rowIndex) => (
+                                <div
+                                    key={rowIndex}
+                                    className="h-16 animate-pulse rounded-xl border border-slate-800 bg-slate-950"
+                                />
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </section>
+        </div>
+    )
 }
 
 export default DashboardPage

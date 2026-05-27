@@ -1,17 +1,13 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 
-type ProtectedRouteProps = {
-    children: React.ReactNode
-}
-
-function ProtectedRoute({ children }: ProtectedRouteProps) {
+function ProtectedRoute() {
     const token = localStorage.getItem('solaris_token')
 
     if (!token) {
         return <Navigate to="/login" replace />
     }
 
-    return children
+    return <Outlet />
 }
 
 export default ProtectedRoute
