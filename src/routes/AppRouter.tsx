@@ -15,6 +15,9 @@ import AdminSettingsPage from '../pages/AdminSettingsPage'
 import SalesPage from '../pages/SalesPage'
 import NewSalePage from '../pages/NewSalePage'
 import SaleDetailPage from '../pages/SaleDetailPage'
+import SuppliersPage from '../pages/SuppliersPage'
+import NewSupplierPage from '../pages/NewSupplierPage'
+import EditSupplierPage from '../pages/EditSupplierPage'
 
 
 function AppRouter() {
@@ -29,6 +32,10 @@ function AppRouter() {
                         <Route path="/products/new" element={<NewProductPage />} />
                         <Route path="/products/:id/edit" element={<EditProductPage />} />
 
+                        <Route path="/suppliers" element={<SuppliersPage />} />
+                        <Route path="/suppliers/new" element={<NewSupplierPage />} />
+                        <Route path="/suppliers/:id/edit" element={<EditSupplierPage />} />
+                        
                         <Route path="/categories" element={<CategoriesPage />} />
                         <Route path="/categories/new" element={<NewCategoryPage />} />
                         <Route path="/categories/:id/edit" element={<EditCategoryPage />} />
@@ -39,6 +46,7 @@ function AppRouter() {
                         <Route path="/sales" element={<SalesPage />} />
                         <Route path="/sales/new" element={<NewSalePage />} />
                         <Route path="/sales/:id" element={<SaleDetailPage />} />
+
 
                         <Route path="/admin/settings" element={<AdminSettingsPage />} />
                     </Route>

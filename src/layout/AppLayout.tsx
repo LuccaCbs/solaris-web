@@ -12,6 +12,7 @@ import {
     Sun,
     X,
     ShoppingCart,
+    Truck,
 } from 'lucide-react'
 import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useTheme } from '../utils/useTheme'
@@ -20,6 +21,7 @@ const navItems = [
     { label: 'Dashboard', to: '/', icon: BarChart3 },
     { label: 'Products', to: '/products', icon: Boxes },
     { label: 'Categories', to: '/categories', icon: FolderTree },
+    { label: 'Suppliers', to: '/suppliers', icon: Truck },
     { label: 'Movement History', to: '/stock-movements', icon: History },
     { label: 'Sales', to: '/sales', icon: ShoppingCart },
 ]
