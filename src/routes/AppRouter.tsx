@@ -18,6 +18,9 @@ import SaleDetailPage from '../pages/SaleDetailPage'
 import SuppliersPage from '../pages/SuppliersPage'
 import NewSupplierPage from '../pages/NewSupplierPage'
 import EditSupplierPage from '../pages/EditSupplierPage'
+import SupplierOrdersPage from '../pages/SupplierOrdersPage'
+import NewSupplierOrderPage from '../pages/NewSupplierOrderPage'
+import SupplierOrderDetailPage from '../pages/SupplierOrderDetailPage'
 
 
 function AppRouter() {
@@ -35,7 +38,11 @@ function AppRouter() {
                         <Route path="/suppliers" element={<SuppliersPage />} />
                         <Route path="/suppliers/new" element={<NewSupplierPage />} />
                         <Route path="/suppliers/:id/edit" element={<EditSupplierPage />} />
-                        
+
+                        <Route path="/supplier-orders" element={<SupplierOrdersPage />} />
+                        <Route path="/supplier-orders/new" element={<NewSupplierOrderPage />} />
+                        <Route path="/supplier-orders/:id" element={<SupplierOrderDetailPage />} />
+
                         <Route path="/categories" element={<CategoriesPage />} />
                         <Route path="/categories/new" element={<NewCategoryPage />} />
                         <Route path="/categories/:id/edit" element={<EditCategoryPage />} />
