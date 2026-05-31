@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { getSales } from '../api/salesService'
 import type { PaymentMethod, Sale } from '../types/sales'
@@ -19,15 +19,43 @@ function getTodayDateInputValue() {
     return new Date().toISOString().split('T')[0]
 }
 
+function getValidDateParam(value: string | null) {
+    if (!value) return ''
+
+    return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : ''
+}
+
 function getSaleDate(sale: Sale) {
     return sale.createdAt.split('T')[0]
 }
 
+function getApiErrorMessage(error: unknown) {
+    const apiError = error as {
+        response?: {
+            data?: {
+                message?: string
+                error?: string
+            }
+        }
+    }
+
+    return (
+        apiError.response?.data?.message ||
+        apiError.response?.data?.error ||
+        ''
+    )
+}
+
 function SalesPage() {
+    const [searchParams] = useSearchParams()
+
+    const fromParam = getValidDateParam(searchParams.get('from'))
+    const toParam = getValidDateParam(searchParams.get('to'))
+
     const [sales, setSales] = useState<Sale[]>([])
     const [loading, setLoading] = useState(true)
-    const [dateFrom, setDateFrom] = useState(getTodayDateInputValue())
-    const [dateTo, setDateTo] = useState('')
+    const [dateFrom, setDateFrom] = useState(fromParam || getTodayDateInputValue())
+    const [dateTo, setDateTo] = useState(toParam)
     const [paymentFilter, setPaymentFilter] = useState<PaymentFilter>('ALL')
     const [cashRegister, setCashRegister] = useState<CashRegisterSession | null>(null)
 
@@ -67,6 +95,10 @@ function SalesPage() {
     const filteredSales = useMemo(() => {
         return sales
             .filter((sale) => {
+                if (cashRegister?.id && !dateTo) {
+                    return sale.cashRegisterSessionId === cashRegister.id
+                }
+
                 const saleDate = getSaleDate(sale)
 
                 if (!dateTo) {
@@ -79,8 +111,8 @@ function SalesPage() {
                 (a, b) =>
                     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
             )
-    }, [sales, dateFrom, dateTo])
-
+    }, [sales, cashRegister, dateFrom, dateTo])
+    
     const visibleSales = useMemo(() => {
         if (paymentFilter === 'ALL') return filteredSales
 
@@ -138,39 +170,56 @@ function SalesPage() {
 
         if (!cashRegisterAction) return
 
+        const password = adminPassword.trim()
+
+        if (!password) {
+            toast.error('Enter the admin password')
+            return
+        }
+
         setProcessingCashRegister(true)
 
         try {
             if (cashRegisterAction === 'OPEN') {
-                const openedCashRegister = await openCashRegister({ adminPassword })
-
-                setCashRegister(openedCashRegister)
+                await openCashRegister({ adminPassword: password })
                 sessionStorage.setItem('solaris_cash_register_opened', 'true')
                 toast.success('Cash register opened successfully')
             }
 
             if (cashRegisterAction === 'CLOSE') {
-                const closedCashRegister = await closeCashRegister({ adminPassword })
-
-                setCashRegister(closedCashRegister)
+                await closeCashRegister({ adminPassword: password })
                 sessionStorage.removeItem('solaris_cash_register_opened')
                 toast.success('Cash register closed successfully')
-                await loadData()
             }
 
             if (cashRegisterAction === 'REOPEN' && cashRegister) {
-                const reopenedCashRegister = await reopenCashRegister(cashRegister.id, {
-                    adminPassword,
+                await reopenCashRegister(cashRegister.id, {
+                    adminPassword: password,
                 })
 
-                setCashRegister(reopenedCashRegister)
                 sessionStorage.setItem('solaris_cash_register_opened', 'true')
                 toast.success('Cash register reopened successfully')
             }
 
             closeAuthorizationModal()
-        } catch {
-            toast.error('Invalid admin password or cash register action failed')
+            setPaymentFilter('ALL')
+            setCurrentPage(1)
+            await loadData()
+        } catch (error: unknown) {
+            const message = getApiErrorMessage(error)
+
+            if (message.toLowerCase().includes('password')) {
+                toast.error('Invalid admin password')
+                return
+            }
+
+            if (message.toLowerCase().includes('already')) {
+                toast.error('There is already a cash register session for today')
+                await loadData()
+                return
+            }
+
+            toast.error(message || 'Cash register action failed')
         } finally {
             setProcessingCashRegister(false)
         }

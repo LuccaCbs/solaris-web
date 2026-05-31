@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import type { Product } from '../types/product'
 import type { Category } from '../types/category'
@@ -11,15 +11,22 @@ type SortDirection = 'asc' | 'desc'
 type StockStatusFilter = 'all' | 'low' | 'normal'
 
 function ProductsPage() {
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const initialStockFilter =
+        searchParams.get('stock') === 'low' ? 'low' : 'all'
+
     const [products, setProducts] = useState<Product[]>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState('')
     const [categoryFilter, setCategoryFilter] = useState('all')
-    const [stockStatusFilter, setStockStatusFilter] = useState<StockStatusFilter>('all')
+    const [stockStatusFilter, setStockStatusFilter] =
+        useState<StockStatusFilter>(initialStockFilter)
     const [sortField, setSortField] = useState<SortField>('name')
     const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
     const [currentPage, setCurrentPage] = useState(1)
+
     const pageSize = 10
 
     async function loadData() {
@@ -35,6 +42,20 @@ function ProductsPage() {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        loadData()
+    }, [])
+
+    useEffect(() => {
+        const stockParam = searchParams.get('stock')
+
+        if (stockParam === 'low') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setStockStatusFilter('low')
+            setCurrentPage(1)
+        }
+    }, [searchParams])
 
     async function handleDeleteProduct(id: number) {
         const confirmed = window.confirm('Are you sure you want to delete this product?')
@@ -60,6 +81,18 @@ function ProductsPage() {
         setSortDirection('asc')
     }
 
+    function handleStockFilterChange(value: StockStatusFilter) {
+        setStockStatusFilter(value)
+        setCurrentPage(1)
+
+        if (value === 'low') {
+            setSearchParams({ stock: 'low' })
+            return
+        }
+
+        setSearchParams({})
+    }
+
     function clearFilters() {
         setSearch('')
         setCategoryFilter('all')
@@ -67,6 +100,7 @@ function ProductsPage() {
         setSortField('name')
         setSortDirection('asc')
         setCurrentPage(1)
+        setSearchParams({})
     }
 
     const filteredProducts = useMemo(() => {
@@ -111,10 +145,6 @@ function ProductsPage() {
         (currentPage - 1) * pageSize,
         currentPage * pageSize
     )
-
-    useEffect(() => {
-        loadData()
-    }, [])
 
     if (loading) {
         return <ProductsSkeleton />
@@ -170,10 +200,9 @@ function ProductsPage() {
 
                     <select
                         value={stockStatusFilter}
-                        onChange={(event) => {
-                            setStockStatusFilter(event.target.value as StockStatusFilter)
-                            setCurrentPage(1)
-                        }}
+                        onChange={(event) =>
+                            handleStockFilterChange(event.target.value as StockStatusFilter)
+                        }
                         className="solaris-input"
                     >
                         <option value="all">All stock status</option>
@@ -216,12 +245,12 @@ function ProductsPage() {
 
                             {product.lowStock ? (
                                 <span className="rounded-lg bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400">
-                  LOW STOCK
-                </span>
+                                    LOW STOCK
+                                </span>
                             ) : (
                                 <span className="rounded-lg bg-green-500/10 px-3 py-1 text-xs font-medium text-green-500 dark:text-green-300">
-                  OK
-                </span>
+                                    OK
+                                </span>
                             )}
                         </div>
 
@@ -312,20 +341,20 @@ function ProductsPage() {
                             </td>
 
                             <td className="px-6 py-4">
-                  <span className="rounded-lg bg-blue-500/10 px-3 py-1 text-sm text-blue-500 dark:text-blue-300">
-                    {product.stockQuantity}
-                  </span>
+                                    <span className="rounded-lg bg-blue-500/10 px-3 py-1 text-sm text-blue-500 dark:text-blue-300">
+                                        {product.stockQuantity}
+                                    </span>
                             </td>
 
                             <td className="px-6 py-4">
                                 {product.lowStock ? (
                                     <span className="rounded-lg bg-red-500/10 px-3 py-1 text-sm font-medium text-red-400">
-                      LOW STOCK
-                    </span>
+                                            LOW STOCK
+                                        </span>
                                 ) : (
                                     <span className="rounded-lg bg-green-500/10 px-3 py-1 text-sm font-medium text-green-500 dark:text-green-300">
-                      OK
-                    </span>
+                                            OK
+                                        </span>
                                 )}
                             </td>
 
@@ -442,8 +471,8 @@ function SortButton({
         >
             <span>{label}</span>
             <span className="text-xs text-slate-500">
-        {isActive ? (direction === 'asc' ? '↑' : '↓') : '↕'}
-      </span>
+                {isActive ? (direction === 'asc' ? '↑' : '↓') : '↕'}
+            </span>
         </button>
     )
 }

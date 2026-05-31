@@ -1,42 +1,32 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getDashboardSummary } from '../api/dashboardService'
-import { getProducts } from '../api/productService'
-import { getStockMovements } from '../api/stockMovementService'
-import type { DashboardSummary } from '../types/dashboard'
-import type { Product } from '../types/product'
-import type { StockMovement } from '../types/stockMovement'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
     Bar,
     BarChart,
     CartesianGrid,
-    Cell,
-    Pie,
-    PieChart,
     ResponsiveContainer,
     Tooltip,
     XAxis,
     YAxis,
 } from 'recharts'
+import { getDashboard } from '../api/dashboardService'
+import type { Dashboard } from '../types/dashboard'
+
+type SupplierOrderDashboardFilter = 'SENT' | 'COMPLETED' | 'CANCELLED'
 
 function DashboardPage() {
-    const [summary, setSummary] = useState<DashboardSummary | null>(null)
-    const [products, setProducts] = useState<Product[]>([])
-    const [movements, setMovements] = useState<StockMovement[]>([])
+    const navigate = useNavigate()
+
+    const [dashboard, setDashboard] = useState<Dashboard | null>(null)
     const [loading, setLoading] = useState(true)
+    const [supplierOrderFilter, setSupplierOrderFilter] =
+        useState<SupplierOrderDashboardFilter>('SENT')
 
     useEffect(() => {
         async function loadDashboard() {
             try {
-                const [summaryData, productsData, movementsData] = await Promise.all([
-                    getDashboardSummary(),
-                    getProducts(),
-                    getStockMovements(),
-                ])
-
-                setSummary(summaryData)
-                setProducts(productsData)
-                setMovements(movementsData)
+                const data = await getDashboard()
+                setDashboard(data)
             } finally {
                 setLoading(false)
             }
@@ -45,39 +35,76 @@ function DashboardPage() {
         loadDashboard()
     }, [])
 
-    const lowStockProducts = useMemo(() => {
-        return products.filter((product) => product.lowStock)
-    }, [products])
+    const monthlySalesData = useMemo(() => {
+        if (!dashboard) return []
 
-    const recentMovements = useMemo(() => {
-        return [...movements]
-            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-            .slice(0, 5)
-    }, [movements])
-
-    const stockByProductData = useMemo(() => {
-        return products.map((product) => ({
-            name: product.name,
-            stock: product.stockQuantity,
-            lowStock: product.lowStock,
+        return dashboard.monthlySales.map((item) => ({
+            date: item.date.slice(8, 10),
+            fullDate: item.date,
+            totalAmount: item.totalAmount,
+            salesCount: item.salesCount,
         }))
-    }, [products])
+    }, [dashboard])
 
-    const movementsByTypeData = useMemo(() => {
-        const counts = movements.reduce(
-            (acc, movement) => {
-                acc[movement.type] += 1
-                return acc
-            },
-            { IN: 0, OUT: 0, ADJUSTMENT: 0 }
+    const monthlySalesSummary = useMemo(() => {
+        if (!dashboard) {
+            return {
+                salesCount: 0,
+                totalAmount: 0,
+            }
+        }
+
+        return dashboard.monthlySales.reduce(
+            (summary, item) => ({
+                salesCount: summary.salesCount + item.salesCount,
+                totalAmount: summary.totalAmount + item.totalAmount,
+            }),
+            {
+                salesCount: 0,
+                totalAmount: 0,
+            }
         )
+    }, [dashboard])
 
-        return [
-            { name: 'IN', value: counts.IN },
-            { name: 'OUT', value: counts.OUT },
-            { name: 'ADJUSTMENT', value: counts.ADJUSTMENT },
-        ]
-    }, [movements])
+    const selectedSupplierOrdersCount = useMemo(() => {
+        if (!dashboard) return 0
+
+        if (supplierOrderFilter === 'SENT') return dashboard.supplierOrders.sent
+        if (supplierOrderFilter === 'COMPLETED') return dashboard.supplierOrders.completed
+
+        return dashboard.supplierOrders.cancelled
+    }, [dashboard, supplierOrderFilter])
+
+    function goToSales() {
+        navigate('/sales')
+    }
+
+    function goToLowStockProducts() {
+        navigate('/products?stock=low')
+    }
+
+    function goToSupplierOrders() {
+        navigate(`/supplier-orders?status=${supplierOrderFilter}`)
+    }
+    
+    function formatDateInputValue(date: Date) {
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+
+        return `${year}-${month}-${day}`
+    }
+
+    function goToMonthlySales() {
+        const now = new Date()
+
+        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
+        const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+
+        navigate(
+            `/sales?from=${formatDateInputValue(firstDay)}&to=${formatDateInputValue(lastDay)}`
+        )
+    }
 
     if (loading) {
         return <DashboardSkeleton />
@@ -85,283 +112,206 @@ function DashboardPage() {
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">Solaris Dashboard</h1>
+            <div>
+                <h1 className="text-4xl font-bold">Solaris Dashboard</h1>
 
-            <p className="mt-2 solaris-muted">
-                Real-time business overview from Solaris API.
-            </p>
+                <p className="mt-2 solaris-muted">
+                    Quick overview of sales, stock alerts and supplier orders.
+                </p>
+            </div>
 
-            <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-                <MetricCard title="Products" value={summary?.totalProducts ?? 0} description="Registered items" />
-                <MetricCard title="Categories" value={summary?.totalCategories ?? 0} description="Product groups" />
-                <MetricCard title="Stock Units" value={summary?.totalStockUnits ?? 0} description="Available units" />
-                <MetricCard title="Low Stock" value={lowStockProducts.length} description="Needs attention" />
-                <MetricCard title="Movements" value={summary?.totalStockMovements ?? 0} description="Stock operations" />
-            </section>
+            <section className="mt-8 grid gap-4 lg:grid-cols-4">
+                <button
+                    type="button"
+                    onClick={goToMonthlySales}
+                    className="solaris-panel text-left transition hover:-translate-y-0.5 hover:shadow-xl"
+                >
+                    <p className="text-sm solaris-muted">Monthly Sales</p>
 
-            <section className="mt-8 grid gap-6 xl:grid-cols-2">
-                <div className="solaris-panel">    <h2 className="text-xl font-semibold">Stock by Product</h2>
-                    <p className="mt-1 text-sm solaris-muted">
-                        Current inventory units by product.
-                    </p>
+                    <div className="mt-4 flex items-end justify-between gap-4">
+                        <div>
+                            <p className="text-4xl font-bold">
+                                {monthlySalesSummary.salesCount}
+                            </p>
+                            <p className="mt-1 text-sm solaris-subtle">sales</p>
+                        </div>
 
-                    <div className="mt-6 h-96 overflow-y-auto overflow-x-hidden pr-2">
-                        <div
-                            style={{
-                                height: Math.max(stockByProductData.length * 52, 320),
-                                width: '100%',
-                            }}
-                        >
-                            <BarChart
-                                layout="vertical"
-                                width={620}
-                                height={Math.max(stockByProductData.length * 52, 320)}
-                                data={stockByProductData}
-                                margin={{ top: 8, right: 24, left: 24, bottom: 8 }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-
-                                <XAxis
-                                    type="number"
-                                    stroke="#94a3b8"
-                                    tick={{ fontSize: 12 }}
-                                />
-
-                                <YAxis
-                                    type="category"
-                                    dataKey="name"
-                                    stroke="#94a3b8"
-                                    tick={{ fontSize: 12 }}
-                                    width={170}
-                                />
-
-                                <Tooltip
-                                    formatter={(value) => [`${value} units`, 'Stock']}
-                                    labelFormatter={(label) => `Product: ${label}`}
-                                    contentStyle={{
-                                        backgroundColor: '#020617',
-                                        border: '1px solid #334155',
-                                        borderRadius: '12px',
-                                        color: '#ffffff',
-                                    }}
-                                />
-
-                                <Bar dataKey="stock" radius={[0, 8, 8, 0]}>
-                                    {stockByProductData.map((entry) => (
-                                        <Cell
-                                            key={entry.name}
-                                            fill={entry.lowStock ? '#ef4444' : '#2563eb'}
-                                        />
-                                    ))}
-                                </Bar>
-                            </BarChart>
+                        <div className="text-right">
+                            <p className="text-3xl font-bold text-emerald-500 dark:text-emerald-300">
+                                ${monthlySalesSummary.totalAmount.toFixed(2)}
+                            </p>
+                            <p className="mt-1 text-sm solaris-subtle">income</p>
                         </div>
                     </div>
-                </div>
+                </button>
 
-                <div className="solaris-panel">
-                    <h2 className="text-xl font-semibold">Movements by Type</h2>
-                    <p className="mt-1 text-sm solaris-muted">
-                        Distribution of inventory operations.
+                <button
+                    type="button"
+                    onClick={goToSales}
+                    className="solaris-panel text-left transition hover:-translate-y-0.5 hover:shadow-xl"
+                >
+                    <p className="text-sm solaris-muted">Today Sales</p>
+
+                    <div className="mt-4 flex items-end justify-between gap-4">
+                        <div>
+                            <p className="text-4xl font-bold">
+                                {dashboard?.todaySalesCount ?? 0}
+                            </p>
+                            <p className="mt-1 text-sm solaris-subtle">sales</p>
+                        </div>
+
+                        <div className="text-right">
+                            <p className="text-3xl font-bold text-emerald-500 dark:text-emerald-300">
+                                ${(dashboard?.todaySalesAmount ?? 0).toFixed(2)}
+                            </p>
+                            <p className="mt-1 text-sm solaris-subtle">income</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button
+                    type="button"
+                    onClick={goToLowStockProducts}
+                    className="solaris-panel text-left transition hover:-translate-y-0.5 hover:shadow-xl"
+                >
+                    <p className="text-sm solaris-muted">Low Stock Products</p>
+
+                    <p className="mt-4 text-4xl font-bold text-red-500 dark:text-red-300">
+                        {dashboard?.lowStockProductsCount ?? 0}
                     </p>
 
-                    <div className="mt-6 h-80">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                                <Pie
-                                    data={movementsByTypeData}
-                                    dataKey="value"
-                                    nameKey="name"
-                                    innerRadius={70}
-                                    outerRadius={110}
-                                    paddingAngle={4}
-                                >
-                                    {movementsByTypeData.map((entry) => (
-                                        <Cell
-                                            key={entry.name}
-                                            fill={
-                                                entry.name === 'IN'
-                                                    ? '#22c55e'
-                                                    : entry.name === 'OUT'
-                                                        ? '#ef4444'
-                                                        : '#eab308'
-                                            }
-                                        />
-                                    ))}
-                                </Pie>
-                                <Tooltip
-                                    formatter={(value) => [`${value} units`, 'Stock']}
-                                    labelFormatter={(label) => `Product: ${label}`}
-                                    contentStyle={{
-                                        backgroundColor: '#020617',
-                                        border: '1px solid #334155',
-                                        borderRadius: '12px',
-                                        color: '#ffffff',
-                                    }}
-                                />
-                            </PieChart>
-                        </ResponsiveContainer>
+                    <p className="mt-2 text-sm solaris-subtle">
+                        products need restock
+                    </p>
+                </button>
+
+                <div className="solaris-panel">
+                    <div className="flex items-start justify-between gap-4">
+                        <div>
+                            <p className="text-sm solaris-muted">Supplier Orders</p>
+                            <p className="mt-4 text-4xl font-bold">
+                                {selectedSupplierOrdersCount}
+                            </p>
+                        </div>
+
+                        <select
+                            value={supplierOrderFilter}
+                            onChange={(event) =>
+                                setSupplierOrderFilter(
+                                    event.target.value as SupplierOrderDashboardFilter
+                                )
+                            }
+                            className="solaris-input w-40"
+                        >
+                            <option value="SENT">Sent</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="CANCELLED">Cancelled</option>
+                        </select>
                     </div>
+
+                    <button
+                        type="button"
+                        onClick={goToSupplierOrders}
+                        className="mt-6 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-500"
+                    >
+                        View filtered orders
+                    </button>
                 </div>
             </section>
 
-            <section className="mt-8 grid gap-6 xl:grid-cols-2">
-                <div className="solaris-panel">
-                    <h2 className="text-xl font-semibold">Low Stock Products</h2>
-                    <p className="mt-1 text-sm solaris-muted">
-                        Products below their configured low stock threshold.
-                    </p>
+            <section className="solaris-panel mt-8">
+                <h2 className="text-xl font-semibold">Monthly Sales Overview</h2>
 
-                    <div className="mt-6 space-y-3">
-                        {lowStockProducts.length === 0 ? (
-                            <p className="text-sm text-slate-400">
-                                No low stock products.
-                            </p>
-                        ) : (
-                            lowStockProducts.map((product) => (
-                                <div
-                                    key={product.id}
-                                    className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950"
-                                >
-                                    <div>
-                                        <p className="font-medium text-white">{product.name}</p>
-                                        <p className="text-sm text-slate-400">{product.sku}</p>
-                                    </div>
+                <p className="mt-1 text-sm solaris-muted">
+                    Daily income and sales count for the current month.
+                </p>
 
-                                    <div className="flex items-center gap-3">
-                                      <span className="rounded-lg bg-red-500/10 px-3 py-1 text-sm text-red-300">
-                                        {product.stockQuantity} units
-                                      </span>
+                <div className="mt-6 h-[520px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                            data={monthlySalesData}
+                            margin={{ top: 10, right: 24, left: 8, bottom: 8 }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" className="stroke-slate-200 dark:stroke-slate-800" />
 
-                                        <Link
-                                            to={`/stock-movements/new?productId=${product.id}&type=IN`}
-                                            className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500"
-                                        >
-                                            Restock
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </div>
+                            <XAxis
+                                dataKey="date"
+                                tick={{ fontSize: 12 }}
+                                className="fill-slate-500"
+                            />
 
-                <div className="solaris-panel">
-                    <h2 className="text-xl font-semibold">Recent Stock Movements</h2>
-                    <p className="mt-1 text-sm solaris-muted">
-                        Latest inventory operations.
-                    </p>
+                            <YAxis
+                                yAxisId="amount"
+                                tick={{ fontSize: 12 }}
+                                className="fill-slate-500"
+                            />
 
-                    <div className="mt-6 space-y-3">
-                        {recentMovements.length === 0 ? (
-                            <p className="text-sm text-slate-400">
-                                No stock movements yet.
-                            </p>
-                        ) : (
-                            recentMovements.map((movement) => (
-                                <div
-                                    key={movement.id}
-                                    className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950"
-                                >
-                                    <div>
-                                        <p className="font-medium text-white">{movement.productName}</p>
-                                        <p className="text-sm text-slate-400">
-                                            {movement.reason}
-                                        </p>
-                                    </div>
+                            <YAxis
+                                yAxisId="count"
+                                orientation="right"
+                                tick={{ fontSize: 12 }}
+                                className="fill-slate-500"
+                            />
 
-                                    <div className="text-right">
-                    <span className={`rounded-lg px-3 py-1 text-sm ${getTypeStyles(movement.type)}`}>
-                      {movement.type}
-                    </span>
+                            <Tooltip
+                                formatter={(value, name) => {
+                                    if (name === 'totalAmount') return [`$${Number(value).toFixed(2)}`, 'Income']
+                                    return [value, 'Sales']
+                                }}
+                                labelFormatter={(label, payload) => {
+                                    const item = payload?.[0]?.payload
+                                    return item?.fullDate ?? `Day ${label}`
+                                }}
+                                contentStyle={{
+                                    backgroundColor: '#020617',
+                                    border: '1px solid #334155',
+                                    borderRadius: '12px',
+                                    color: '#ffffff',
+                                }}
+                            />
 
-                                        <p className="mt-1 text-sm solaris-muted">
-                                            {movement.previousStock} → {movement.currentStock}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
+                            <Bar
+                                yAxisId="amount"
+                                dataKey="totalAmount"
+                                name="Income"
+                                radius={[8, 8, 0, 0]}
+                                fill="#2563eb"
+                            />
+
+                            <Bar
+                                yAxisId="count"
+                                dataKey="salesCount"
+                                name="Sales"
+                                radius={[8, 8, 0, 0]}
+                                fill="#22c55e"
+                                barSize={14}
+                            />
+                        </BarChart>
+                    </ResponsiveContainer>
                 </div>
             </section>
         </div>
     )
-}
-
-type MetricCardProps = {
-    title: string
-    value: number
-    description: string
-}
-
-function MetricCard({ title, value, description }: MetricCardProps) {
-    return (
-        <div className="solaris-panel">
-            <p className="text-sm solaris-muted">{title}</p>
-            <p className="mt-3 text-3xl font-bold">{value}</p>
-            <p className="mt-2 text-sm solaris-subtle">{description}</p>
-        </div>
-    )
-}
-
-function getTypeStyles(type: StockMovement['type']) {
-    if (type === 'IN') return 'bg-green-500/10 text-green-300'
-    if (type === 'OUT') return 'bg-red-500/10 text-red-300'
-    return 'bg-yellow-500/10 text-yellow-300'
 }
 
 function DashboardSkeleton() {
     return (
         <div>
-            <div className="h-10 w-72 animate-pulse rounded-xl bg-slate-800" />
-            <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-800" />
+            <div className="h-10 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+            <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
 
-            <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-                {Array.from({ length: 5 }).map((_, index) => (
-                    <div
-                        key={index}
-                        className="solaris-panel"
-                    >
-                        <div className="h-4 w-24 animate-pulse rounded-lg bg-slate-800" />
-                        <div className="mt-4 h-8 w-16 animate-pulse rounded-lg bg-slate-800" />
-                        <div className="mt-3 h-4 w-32 animate-pulse rounded-lg bg-slate-800" />
+            <section className="mt-8 grid gap-4 lg:grid-cols-4">
+                {Array.from({ length: 4 }).map((_, index) => (
+                    <div key={index} className="solaris-panel">
+                        <div className="h-4 w-32 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+                        <div className="mt-6 h-10 w-24 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
                     </div>
                 ))}
             </section>
 
-            <section className="mt-8 grid gap-6 xl:grid-cols-2">
-                {Array.from({ length: 2 }).map((_, index) => (
-                    <div
-                        key={index}
-                        className="solaris-panel"
-                    >
-                        <div className="h-6 w-48 animate-pulse rounded-lg bg-slate-800" />
-                        <div className="mt-3 h-4 w-72 animate-pulse rounded-lg bg-slate-800" />
-                        <div className="mt-6 h-80 animate-pulse rounded-2xl bg-slate-800" />
-                    </div>
-                ))}
-            </section>
-
-            <section className="mt-8 grid gap-6 xl:grid-cols-2">
-                {Array.from({ length: 2 }).map((_, index) => (
-                    <div
-                        key={index}
-                        className="solaris-panel"
-                    >
-                        <div className="h-6 w-56 animate-pulse rounded-lg bg-slate-800" />
-                        <div className="mt-3 h-4 w-72 animate-pulse rounded-lg bg-slate-800" />
-
-                        <div className="mt-6 space-y-3">
-                            {Array.from({ length: 4 }).map((_, rowIndex) => (
-                                <div
-                                    key={rowIndex}
-                                    className="h-16 animate-pulse rounded-xl border border-slate-800 bg-slate-950"
-                                />
-                            ))}
-                        </div>
-                    </div>
-                ))}
+            <section className="solaris-panel mt-8">
+                <div className="h-6 w-56 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+                <div className="mt-6 h-[520px] animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
             </section>
         </div>
     )

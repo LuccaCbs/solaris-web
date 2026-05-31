@@ -144,8 +144,33 @@ function NewSalePage() {
 
             toast.success('Sale created successfully')
             navigate('/sales')
-        } catch {
-            toast.error('Could not create sale. Check stock availability.')
+        } catch (error: unknown) {
+            const axiosError = error as {
+                response?: {
+                    data?: {
+                        message?: string
+                        error?: string
+                    }
+                }
+            }
+
+            const message =
+                axiosError.response?.data?.message ||
+                axiosError.response?.data?.error ||
+                ''
+
+            if (message.includes('There is no open cash register session')) {
+                toast.error('There is no open cash register session')
+                navigate('/sales')
+                return
+            }
+
+            if (message.toLowerCase().includes('stock')) {
+                toast.error('One or more products exceed available stock')
+                return
+            }
+
+            toast.error('Could not create sale')
         } finally {
             setCreating(false)
         }
