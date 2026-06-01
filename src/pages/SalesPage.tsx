@@ -11,6 +11,7 @@ import {
     reopenCashRegister,
 } from '../api/cashRegisterService'
 import type { CashRegisterSession } from '../types/cashRegister'
+import { getSystemSettings } from '../api/systemSettingsService'
 
 type PaymentFilter = 'ALL' | PaymentMethod
 type CashRegisterAction = 'OPEN' | 'CLOSE' | 'REOPEN' | null
@@ -58,6 +59,7 @@ function SalesPage() {
     const [dateTo, setDateTo] = useState(toParam)
     const [paymentFilter, setPaymentFilter] = useState<PaymentFilter>('ALL')
     const [cashRegister, setCashRegister] = useState<CashRegisterSession | null>(null)
+    const [hasAdminAccessPassword, setHasAdminAccessPassword] = useState(false)
 
     const [cashRegisterAction, setCashRegisterAction] = useState<CashRegisterAction>(null)
     const [adminPassword, setAdminPassword] = useState('')
@@ -69,6 +71,9 @@ function SalesPage() {
         try {
             const salesData = await getSales()
             setSales(salesData)
+
+            const settingsData = await getSystemSettings()
+            setHasAdminAccessPassword(settingsData.hasAdminAccessPassword)
 
             try {
                 const todayCashRegister = await getTodayCashRegister()
@@ -155,44 +160,37 @@ function SalesPage() {
     const cashRegisterIsOpen = cashRegister?.status === 'OPEN'
     const cashRegisterIsClosed = cashRegister?.status === 'CLOSED'
 
-    function openAuthorizationModal(action: Exclude<CashRegisterAction, null>) {
+    async function openAuthorizationModal(action: Exclude<CashRegisterAction, null>) {
         setAdminPassword('')
-        setCashRegisterAction(action)
-    }
 
-    function closeAuthorizationModal() {
-        setAdminPassword('')
-        setCashRegisterAction(null)
-    }
-
-    async function handleCashRegisterAuthorization(event: React.FormEvent) {
-        event.preventDefault()
-
-        if (!cashRegisterAction) return
-
-        const password = adminPassword.trim()
-
-        if (!password) {
-            toast.error('Enter the admin password')
+        if (!hasAdminAccessPassword) {
+            await executeCashRegisterAction(action, '')
             return
         }
 
+        setCashRegisterAction(action)
+    }
+
+    async function executeCashRegisterAction(
+        action: Exclude<CashRegisterAction, null>,
+        password: string
+    ) {
         setProcessingCashRegister(true)
 
         try {
-            if (cashRegisterAction === 'OPEN') {
+            if (action === 'OPEN') {
                 await openCashRegister({ adminPassword: password })
                 sessionStorage.setItem('solaris_cash_register_opened', 'true')
                 toast.success('Cash register opened successfully')
             }
 
-            if (cashRegisterAction === 'CLOSE') {
+            if (action === 'CLOSE') {
                 await closeCashRegister({ adminPassword: password })
                 sessionStorage.removeItem('solaris_cash_register_opened')
                 toast.success('Cash register closed successfully')
             }
 
-            if (cashRegisterAction === 'REOPEN' && cashRegister) {
+            if (action === 'REOPEN' && cashRegister) {
                 await reopenCashRegister(cashRegister.id, {
                     adminPassword: password,
                 })
@@ -223,6 +221,26 @@ function SalesPage() {
         } finally {
             setProcessingCashRegister(false)
         }
+    }
+
+    function closeAuthorizationModal() {
+        setAdminPassword('')
+        setCashRegisterAction(null)
+    }
+
+    async function handleCashRegisterAuthorization(event: React.FormEvent) {
+        event.preventDefault()
+
+        if (!cashRegisterAction) return
+
+        const password = adminPassword.trim()
+
+        if (hasAdminAccessPassword && !password) {
+            toast.error('Enter the admin password')
+            return
+        }
+
+        await executeCashRegisterAction(cashRegisterAction, password)
     }
 
     if (loading) {

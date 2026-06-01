@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useTheme } from '../utils/useTheme'
+import { getSystemSettings } from '../api/systemSettingsService'
 
 const navItems = [
     { label: 'Dashboard', to: '/', icon: BarChart3 },
@@ -39,7 +40,15 @@ function AppLayout() {
     const [adminPasswordModalOpen, setAdminPasswordModalOpen] = useState(false)
     const { theme, toggleTheme } = useTheme()
 
-    function handleAdminSettingsClick() {
+    async function handleAdminSettingsClick() {
+        const settings = await getSystemSettings()
+
+        if (!settings.hasAdminAccessPassword) {
+            closeSidebar()
+            navigate('/admin/settings')
+            return
+        }
+
         setAdminPasswordModalOpen(true)
     }
 
