@@ -80,18 +80,18 @@ function EditProductPage() {
             await updateProduct(Number(id), {
                 name: form.name,
                 description: form.description,
-                sku: form.sku,
+                sku: form.sku.trim(),
                 price: Number(form.price),
-                categoryId: Number(form.categoryId),
+                categoryId: form.categoryId ? Number(form.categoryId) : null,
                 lowStockThreshold: form.lowStockThreshold
                     ? Number(form.lowStockThreshold)
                     : null,
             })
 
             toast.success('Product updated successfully')
-
             navigate('/products')
         } catch {
+            setError('Could not update product')
             toast.error('Could not update product')
         } finally {
             setSaving(false)
@@ -99,20 +99,36 @@ function EditProductPage() {
     }
 
     if (loading) {
-        return <div>Loading product...</div>
+        return (
+            <div>
+                <div className="h-10 w-52 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+                <div className="mt-3 h-5 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+
+                <div className="solaris-panel mt-8">
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <div key={index}>
+                                <div className="h-4 w-28 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+                                <div className="mt-2 h-12 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
         <div>
             <h1 className="text-4xl font-bold">Edit Product</h1>
 
-            <p className="mt-2 text-slate-400">
+            <p className="mt-2 solaris-muted">
                 Update inventory product details.
             </p>
 
             <form
                 onSubmit={handleSubmit}
-                className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl"
+                className="solaris-panel mt-8"
             >
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     <Input
@@ -121,11 +137,22 @@ function EditProductPage() {
                         onChange={(value) => updateForm('name', value)}
                     />
 
-                    <Input
-                        label="SKU"
-                        value={form.sku}
-                        onChange={(value) => updateForm('sku', value)}
-                    />
+                    <div>
+                        <label className="text-sm solaris-muted">
+                            SKU <span className="solaris-subtle">(optional)</span>
+                        </label>
+
+                        <input
+                            value={form.sku}
+                            onChange={(event) => updateForm('sku', event.target.value)}
+                            className="solaris-input mt-2 w-full"
+                            placeholder="Leave empty to generate automatically"
+                        />
+
+                        <p className="mt-2 text-sm solaris-subtle">
+                            Leave empty to generate a new system SKU automatically.
+                        </p>
+                    </div>
 
                     <Input
                         label="Price"
@@ -134,23 +161,31 @@ function EditProductPage() {
                         onChange={(value) => updateForm('price', value)}
                     />
 
-                    <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-3 text-sm text-blue-300">
-                        Stock is managed through Stock Movements to preserve audit history.
+                    {/*
+                      <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-300">
+                       Stock is managed through Stock Movements to preserve audit history.
                     </div>
+                    */}
 
                     <div>
-                        <label className="text-sm text-slate-400">Category</label>
+                        <label className="text-sm solaris-muted">
+                            Category
+                        </label>
 
                         <select
                             value={form.categoryId}
                             onChange={(event) => updateForm('categoryId', event.target.value)}
-                            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
-                            required
+                            className="solaris-input mt-2 w-full"
                         >
-                            <option value="">Select category</option>
+                            <option value="">
+                                Select category
+                            </option>
 
                             {categories.map((category) => (
-                                <option key={category.id} value={category.id}>
+                                <option
+                                    key={category.id}
+                                    value={category.id}
+                                >
                                     {category.name}
                                 </option>
                             ))}
@@ -158,7 +193,7 @@ function EditProductPage() {
                     </div>
 
                     <div>
-                        <label className="text-sm text-slate-400">
+                        <label className="text-sm solaris-muted">
                             Custom Low Stock Threshold
                         </label>
 
@@ -170,29 +205,40 @@ function EditProductPage() {
                                 updateForm('lowStockThreshold', event.target.value)
                             }
                             placeholder="Use global setting"
-                            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                            className="solaris-input mt-2 w-full"
                         />
 
-                        <p className="mt-2 text-sm text-slate-500">
+                        <p className="mt-2 text-sm solaris-subtle">
                             Leave empty to use the global low stock threshold.
                         </p>
                     </div>
 
                     <div className="md:col-span-2 xl:col-span-3">
-                        <Input
-                            label="Description"
-                            value={form.description}
-                            onChange={(value) => updateForm('description', value)}
-                        />
+                        <div>
+                            <label className="text-sm solaris-muted">
+                                Description <span className="solaris-subtle">(optional)</span>
+                            </label>
+
+                            <input
+                                value={form.description}
+                                onChange={(event) => updateForm('description', event.target.value)}
+                                className="solaris-input mt-2 w-full"
+                                placeholder="Optional product description"
+                            />
+                        </div>
                     </div>
                 </div>
 
-                {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
+                {error && (
+                    <p className="mt-4 text-sm text-red-500 dark:text-red-400">
+                        {error}
+                    </p>
+                )}
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                     <button
                         disabled={saving}
-                        className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
+                        className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
                     >
                         {saving ? 'Saving...' : 'Save Changes'}
                     </button>
@@ -200,7 +246,7 @@ function EditProductPage() {
                     <button
                         type="button"
                         onClick={() => navigate('/products')}
-                        className="w-full rounded-xl border border-slate-700 px-5 py-3 text-slate-300 hover:bg-slate-800 sm:w-auto"
+                        className="w-full rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 sm:w-auto"
                     >
                         Cancel
                     </button>
@@ -217,17 +263,24 @@ type InputProps = {
     onChange: (value: string) => void
 }
 
-function Input({ label, value, type = 'text', onChange }: InputProps) {
+function Input({
+                   label,
+                   value,
+                   type = 'text',
+                   onChange,
+               }: InputProps) {
     return (
         <div>
-            <label className="text-sm text-slate-400">{label}</label>
+            <label className="text-sm solaris-muted">
+                {label}
+            </label>
 
             <input
                 required
                 type={type}
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
-                className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                className="solaris-input mt-2 w-full"
             />
         </div>
     )

@@ -20,9 +20,9 @@ function NewCategoryPage() {
             await createCategory({ name, description })
 
             toast.success('Category created successfully')
-
             navigate('/categories')
         } catch {
+            setError('Could not create category')
             toast.error('Could not create category')
         } finally {
             setCreating(false)
@@ -31,39 +31,53 @@ function NewCategoryPage() {
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">New Category</h1>
-            <p className="mt-2 text-slate-400">Create a new product category.</p>
+            <h1 className="text-4xl font-bold">
+                New Category
+            </h1>
+
+            <p className="mt-2 solaris-muted">
+                Create a new product category.
+            </p>
 
             <form
                 onSubmit={handleSubmit}
-                className="mt-8 max-w-2xl rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl"
+                className="solaris-panel mt-8 max-w-2xl"
             >
                 <div>
-                    <label className="text-sm text-slate-400">Name</label>
+                    <label className="text-sm solaris-muted">
+                        Name *
+                    </label>
+
                     <input
                         required
                         value={name}
                         onChange={(event) => setName(event.target.value)}
-                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                        className="solaris-input mt-2 w-full"
                     />
                 </div>
 
                 <div className="mt-4">
-                    <label className="text-sm text-slate-400">Description</label>
+                    <label className="text-sm solaris-muted">
+                        Description <span className="solaris-subtle">(optional)</span>
+                    </label>
+
                     <input
-                        required
                         value={description}
                         onChange={(event) => setDescription(event.target.value)}
-                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                        className="solaris-input mt-2 w-full"
                     />
                 </div>
 
-                {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
+                {error && (
+                    <p className="mt-4 text-sm text-red-500 dark:text-red-400">
+                        {error}
+                    </p>
+                )}
 
-                <div className="mt-6 flex gap-3">
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                     <button
                         disabled={creating}
-                        className="rounded-xl bg-blue-600 px-5 py-3 font-semibold hover:bg-blue-500 disabled:opacity-60"
+                        className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
                     >
                         {creating ? 'Creating...' : 'Create Category'}
                     </button>
@@ -71,7 +85,7 @@ function NewCategoryPage() {
                     <button
                         type="button"
                         onClick={() => navigate('/categories')}
-                        className="rounded-xl border border-slate-700 px-5 py-3 text-slate-300 hover:bg-slate-800"
+                        className="w-full rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 sm:w-auto"
                     >
                         Cancel
                     </button>

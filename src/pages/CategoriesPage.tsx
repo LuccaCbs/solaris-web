@@ -38,9 +38,7 @@ function CategoriesPage() {
 
         try {
             await deleteCategory(id)
-
             toast.success('Category deleted successfully')
-
             await loadCategories()
         } catch {
             toast.error('Could not delete category')
@@ -95,7 +93,7 @@ function CategoriesPage() {
 
     return (
         <div>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 className="text-4xl font-bold">Categories</h1>
 
@@ -106,13 +104,13 @@ function CategoriesPage() {
 
                 <Link
                     to="/categories/new"
-                    className="rounded-xl bg-blue-600 px-5 py-3 font-semibold hover:bg-blue-500"
+                    className="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-500"
                 >
                     New Category
                 </Link>
             </div>
 
-            <div className="mt-8 flex items-center justify-between gap-4">
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <input
                     value={search}
                     onChange={(event) => {
@@ -123,7 +121,7 @@ function CategoriesPage() {
                     className="solaris-input w-full sm:w-96"
                 />
 
-                <p className="text-sm text-slate-400">
+                <p className="text-sm solaris-muted">
                     {filteredCategories.length} result
                     {filteredCategories.length === 1 ? '' : 's'}
                 </p>
@@ -159,20 +157,26 @@ function CategoriesPage() {
 
                             <button
                                 onClick={() => handleDeleteCategory(category.id)}
-                                className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
+                                className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500 hover:bg-red-500/20 dark:text-red-400"
                             >
                                 Delete
                             </button>
                         </div>
                     </div>
                 ))}
+
+                {paginatedCategories.length === 0 && (
+                    <div className="solaris-panel text-center solaris-muted">
+                        No categories found for the selected filters.
+                    </div>
+                )}
             </div>
 
             <div className="solaris-card mt-8 hidden overflow-hidden lg:block">
                 <table className="w-full">
                     <thead className="bg-slate-100 dark:bg-slate-800/50">
                     <tr>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                        <th className="px-6 py-4 text-left text-sm solaris-muted">
                             <SortButton
                                 label="Name"
                                 field="name"
@@ -182,7 +186,7 @@ function CategoriesPage() {
                             />
                         </th>
 
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                        <th className="px-6 py-4 text-left text-sm solaris-muted">
                             <SortButton
                                 label="Description"
                                 field="description"
@@ -192,7 +196,7 @@ function CategoriesPage() {
                             />
                         </th>
 
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                        <th className="px-6 py-4 text-left text-sm solaris-muted">
                             <SortButton
                                 label="Created At"
                                 field="createdAt"
@@ -202,7 +206,7 @@ function CategoriesPage() {
                             />
                         </th>
 
-                        <th className="px-6 py-4 text-right text-sm text-slate-600 dark:text-slate-300">
+                        <th className="px-6 py-4 text-right text-sm solaris-muted">
                             Actions
                         </th>
                     </tr>
@@ -222,33 +226,40 @@ function CategoriesPage() {
                                 {category.description}
                             </td>
 
-                            <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
+                            <td className="px-6 py-4 solaris-muted">
                                 {new Date(category.createdAt).toLocaleString()}
                             </td>
 
                             <td className="px-6 py-4 text-right">
                                 <div className="flex justify-end gap-2">
-                                    <Link
-                                        to={`/categories/${category.id}/edit`}
-                                        className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                                    >
-                                        Edit
-                                    </Link>
+                                    {!category.systemCategory && (
+                                        <>
+                                            <Link
+                                                to={`/categories/${category.id}/edit`}
+                                                className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                                            >
+                                                Edit
+                                            </Link>
 
-                                    <button
-                                        onClick={() => handleDeleteCategory(category.id)}
-                                        className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
-                                    >
-                                        Delete
-                                    </button>
+                                            <button
+                                                onClick={() => handleDeleteCategory(category.id)}
+                                                className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500 hover:bg-red-500/20 dark:text-red-400"
+                                            >
+                                                Delete
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             </td>
                         </tr>
-
                     ))}
+
                     {paginatedCategories.length === 0 && (
                         <tr>
-                            <td colSpan={4} className="px-6 py-10 text-center solaris-muted">
+                            <td
+                                colSpan={4}
+                                className="px-6 py-10 text-center solaris-muted"
+                            >
                                 No categories found for the selected filters.
                             </td>
                         </tr>
@@ -256,8 +267,9 @@ function CategoriesPage() {
                     </tbody>
                 </table>
             </div>
+
             {totalPages > 1 && (
-                <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
+                <div className="solaris-panel mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm solaris-muted">
                         Page {currentPage} of {totalPages} · {filteredCategories.length} categories
                     </p>
@@ -327,13 +339,13 @@ function SortButton({
         <button
             type="button"
             onClick={() => onSort(field)}
-            className="flex items-center gap-2 hover:text-white"
+            className="flex items-center gap-2 hover:text-slate-950 dark:hover:text-white"
         >
             <span>{label}</span>
 
-            <span className="text-xs text-slate-500">
-        {isActive ? (direction === 'asc' ? '↑' : '↓') : '↕'}
-      </span>
+            <span className="text-xs solaris-subtle">
+                {isActive ? (direction === 'asc' ? '↑' : '↓') : '↕'}
+            </span>
         </button>
     )
 }
@@ -341,31 +353,31 @@ function SortButton({
 function CategoriesSkeleton() {
     return (
         <div>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <div className="h-10 w-52 animate-pulse rounded-xl bg-slate-800" />
-                    <div className="mt-3 h-5 w-72 animate-pulse rounded-xl bg-slate-800" />
+                    <div className="h-10 w-52 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+                    <div className="mt-3 h-5 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
                 </div>
 
-                <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-800" />
+                <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
             </div>
 
-            <div className="mt-8 flex items-center justify-between">
-                <div className="h-12 w-96 animate-pulse rounded-xl bg-slate-800" />
-                <div className="h-5 w-20 animate-pulse rounded-xl bg-slate-800" />
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800 sm:w-96" />
+                <div className="h-5 w-20 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
             </div>
 
-            <div className="mt-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-                <div className="grid grid-cols-4 gap-4 bg-slate-800/50 px-6 py-4">
+            <div className="solaris-card mt-8 hidden overflow-hidden lg:block">
+                <div className="grid grid-cols-4 gap-4 bg-slate-100 px-6 py-4 dark:bg-slate-800/50">
                     {Array.from({ length: 4 }).map((_, index) => (
                         <div
                             key={index}
-                            className="h-4 animate-pulse rounded-lg bg-slate-700"
+                            className="h-4 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-700"
                         />
                     ))}
                 </div>
 
-                <div className="divide-y divide-slate-800">
+                <div className="divide-y divide-slate-200 dark:divide-slate-800">
                     {Array.from({ length: 6 }).map((_, index) => (
                         <div
                             key={index}
@@ -374,12 +386,30 @@ function CategoriesSkeleton() {
                             {Array.from({ length: 4 }).map((_, columnIndex) => (
                                 <div
                                     key={columnIndex}
-                                    className="h-5 animate-pulse rounded-lg bg-slate-800"
+                                    className="h-5 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800"
                                 />
                             ))}
                         </div>
                     ))}
                 </div>
+            </div>
+
+            <div className="mt-8 space-y-4 lg:hidden">
+                {Array.from({ length: 4 }).map((_, index) => (
+                    <div
+                        key={index}
+                        className="solaris-panel"
+                    >
+                        <div className="h-5 w-40 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+                        <div className="mt-3 h-4 w-full animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+                        <div className="mt-3 h-4 w-56 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+
+                        <div className="mt-4 flex gap-2">
+                            <div className="h-9 w-16 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+                            <div className="h-9 w-20 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     )

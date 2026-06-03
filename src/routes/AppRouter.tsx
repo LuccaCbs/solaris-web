@@ -9,6 +9,7 @@ import StockMovementsPage from '../pages/StockMovementsPage'
 import ProtectedRoute from './ProtectedRoute'
 import NewProductPage from '../pages/NewProductPage'
 import EditProductPage from '../pages/EditProductPage'
+import ImportProductsPage from '../pages/ImportProductsPage'
 import NewCategoryPage from '../pages/NewCategoryPage'
 import EditCategoryPage from '../pages/EditCategoryPage'
 import NewStockMovementPage from '../pages/NewStockMovementPage'
@@ -36,6 +37,7 @@ function AppRouter() {
                         <Route path="/products" element={<ProductsPage />} />
                         <Route path="/products/new" element={<NewProductPage />} />
                         <Route path="/products/:id/edit" element={<EditProductPage />} />
+                        <Route path="/products/import" element={<ImportProductsPage />} />
 
                         <Route path="/suppliers" element={<SuppliersPage />} />
                         <Route path="/suppliers/new" element={<NewSupplierPage />} />

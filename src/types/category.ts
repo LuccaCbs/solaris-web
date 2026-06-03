@@ -3,4 +3,5 @@ export type Category = {
     name: string
     description: string
     createdAt: string
+    systemCategory: boolean
 }

@@ -161,12 +161,21 @@ function ProductsPage() {
                     </p>
                 </div>
 
-                <Link
-                    to="/products/new"
-                    className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500"
-                >
-                    New Product
-                </Link>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                    <Link
+                        to="/products/import"
+                        className="rounded-xl border border-slate-300 px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                    >
+                        Import Products
+                    </Link>
+
+                    <Link
+                        to="/products/new"
+                        className="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-500"
+                    >
+                        New Product
+                    </Link>
+                </div>
             </div>
 
             <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

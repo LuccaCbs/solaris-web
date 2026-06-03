@@ -36,7 +36,15 @@ export async function getProducts(): Promise<Product[]> {
     return response.data
 }
 
-export async function createProduct(data: CreateProductRequest): Promise<Product> {
+export async function createProduct(data: {
+    name: string;
+    description: string;
+    sku: string | null;
+    price: number;
+    stockQuantity: number;
+    categoryId: number | null;
+    lowStockThreshold: number | null
+}): Promise<Product> {
     const response = await axiosClient.post<Product>('/products', data, {
         headers: getAuthHeaders(),
     })
@@ -60,11 +68,64 @@ export async function getProductById(id: number): Promise<Product> {
 
 export async function updateProduct(
     id: number,
-    data: UpdateProductRequest
+    data: {
+        name: string;
+        description: string;
+        sku: string;
+        price: number;
+        categoryId: number | null;
+        lowStockThreshold: number | null
+    }
 ): Promise<Product> {
     const response = await axiosClient.put<Product>(`/products/${id}`, data, {
         headers: getAuthHeaders(),
     })
 
     return response.data
+}
+export type ProductImportMode = 'CREATE_ONLY' | 'CREATE_OR_UPDATE'
+
+export type ProductImportResponse = {
+    createdCount: number
+    updatedCount: number
+    failedCount: number
+    errors: string[]
+}
+export async function importProducts(
+    file: File,
+    mode: ProductImportMode
+): Promise<ProductImportResponse> {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const token = localStorage.getItem('solaris_token')
+
+    const response = await axiosClient.post<ProductImportResponse>(
+        `/products/import?mode=${mode}`,
+        formData,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    )
+
+    return response.data
+}
+
+export async function downloadProductImportTemplate() {
+    const response = await axiosClient.get('/products/import/template', {
+        responseType: 'blob',
+    })
+
+    const url = window.URL.createObjectURL(response.data)
+    const link = document.createElement('a')
+
+    link.href = url
+    link.download = 'products-import-template.xlsx'
+    document.body.appendChild(link)
+    link.click()
+
+    link.remove()
+    window.URL.revokeObjectURL(url)
 }

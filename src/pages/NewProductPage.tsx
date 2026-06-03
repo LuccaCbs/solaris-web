@@ -5,7 +5,6 @@ import { getCategories } from '../api/categoryService'
 import type { Category } from '../types/category'
 import toast from 'react-hot-toast'
 
-
 type ProductFormState = {
     name: string
     description: string
@@ -60,19 +59,19 @@ function NewProductPage() {
             await createProduct({
                 name: form.name,
                 description: form.description,
-                sku: form.sku,
+                sku: form.sku.trim(),
                 price: Number(form.price),
                 stockQuantity: Number(form.stockQuantity),
-                categoryId: Number(form.categoryId),
+                categoryId: form.categoryId ? Number(form.categoryId) : null,
                 lowStockThreshold: form.lowStockThreshold
                     ? Number(form.lowStockThreshold)
                     : null,
             })
 
             toast.success('Product created successfully')
-
             navigate('/products')
         } catch {
+            setError('Could not create product')
             toast.error('Could not create product')
         } finally {
             setCreating(false)
@@ -86,52 +85,59 @@ function NewProductPage() {
                     New Product
                 </h1>
 
-                <p className="mt-2 text-slate-400">
+                <p className="mt-2 solaris-muted">
                     Create a new inventory product.
                 </p>
             </div>
 
             <form
                 onSubmit={handleCreateProduct}
-                className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl"
+                className="solaris-panel mt-8"
             >
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     <Input
-                        label="Name"
+                        label="Name *"
                         value={form.name}
                         onChange={(value) => updateForm('name', value)}
                     />
 
-                    <Input
-                        label="SKU"
-                        value={form.sku}
-                        onChange={(value) => updateForm('sku', value)}
-                    />
+                    <div>
+                        <label className="text-sm solaris-muted">
+                            SKU <span className="solaris-subtle">(optional)</span>
+                        </label>
+
+                        <input
+                            value={form.sku}
+                            onChange={(event) => updateForm('sku', event.target.value)}
+                            className="solaris-input mt-2 w-full"
+                            placeholder="Leave empty to generate automatically"
+                        />
+
+                    </div>
 
                     <Input
-                        label="Price"
+                        label="Price *"
                         type="number"
                         value={form.price}
                         onChange={(value) => updateForm('price', value)}
                     />
 
                     <Input
-                        label="Stock Quantity"
+                        label="Stock Quantity *"
                         type="number"
                         value={form.stockQuantity}
                         onChange={(value) => updateForm('stockQuantity', value)}
                     />
 
                     <div>
-                        <label className="text-sm text-slate-400">
-                            Category
+                        <label className="text-sm solaris-muted">
+                            Category <span className="solaris-subtle">(optional)</span>
                         </label>
 
                         <select
                             value={form.categoryId}
                             onChange={(event) => updateForm('categoryId', event.target.value)}
-                            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
-                            required
+                            className="solaris-input mt-2 w-full"
                         >
                             <option value="">
                                 Select category
@@ -149,7 +155,7 @@ function NewProductPage() {
                     </div>
 
                     <div>
-                        <label className="text-sm text-slate-400">
+                        <label className="text-sm solaris-muted">
                             Custom Low Stock Threshold
                         </label>
 
@@ -161,25 +167,28 @@ function NewProductPage() {
                                 updateForm('lowStockThreshold', event.target.value)
                             }
                             placeholder="Use global setting"
-                            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                            className="solaris-input mt-2 w-full"
                         />
-
-                        <p className="mt-2 text-sm text-slate-500">
-                            Leave empty to use the global low stock threshold.
-                        </p>
                     </div>
 
                     <div className="md:col-span-2 xl:col-span-3">
-                        <Input
-                            label="Description"
-                            value={form.description}
-                            onChange={(value) => updateForm('description', value)}
-                        />
+                        <div>
+                            <label className="text-sm solaris-muted">
+                                Description <span className="solaris-subtle">(optional)</span>
+                            </label>
+
+                            <input
+                                value={form.description}
+                                onChange={(event) => updateForm('description', event.target.value)}
+                                className="solaris-input mt-2 w-full"
+                                placeholder="Optional product description"
+                            />
+                        </div>
                     </div>
                 </div>
 
                 {error && (
-                    <p className="mt-4 text-sm text-red-400">
+                    <p className="mt-4 text-sm text-red-500 dark:text-red-400">
                         {error}
                     </p>
                 )}
@@ -187,7 +196,7 @@ function NewProductPage() {
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                     <button
                         disabled={creating}
-                        className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
+                        className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
                     >
                         {creating ? 'Creating...' : 'Create Product'}
                     </button>
@@ -195,7 +204,7 @@ function NewProductPage() {
                     <button
                         type="button"
                         onClick={() => navigate('/products')}
-                        className="w-full rounded-xl border border-slate-700 px-5 py-3 text-slate-300 hover:bg-slate-800 sm:w-auto"
+                        className="w-full rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 sm:w-auto"
                     >
                         Cancel
                     </button>
@@ -220,7 +229,7 @@ function Input({
                }: InputProps) {
     return (
         <div>
-            <label className="text-sm text-slate-400">
+            <label className="text-sm solaris-muted">
                 {label}
             </label>
 
@@ -229,7 +238,7 @@ function Input({
                 type={type}
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
-                className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                className="solaris-input mt-2 w-full"
             />
         </div>
     )
