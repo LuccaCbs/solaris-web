@@ -25,7 +25,7 @@ import NewSupplierOrderPage from '../pages/NewSupplierOrderPage'
 import SupplierOrderDetailPage from '../pages/SupplierOrderDetailPage'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
 import ResetPasswordPage from '../pages/ResetPasswordPage'
-
+import VerifyEmailPage from '../pages/VerifyEmailPage'
 
 function AppRouter() {
     return (
@@ -35,6 +35,8 @@ function AppRouter() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
+                <Route path="/verify-email" element={<VerifyEmailPage />} />
+
                 <Route element={<ProtectedRoute />}>
                     <Route element={<AppLayout />}>
                         <Route path="/" element={<DashboardPage />} />
