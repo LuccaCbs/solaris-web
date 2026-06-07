@@ -25,15 +25,14 @@ function RegisterPage() {
         setLoading(true)
 
         try {
-            const data = await registerUser({
+            await registerUser({
                 firstname,
                 lastname,
                 email,
                 password,
             })
 
-            localStorage.setItem('solaris_token', data.token)
-            navigate('/')
+            navigate('/login?registered=true')
         } catch {
             setError('Could not create account')
         } finally {

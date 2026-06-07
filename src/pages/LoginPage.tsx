@@ -1,14 +1,20 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { loginUser } from '../api/authService'
-import {Sun} from 'lucide-react'
+import { Sun } from 'lucide-react'
 
 function LoginPage() {
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+
+    const registered = searchParams.get('registered') === 'true'
+    const verified = searchParams.get('verified') === 'true'
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const passwordReset = searchParams.get('passwordReset') === 'true'
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -20,7 +26,7 @@ function LoginPage() {
             localStorage.setItem('solaris_token', data.token)
             navigate('/')
         } catch {
-            setError('Invalid email or password')
+            setError('Invalid credentials or email not verified')
         } finally {
             setLoading(false)
         }
@@ -47,10 +53,27 @@ function LoginPage() {
                     <p className="mt-1 text-xs tracking-[0.25em] text-slate-500 uppercase">
                         Business Management Platform
                     </p>
-
                 </div>
 
-                <div className="mt-12">
+                {registered && (
+                    <div className="mt-8 rounded-xl border border-blue-500/20 bg-blue-500/10 p-4 text-sm text-blue-300">
+                        Account created. Check your email to verify your account before signing in.
+                    </div>
+                )}
+
+                {verified && (
+                    <div className="mt-8 rounded-xl border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-300">
+                        Email verified successfully. You can now sign in.
+                    </div>
+                )}
+
+                {passwordReset && (
+                    <div className="mt-8 rounded-xl border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-300">
+                        Password updated successfully. You can now sign in.
+                    </div>
+                )}
+
+                <div className="mt-8">
                     <label className="text-sm text-slate-400">Email</label>
                     <input
                         className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
@@ -70,11 +93,16 @@ function LoginPage() {
                     />
                 </div>
 
-                {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
+                <div className="mt-3 text-right">
+                    <Link
+                        to="/forgot-password"
+                        className="text-sm font-semibold text-blue-400 hover:text-blue-300"
+                    >
+                        Forgot password?
+                    </Link>
+                </div>
 
-                <p className="mt-6 text-center text-slate-400">
-                    Sign in to continue
-                </p>
+                {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
 
                 <p className="mt-6 text-center text-sm text-slate-400">
                     Don&apos;t have an account?{' '}

@@ -23,6 +23,8 @@ import EditSupplierPage from '../pages/EditSupplierPage'
 import SupplierOrdersPage from '../pages/SupplierOrdersPage'
 import NewSupplierOrderPage from '../pages/NewSupplierOrderPage'
 import SupplierOrderDetailPage from '../pages/SupplierOrderDetailPage'
+import ForgotPasswordPage from '../pages/ForgotPasswordPage'
+import ResetPasswordPage from '../pages/ResetPasswordPage'
 
 
 function AppRouter() {
@@ -31,6 +33,8 @@ function AppRouter() {
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
                 <Route element={<ProtectedRoute />}>
                     <Route element={<AppLayout />}>
                         <Route path="/" element={<DashboardPage />} />
