@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { registerUser } from '../api/authService'
+import PasswordInput from '../components/PasswordInput'
 
 function RegisterPage() {
     const navigate = useNavigate()
@@ -86,23 +87,21 @@ function RegisterPage() {
 
                 <div className="mt-4">
                     <label className="text-sm text-slate-400">Password</label>
-                    <input
-                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        type="password"
+                    <PasswordInput
                         required
+                        value={password}
+                        onChange={setPassword}
+                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
                     />
                 </div>
 
                 <div className="mt-4">
                     <label className="text-sm text-slate-400">Confirm password</label>
-                    <input
-                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        type="password"
+                    <PasswordInput
                         required
+                        value={confirmPassword}
+                        onChange={setConfirmPassword}
+                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
                     />
                 </div>
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Sun } from 'lucide-react'
 import { resetPassword } from '../api/authService'
+import PasswordInput from '../components/PasswordInput'
 
 function ResetPasswordPage() {
     const navigate = useNavigate()
@@ -56,11 +57,10 @@ function ResetPasswordPage() {
                     New password
                 </label>
 
-                <input
+                <PasswordInput
                     required
-                    type="password"
                     value={newPassword}
-                    onChange={(event) => setNewPassword(event.target.value)}
+                    onChange={setNewPassword}
                     className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
                 />
 

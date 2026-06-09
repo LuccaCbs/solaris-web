@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { getSystemSettings, updateSystemSettings } from '../api/systemSettingsService'
 import type { SystemSettings } from '../types/systemSettings'
+import PasswordInput from '../components/PasswordInput'
 
 const timezones =
     typeof Intl.supportedValuesOf === 'function'
@@ -108,10 +109,9 @@ function AdminSettingsPage() {
                             Admin Access Password
                         </label>
 
-                        <input
-                            type="password"
+                        <PasswordInput
                             value={adminAccessPassword}
-                            onChange={(event) => setAdminAccessPassword(event.target.value)}
+                            onChange={setAdminAccessPassword}
                             placeholder={
                                 settings?.hasAdminAccessPassword
                                     ? 'Leave empty to keep current password'

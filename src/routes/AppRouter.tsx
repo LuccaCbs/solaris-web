@@ -26,6 +26,8 @@ import SupplierOrderDetailPage from '../pages/SupplierOrderDetailPage'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
 import ResetPasswordPage from '../pages/ResetPasswordPage'
 import VerifyEmailPage from '../pages/VerifyEmailPage'
+import NotFoundPage from '../pages/NotFoundPage'
+import ProfilePage from '../pages/ProfilePage'
 
 function AppRouter() {
     return (
@@ -64,10 +66,11 @@ function AppRouter() {
                         <Route path="/sales/new" element={<NewSalePage />} />
                         <Route path="/sales/:id" element={<SaleDetailPage />} />
 
-
                         <Route path="/admin/settings" element={<AdminSettingsPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
                     </Route>
                 </Route>
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
 
         </BrowserRouter>

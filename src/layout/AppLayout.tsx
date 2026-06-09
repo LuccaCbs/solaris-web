@@ -14,10 +14,14 @@ import {
     ShoppingCart,
     Truck,
     ClipboardList,
+    User,
 } from 'lucide-react'
 import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useTheme } from '../utils/useTheme'
 import { getSystemSettings } from '../api/systemSettingsService'
+
+import logoSilver from '../assets/logo/solaris-white-full-logo.png'
+import logoGold from '../assets/logo/solaris-black-full-logo.png'
 
 const navItems = [
     { label: 'Dashboard', to: '/', icon: BarChart3 },
@@ -29,16 +33,15 @@ const navItems = [
     { label: 'Movement History', to: '/stock-movements', icon: History },
 ]
 
-const adminItems = [
-    { label: 'Admin Settings', icon: Settings },
-]
-
 function AppLayout() {
     const navigate = useNavigate()
     const location = useLocation()
     const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [settingsMenuOpen, setSettingsMenuOpen] = useState(false)
     const [adminPasswordModalOpen, setAdminPasswordModalOpen] = useState(false)
     const { theme, toggleTheme } = useTheme()
+
+    const logoImage = theme === 'dark' ? logoSilver : logoGold
 
     async function handleAdminSettingsClick() {
         const settings = await getSystemSettings()
@@ -74,18 +77,18 @@ function AppLayout() {
             )}
 
             <aside
-                className={`fixed left-0 top-0 z-50 flex h-screen w-72 flex-col border-r border-slate-200 bg-white p-6 transition-transform duration-300 dark:border-slate-800 dark:bg-slate-900/95 lg:translate-x-0 ${
+                className={`fixed left-0 top-0 z-50 flex h-screen w-72 flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent border-r border-slate-200 bg-white p-6 transition-transform duration-300 dark:border-slate-800 dark:bg-slate-900/95 lg:translate-x-0 ${
                     sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                 }`}
             >
                 <div className="flex items-center justify-between gap-3">
-                    <Brand />
+                    <Brand logoImage={logoImage}  />
 
                     <button
                         type="button"
                         onClick={toggleTheme}
                         title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                        className="rounded-xl border border-slate-200 bg-slate-100 p-2 text-slate-600 hover:bg-slate-200 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                        className="shrink-0 rounded-xl border border-slate-200 bg-slate-100 p-2 text-slate-600 hover:bg-slate-200 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
                     >
                         {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
                     </button>
@@ -93,7 +96,7 @@ function AppLayout() {
                     <button
                         type="button"
                         onClick={closeSidebar}
-                        className="rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white lg:hidden"
+                        className="shrink-0 rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white lg:hidden"
                     >
                         <X size={20} />
                     </button>
@@ -112,31 +115,49 @@ function AppLayout() {
                     ))}
                 </nav>
 
-                <div className="mt-8 border-t border-slate-200 pt-6 dark:border-slate-800">
-                    <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                        Admin
-                    </p>
+                <div className="mt-auto border-t border-slate-200 pt-6 dark:border-slate-800">
+                    <button
+                        type="button"
+                        onClick={() => setSettingsMenuOpen((value) => !value)}
+                        className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+                    >
+                        <span className="flex items-center gap-3">
+                            <Settings size={18} />
+                            <span className="font-medium">Settings</span>
+                        </span>
 
-                    <div className="space-y-2">
-                        {adminItems.map((item) => (
+                        <span className="text-sm">
+                            {settingsMenuOpen ? '−' : '+'}
+                        </span>
+                    </button>
+
+                    {settingsMenuOpen && (
+                        <div className="mt-2 space-y-2 pl-3">
                             <SidebarButton
-                                key={item.label}
-                                label={item.label}
-                                icon={item.icon}
+                                label="Admin Settings"
+                                icon={Settings}
                                 active={location.pathname === '/admin/settings'}
                                 onClick={handleAdminSettingsClick}
                             />
-                        ))}
-                    </div>
-                </div>
 
-                <button
-                    onClick={handleLogout}
-                    className="mt-auto flex items-center gap-3 rounded-xl bg-red-500/10 px-4 py-3 text-red-400 hover:bg-red-500/20"
-                >
-                    <LogOut size={18} />
-                    Logout
-                </button>
+                            <SidebarLink
+                                label="My Profile"
+                                to="/profile"
+                                icon={User}
+                                active={location.pathname === '/profile'}
+                                onClick={closeSidebar}
+                            />
+
+                            <button
+                                onClick={handleLogout}
+                                className="flex w-full items-center gap-3 rounded-xl bg-red-500/10 px-4 py-3 text-red-400 hover:bg-red-500/20"
+                            >
+                                <LogOut size={18} />
+                                Logout
+                            </button>
+                        </div>
+                    )}
+                </div>
             </aside>
 
             <header className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90 lg:hidden">
@@ -149,6 +170,14 @@ function AppLayout() {
                 </button>
 
                 <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                        <img
+                            src={logoImage}
+                            alt="Solaris logo"
+                            className="h-25 w-45 object-contain"
+                        />
+                    </div>
+
                     <button
                         type="button"
                         onClick={toggleTheme}
@@ -157,11 +186,6 @@ function AppLayout() {
                     >
                         {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
                     </button>
-
-                    <div className="flex items-center gap-2">
-                        <Sun size={18} className="text-blue-500" />
-                        <span className="font-semibold">Solaris</span>
-                    </div>
                 </div>
             </header>
 
@@ -183,19 +207,19 @@ function AppLayout() {
     )
 }
 
-function Brand() {
-    return (
-        <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white">
-                <Sun size={24} />
-            </div>
+type BrandProps = {
+    logoImage: string
+}
 
-            <div>
-                <h1 className="text-2xl font-bold">Solaris</h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                    Business Platform
-                </p>
-            </div>
+function Brand({ logoImage }: BrandProps) {
+    return (
+        <div className="flex min-w-0 flex-1 items-center gap-0">
+            <img
+                src={logoImage}
+                alt="Solaris logo"
+                className="h-35 w-50 shrink-0 object-contain"
+            />
+
         </div>
     )
 }

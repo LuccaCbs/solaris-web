@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { validateAdminPassword } from '../api/systemSettingsService'
+import PasswordInput from './PasswordInput'
 
 type AdminPasswordModalProps = {
     isOpen: boolean
@@ -66,12 +67,11 @@ function AdminPasswordModal({
                         Admin Password
                     </label>
 
-                    <input
+                    <PasswordInput
                         required
                         autoFocus
-                        type="password"
                         value={password}
-                        onChange={(event) => setPassword(event.target.value)}
+                        onChange={setPassword}
                         className="solaris-input mt-2 w-full"
                     />
 

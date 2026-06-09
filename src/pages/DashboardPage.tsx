@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import {
     Bar,
     BarChart,
@@ -11,6 +12,7 @@ import {
 } from 'recharts'
 import { getDashboard } from '../api/dashboardService'
 import type { Dashboard } from '../types/dashboard'
+import LoadingScreen from '../components/LoadingScreen'
 
 type SupplierOrderDashboardFilter = 'SENT' | 'COMPLETED' | 'CANCELLED'
 
@@ -25,8 +27,12 @@ function DashboardPage() {
     useEffect(() => {
         async function loadDashboard() {
             try {
+                setLoading(true)
+
                 const data = await getDashboard()
                 setDashboard(data)
+            } catch {
+                toast.error('Could not load dashboard')
             } finally {
                 setLoading(false)
             }
@@ -86,7 +92,7 @@ function DashboardPage() {
     function goToSupplierOrders() {
         navigate(`/supplier-orders?status=${supplierOrderFilter}`)
     }
-    
+
     function formatDateInputValue(date: Date) {
         const year = date.getFullYear()
         const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -107,7 +113,7 @@ function DashboardPage() {
     }
 
     if (loading) {
-        return <DashboardSkeleton />
+        return <LoadingScreen />
     }
 
     return (
@@ -232,7 +238,10 @@ function DashboardPage() {
                             data={monthlySalesData}
                             margin={{ top: 10, right: 24, left: 8, bottom: 8 }}
                         >
-                            <CartesianGrid strokeDasharray="3 3" className="stroke-slate-200 dark:stroke-slate-800" />
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                className="stroke-slate-200 dark:stroke-slate-800"
+                            />
 
                             <XAxis
                                 dataKey="date"
@@ -255,7 +264,10 @@ function DashboardPage() {
 
                             <Tooltip
                                 formatter={(value, name) => {
-                                    if (name === 'totalAmount') return [`$${Number(value).toFixed(2)}`, 'Income']
+                                    if (name === 'totalAmount') {
+                                        return [`$${Number(value).toFixed(2)}`, 'Income']
+                                    }
+
                                     return [value, 'Sales']
                                 }}
                                 labelFormatter={(label, payload) => {
@@ -289,29 +301,6 @@ function DashboardPage() {
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
-            </section>
-        </div>
-    )
-}
-
-function DashboardSkeleton() {
-    return (
-        <div>
-            <div className="h-10 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-
-            <section className="mt-8 grid gap-4 lg:grid-cols-4">
-                {Array.from({ length: 4 }).map((_, index) => (
-                    <div key={index} className="solaris-panel">
-                        <div className="h-4 w-32 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                        <div className="mt-6 h-10 w-24 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                    </div>
-                ))}
-            </section>
-
-            <section className="solaris-panel mt-8">
-                <div className="h-6 w-56 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                <div className="mt-6 h-[520px] animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
             </section>
         </div>
     )
