@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import {
     Bar,
@@ -18,6 +19,7 @@ type SupplierOrderDashboardFilter = 'SENT' | 'COMPLETED' | 'CANCELLED'
 
 function DashboardPage() {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const [dashboard, setDashboard] = useState<Dashboard | null>(null)
     const [loading, setLoading] = useState(true)
@@ -32,14 +34,14 @@ function DashboardPage() {
                 const data = await getDashboard()
                 setDashboard(data)
             } catch {
-                toast.error('Could not load dashboard')
+                toast.error(t('dashboard.loadError'))
             } finally {
                 setLoading(false)
             }
         }
 
         loadDashboard()
-    }, [])
+    }, [t])
 
     const monthlySalesData = useMemo(() => {
         if (!dashboard) return []
@@ -119,10 +121,12 @@ function DashboardPage() {
     return (
         <div>
             <div>
-                <h1 className="text-4xl font-bold">Solaris Dashboard</h1>
+                <h1 className="text-4xl font-bold">
+                    {t('dashboard.title')}
+                </h1>
 
                 <p className="mt-2 solaris-muted">
-                    Quick overview of sales, stock alerts and supplier orders.
+                    {t('dashboard.description')}
                 </p>
             </div>
 
@@ -132,21 +136,27 @@ function DashboardPage() {
                     onClick={goToMonthlySales}
                     className="solaris-panel text-left transition hover:-translate-y-0.5 hover:shadow-xl"
                 >
-                    <p className="text-sm solaris-muted">Monthly Sales</p>
+                    <p className="text-sm solaris-muted">
+                        {t('dashboard.cards.monthlySales')}
+                    </p>
 
                     <div className="mt-4 flex items-end justify-between gap-4">
                         <div>
                             <p className="text-4xl font-bold">
                                 {monthlySalesSummary.salesCount}
                             </p>
-                            <p className="mt-1 text-sm solaris-subtle">sales</p>
+                            <p className="mt-1 text-sm solaris-subtle">
+                                {t('dashboard.sales')}
+                            </p>
                         </div>
 
                         <div className="text-right">
                             <p className="text-3xl font-bold text-emerald-500 dark:text-emerald-300">
                                 ${monthlySalesSummary.totalAmount.toFixed(2)}
                             </p>
-                            <p className="mt-1 text-sm solaris-subtle">income</p>
+                            <p className="mt-1 text-sm solaris-subtle">
+                                {t('dashboard.income')}
+                            </p>
                         </div>
                     </div>
                 </button>
@@ -156,21 +166,27 @@ function DashboardPage() {
                     onClick={goToSales}
                     className="solaris-panel text-left transition hover:-translate-y-0.5 hover:shadow-xl"
                 >
-                    <p className="text-sm solaris-muted">Today Sales</p>
+                    <p className="text-sm solaris-muted">
+                        {t('dashboard.cards.todaySales')}
+                    </p>
 
                     <div className="mt-4 flex items-end justify-between gap-4">
                         <div>
                             <p className="text-4xl font-bold">
                                 {dashboard?.todaySalesCount ?? 0}
                             </p>
-                            <p className="mt-1 text-sm solaris-subtle">sales</p>
+                            <p className="mt-1 text-sm solaris-subtle">
+                                {t('dashboard.sales')}
+                            </p>
                         </div>
 
                         <div className="text-right">
                             <p className="text-3xl font-bold text-emerald-500 dark:text-emerald-300">
                                 ${(dashboard?.todaySalesAmount ?? 0).toFixed(2)}
                             </p>
-                            <p className="mt-1 text-sm solaris-subtle">income</p>
+                            <p className="mt-1 text-sm solaris-subtle">
+                                {t('dashboard.income')}
+                            </p>
                         </div>
                     </div>
                 </button>
@@ -180,21 +196,25 @@ function DashboardPage() {
                     onClick={goToLowStockProducts}
                     className="solaris-panel text-left transition hover:-translate-y-0.5 hover:shadow-xl"
                 >
-                    <p className="text-sm solaris-muted">Low Stock Products</p>
+                    <p className="text-sm solaris-muted">
+                        {t('dashboard.cards.lowStockProducts')}
+                    </p>
 
                     <p className="mt-4 text-4xl font-bold text-red-500 dark:text-red-300">
                         {dashboard?.lowStockProductsCount ?? 0}
                     </p>
 
                     <p className="mt-2 text-sm solaris-subtle">
-                        products need restock
+                        {t('dashboard.productsNeedRestock')}
                     </p>
                 </button>
 
                 <div className="solaris-panel">
                     <div className="flex items-start justify-between gap-4">
                         <div>
-                            <p className="text-sm solaris-muted">Supplier Orders</p>
+                            <p className="text-sm solaris-muted">
+                                {t('dashboard.cards.supplierOrders')}
+                            </p>
                             <p className="mt-4 text-4xl font-bold">
                                 {selectedSupplierOrdersCount}
                             </p>
@@ -209,9 +229,15 @@ function DashboardPage() {
                             }
                             className="solaris-input w-40"
                         >
-                            <option value="SENT">Sent</option>
-                            <option value="COMPLETED">Completed</option>
-                            <option value="CANCELLED">Cancelled</option>
+                            <option value="SENT">
+                                {t('dashboard.orderStatus.sent')}
+                            </option>
+                            <option value="COMPLETED">
+                                {t('dashboard.orderStatus.completed')}
+                            </option>
+                            <option value="CANCELLED">
+                                {t('dashboard.orderStatus.cancelled')}
+                            </option>
                         </select>
                     </div>
 
@@ -220,16 +246,18 @@ function DashboardPage() {
                         onClick={goToSupplierOrders}
                         className="mt-6 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-500"
                     >
-                        View filtered orders
+                        {t('dashboard.viewFilteredOrders')}
                     </button>
                 </div>
             </section>
 
             <section className="solaris-panel mt-8">
-                <h2 className="text-xl font-semibold">Monthly Sales Overview</h2>
+                <h2 className="text-xl font-semibold">
+                    {t('dashboard.monthlyOverviewTitle')}
+                </h2>
 
                 <p className="mt-1 text-sm solaris-muted">
-                    Daily income and sales count for the current month.
+                    {t('dashboard.monthlyOverviewDescription')}
                 </p>
 
                 <div className="mt-6 h-[520px]">
@@ -265,14 +293,17 @@ function DashboardPage() {
                             <Tooltip
                                 formatter={(value, name) => {
                                     if (name === 'totalAmount') {
-                                        return [`$${Number(value).toFixed(2)}`, 'Income']
+                                        return [
+                                            `$${Number(value).toFixed(2)}`,
+                                            t('dashboard.income'),
+                                        ]
                                     }
 
-                                    return [value, 'Sales']
+                                    return [value, t('dashboard.sales')]
                                 }}
                                 labelFormatter={(label, payload) => {
                                     const item = payload?.[0]?.payload
-                                    return item?.fullDate ?? `Day ${label}`
+                                    return item?.fullDate ?? `${t('dashboard.day')} ${label}`
                                 }}
                                 contentStyle={{
                                     backgroundColor: '#020617',
@@ -285,7 +316,7 @@ function DashboardPage() {
                             <Bar
                                 yAxisId="amount"
                                 dataKey="totalAmount"
-                                name="Income"
+                                name={t('dashboard.income')}
                                 radius={[8, 8, 0, 0]}
                                 fill="#2563eb"
                             />
@@ -293,7 +324,7 @@ function DashboardPage() {
                             <Bar
                                 yAxisId="count"
                                 dataKey="salesCount"
-                                name="Sales"
+                                name={t('dashboard.sales')}
                                 radius={[8, 8, 0, 0]}
                                 fill="#22c55e"
                                 barSize={14}

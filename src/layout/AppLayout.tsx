@@ -19,19 +19,10 @@ import {
 import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useTheme } from '../utils/useTheme'
 import { getSystemSettings } from '../api/systemSettingsService'
+import { useTranslation } from 'react-i18next'
 
 import logoSilver from '../assets/logo/solaris-white-full-logo.png'
 import logoGold from '../assets/logo/solaris-black-full-logo.png'
-
-const navItems = [
-    { label: 'Dashboard', to: '/', icon: BarChart3 },
-    { label: 'Sales', to: '/sales', icon: ShoppingCart },
-    { label: 'Supplier Orders', to: '/supplier-orders', icon: ClipboardList },
-    { label: 'Products', to: '/products', icon: Boxes },
-    { label: 'Categories', to: '/categories', icon: FolderTree },
-    { label: 'Suppliers', to: '/suppliers', icon: Truck },
-    { label: 'Movement History', to: '/stock-movements', icon: History },
-]
 
 function AppLayout() {
     const navigate = useNavigate()
@@ -40,8 +31,19 @@ function AppLayout() {
     const [settingsMenuOpen, setSettingsMenuOpen] = useState(false)
     const [adminPasswordModalOpen, setAdminPasswordModalOpen] = useState(false)
     const { theme, toggleTheme } = useTheme()
+    const { t, i18n } = useTranslation()
 
     const logoImage = theme === 'dark' ? logoSilver : logoGold
+
+    const navItems = [
+        { label: t('nav.dashboard'), to: '/', icon: BarChart3 },
+        { label: t('nav.sales'), to: '/sales', icon: ShoppingCart },
+        { label: t('nav.supplierOrders'), to: '/supplier-orders', icon: ClipboardList },
+        { label: t('nav.products'), to: '/products', icon: Boxes },
+        { label: t('nav.categories'), to: '/categories', icon: FolderTree },
+        { label: t('nav.suppliers'), to: '/suppliers', icon: Truck },
+        { label: t('nav.movementHistory'), to: '/stock-movements', icon: History },
+    ]
 
     async function handleAdminSettingsClick() {
         const settings = await getSystemSettings()
@@ -123,7 +125,7 @@ function AppLayout() {
                     >
                         <span className="flex items-center gap-3">
                             <Settings size={18} />
-                            <span className="font-medium">Settings</span>
+                            <span className="font-medium">{t('common.settings')}</span>
                         </span>
 
                         <span className="text-sm">
@@ -133,15 +135,32 @@ function AppLayout() {
 
                     {settingsMenuOpen && (
                         <div className="mt-2 space-y-2 pl-3">
+                            <div className="rounded-xl px-4 py-3">
+                                <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                    Language
+                                </label>
+
+                                <select
+                                    value={i18n.language}
+                                    onChange={(event) => i18n.changeLanguage(event.target.value)}
+                                    className="solaris-input mt-2 w-full"
+                                >
+                                    <option value="en">English</option>
+                                    <option value="es">Español</option>
+                                    <option value="fr">Français</option>
+                                    <option value="ca">Català</option>
+                                </select>
+                            </div>
+
                             <SidebarButton
-                                label="Admin Settings"
+                                label={t('nav.adminSettings')}
                                 icon={Settings}
                                 active={location.pathname === '/admin/settings'}
                                 onClick={handleAdminSettingsClick}
                             />
 
                             <SidebarLink
-                                label="My Profile"
+                                label={t('nav.myProfile')}
                                 to="/profile"
                                 icon={User}
                                 active={location.pathname === '/profile'}
@@ -153,7 +172,7 @@ function AppLayout() {
                                 className="flex w-full items-center gap-3 rounded-xl bg-red-500/10 px-4 py-3 text-red-400 hover:bg-red-500/20"
                             >
                                 <LogOut size={18} />
-                                Logout
+                                {t('common.logout')}
                             </button>
                         </div>
                     )}

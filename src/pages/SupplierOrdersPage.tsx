@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import {
     cancelSupplierOrder,
@@ -9,10 +10,13 @@ import {
     markSupplierOrderAsSent,
 } from '../api/supplierOrderService'
 import type { SupplierOrder, SupplierOrderStatus } from '../types/supplierOrder'
+import LoadingScreen from '../components/LoadingScreen'
 
 type StatusFilter = 'ALL' | SupplierOrderStatus
 
 function SupplierOrdersPage() {
+    const { t } = useTranslation()
+
     const [orders, setOrders] = useState<SupplierOrder[]>([])
     const [loading, setLoading] = useState(true)
     const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL')
@@ -22,8 +26,11 @@ function SupplierOrdersPage() {
 
     async function loadOrders() {
         try {
+            setLoading(true)
             const data = await getSupplierOrders()
             setOrders(data)
+        } catch {
+            toast.error(t('supplierOrders.loadError'))
         } finally {
             setLoading(false)
         }
@@ -31,7 +38,7 @@ function SupplierOrdersPage() {
 
     useEffect(() => {
         loadOrders()
-    }, [])
+    }, [t])
 
     const filteredOrders = useMemo(() => {
         const normalizedSearch = search.toLowerCase().trim()
@@ -72,50 +79,50 @@ function SupplierOrdersPage() {
     async function handleMarkAsSent(id: number) {
         try {
             await markSupplierOrderAsSent(id)
-            toast.success('Order marked as sent')
+            toast.success(t('supplierOrders.markSentSuccess'))
             await loadOrders()
         } catch {
-            toast.error('Could not update order')
+            toast.error(t('supplierOrders.updateError'))
         }
     }
 
     async function handleMarkAsCompleted(id: number) {
         try {
             await markSupplierOrderAsCompleted(id)
-            toast.success('Order marked as completed')
+            toast.success(t('supplierOrders.markCompletedSuccess'))
             await loadOrders()
         } catch {
-            toast.error('Could not update order')
+            toast.error(t('supplierOrders.updateError'))
         }
     }
 
     async function handleCancel(id: number) {
         try {
             await cancelSupplierOrder(id)
-            toast.success('Order cancelled')
+            toast.success(t('supplierOrders.cancelSuccess'))
             await loadOrders()
         } catch {
-            toast.error('Could not cancel order')
+            toast.error(t('supplierOrders.cancelError'))
         }
     }
 
     async function handleDelete(id: number) {
-        const confirmed = window.confirm('Are you sure you want to delete this supplier order?')
+        const confirmed = window.confirm(t('supplierOrders.deleteConfirm'))
 
         if (!confirmed) return
 
         try {
             await deleteSupplierOrder(id)
-            toast.success('Order deleted successfully')
+            toast.success(t('supplierOrders.deleteSuccess'))
             await loadOrders()
         } catch {
-            toast.error('Could not delete order')
+            toast.error(t('supplierOrders.deleteError'))
         }
     }
 
     async function openWhatsApp(order: SupplierOrder) {
         if (!order.supplierPhone) {
-            toast.error('Supplier has no phone number')
+            toast.error(t('supplierOrders.noPhoneError'))
             return
         }
 
@@ -128,26 +135,28 @@ function SupplierOrdersPage() {
         if (order.status === 'DRAFT') {
             try {
                 await markSupplierOrderAsSent(order.id)
-                toast.success('Order marked as sent')
+                toast.success(t('supplierOrders.markSentSuccess'))
                 await loadOrders()
             } catch {
-                toast.error('WhatsApp opened, but could not mark order as sent')
+                toast.error(t('supplierOrders.whatsappMarkSentError'))
             }
         }
     }
 
     if (loading) {
-        return <SupplierOrdersSkeleton />
+        return <LoadingScreen />
     }
 
     return (
         <div>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold">Supplier Orders</h1>
+                    <h1 className="text-4xl font-bold">
+                        {t('supplierOrders.title')}
+                    </h1>
 
                     <p className="mt-2 solaris-muted">
-                        Create and track orders sent to suppliers.
+                        {t('supplierOrders.description')}
                     </p>
                 </div>
 
@@ -155,7 +164,7 @@ function SupplierOrdersPage() {
                     to="/supplier-orders/new"
                     className="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-500"
                 >
-                    New Supplier Order
+                    {t('supplierOrders.newOrder')}
                 </Link>
             </div>
 
@@ -167,7 +176,7 @@ function SupplierOrdersPage() {
                             setSearch(event.target.value)
                             setCurrentPage(1)
                         }}
-                        placeholder="Search by supplier or product..."
+                        placeholder={t('supplierOrders.searchPlaceholder')}
                         className="solaris-input w-full"
                     />
 
@@ -179,11 +188,11 @@ function SupplierOrdersPage() {
                         }}
                         className="solaris-input"
                     >
-                        <option value="ALL">All statuses</option>
-                        <option value="DRAFT">Draft</option>
-                        <option value="SENT">Sent</option>
-                        <option value="COMPLETED">Completed</option>
-                        <option value="CANCELLED">Cancelled</option>
+                        <option value="ALL">{t('supplierOrders.filters.allStatuses')}</option>
+                        <option value="DRAFT">{t('supplierOrders.status.draft')}</option>
+                        <option value="SENT">{t('supplierOrders.status.sent')}</option>
+                        <option value="COMPLETED">{t('supplierOrders.status.completed')}</option>
+                        <option value="CANCELLED">{t('supplierOrders.status.cancelled')}</option>
                     </select>
 
                     <button
@@ -191,13 +200,12 @@ function SupplierOrdersPage() {
                         onClick={clearFilters}
                         className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
-                        Clear Filters
+                        {t('common.clearFilters')}
                     </button>
                 </div>
 
                 <p className="text-sm solaris-muted">
-                    {filteredOrders.length} result
-                    {filteredOrders.length === 1 ? '' : 's'}
+                    {t('supplierOrders.results', { count: filteredOrders.length })}
                 </p>
             </div>
 
@@ -207,7 +215,7 @@ function SupplierOrdersPage() {
                         <div className="flex items-start justify-between gap-4">
                             <div>
                                 <h2 className="font-semibold text-slate-950 dark:text-white">
-                                    Order #{order.id}
+                                    {t('supplierOrders.orderNumber', { id: order.id })}
                                 </h2>
 
                                 <p className="mt-1 text-sm solaris-muted">
@@ -224,7 +232,9 @@ function SupplierOrdersPage() {
 
                         <div className="mt-4 rounded-xl bg-slate-50 p-3 dark:bg-slate-950">
                             <p className="text-sm solaris-muted">
-                                {order.items.length} item{order.items.length === 1 ? '' : 's'}
+                                {t('supplierOrders.itemsCount', {
+                                    count: order.items.length,
+                                })}
                             </p>
 
                             <p className="mt-2 whitespace-pre-line text-sm text-slate-700 dark:text-slate-300">
@@ -248,20 +258,35 @@ function SupplierOrdersPage() {
                 <table className="w-full">
                     <thead className="bg-slate-100 dark:bg-slate-800/50">
                     <tr>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Order</th>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Supplier</th>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Items</th>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Status</th>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Created</th>
-                        <th className="px-6 py-4 text-right text-sm text-slate-600 dark:text-slate-300">Actions</th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('supplierOrders.table.order')}
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('supplierOrders.table.supplier')}
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('supplierOrders.table.items')}
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('common.status')}
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('supplierOrders.table.created')}
+                        </th>
+                        <th className="px-6 py-4 text-right text-sm text-slate-600 dark:text-slate-300">
+                            {t('common.actions')}
+                        </th>
                     </tr>
                     </thead>
 
                     <tbody>
                     {paginatedOrders.map((order) => (
-                        <tr key={order.id} className="border-t border-slate-200 dark:border-slate-800">
+                        <tr
+                            key={order.id}
+                            className="border-t border-slate-200 dark:border-slate-800"
+                        >
                             <td className="px-6 py-4 font-medium text-slate-950 dark:text-white">
-                                Order #{order.id}
+                                {t('supplierOrders.orderNumber', { id: order.id })}
                             </td>
 
                             <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
@@ -295,8 +320,11 @@ function SupplierOrdersPage() {
 
                     {paginatedOrders.length === 0 && (
                         <tr>
-                            <td colSpan={6} className="px-6 py-10 text-center solaris-muted">
-                                No supplier orders found for the selected filters.
+                            <td
+                                colSpan={6}
+                                className="px-6 py-10 text-center solaris-muted"
+                            >
+                                {t('supplierOrders.empty')}
                             </td>
                         </tr>
                     )}
@@ -307,7 +335,11 @@ function SupplierOrdersPage() {
             {totalPages > 1 && (
                 <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm solaris-muted">
-                        Page {currentPage} of {totalPages} · {filteredOrders.length} orders
+                        {t('supplierOrders.pagination', {
+                            currentPage,
+                            totalPages,
+                            count: filteredOrders.length,
+                        })}
                     </p>
 
                     <div className="flex flex-wrap items-center gap-2">
@@ -317,7 +349,7 @@ function SupplierOrdersPage() {
                             onClick={() => setCurrentPage((page) => page - 1)}
                             className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Previous
+                            {t('common.previous')}
                         </button>
 
                         {Array.from({ length: totalPages }).map((_, index) => {
@@ -345,7 +377,7 @@ function SupplierOrdersPage() {
                             onClick={() => setCurrentPage((page) => page + 1)}
                             className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Next
+                            {t('common.next')}
                         </button>
                     </div>
                 </div>
@@ -359,11 +391,13 @@ type StatusBadgeProps = {
 }
 
 function StatusBadge({ status }: StatusBadgeProps) {
+    const { t } = useTranslation()
+
     const labels: Record<SupplierOrderStatus, string> = {
-        DRAFT: 'Draft',
-        SENT: 'Sent',
-        COMPLETED: 'Completed',
-        CANCELLED: 'Cancelled',
+        DRAFT: t('supplierOrders.status.draft'),
+        SENT: t('supplierOrders.status.sent'),
+        COMPLETED: t('supplierOrders.status.completed'),
+        CANCELLED: t('supplierOrders.status.cancelled'),
     }
 
     const classNames: Record<SupplierOrderStatus, string> = {
@@ -375,8 +409,8 @@ function StatusBadge({ status }: StatusBadgeProps) {
 
     return (
         <span className={`rounded-lg px-3 py-1 text-sm font-medium ${classNames[status]}`}>
-      {labels[status]}
-    </span>
+            {labels[status]}
+        </span>
     )
 }
 
@@ -397,13 +431,15 @@ function OrderActions({
                           onCancel,
                           onDelete,
                       }: OrderActionsProps) {
+    const { t } = useTranslation()
+
     return (
         <div className="flex flex-wrap justify-end gap-2">
             <Link
                 to={`/supplier-orders/${order.id}`}
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
             >
-                Details
+                {t('supplierOrders.actions.details')}
             </Link>
 
             <button
@@ -412,7 +448,7 @@ function OrderActions({
                 disabled={!order.supplierPhone || order.status === 'CANCELLED'}
                 className="rounded-lg bg-emerald-500/10 px-3 py-2 text-sm text-emerald-500 hover:bg-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-emerald-300"
             >
-                WhatsApp
+                {t('supplierOrders.actions.whatsapp')}
             </button>
 
             {order.status === 'DRAFT' && (
@@ -421,7 +457,7 @@ function OrderActions({
                     onClick={() => onSent(order.id)}
                     className="rounded-lg bg-blue-500/10 px-3 py-2 text-sm text-blue-500 hover:bg-blue-500/20 dark:text-blue-300"
                 >
-                    Mark Sent
+                    {t('supplierOrders.actions.markSent')}
                 </button>
             )}
 
@@ -431,7 +467,7 @@ function OrderActions({
                     onClick={() => onCompleted(order.id)}
                     className="rounded-lg bg-green-500/10 px-3 py-2 text-sm text-green-500 hover:bg-green-500/20 dark:text-green-300"
                 >
-                    Complete
+                    {t('supplierOrders.actions.complete')}
                 </button>
             )}
 
@@ -441,7 +477,7 @@ function OrderActions({
                     onClick={() => onCancel(order.id)}
                     className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                 >
-                    Cancel
+                    {t('supplierOrders.actions.cancel')}
                 </button>
             )}
 
@@ -450,29 +486,8 @@ function OrderActions({
                 onClick={() => onDelete(order.id)}
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
             >
-                Delete
+                {t('common.delete')}
             </button>
-        </div>
-    )
-}
-
-function SupplierOrdersSkeleton() {
-    return (
-        <div>
-            <div className="flex items-center justify-between">
-                <div>
-                    <div className="h-10 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                </div>
-
-                <div className="h-12 w-44 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
-
-            <div className="mt-8 grid gap-3 md:grid-cols-3">
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { getProducts } from '../api/productService'
 import { createSale } from '../api/salesService'
@@ -15,6 +16,7 @@ type SaleFormItem = {
 
 function NewSalePage() {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const [products, setProducts] = useState<Product[]>([])
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('CASH')
@@ -31,13 +33,13 @@ function NewSalePage() {
                 const data = await getProducts()
                 setProducts(data)
             } catch {
-                toast.error('Open cash register before creating sales')
+                toast.error(t('saleForm.openRegisterBeforeSale'))
                 navigate('/sales')
             }
         }
 
         loadData()
-    }, [navigate])
+    }, [navigate, t])
 
     const totalAmount = useMemo(() => {
         return items.reduce((total, item) => {
@@ -115,22 +117,22 @@ function NewSalePage() {
             }))
 
         if (validItems.length === 0) {
-            toast.error('Add at least one product')
+            toast.error(t('saleForm.errors.addAtLeastOneProduct'))
             return
         }
 
         if (hasDuplicateProducts) {
-            toast.error('A product cannot be added more than once')
+            toast.error(t('saleForm.errors.duplicateProduct'))
             return
         }
 
         if (hasStockErrors) {
-            toast.error('One or more products exceed available stock')
+            toast.error(t('saleForm.errors.stockExceeded'))
             return
         }
 
         if (hasInvalidItems) {
-            toast.error('Complete all product lines before creating the sale')
+            toast.error(t('saleForm.errors.completeAllLines'))
             return
         }
 
@@ -142,7 +144,7 @@ function NewSalePage() {
                 items: validItems,
             })
 
-            toast.success('Sale created successfully')
+            toast.success(t('saleForm.createSuccess'))
             navigate('/sales')
         } catch (error: unknown) {
             const axiosError = error as {
@@ -160,17 +162,17 @@ function NewSalePage() {
                 ''
 
             if (message.includes('There is no open cash register session')) {
-                toast.error('There is no open cash register session')
+                toast.error(t('saleForm.errors.noOpenCashRegister'))
                 navigate('/sales')
                 return
             }
 
             if (message.toLowerCase().includes('stock')) {
-                toast.error('One or more products exceed available stock')
+                toast.error(t('saleForm.errors.stockExceeded'))
                 return
             }
 
-            toast.error('Could not create sale')
+            toast.error(t('saleForm.createError'))
         } finally {
             setCreating(false)
         }
@@ -178,10 +180,12 @@ function NewSalePage() {
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">New Sale</h1>
+            <h1 className="text-4xl font-bold">
+                {t('saleForm.title')}
+            </h1>
 
             <p className="mt-2 solaris-muted">
-                Register a new sale and automatically update inventory stock.
+                {t('saleForm.description')}
             </p>
 
             <form
@@ -189,35 +193,57 @@ function NewSalePage() {
                 className="mt-8 max-w-5xl space-y-6"
             >
                 <div className="solaris-panel">
-                    <h2 className="text-xl font-semibold">Sale Details</h2>
+                    <h2 className="text-xl font-semibold">
+                        {t('saleForm.saleDetails')}
+                    </h2>
 
                     <div className="mt-6 max-w-sm">
-                        <label className="text-sm solaris-muted">Payment Method</label>
+                        <label className="text-sm solaris-muted">
+                            {t('saleForm.paymentMethod')}
+                        </label>
 
                         <select
                             value={paymentMethod}
-                            onChange={(event) => setPaymentMethod(event.target.value as PaymentMethod)}
+                            onChange={(event) =>
+                                setPaymentMethod(event.target.value as PaymentMethod)
+                            }
                             className="solaris-input mt-2 w-full"
                         >
-                            <option value="CASH">Cash</option>
-                            <option value="DEBIT_CARD">Debit Card</option>
-                            <option value="CREDIT_CARD">Credit Card</option>
-                            <option value="TRANSFER">Transfer</option>
-                            <option value="OTHER">Other</option>
+                            <option value="CASH">
+                                {t('sales.payment.cash')}
+                            </option>
+
+                            <option value="DEBIT_CARD">
+                                {t('sales.payment.debitCard')}
+                            </option>
+
+                            <option value="CREDIT_CARD">
+                                {t('sales.payment.creditCard')}
+                            </option>
+
+                            <option value="TRANSFER">
+                                {t('sales.payment.transfer')}
+                            </option>
+
+                            <option value="OTHER">
+                                {t('sales.payment.other')}
+                            </option>
                         </select>
                     </div>
                 </div>
 
                 <div className="solaris-panel">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold">Products</h2>
+                        <h2 className="text-xl font-semibold">
+                            {t('saleForm.products')}
+                        </h2>
 
                         <button
                             type="button"
                             onClick={addItem}
                             className="rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500/20 dark:text-blue-300"
                         >
-                            Add Product
+                            {t('saleForm.addProduct')}
                         </button>
                     </div>
 
@@ -239,6 +265,19 @@ function NewSalePage() {
                                 item.productId &&
                                 items.filter((current) => current.productId === item.productId).length > 1
 
+                            const filteredProducts = products.filter((product) => {
+                                const search = item.productSearch.toLowerCase()
+
+                                return [
+                                    product.name,
+                                    product.sku,
+                                    product.categoryName,
+                                ]
+                                    .join(' ')
+                                    .toLowerCase()
+                                    .includes(search)
+                            })
+
                             return (
                                 <div
                                     key={index}
@@ -246,7 +285,9 @@ function NewSalePage() {
                                 >
                                     <div className="grid gap-4 md:grid-cols-4">
                                         <div className="relative md:col-span-2">
-                                            <label className="text-sm solaris-muted">Product</label>
+                                            <label className="text-sm solaris-muted">
+                                                {t('saleForm.product')}
+                                            </label>
 
                                             <input
                                                 required
@@ -255,25 +296,13 @@ function NewSalePage() {
                                                     updateItem(index, 'productSearch', event.target.value)
                                                     updateItem(index, 'productId', '')
                                                 }}
-                                                placeholder="Search product by name, SKU or category..."
+                                                placeholder={t('saleForm.searchProductPlaceholder')}
                                                 className="solaris-input mt-2 w-full"
                                             />
 
                                             {item.productSearch && !item.productId && (
                                                 <div className="absolute z-20 mt-2 max-h-64 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-950">
-                                                    {products
-                                                        .filter((product) => {
-                                                            const search = item.productSearch.toLowerCase()
-
-                                                            return [
-                                                                product.name,
-                                                                product.sku,
-                                                                product.categoryName,
-                                                            ]
-                                                                .join(' ')
-                                                                .toLowerCase()
-                                                                .includes(search)
-                                                        })
+                                                    {filteredProducts
                                                         .slice(0, 8)
                                                         .map((product) => (
                                                             <button
@@ -298,26 +327,15 @@ function NewSalePage() {
                                                                     </p>
 
                                                                     <p className="text-xs solaris-subtle">
-                                                                        Stock: {product.stockQuantity}
+                                                                        {t('saleForm.stock')}: {product.stockQuantity}
                                                                     </p>
                                                                 </div>
                                                             </button>
                                                         ))}
 
-                                                    {products.filter((product) => {
-                                                        const search = item.productSearch.toLowerCase()
-
-                                                        return [
-                                                            product.name,
-                                                            product.sku,
-                                                            product.categoryName,
-                                                        ]
-                                                            .join(' ')
-                                                            .toLowerCase()
-                                                            .includes(search)
-                                                    }).length === 0 && (
+                                                    {filteredProducts.length === 0 && (
                                                         <div className="px-4 py-3 text-sm solaris-muted">
-                                                            No products found.
+                                                            {t('saleForm.noProductsFound')}
                                                         </div>
                                                     )}
                                                 </div>
@@ -325,13 +343,17 @@ function NewSalePage() {
 
                                             {item.productId && selectedProduct && (
                                                 <p className="mt-2 text-sm text-green-500 dark:text-green-300">
-                                                    Selected: {selectedProduct.name}
+                                                    {t('saleForm.selectedProduct', {
+                                                        name: selectedProduct.name,
+                                                    })}
                                                 </p>
                                             )}
                                         </div>
 
                                         <div>
-                                            <label className="text-sm solaris-muted">Quantity</label>
+                                            <label className="text-sm solaris-muted">
+                                                {t('saleForm.quantity')}
+                                            </label>
 
                                             <input
                                                 required
@@ -346,7 +368,9 @@ function NewSalePage() {
                                         </div>
 
                                         <div>
-                                            <label className="text-sm solaris-muted">Subtotal</label>
+                                            <label className="text-sm solaris-muted">
+                                                {t('saleForm.subtotal')}
+                                            </label>
 
                                             <div className="mt-2 rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold dark:border-slate-700 dark:bg-slate-900">
                                                 ${subtotal.toFixed(2)}
@@ -358,19 +382,22 @@ function NewSalePage() {
                                         <div>
                                             <p className="text-sm solaris-muted">
                                                 {selectedProduct
-                                                    ? `Unit price: $${selectedProduct.price} · Available stock: ${selectedProduct.stockQuantity}`
-                                                    : 'Select a product to calculate subtotal.'}
+                                                    ? t('saleForm.unitPriceAndStock', {
+                                                        price: selectedProduct.price,
+                                                        stock: selectedProduct.stockQuantity,
+                                                    })
+                                                    : t('saleForm.selectProductHelp')}
                                             </p>
 
                                             {exceedsStock && (
                                                 <p className="mt-1 text-sm text-red-400">
-                                                    Quantity exceeds available stock.
+                                                    {t('saleForm.errors.quantityExceedsStock')}
                                                 </p>
                                             )}
 
                                             {isDuplicated && (
                                                 <p className="mt-1 text-sm text-red-400">
-                                                    This product is already added in another line.
+                                                    {t('saleForm.errors.productAlreadyAdded')}
                                                 </p>
                                             )}
                                         </div>
@@ -381,7 +408,7 @@ function NewSalePage() {
                                                 onClick={() => removeItem(index)}
                                                 className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                                             >
-                                                Remove
+                                                {t('saleForm.remove')}
                                             </button>
                                         )}
                                     </div>
@@ -393,7 +420,10 @@ function NewSalePage() {
 
                 <div className="solaris-panel flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <p className="text-sm solaris-muted">Total Amount</p>
+                        <p className="text-sm solaris-muted">
+                            {t('saleForm.totalAmount')}
+                        </p>
+
                         <p className="mt-2 text-4xl font-bold">
                             ${totalAmount.toFixed(2)}
                         </p>
@@ -405,14 +435,16 @@ function NewSalePage() {
                             onClick={() => navigate('/sales')}
                             className="w-full rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 sm:w-auto"
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
 
                         <button
                             disabled={creating || hasFormErrors}
                             className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                         >
-                            {creating ? 'Creating...' : 'Create Sale'}
+                            {creating
+                                ? t('saleForm.creating')
+                                : t('saleForm.createSale')}
                         </button>
                     </div>
                 </div>

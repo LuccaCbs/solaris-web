@@ -1,0 +1,659 @@
+{
+  "common": {
+    "loadingWorkspace": "Carregant espai de treball...",
+
+    "save": "Desar",
+    "saving": "Desant...",
+    "cancel": "Cancel·lar",
+
+    "create": "Crear",
+    "creating": "Creant...",
+
+    "edit": "Editar",
+    "update": "Actualitzar",
+    "updating": "Actualitzant...",
+
+    "delete": "Eliminar",
+
+    "search": "Cercar",
+
+    "yes": "Sí",
+    "no": "No",
+
+    "active": "Actiu",
+    "inactive": "Inactiu",
+
+    "status": "Estat",
+
+    "previous": "Anterior",
+    "next": "Següent",
+
+    "clearFilters": "Netejar filtres",
+
+    "optional": "(opcional)",
+
+    "loading": "Carregant...",
+    "noData": "Sense dades disponibles",
+
+    "actions": "Accions",
+
+    "logout": "Tancar sessió",
+    "settings": "Configuració",
+
+    "date": "Data",
+    "quantity": "Quantitat",
+    "reason": "Motiu",
+    "type": "Tipus",
+    "created": "Creat",
+    "updated": "Actualitzat",
+    "details": "Detalls",
+    "export": "Exportar",
+    "saveChanges": "Desar canvis",
+
+    "from": "Des de",
+    "to": "Fins a",
+    "all": "Tots",
+    "name": "Nom",
+    "description": "Descripció",
+    "product": "Producte",
+    "supplier": "Proveïdor",
+    "category": "Categoria",
+    "phone": "Telèfon",
+    "email": "Correu electrònic",
+    "stock": "Estoc",
+    "price": "Preu",
+    "total": "Total",
+    "subtotal": "Subtotal"
+  },
+  "nav": {
+    "dashboard": "Tauler",
+    "sales": "Vendes",
+    "supplierOrders": "Comandes a proveïdors",
+    "products": "Productes",
+    "categories": "Categories",
+    "suppliers": "Proveïdors",
+    "movementHistory": "Historial de moviments",
+    "adminSettings": "Configuració d’administrador",
+    "myProfile": "El meu perfil"
+  },
+  "auth": {
+    "login": {
+      "email": "Email",
+      "password": "Contrasenya",
+      "forgotPassword": "Has oblidat la contrasenya?",
+      "signIn": "Iniciar sessió",
+      "signingIn": "Iniciant sessió...",
+      "noAccount": "No tens cap compte?",
+      "register": "Registrar-se",
+      "invalidCredentials": "Credencials invàlides o email no verificat",
+      "registeredMessage": "Compte creat. Revisa el teu email per verificar-lo abans d’iniciar sessió.",
+      "verifiedMessage": "Email verificat correctament. Ja pots iniciar sessió.",
+      "passwordResetMessage": "Contrasenya actualitzada correctament. Ja pots iniciar sessió."
+    },
+    "register": {
+      "title": "Crear compte",
+      "firstname": "Nom",
+      "lastname": "Cognom",
+      "email": "Email",
+      "password": "Contrasenya",
+      "confirmPassword": "Confirmar contrasenya",
+      "createAccount": "Crear compte",
+      "creatingAccount": "Creant compte...",
+      "alreadyHaveAccount": "Ja tens cap compte?",
+      "login": "Iniciar sessió",
+      "passwordsDoNotMatch": "Les contrasenyes no coincideixen"
+    },
+    "forgotPassword": {
+      "title": "He oblidat la contrasenya",
+      "description": "Introdueix el teu email i t’enviarem un enllaç de recuperació.",
+      "email": "Email",
+      "sendResetLink": "Enviar enllaç",
+      "sending": "Enviant...",
+      "rememberedPassword": "Has recordat la contrasenya?",
+      "backToLogin": "Tornar al login",
+      "error": "No s’ha pogut sol·licitar la recuperació de contrasenya"
+    },
+    "resetPassword": {
+      "title": "Restablir contrasenya",
+      "description": "Tria una nova contrasenya per al teu compte Solaris.",
+      "newPassword": "Nova contrasenya",
+      "resetPassword": "Restablir contrasenya",
+      "saving": "Desant...",
+      "backToLogin": "Tornar al login",
+      "missingToken": "Falta el token de recuperació.",
+      "invalidToken": "L’enllaç de recuperació és invàlid o ha expirat."
+    },
+    "verifyEmail": {
+      "verifying": "Verificant el teu email...",
+      "missingToken": "Falta el token de verificació.",
+      "invalidToken": "L’enllaç de verificació és invàlid o ha expirat.",
+      "backToLogin": "Tornar al login"
+    }
+  },
+  "notFound": {
+    "title": "Pàgina no trobada",
+    "description": "La pàgina que busques no existeix o s’ha mogut.",
+    "goBack": "Tornar",
+    "dashboard": "Tauler",
+    "login": "Iniciar sessió"
+  },
+  "dashboard": {
+    "title": "Tauler de Solaris",
+    "description": "Resum ràpid de vendes, alertes d’estoc i comandes a proveïdors.",
+    "loadError": "No s’ha pogut carregar el tauler",
+    "sales": "vendes",
+    "income": "ingressos",
+    "day": "Dia",
+    "productsNeedRestock": "productes necessiten reposició",
+    "viewFilteredOrders": "Veure comandes filtrades",
+    "monthlyOverviewTitle": "Resum de vendes mensuals",
+    "monthlyOverviewDescription": "Ingressos diaris i nombre de vendes del mes actual.",
+    "cards": {
+      "monthlySales": "Vendes mensuals",
+      "todaySales": "Vendes d’avui",
+      "lowStockProducts": "Productes amb estoc baix",
+      "supplierOrders": "Comandes a proveïdors"
+    },
+    "orderStatus": {
+      "sent": "Enviades",
+      "completed": "Completades",
+      "cancelled": "Cancel·lades"
+    }
+  },
+  "profile": {
+    "title": "El meu perfil",
+    "description": "Gestiona les dades del teu compte i la contrasenya.",
+    "accountDetails": "Dades del compte",
+    "firstname": "Nom",
+    "lastname": "Cognoms",
+    "email": "Email",
+    "emailReadonly": "L’email no es pot modificar des d’aquesta pantalla.",
+    "saveProfile": "Desar perfil",
+    "savingProfile": "Desant...",
+    "changePassword": "Canviar contrasenya",
+    "currentPassword": "Contrasenya actual",
+    "newPassword": "Nova contrasenya",
+    "updatePassword": "Actualitzar contrasenya",
+    "updatingPassword": "Actualitzant...",
+    "loadError": "No s’ha pogut carregar el perfil",
+    "updateSuccess": "Perfil actualitzat correctament",
+    "updateError": "No s’ha pogut actualitzar el perfil",
+    "passwordSuccess": "Contrasenya actualitzada correctament",
+    "passwordError": "No s’ha pogut actualitzar la contrasenya"
+  },
+  "products": {
+    "title": "Productes",
+    "description": "Gestiona els productes de l’inventari i l’estoc.",
+    "importProducts": "Importar productes",
+    "newProduct": "Nou producte",
+    "searchPlaceholder": "Cercar per nom o SKU...",
+    "allCategories": "Totes les categories",
+    "allStockStatus": "Tots els estats d’estoc",
+    "lowStockOnly": "Només estoc baix",
+    "okStockOnly": "Només estoc correcte",
+    "clearFilters": "Netejar filtres",
+    "results_one": "{{count}} resultat",
+    "results_other": "{{count}} resultats",
+    "deleteConfirm": "Segur que vols eliminar aquest producte?",
+    "deleteSuccess": "Producte eliminat correctament",
+    "deleteError": "No s’ha pogut eliminar el producte",
+    "empty": "No s’han trobat productes amb els filtres seleccionats.",
+    "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} productes",
+    "previous": "Anterior",
+    "next": "Següent",
+    "status": {
+      "lowStock": "ESTOC BAIX",
+      "ok": "OK"
+    },
+    "actions": {
+      "restock": "Reposar",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "table": {
+      "product": "Producte",
+      "sku": "SKU",
+      "category": "Categoria",
+      "price": "Preu",
+      "stock": "Estoc",
+      "status": "Estat",
+      "actions": "Accions"
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "description": "Organitza els productes en categories de negoci.",
+    "newCategory": "Nova categoria",
+    "searchPlaceholder": "Cercar per nom, descripció o data...",
+    "results_one": "{{count}} resultat",
+    "results_other": "{{count}} resultats",
+    "created": "Creat",
+    "deleteConfirm": "Segur que vols eliminar aquesta categoria?",
+    "deleteSuccess": "Categoria eliminada correctament",
+    "deleteError": "No s’ha pogut eliminar la categoria",
+    "loadError": "No s’han pogut carregar les categories",
+    "empty": "No s’han trobat categories amb els filtres seleccionats.",
+    "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} categories",
+    "previous": "Anterior",
+    "next": "Següent",
+    "actions": {
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "table": {
+      "name": "Nom",
+      "description": "Descripció",
+      "createdAt": "Creat el",
+      "actions": "Accions"
+    }
+  },
+  "productForm": {
+    "newTitle": "Nou producte",
+    "newDescription": "Crea un nou producte d’inventari.",
+    "nameRequired": "Nom *",
+    "sku": "SKU",
+    "skuPlaceholder": "Deixa-ho buit per generar-lo automàticament",
+    "priceRequired": "Preu *",
+    "stockQuantityRequired": "Quantitat en estoc *",
+    "category": "Categoria",
+    "selectCategory": "Seleccionar categoria",
+    "customLowStockThreshold": "Llindar personalitzat d’estoc baix",
+    "globalSettingPlaceholder": "Utilitzar la configuració global",
+    "description": "Descripció",
+    "descriptionPlaceholder": "Descripció opcional del producte",
+    "createProduct": "Crear producte",
+    "creating": "Creant...",
+    "createSuccess": "Producte creat correctament",
+    "createError": "No s’ha pogut crear el producte",
+    "loadCategoriesError": "No s’han pogut carregar les categories",
+    "updateProduct": "Actualitzar producte",
+    "updating": "Actualitzant...",
+    "updateSuccess": "Producte actualitzat correctament",
+    "updateError": "No s’ha pogut actualitzar el producte",
+    "editTitle": "Editar producte",
+    "editDescription": "Actualitza la informació del producte.",
+    "loadProductError": "No s’ha pogut carregar el producte",
+    "emptySkuHelp": "Deixa-ho buit per generar automàticament un nou SKU del sistema.",
+    "lowStockHelp": "Deixa-ho buit per utilitzar el llindar global d’estoc baix."
+  },
+  "categoryForm": {
+    "newTitle": "Nova categoria",
+    "newDescription": "Crea una nova categoria de productes.",
+    "nameRequired": "Nom *",
+    "description": "Descripció",
+    "createCategory": "Crear categoria",
+    "creating": "Creant...",
+    "createSuccess": "Categoria creada correctament",
+    "createError": "No s’ha pogut crear la categoria",
+    "editTitle": "Editar categoria",
+    "editDescription": "Actualitza la informació de la categoria.",
+    "updateCategory": "Actualitzar categoria",
+    "updating": "Actualitzant...",
+    "updateSuccess": "Categoria actualitzada correctament",
+    "updateError": "No s’ha pogut actualitzar la categoria",
+    "loadError": "No s’ha pogut carregar la categoria"
+  },
+  "suppliers": {
+    "title": "Proveïdors",
+    "description": "Gestiona els proveïdors utilitzats per a compres i futures comandes.",
+    "newSupplier": "Nou proveïdor",
+    "searchPlaceholder": "Cercar proveïdor...",
+    "loadError": "No s'han pogut carregar els proveïdors",
+    "deleteConfirm": "Segur que vols eliminar aquest proveïdor?",
+    "deleteSuccess": "Proveïdor eliminat correctament",
+    "deleteError": "No s'ha pogut eliminar el proveïdor",
+    "noContactName": "Sense nom de contacte",
+    "noEmail": "Sense email",
+    "empty": "No s'han trobat proveïdors amb els filtres seleccionats.",
+    "results_one": "{{count}} resultat",
+    "results_other": "{{count}} resultats",
+    "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} proveïdors",
+    "filters": {
+      "allStatuses": "Tots els estats",
+      "activeOnly": "Només actius",
+      "inactiveOnly": "Només inactius"
+    },
+    "status": {
+      "active": "ACTIU",
+      "inactive": "INACTIU"
+    },
+    "table": {
+      "supplier": "Proveïdor",
+      "contact": "Contacte",
+      "email": "Email",
+      "phone": "Telèfon",
+      "status": "Estat",
+      "actions": "Accions"
+    }
+  },
+  "supplierForm": {
+    "newTitle": "Nou proveïdor",
+    "newDescription": "Crea un proveïdor per a futures compres i comandes.",
+    "supplierNameRequired": "Nom del proveïdor *",
+    "contactName": "Nom de contacte",
+    "email": "Email",
+    "phone": "Telèfon",
+    "address": "Adreça",
+    "notes": "Notes",
+    "activeSupplier": "Proveïdor actiu",
+    "createSupplier": "Crear proveïdor",
+    "createSuccess": "Proveïdor creat correctament",
+    "createError": "No s’ha pogut crear el proveïdor",
+    "editTitle": "Editar proveïdor",
+    "editDescription": "Actualitza la informació del proveïdor.",
+    "updateSupplier": "Actualitzar proveïdor",
+    "updateSuccess": "Proveïdor actualitzat correctament",
+    "updateError": "No s’ha pogut actualitzar el proveïdor",
+    "loadError": "No s’ha pogut carregar el proveïdor"
+  },
+  "productImport": {
+    "title": "Importar productes",
+    "description": "Puja un fitxer Excel per crear diversos productes alhora.",
+    "backToProducts": "Tornar a productes",
+    "excelFormat": "Format Excel",
+    "excelFormatDescription": "El fitxer ha d’utilitzar les columnes següents a la primera fila:",
+    "optionalColumnsHelp": "SKU, Categoria, Estoc baix personalitzat i Descripció són opcionals. Si l’SKU és buit, Solaris en generarà un automàticament. Si la categoria és buida, Solaris utilitzarà General.",
+    "downloadTemplate": "Descarregar plantilla",
+    "importMode": "Mode d’importació",
+    "importModeHelp": "Els productes es comparen pel nom. En mode actualització, els productes existents s’actualitzaran en lloc de fallar.",
+    "uploadFile": "Pujar fitxer",
+    "uploadFileDescription": "Selecciona un fitxer .xlsx i inicia la importació.",
+    "importProducts": "Importar productes",
+    "importing": "Important...",
+    "selectFileError": "Selecciona primer un fitxer Excel",
+    "completedWithErrors": "Importació completada amb errors",
+    "success": "Productes importats correctament",
+    "error": "No s’han pogut importar els productes",
+    "columns": {
+      "name": "Nom",
+      "sku": "SKU",
+      "price": "Preu",
+      "stockQuantity": "Quantitat en estoc",
+      "category": "Categoria",
+      "customLowStock": "Estoc baix personalitzat",
+      "description": "Descripció"
+    },
+    "modes": {
+      "createOnly": "Només crear",
+      "createOrUpdate": "Crear o actualitzar productes existents"
+    },
+    "result": {
+      "title": "Resultat de la importació",
+      "created": "Creats",
+      "updated": "Actualitzats",
+      "failed": "Fallits",
+      "errors": "Errors"
+    }
+  },
+  "sales": {
+    "title": "Vendes",
+    "description": "Controla les vendes diàries i l’activitat de caixa.",
+    "exportExcel": "Exportar Excel",
+    "newSale": "Nova venda",
+    "openRegisterBeforeSale": "Obre o reobre la caixa abans de crear vendes",
+    "saleNumber": "Venda #{{id}}",
+    "viewDetail": "Veure detall",
+    "empty": "No s’han trobat vendes amb els filtres seleccionats.",
+    "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} vendes",
+    "payment": {
+      "cash": "Efectiu",
+      "debit": "Dèbit",
+      "credit": "Crèdit",
+      "debitCard": "Targeta de dèbit",
+      "creditCard": "Targeta de crèdit",
+      "transfer": "Transferència",
+      "other": "Altres"
+    },
+    "cashRegister": {
+      "title": "Caixa",
+      "description": "Control diari de vendes agrupat per mètode de pagament.",
+      "openedAt": "Oberta el",
+      "openedBy": "Oberta per",
+      "reopens": "Reobertures",
+      "noRegisterToday": "No existeix cap caixa per avui.",
+      "totalSales": "Vendes totals",
+      "clickToShowAll": "Fes clic per mostrar totes les vendes.",
+      "open": "Obrir caixa",
+      "close": "Tancar caixa",
+      "reopen": "Reobrir caixa",
+      "openedSuccessfully": "Caixa oberta correctament",
+      "closedSuccessfully": "Caixa tancada correctament",
+      "reopenedSuccessfully": "Caixa reoberta correctament",
+      "invalidPassword": "Contrasenya d’administrador invàlida",
+      "alreadyExistsToday": "Ja existeix una sessió de caixa per avui",
+      "actionFailed": "L’acció de caixa ha fallat",
+      "enterPasswordError": "Introdueix la contrasenya d’administrador",
+      "enterAdminPassword": "Introdueix la contrasenya d’administrador per continuar.",
+      "adminPassword": "Contrasenya d’administrador",
+      "processing": "Processant...",
+      "confirm": "Confirmar",
+      "openStatus": "OBERTA",
+      "closedStatus": "TANCADA"
+    },
+    "calendar": {
+      "title": "Calendari de vendes",
+      "from": "Des de",
+      "to": "Fins a"
+    },
+    "table": {
+      "sale": "Venda",
+      "payment": "Pagament",
+      "items": "Ítems",
+      "total": "Total",
+      "date": "Data"
+    }
+  },
+  "saleForm": {
+    "title": "Nova venda",
+    "description": "Crea una nova venda i actualitza automàticament l'inventari.",
+    "saleDetails": "Detalls de la venda",
+    "paymentMethod": "Mètode de pagament",
+    "products": "Productes",
+    "addProduct": "Afegir producte",
+    "product": "Producte",
+    "searchProductPlaceholder": "Cercar producte per nom, SKU o categoria...",
+    "stock": "Estoc",
+    "noProductsFound": "No s'han trobat productes",
+    "selectedProduct": "Seleccionat: {{name}}",
+    "quantity": "Quantitat",
+    "subtotal": "Subtotal",
+    "unitPriceAndStock": "Preu unitari: ${{price}} · Estoc: {{stock}}",
+    "selectProductHelp": "Selecciona un producte per calcular el preu i l'estoc.",
+    "remove": "Eliminar",
+    "totalAmount": "Import total",
+    "createSale": "Crear venda",
+    "creating": "Creant...",
+    "createSuccess": "Venda creada correctament",
+    "createError": "No s'ha pogut crear la venda",
+    "openRegisterBeforeSale": "Obre o reobre la caixa abans de crear vendes",
+    "errors": {
+      "addAtLeastOneProduct": "Afegeix almenys un producte",
+      "duplicateProduct": "No es pot afegir el mateix producte més d'una vegada",
+      "stockExceeded": "Un o més productes superen l'estoc disponible",
+      "completeAllLines": "Completa totes les línies abans de crear la venda",
+      "noOpenCashRegister": "No hi ha cap caixa oberta actualment",
+      "quantityExceedsStock": "La quantitat supera l'estoc disponible",
+      "productAlreadyAdded": "Aquest producte ja ha estat afegit"
+    }
+  },
+  "saleDetail": {
+    "title": "Venda #{{id}}",
+    "backToSales": "Tornar a vendes",
+    "paymentMethod": "Mètode de pagament",
+    "items": "Ítems",
+    "total": "Total",
+    "notFound": "Venda no trobada.",
+    "loadError": "No s’ha pogut carregar la venda",
+    "table": {
+      "product": "Producte",
+      "quantity": "Quantitat",
+      "unitPrice": "Preu unitari",
+      "subtotal": "Subtotal"
+    }
+  },
+  "supplierOrders": {
+    "title": "Comandes a proveïdors",
+    "description": "Crea, envia i controla comandes de compra a proveïdors.",
+    "newOrder": "Nova comanda a proveïdor",
+    "searchPlaceholder": "Cercar per proveïdor o producte...",
+    "loadError": "No s’han pogut carregar les comandes a proveïdors",
+    "updateError": "No s’ha pogut actualitzar la comanda",
+    "cancelError": "No s’ha pogut cancel·lar la comanda",
+    "deleteError": "No s’ha pogut eliminar la comanda",
+    "deleteConfirm": "Segur que vols eliminar aquesta comanda a proveïdor?",
+    "deleteSuccess": "Comanda eliminada correctament",
+    "markSentSuccess": "Comanda marcada com a enviada",
+    "markCompletedSuccess": "Comanda completada correctament",
+    "cancelSuccess": "Comanda cancel·lada correctament",
+    "noPhoneError": "El proveïdor no té número de telèfon",
+    "whatsappMarkSentError": "WhatsApp s’ha obert, però no s’ha pogut marcar la comanda com a enviada",
+    "orderNumber": "Comanda #{{id}}",
+    "itemsCount_one": "{{count}} ítem",
+    "itemsCount_other": "{{count}} ítems",
+    "empty": "No s’han trobat comandes amb els filtres seleccionats.",
+    "results_one": "{{count}} resultat",
+    "results_other": "{{count}} resultats",
+    "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} comandes",
+    "filters": {
+      "allStatuses": "Tots els estats"
+    },
+    "status": {
+      "draft": "ESBORRANY",
+      "sent": "ENVIADA",
+      "completed": "COMPLETADA",
+      "cancelled": "CANCEL·LADA"
+    },
+    "table": {
+      "order": "Comanda",
+      "supplier": "Proveïdor",
+      "items": "Ítems",
+      "created": "Creada"
+    },
+    "actions": {
+      "details": "Detall",
+      "whatsapp": "WhatsApp",
+      "markSent": "Marcar enviada",
+      "complete": "Completar",
+      "cancel": "Cancel·lar"
+    }
+  },
+  "supplierOrderForm": {
+    "title": "Nova comanda a proveïdor",
+    "description": "Crea una comanda de compra per enviar a un proveïdor.",
+    "orderDetails": "Detalls de la comanda",
+    "supplier": "Proveïdor",
+    "searchSupplierPlaceholder": "Cercar proveïdor per nom, contacte o telèfon...",
+    "products": "Productes",
+    "addProduct": "Afegir producte",
+    "product": "Producte",
+    "searchProductPlaceholder": "Cercar producte per nom o SKU...",
+    "productMeta": "SKU: {{sku}} · Estoc: {{stock}}",
+    "quantity": "Quantitat",
+    "createOrder": "Crear comanda",
+    "createSuccess": "Comanda creada correctament",
+    "createError": "No s'ha pogut crear la comanda",
+    "loadError": "No s'han pogut carregar proveïdors i productes",
+    "errors": {
+      "selectSupplier": "Selecciona un proveïdor",
+      "addAtLeastOneProduct": "Afegeix almenys un producte"
+    },
+    "messagePreview": {
+      "title": "Vista prèvia de WhatsApp",
+      "description": "Aquest missatge serà enviat al proveïdor.",
+      "empty": "Selecciona un proveïdor i productes per previsualitzar el missatge.",
+      "greeting": "Hola {{supplierName}}, voldríem realitzar la següent comanda:",
+      "itemLine": "• {{productName}} × {{quantity}}"
+    }
+  },
+  "supplierOrderDetail": {
+    "title": "Comanda #{{id}}",
+    "description": "Revisa els detalls i l'estat de la comanda al proveïdor.",
+    "backToOrders": "Tornar a comandes",
+    "loadError": "No s'ha pogut carregar la comanda",
+    "updateError": "No s'ha pogut actualitzar la comanda",
+    "cancelError": "No s'ha pogut cancel·lar la comanda",
+    "cancelConfirm": "Segur que vols cancel·lar aquesta comanda?",
+    "cancelSuccess": "Comanda cancel·lada correctament",
+    "markSentSuccess": "Comanda marcada com a enviada",
+    "markCompletedSuccess": "Comanda completada correctament",
+    "noPhoneError": "El proveïdor no té número de telèfon",
+    "whatsappMarkSentError": "WhatsApp s'ha obert, però no s'ha pogut marcar la comanda com a enviada",
+    "summary": {
+      "title": "Resum de la comanda",
+      "supplier": "Proveïdor",
+      "phone": "Telèfon",
+      "created": "Creada",
+      "lastUpdated": "Última actualització",
+      "items": "Productes",
+      "noPhone": "Sense telèfon disponible"
+    },
+    "table": {
+      "product": "Producte",
+      "sku": "SKU",
+      "quantity": "Quantitat"
+    },
+    "whatsapp": {
+      "title": "Missatge de WhatsApp",
+      "description": "Vista prèvia del missatge que serà enviat al proveïdor.",
+      "open": "Obrir WhatsApp"
+    },
+    "actions": {
+      "title": "Accions",
+      "markSent": "Marcar com enviada",
+      "markCompleted": "Marcar com completada",
+      "cancelOrder": "Cancel·lar comanda"
+    }
+  },
+  "stockMovements": {
+    "title": "Moviments d'estoc",
+    "description": "Controla els moviments d'inventari i els ajustos d'estoc.",
+    "newMovement": "Nou moviment",
+    "exportExcel": "Exportar Excel",
+    "loadError": "No s'han pogut carregar els moviments d'estoc",
+    "empty": "No s'han trobat moviments d'estoc.",
+    "table": {
+      "product": "Producte",
+      "type": "Tipus",
+      "quantity": "Quantitat",
+      "previous": "Estoc anterior",
+      "current": "Estoc actual",
+      "reason": "Motiu",
+      "date": "Data"
+    },
+    "types": {
+      "in": "ENTRADA",
+      "out": "SORTIDA",
+      "adjustment": "AJUSTAMENT"
+    }
+  },
+  "adminSettings": {
+    "title": "Configuració administrativa",
+    "description": "Configura inventari, seguretat i paràmetres de caixa.",
+    "loadError": "No s'ha pogut carregar la configuració del sistema",
+    "updateSuccess": "Configuració actualitzada correctament",
+    "updateError": "No s'ha pogut actualitzar la configuració",
+    "saveSettings": "Desar configuració",
+    "lastUpdated": "Última actualització: {{date}}",
+    "inventory": {
+      "title": "Inventari",
+      "globalLowStockThreshold": "Llindar global d'estoc baix",
+      "globalLowStockHelp": "Valor d'estoc baix utilitzat quan un producte no té un valor personalitzat."
+    },
+    "security": {
+      "title": "Seguretat",
+      "adminAccessPassword": "Contrasenya d'administrador",
+      "adminAccessPasswordHelp": "Aquesta contrasenya serà necessària per a accions administratives sensibles.",
+      "keepCurrentPasswordPlaceholder": "Deixa-ho buit per mantenir la contrasenya actual",
+      "setPasswordPlaceholder": "Definir contrasenya d'administrador",
+      "passwordConfigured": "Contrasenya configurada",
+      "noPasswordConfigured": "No hi ha cap contrasenya configurada"
+    },
+    "cashRegister": {
+      "title": "Caixa",
+      "businessTimezone": "Zona horària del negoci",
+      "timezonePlaceholder": "Seleccionar zona horària",
+      "autoCloseTime": "Hora de tancament automàtic",
+      "autoCloseTimeHelp": "Les caixes que continuïn obertes a aquesta hora es tancaran automàticament."
+    }
+  }
+}

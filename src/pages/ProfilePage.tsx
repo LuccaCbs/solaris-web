@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import {
     changeCurrentUserPassword,
@@ -10,6 +11,8 @@ import PasswordInput from '../components/PasswordInput'
 import LoadingScreen from '../components/LoadingScreen'
 
 function ProfilePage() {
+    const { t } = useTranslation()
+
     const [profile, setProfile] = useState<UserProfile | null>(null)
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
@@ -31,14 +34,14 @@ function ProfilePage() {
                 setFirstname(data.firstname)
                 setLastname(data.lastname)
             } catch {
-                toast.error('Could not load profile')
+                toast.error(t('profile.loadError'))
             } finally {
                 setLoading(false)
             }
         }
 
         loadProfile()
-    }, [])
+    }, [t])
 
     async function handleProfileSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -51,9 +54,9 @@ function ProfilePage() {
             })
 
             setProfile(data)
-            toast.success('Profile updated successfully')
+            toast.success(t('profile.updateSuccess'))
         } catch {
-            toast.error('Could not update profile')
+            toast.error(t('profile.updateError'))
         } finally {
             setSavingProfile(false)
         }
@@ -71,9 +74,9 @@ function ProfilePage() {
 
             setCurrentPassword('')
             setNewPassword('')
-            toast.success('Password updated successfully')
+            toast.success(t('profile.passwordSuccess'))
         } catch {
-            toast.error('Could not update password')
+            toast.error(t('profile.passwordError'))
         } finally {
             setChangingPassword(false)
         }
@@ -86,25 +89,22 @@ function ProfilePage() {
     return (
         <div>
             <h1 className="text-4xl font-bold">
-                My Profile
+                {t('profile.title')}
             </h1>
 
             <p className="mt-2 solaris-muted">
-                Manage your account details and password.
+                {t('profile.description')}
             </p>
 
             <div className="mt-8 grid gap-6 xl:grid-cols-2">
-                <form
-                    onSubmit={handleProfileSubmit}
-                    className="solaris-panel"
-                >
+                <form onSubmit={handleProfileSubmit} className="solaris-panel">
                     <h2 className="text-xl font-semibold">
-                        Account details
+                        {t('profile.accountDetails')}
                     </h2>
 
                     <div className="mt-6">
                         <label className="text-sm solaris-muted">
-                            First name
+                            {t('profile.firstname')}
                         </label>
 
                         <input
@@ -117,7 +117,7 @@ function ProfilePage() {
 
                     <div className="mt-4">
                         <label className="text-sm solaris-muted">
-                            Last name
+                            {t('profile.lastname')}
                         </label>
 
                         <input
@@ -130,7 +130,7 @@ function ProfilePage() {
 
                     <div className="mt-4">
                         <label className="text-sm solaris-muted">
-                            Email
+                            {t('profile.email')}
                         </label>
 
                         <input
@@ -140,7 +140,7 @@ function ProfilePage() {
                         />
 
                         <p className="mt-2 text-sm solaris-subtle">
-                            Email cannot be changed from this screen.
+                            {t('profile.emailReadonly')}
                         </p>
                     </div>
 
@@ -148,21 +148,20 @@ function ProfilePage() {
                         disabled={savingProfile}
                         className="mt-6 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                     >
-                        {savingProfile ? 'Saving...' : 'Save Profile'}
+                        {savingProfile
+                            ? t('profile.savingProfile')
+                            : t('profile.saveProfile')}
                     </button>
                 </form>
 
-                <form
-                    onSubmit={handlePasswordSubmit}
-                    className="solaris-panel"
-                >
+                <form onSubmit={handlePasswordSubmit} className="solaris-panel">
                     <h2 className="text-xl font-semibold">
-                        Change password
+                        {t('profile.changePassword')}
                     </h2>
 
                     <div className="mt-6">
                         <label className="text-sm solaris-muted">
-                            Current password
+                            {t('profile.currentPassword')}
                         </label>
 
                         <PasswordInput
@@ -175,7 +174,7 @@ function ProfilePage() {
 
                     <div className="mt-4">
                         <label className="text-sm solaris-muted">
-                            New password
+                            {t('profile.newPassword')}
                         </label>
 
                         <PasswordInput
@@ -190,7 +189,9 @@ function ProfilePage() {
                         disabled={changingPassword}
                         className="mt-6 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                     >
-                        {changingPassword ? 'Updating...' : 'Update Password'}
+                        {changingPassword
+                            ? t('profile.updatingPassword')
+                            : t('profile.updatePassword')}
                     </button>
                 </form>
             </div>

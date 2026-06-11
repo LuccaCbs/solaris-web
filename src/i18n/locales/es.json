@@ -1,0 +1,663 @@
+{
+  "common": {
+    "loadingWorkspace": "Cargando espacio de trabajo...",
+
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "cancel": "Cancelar",
+
+    "create": "Crear",
+    "creating": "Creando...",
+
+    "edit": "Editar",
+    "update": "Actualizar",
+    "updating": "Actualizando...",
+
+    "delete": "Eliminar",
+
+    "search": "Buscar",
+
+    "yes": "Sí",
+    "no": "No",
+
+    "active": "Activo",
+    "inactive": "Inactivo",
+
+    "status": "Estado",
+
+    "previous": "Anterior",
+    "next": "Siguiente",
+
+    "clearFilters": "Limpiar filtros",
+
+    "optional": "(opcional)",
+
+    "loading": "Cargando...",
+    "noData": "No hay datos disponibles",
+
+    "actions": "Acciones",
+
+    "logout": "Cerrar sesión",
+    "settings": "Configuración",
+
+    "clear": "Limpiar",
+
+    "date": "Fecha",
+    "quantity": "Cantidad",
+    "reason": "Motivo",
+    "type": "Tipo",
+    "created": "Creado",
+    "updated": "Actualizado",
+    "details": "Detalles",
+    "export": "Exportar",
+    "saveChanges": "Guardar cambios",
+
+    "from": "Desde",
+    "to": "Hasta",
+    "all": "Todos",
+    "name": "Nombre",
+    "description": "Descripción",
+    "product": "Producto",
+    "supplier": "Proveedor",
+    "category": "Categoría",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "stock": "Stock",
+    "price": "Precio",
+    "total": "Total",
+    "subtotal": "Subtotal"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "sales": "Ventas",
+    "supplierOrders": "Órdenes a proveedores",
+    "products": "Productos",
+    "categories": "Categorías",
+    "suppliers": "Proveedores",
+    "movementHistory": "Historial de movimientos",
+    "adminSettings": "Configuración de administrador",
+    "myProfile": "Mi perfil"
+  },
+  "auth": {
+    "login": {
+      "email": "Email",
+      "password": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "signIn": "Iniciar sesión",
+      "signingIn": "Iniciando sesión...",
+      "noAccount": "¿No tienes una cuenta?",
+      "register": "Registrarse",
+      "invalidCredentials": "Credenciales inválidas o email no verificado",
+      "registeredMessage": "Cuenta creada. Revisa tu email para verificarla antes de iniciar sesión.",
+      "verifiedMessage": "Email verificado correctamente. Ya puedes iniciar sesión.",
+      "passwordResetMessage": "Contraseña actualizada correctamente. Ya puedes iniciar sesión."
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "firstname": "Nombre",
+      "lastname": "Apellido",
+      "email": "Email",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "createAccount": "Crear cuenta",
+      "creatingAccount": "Creando cuenta...",
+      "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+      "login": "Iniciar sesión",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden",
+      "description": "Comienza a usar Solaris con tu propio espacio de trabajo.",
+      "createError": "No se ha podido crear una cuenta"
+    },
+    "forgotPassword": {
+      "title": "Olvidé mi contraseña",
+      "description": "Ingresa tu email y te enviaremos un enlace de recuperación.",
+      "email": "Email",
+      "sendResetLink": "Enviar enlace",
+      "sending": "Enviando...",
+      "rememberedPassword": "¿Recordaste tu contraseña?",
+      "backToLogin": "Volver al login",
+      "error": "No se pudo solicitar la recuperación de contraseña"
+    },
+    "resetPassword": {
+      "title": "Restablecer contraseña",
+      "description": "Elige una nueva contraseña para tu cuenta Solaris.",
+      "newPassword": "Nueva contraseña",
+      "resetPassword": "Restablecer contraseña",
+      "saving": "Guardando...",
+      "backToLogin": "Volver al login",
+      "missingToken": "Falta el token de recuperación.",
+      "invalidToken": "El enlace de recuperación es inválido o expiró."
+    },
+    "verifyEmail": {
+      "verifying": "Verificando tu email...",
+      "missingToken": "Falta el token de verificación.",
+      "invalidToken": "El enlace de verificación es inválido o expiró.",
+      "backToLogin": "Volver al login"
+    }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que estás buscando no existe o fue movida.",
+    "goBack": "Volver",
+    "dashboard": "Panel",
+    "login": "Iniciar sesión"
+  },
+  "dashboard": {
+  "title": "Panel de Solaris",
+  "description": "Resumen rápido de ventas, alertas de stock y órdenes a proveedores.",
+  "loadError": "No se pudo cargar el panel",
+  "sales": "ventas",
+  "income": "ingresos",
+  "day": "Día",
+  "productsNeedRestock": "productos necesitan reposición",
+  "viewFilteredOrders": "Ver órdenes filtradas",
+  "monthlyOverviewTitle": "Resumen de ventas mensuales",
+  "monthlyOverviewDescription": "Ingresos diarios y cantidad de ventas del mes actual.",
+  "cards": {
+    "monthlySales": "Ventas mensuales",
+    "todaySales": "Ventas de hoy",
+    "lowStockProducts": "Productos con bajo stock",
+    "supplierOrders": "Órdenes a proveedores"
+  },
+  "orderStatus": {
+    "sent": "Enviadas",
+    "completed": "Completadas",
+    "cancelled": "Canceladas"
+  }
+},
+  "profile": {
+    "title": "Mi perfil",
+    "description": "Gestiona los datos de tu cuenta y contraseña.",
+    "accountDetails": "Datos de la cuenta",
+    "firstname": "Nombre",
+    "lastname": "Apellido",
+    "email": "Email",
+    "emailReadonly": "El email no se puede cambiar desde esta pantalla.",
+    "saveProfile": "Guardar perfil",
+    "savingProfile": "Guardando...",
+    "changePassword": "Cambiar contraseña",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "updatePassword": "Actualizar contraseña",
+    "updatingPassword": "Actualizando...",
+    "loadError": "No se pudo cargar el perfil",
+    "updateSuccess": "Perfil actualizado correctamente",
+    "updateError": "No se pudo actualizar el perfil",
+    "passwordSuccess": "Contraseña actualizada correctamente",
+    "passwordError": "No se pudo actualizar la contraseña"
+  },
+  "products": {
+    "title": "Productos",
+    "description": "Gestiona productos de inventario y stock.",
+    "importProducts": "Importar productos",
+    "newProduct": "Nuevo producto",
+    "searchPlaceholder": "Buscar por nombre o SKU...",
+    "allCategories": "Todas las categorías",
+    "allStockStatus": "Todos los estados",
+    "lowStockOnly": "Solo bajo stock",
+    "okStockOnly": "Solo stock OK",
+    "clearFilters": "Limpiar filtros",
+    "results_one": "{{count}} resultado",
+    "results_other": "{{count}} resultados",
+    "deleteConfirm": "¿Seguro que quieres eliminar este producto?",
+    "deleteSuccess": "Producto eliminado correctamente",
+    "deleteError": "No se pudo eliminar el producto",
+    "empty": "No se encontraron productos para los filtros seleccionados.",
+    "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} productos",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "status": {
+      "lowStock": "BAJO STOCK",
+      "ok": "OK"
+    },
+    "actions": {
+      "restock": "Reponer",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "table": {
+      "product": "Producto",
+      "sku": "SKU",
+      "category": "Categoría",
+      "price": "Precio",
+      "stock": "Stock",
+      "status": "Estado",
+      "actions": "Acciones"
+    }
+  },
+  "categories": {
+    "title": "Categorías",
+    "description": "Organiza productos en categorías de negocio.",
+    "newCategory": "Nueva categoría",
+    "searchPlaceholder": "Buscar por nombre, descripción o fecha...",
+    "results_one": "{{count}} resultado",
+    "results_other": "{{count}} resultados",
+    "created": "Creado",
+    "deleteConfirm": "¿Seguro que quieres eliminar esta categoría?",
+    "deleteSuccess": "Categoría eliminada correctamente",
+    "deleteError": "No se pudo eliminar la categoría",
+    "loadError": "No se pudieron cargar las categorías",
+    "empty": "No se encontraron categorías para los filtros seleccionados.",
+    "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} categorías",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "actions": {
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "table": {
+      "name": "Nombre",
+      "description": "Descripción",
+      "createdAt": "Creado",
+      "actions": "Acciones"
+    }
+  },
+  "productForm": {
+    "newTitle": "Nuevo producto",
+    "newDescription": "Crea un nuevo producto de inventario.",
+    "nameRequired": "Nombre *",
+    "sku": "SKU",
+    "skuPlaceholder": "Dejar vacío para generar automáticamente",
+    "priceRequired": "Precio *",
+    "stockQuantityRequired": "Cantidad en stock *",
+    "category": "Categoría",
+    "selectCategory": "Seleccionar categoría",
+    "customLowStockThreshold": "Umbral personalizado de bajo stock",
+    "globalSettingPlaceholder": "Usar configuración global",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Descripción opcional del producto",
+    "createProduct": "Crear producto",
+    "creating": "Creando...",
+    "createSuccess": "Producto creado correctamente",
+    "createError": "No se pudo crear el producto",
+    "loadCategoriesError": "No se pudieron cargar las categorías",
+    "updateProduct": "Actualizar producto",
+    "updating": "Actualizando...",
+    "updateSuccess": "Producto actualizado correctamente",
+    "updateError": "No se pudo actualizar el producto",
+    "editTitle": "Editar producto",
+    "editDescription": "Actualiza la información del producto.",
+    "loadProductError": "No se pudo cargar el producto",
+    "emptySkuHelp": "Déjalo vacío para generar automáticamente un nuevo SKU del sistema.",
+    "lowStockHelp": "Déjalo vacío para usar el umbral global de bajo stock."
+  },
+  "categoryForm": {
+    "newTitle": "Nueva categoría",
+    "newDescription": "Crea una nueva categoría de productos.",
+    "nameRequired": "Nombre *",
+    "description": "Descripción",
+    "createCategory": "Crear categoría",
+    "creating": "Creando...",
+    "createSuccess": "Categoría creada correctamente",
+    "createError": "No se pudo crear la categoría",
+    "editTitle": "Editar categoría",
+    "editDescription": "Actualiza la información de la categoría.",
+    "updateCategory": "Actualizar categoría",
+    "updating": "Actualizando...",
+    "updateSuccess": "Categoría actualizada correctamente",
+    "updateError": "No se pudo actualizar la categoría",
+    "loadError": "No se pudo cargar la categoría"
+  },
+  "suppliers": {
+    "title": "Proveedores",
+    "description": "Gestiona proveedores usados para compras y futuras órdenes.",
+    "newSupplier": "Nuevo proveedor",
+    "searchPlaceholder": "Buscar proveedor...",
+    "loadError": "No se pudieron cargar los proveedores",
+    "deleteConfirm": "¿Seguro que quieres eliminar este proveedor?",
+    "deleteSuccess": "Proveedor eliminado correctamente",
+    "deleteError": "No se pudo eliminar el proveedor",
+    "noContactName": "Sin nombre de contacto",
+    "noEmail": "Sin email",
+    "empty": "No se encontraron proveedores para los filtros seleccionados.",
+    "results_one": "{{count}} resultado",
+    "results_other": "{{count}} resultados",
+    "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} proveedores",
+    "filters": {
+      "allStatuses": "Todos los estados",
+      "activeOnly": "Solo activos",
+      "inactiveOnly": "Solo inactivos"
+    },
+    "status": {
+      "active": "ACTIVO",
+      "inactive": "INACTIVO"
+    },
+    "table": {
+      "supplier": "Proveedor",
+      "contact": "Contacto",
+      "email": "Email",
+      "phone": "Teléfono",
+      "status": "Estado",
+      "actions": "Acciones"
+    }
+  },
+  "supplierForm": {
+    "newTitle": "Nuevo proveedor",
+    "newDescription": "Crea un proveedor para futuras compras y órdenes.",
+    "supplierNameRequired": "Nombre del proveedor *",
+    "contactName": "Nombre de contacto",
+    "email": "Email",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "notes": "Notas",
+    "activeSupplier": "Proveedor activo",
+    "createSupplier": "Crear proveedor",
+    "createSuccess": "Proveedor creado correctamente",
+    "createError": "No se pudo crear el proveedor",
+    "editTitle": "Editar proveedor",
+    "editDescription": "Actualiza la información del proveedor.",
+    "updateSupplier": "Actualizar proveedor",
+    "updateSuccess": "Proveedor actualizado correctamente",
+    "updateError": "No se pudo actualizar el proveedor",
+    "loadError": "No se pudo cargar el proveedor"
+  },
+  "productImport": {
+    "title": "Importar productos",
+    "description": "Sube un archivo Excel para crear varios productos a la vez.",
+    "backToProducts": "Volver a productos",
+    "excelFormat": "Formato Excel",
+    "excelFormatDescription": "El archivo debe usar las siguientes columnas en la primera fila:",
+    "optionalColumnsHelp": "SKU, Categoría, Bajo stock personalizado y Descripción son opcionales. Si el SKU está vacío, Solaris generará uno automáticamente. Si la categoría está vacía, Solaris usará General.",
+    "downloadTemplate": "Descargar plantilla",
+    "importMode": "Modo de importación",
+    "importModeHelp": "Los productos se comparan por nombre. En modo actualización, los productos existentes se actualizarán en lugar de fallar.",
+    "uploadFile": "Subir archivo",
+    "uploadFileDescription": "Selecciona un archivo .xlsx e inicia la importación.",
+    "importProducts": "Importar productos",
+    "importing": "Importando...",
+    "selectFileError": "Selecciona primero un archivo Excel",
+    "completedWithErrors": "Importación completada con errores",
+    "success": "Productos importados correctamente",
+    "error": "No se pudieron importar los productos",
+    "columns": {
+      "name": "Nombre",
+      "sku": "SKU",
+      "price": "Precio",
+      "stockQuantity": "Cantidad en stock",
+      "category": "Categoría",
+      "customLowStock": "Bajo stock personalizado",
+      "description": "Descripción"
+    },
+    "modes": {
+      "createOnly": "Solo crear",
+      "createOrUpdate": "Crear o actualizar productos existentes"
+    },
+    "result": {
+      "title": "Resultado de importación",
+      "created": "Creados",
+      "updated": "Actualizados",
+      "failed": "Fallidos",
+      "errors": "Errores"
+    }
+  },
+  "sales": {
+    "title": "Ventas",
+    "description": "Controla las ventas diarias y la actividad de caja.",
+    "exportExcel": "Exportar Excel",
+    "newSale": "Nueva venta",
+    "openRegisterBeforeSale": "Abre o reabre la caja antes de crear ventas",
+    "saleNumber": "Venta #{{id}}",
+    "viewDetail": "Ver detalle",
+    "empty": "No se encontraron ventas para los filtros seleccionados.",
+    "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} ventas",
+    "payment": {
+      "cash": "Efectivo",
+      "debit": "Débito",
+      "credit": "Crédito",
+      "debitCard": "Tarjeta de débito",
+      "creditCard": "Tarjeta de crédito",
+      "transfer": "Transferencia",
+      "other": "Otro"
+    },
+    "cashRegister": {
+      "title": "Caja",
+      "description": "Control diario de ventas agrupado por método de pago.",
+      "openedAt": "Apertura",
+      "openedBy": "Abierta por",
+      "reopens": "Reaperturas",
+      "noRegisterToday": "No existe caja para el día de hoy.",
+      "totalSales": "Ventas totales",
+      "clickToShowAll": "Haz clic para ver todas las ventas.",
+      "open": "Abrir caja",
+      "close": "Cerrar caja",
+      "reopen": "Reabrir caja",
+      "openedSuccessfully": "Caja abierta correctamente",
+      "closedSuccessfully": "Caja cerrada correctamente",
+      "reopenedSuccessfully": "Caja reabierta correctamente",
+      "invalidPassword": "Contraseña de administrador inválida",
+      "alreadyExistsToday": "Ya existe una sesión de caja para hoy",
+      "actionFailed": "Falló la acción de caja",
+      "enterPasswordError": "Ingresa la contraseña de administrador",
+      "enterAdminPassword": "Ingresa la contraseña de administrador para continuar.",
+      "adminPassword": "Contraseña de administrador",
+      "processing": "Procesando...",
+      "confirm": "Confirmar",
+      "openStatus": "ABIERTA",
+      "closedStatus": "CERRADA"
+    },
+    "calendar": {
+      "title": "Calendario de ventas",
+      "from": "Desde",
+      "to": "Hasta"
+    },
+    "table": {
+      "sale": "Venta",
+      "payment": "Pago",
+      "items": "Ítems",
+      "total": "Total",
+      "date": "Fecha"
+    }
+  },
+  "saleForm": {
+    "title": "Nueva venta",
+    "description": "Crea una nueva venta y actualiza el inventario automáticamente.",
+    "saleDetails": "Detalles de la venta",
+    "paymentMethod": "Método de pago",
+    "products": "Productos",
+    "addProduct": "Agregar producto",
+    "product": "Producto",
+    "searchProductPlaceholder": "Buscar producto por nombre, SKU o categoría...",
+    "stock": "Stock",
+    "noProductsFound": "No se encontraron productos",
+    "selectedProduct": "Seleccionado: {{name}}",
+    "quantity": "Cantidad",
+    "subtotal": "Subtotal",
+    "unitPriceAndStock": "Precio unitario: ${{price}} · Stock: {{stock}}",
+    "selectProductHelp": "Selecciona un producto para calcular precio y stock.",
+    "remove": "Eliminar",
+    "totalAmount": "Total de la venta",
+    "createSale": "Crear venta",
+    "creating": "Creando...",
+    "createSuccess": "Venta creada correctamente",
+    "createError": "No se pudo crear la venta",
+    "openRegisterBeforeSale": "Abre o reabre la caja antes de crear ventas",
+    "errors": {
+      "addAtLeastOneProduct": "Agrega al menos un producto",
+      "duplicateProduct": "No se puede agregar el mismo producto más de una vez",
+      "stockExceeded": "Uno o más productos superan el stock disponible",
+      "completeAllLines": "Completa todas las líneas antes de crear la venta",
+      "noOpenCashRegister": "No existe una caja abierta",
+      "quantityExceedsStock": "La cantidad supera el stock disponible",
+      "productAlreadyAdded": "Este producto ya fue agregado"
+    }
+  },
+  "saleDetail": {
+    "title": "Venta #{{id}}",
+    "backToSales": "Volver a ventas",
+    "paymentMethod": "Método de pago",
+    "items": "Ítems",
+    "total": "Total",
+    "notFound": "Venta no encontrada.",
+    "loadError": "No se pudo cargar la venta",
+    "table": {
+      "product": "Producto",
+      "quantity": "Cantidad",
+      "unitPrice": "Precio unitario",
+      "subtotal": "Subtotal"
+    }
+  },
+  "supplierOrders": {
+    "title": "Órdenes a proveedores",
+    "description": "Crea, envía y controla órdenes de compra a proveedores.",
+    "newOrder": "Nueva orden a proveedor",
+    "searchPlaceholder": "Buscar por proveedor o producto...",
+    "loadError": "No se pudieron cargar las órdenes a proveedores",
+    "updateError": "No se pudo actualizar la orden",
+    "cancelError": "No se pudo cancelar la orden",
+    "deleteError": "No se pudo eliminar la orden",
+    "deleteConfirm": "¿Seguro que quieres eliminar esta orden a proveedor?",
+    "deleteSuccess": "Orden eliminada correctamente",
+    "markSentSuccess": "Orden marcada como enviada",
+    "markCompletedSuccess": "Orden completada correctamente",
+    "cancelSuccess": "Orden cancelada correctamente",
+    "noPhoneError": "El proveedor no tiene número de teléfono",
+    "whatsappMarkSentError": "WhatsApp se abrió, pero no se pudo marcar la orden como enviada",
+    "orderNumber": "Orden #{{id}}",
+    "itemsCount_one": "{{count}} ítem",
+    "itemsCount_other": "{{count}} ítems",
+    "empty": "No se encontraron órdenes para los filtros seleccionados.",
+    "results_one": "{{count}} resultado",
+    "results_other": "{{count}} resultados",
+    "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} órdenes",
+    "filters": {
+      "allStatuses": "Todos los estados"
+    },
+    "status": {
+      "draft": "BORRADOR",
+      "sent": "ENVIADA",
+      "completed": "COMPLETADA",
+      "cancelled": "CANCELADA"
+    },
+    "table": {
+      "order": "Orden",
+      "supplier": "Proveedor",
+      "items": "Ítems",
+      "created": "Creada"
+    },
+    "actions": {
+      "details": "Detalle",
+      "whatsapp": "WhatsApp",
+      "markSent": "Marcar enviada",
+      "complete": "Completar",
+      "cancel": "Cancelar"
+    }
+  },
+  "supplierOrderForm": {
+    "title": "Nueva orden a proveedor",
+    "description": "Crea una orden de compra para enviar a un proveedor.",
+    "orderDetails": "Detalles de la orden",
+    "supplier": "Proveedor",
+    "searchSupplierPlaceholder": "Buscar proveedor por nombre, contacto o teléfono...",
+    "products": "Productos",
+    "addProduct": "Agregar producto",
+    "product": "Producto",
+    "searchProductPlaceholder": "Buscar producto por nombre o SKU...",
+    "productMeta": "SKU: {{sku}} · Stock: {{stock}}",
+    "quantity": "Cantidad",
+    "createOrder": "Crear orden",
+    "createSuccess": "Orden creada correctamente",
+    "createError": "No se pudo crear la orden",
+    "loadError": "No se pudieron cargar proveedores y productos",
+    "errors": {
+      "selectSupplier": "Selecciona un proveedor",
+      "addAtLeastOneProduct": "Agrega al menos un producto"
+    },
+    "messagePreview": {
+      "title": "Vista previa de WhatsApp",
+      "description": "Este mensaje será enviado al proveedor.",
+      "empty": "Selecciona un proveedor y productos para previsualizar el mensaje.",
+      "greeting": "Hola {{supplierName}}, nos gustaría realizar el siguiente pedido:",
+      "itemLine": "• {{productName}} × {{quantity}}"
+    }
+  },
+  "supplierOrderDetail": {
+    "title": "Orden #{{id}}",
+    "description": "Revisa los detalles y el estado de la orden al proveedor.",
+    "backToOrders": "Volver a órdenes",
+    "loadError": "No se pudo cargar la orden",
+    "updateError": "No se pudo actualizar la orden",
+    "cancelError": "No se pudo cancelar la orden",
+    "cancelConfirm": "¿Seguro que deseas cancelar esta orden?",
+    "cancelSuccess": "Orden cancelada correctamente",
+    "markSentSuccess": "Orden marcada como enviada",
+    "markCompletedSuccess": "Orden completada correctamente",
+    "noPhoneError": "El proveedor no tiene número de teléfono",
+    "whatsappMarkSentError": "WhatsApp se abrió, pero no se pudo marcar la orden como enviada",
+    "summary": {
+      "title": "Resumen de la orden",
+      "supplier": "Proveedor",
+      "phone": "Teléfono",
+      "created": "Creada",
+      "lastUpdated": "Última actualización",
+      "items": "Productos",
+      "noPhone": "Sin teléfono disponible"
+    },
+    "table": {
+      "product": "Producto",
+      "sku": "SKU",
+      "quantity": "Cantidad"
+    },
+    "whatsapp": {
+      "title": "Mensaje de WhatsApp",
+      "description": "Vista previa del mensaje que será enviado al proveedor.",
+      "open": "Abrir WhatsApp"
+    },
+    "actions": {
+      "title": "Acciones",
+      "markSent": "Marcar como enviada",
+      "markCompleted": "Marcar como completada",
+      "cancelOrder": "Cancelar orden"
+    }
+  },
+  "stockMovements": {
+    "title": "Movimientos de stock",
+    "description": "Controla movimientos de inventario y ajustes de stock.",
+    "newMovement": "Nuevo movimiento",
+    "exportExcel": "Exportar Excel",
+    "loadError": "No se pudieron cargar los movimientos de stock",
+    "empty": "No se encontraron movimientos de stock.",
+    "table": {
+      "product": "Producto",
+      "type": "Tipo",
+      "quantity": "Cantidad",
+      "previous": "Stock anterior",
+      "current": "Stock actual",
+      "reason": "Motivo",
+      "date": "Fecha"
+    },
+    "types": {
+      "in": "ENTRADA",
+      "out": "SALIDA",
+      "adjustment": "AJUSTE"
+    }
+  },
+  "adminSettings": {
+    "title": "Configuración administrativa",
+    "description": "Configura inventario, seguridad y parámetros de caja.",
+    "loadError": "No se pudo cargar la configuración del sistema",
+    "updateSuccess": "Configuración actualizada correctamente",
+    "updateError": "No se pudo actualizar la configuración",
+    "saveSettings": "Guardar configuración",
+    "lastUpdated": "Última actualización: {{date}}",
+    "inventory": {
+      "title": "Inventario",
+      "globalLowStockThreshold": "Umbral global de bajo stock",
+      "globalLowStockHelp": "Valor de bajo stock utilizado cuando un producto no tiene un valor personalizado."
+    },
+    "security": {
+      "title": "Seguridad",
+      "adminAccessPassword": "Contraseña de administrador",
+      "adminAccessPasswordHelp": "Esta contraseña será requerida para acciones administrativas sensibles.",
+      "keepCurrentPasswordPlaceholder": "Dejar vacío para mantener la contraseña actual",
+      "setPasswordPlaceholder": "Definir contraseña de administrador",
+      "passwordConfigured": "Contraseña configurada",
+      "noPasswordConfigured": "No hay contraseña configurada"
+    },
+    "cashRegister": {
+      "title": "Caja",
+      "businessTimezone": "Zona horaria del negocio",
+      "timezonePlaceholder": "Seleccionar zona horaria",
+      "autoCloseTime": "Hora de cierre automático",
+      "autoCloseTimeHelp": "Las cajas que permanezcan abiertas a esta hora se cerrarán automáticamente."
+    }
+  }
+}

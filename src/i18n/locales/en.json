@@ -1,0 +1,663 @@
+{
+  "common": {
+    "loadingWorkspace": "Loading workspace...",
+
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+
+    "create": "Create",
+    "creating": "Creating...",
+
+    "edit": "Edit",
+    "update": "Update",
+    "updating": "Updating...",
+
+    "delete": "Delete",
+
+    "search": "Search",
+
+    "yes": "Yes",
+    "no": "No",
+
+    "active": "Active",
+    "inactive": "Inactive",
+
+    "status": "Status",
+
+    "previous": "Previous",
+    "next": "Next",
+
+    "clearFilters": "Clear Filters",
+
+    "optional": "(optional)",
+
+    "loading": "Loading...",
+    "noData": "No data available",
+
+    "actions": "Actions",
+
+    "logout": "Logout",
+    "settings": "Settings",
+
+    "clear": "Clear",
+
+    "date": "Date",
+    "quantity": "Quantity",
+    "reason": "Reason",
+    "type": "Type",
+    "created": "Created",
+    "updated": "Updated",
+    "details": "Details",
+    "export": "Export",
+    "saveChanges": "Save Changes",
+
+    "from": "From",
+    "to": "To",
+    "all": "All",
+    "name": "Name",
+    "description": "Description",
+    "product": "Product",
+    "supplier": "Supplier",
+    "category": "Category",
+    "phone": "Phone",
+    "email": "Email",
+    "stock": "Stock",
+    "price": "Price",
+    "total": "Total",
+    "subtotal": "Subtotal"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "sales": "Sales",
+    "supplierOrders": "Supplier Orders",
+    "products": "Products",
+    "categories": "Categories",
+    "suppliers": "Suppliers",
+    "movementHistory": "Movement History",
+    "adminSettings": "Admin Settings",
+    "myProfile": "My Profile"
+  },
+  "auth": {
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign in",
+      "signingIn": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "register": "Register",
+      "invalidCredentials": "Invalid credentials or email not verified",
+      "registeredMessage": "Account created. Check your email to verify your account before signing in.",
+      "verifiedMessage": "Email verified successfully. You can now sign in.",
+      "passwordResetMessage": "Password updated successfully. You can now sign in."
+    },
+    "register": {
+      "title": "Create account",
+      "firstname": "First name",
+      "lastname": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "createAccount": "Create account",
+      "creatingAccount": "Creating account...",
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Login",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "description": "Start using Solaris with your own workspace.",
+      "createError": "Could not create account"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "description": "Enter your email and we'll send you a reset link.",
+      "email": "Email",
+      "sendResetLink": "Send reset link",
+      "sending": "Sending...",
+      "rememberedPassword": "Remembered your password?",
+      "backToLogin": "Back to login",
+      "error": "Could not request password reset"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Choose a new password for your Solaris account.",
+      "newPassword": "New password",
+      "resetPassword": "Reset password",
+      "saving": "Saving...",
+      "backToLogin": "Back to login",
+      "missingToken": "Password reset token is missing.",
+      "invalidToken": "The reset link is invalid or expired."
+    },
+    "verifyEmail": {
+      "verifying": "Verifying your email...",
+      "missingToken": "Verification token is missing.",
+      "invalidToken": "The verification link is invalid or expired.",
+      "backToLogin": "Back to login"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or may have been moved.",
+    "goBack": "Go Back",
+    "dashboard": "Dashboard",
+    "login": "Login"
+  },
+  "dashboard": {
+  "title": "Solaris Dashboard",
+  "description": "Quick overview of sales, stock alerts and supplier orders.",
+  "loadError": "Could not load dashboard",
+  "sales": "sales",
+  "income": "income",
+  "day": "Day",
+  "productsNeedRestock": "products need restock",
+  "viewFilteredOrders": "View filtered orders",
+  "monthlyOverviewTitle": "Monthly Sales Overview",
+  "monthlyOverviewDescription": "Daily income and sales count for the current month.",
+  "cards": {
+    "monthlySales": "Monthly Sales",
+    "todaySales": "Today Sales",
+    "lowStockProducts": "Low Stock Products",
+    "supplierOrders": "Supplier Orders"
+  },
+  "orderStatus": {
+    "sent": "Sent",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  }
+},
+  "profile": {
+    "title": "My Profile",
+    "description": "Manage your account details and password.",
+    "accountDetails": "Account details",
+    "firstname": "First name",
+    "lastname": "Last name",
+    "email": "Email",
+    "emailReadonly": "Email cannot be changed from this screen.",
+    "saveProfile": "Save Profile",
+    "savingProfile": "Saving...",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "updatePassword": "Update Password",
+    "updatingPassword": "Updating...",
+    "loadError": "Could not load profile",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Could not update profile",
+    "passwordSuccess": "Password updated successfully",
+    "passwordError": "Could not update password"
+  },
+  "products": {
+    "title": "Products",
+    "description": "Manage inventory products and stock.",
+    "importProducts": "Import Products",
+    "newProduct": "New Product",
+    "searchPlaceholder": "Search by name or SKU...",
+    "allCategories": "All categories",
+    "allStockStatus": "All stock status",
+    "lowStockOnly": "Low stock only",
+    "okStockOnly": "OK stock only",
+    "clearFilters": "Clear Filters",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "deleteConfirm": "Are you sure you want to delete this product?",
+    "deleteSuccess": "Product deleted successfully",
+    "deleteError": "Could not delete product",
+    "empty": "No products found for the selected filters.",
+    "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} products",
+    "previous": "Previous",
+    "next": "Next",
+    "status": {
+      "lowStock": "LOW STOCK",
+      "ok": "OK"
+    },
+    "actions": {
+      "restock": "Restock",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "table": {
+      "product": "Product",
+      "sku": "SKU",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "description": "Organize products into business categories.",
+    "newCategory": "New Category",
+    "searchPlaceholder": "Search by name, description or date...",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "created": "Created",
+    "deleteConfirm": "Are you sure you want to delete this category?",
+    "deleteSuccess": "Category deleted successfully",
+    "deleteError": "Could not delete category",
+    "loadError": "Could not load categories",
+    "empty": "No categories found for the selected filters.",
+    "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} categories",
+    "previous": "Previous",
+    "next": "Next",
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "table": {
+      "name": "Name",
+      "description": "Description",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    }
+  },
+  "productForm": {
+    "newTitle": "New Product",
+    "newDescription": "Create a new inventory product.",
+    "nameRequired": "Name *",
+    "sku": "SKU",
+    "skuPlaceholder": "Leave empty to generate automatically",
+    "priceRequired": "Price *",
+    "stockQuantityRequired": "Stock Quantity *",
+    "category": "Category",
+    "selectCategory": "Select category",
+    "customLowStockThreshold": "Custom Low Stock Threshold",
+    "globalSettingPlaceholder": "Use global setting",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional product description",
+    "createProduct": "Create Product",
+    "creating": "Creating...",
+    "createSuccess": "Product created successfully",
+    "createError": "Could not create product",
+    "loadCategoriesError": "Could not load categories",
+    "updateProduct": "Update Product",
+    "updating": "Updating...",
+    "updateSuccess": "Product updated successfully",
+    "updateError": "Could not update product",
+    "editTitle": "Edit Product",
+    "editDescription": "Update product information.",
+    "loadProductError": "Could not load product",
+    "emptySkuHelp": "Leave empty to generate a new system SKU automatically.",
+    "lowStockHelp": "Leave empty to use the global low stock threshold."
+  },
+  "categoryForm": {
+    "newTitle": "New Category",
+    "newDescription": "Create a new product category.",
+    "nameRequired": "Name *",
+    "description": "Description",
+    "createCategory": "Create Category",
+    "creating": "Creating...",
+    "createSuccess": "Category created successfully",
+    "createError": "Could not create category",
+    "editTitle": "Edit Category",
+    "editDescription": "Update category information.",
+    "updateCategory": "Update Category",
+    "updating": "Updating...",
+    "updateSuccess": "Category updated successfully",
+    "updateError": "Could not update category",
+    "loadError": "Could not load category"
+  },
+  "suppliers": {
+    "title": "Suppliers",
+    "description": "Manage suppliers used for purchasing and future orders.",
+    "newSupplier": "New Supplier",
+    "searchPlaceholder": "Search supplier...",
+    "loadError": "Could not load suppliers",
+    "deleteConfirm": "Are you sure you want to delete this supplier?",
+    "deleteSuccess": "Supplier deleted successfully",
+    "deleteError": "Could not delete supplier",
+    "noContactName": "No contact name",
+    "noEmail": "No email",
+    "empty": "No suppliers found for the selected filters.",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} suppliers",
+    "filters": {
+      "allStatuses": "All statuses",
+      "activeOnly": "Active only",
+      "inactiveOnly": "Inactive only"
+    },
+    "status": {
+      "active": "ACTIVE",
+      "inactive": "INACTIVE"
+    },
+    "table": {
+      "supplier": "Supplier",
+      "contact": "Contact",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  },
+  "supplierForm": {
+    "newTitle": "New Supplier",
+    "newDescription": "Create a supplier for future purchases and orders.",
+    "supplierNameRequired": "Supplier Name *",
+    "contactName": "Contact Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "notes": "Notes",
+    "activeSupplier": "Active supplier",
+    "createSupplier": "Create Supplier",
+    "createSuccess": "Supplier created successfully",
+    "createError": "Could not create supplier",
+    "editTitle": "Edit Supplier",
+    "editDescription": "Update supplier information.",
+    "updateSupplier": "Update Supplier",
+    "updateSuccess": "Supplier updated successfully",
+    "updateError": "Could not update supplier",
+    "loadError": "Could not load supplier"
+  },
+  "productImport": {
+    "title": "Import Products",
+    "description": "Upload an Excel file to create multiple products at once.",
+    "backToProducts": "Back to Products",
+    "excelFormat": "Excel format",
+    "excelFormatDescription": "Your file must use the following columns in the first row:",
+    "optionalColumnsHelp": "SKU, Category, Custom Low Stock and Description are optional. If SKU is empty, Solaris will generate one automatically. If Category is empty, Solaris will use General.",
+    "downloadTemplate": "Download Template",
+    "importMode": "Import mode",
+    "importModeHelp": "Products are matched by name. In update mode, existing products will be updated instead of failing.",
+    "uploadFile": "Upload file",
+    "uploadFileDescription": "Select a .xlsx file and start the import.",
+    "importProducts": "Import Products",
+    "importing": "Importing...",
+    "selectFileError": "Select an Excel file first",
+    "completedWithErrors": "Import completed with errors",
+    "success": "Products imported successfully",
+    "error": "Could not import products",
+    "columns": {
+      "name": "Name",
+      "sku": "SKU",
+      "price": "Price",
+      "stockQuantity": "Stock Quantity",
+      "category": "Category",
+      "customLowStock": "Custom Low Stock",
+      "description": "Description"
+    },
+    "modes": {
+      "createOnly": "Create only",
+      "createOrUpdate": "Create or update existing products"
+    },
+    "result": {
+      "title": "Import result",
+      "created": "Created",
+      "updated": "Updated",
+      "failed": "Failed",
+      "errors": "Errors"
+    }
+  },
+  "sales": {
+    "title": "Sales",
+    "description": "Track daily sales and cash register activity.",
+    "exportExcel": "Export Excel",
+    "newSale": "New Sale",
+    "openRegisterBeforeSale": "Open or reopen cash register before creating sales",
+    "saleNumber": "Sale #{{id}}",
+    "viewDetail": "View Detail",
+    "empty": "No sales found for the selected filters.",
+    "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} sales",
+    "payment": {
+      "cash": "Cash",
+      "debit": "Debit",
+      "credit": "Credit",
+      "debitCard": "Debit Card",
+      "creditCard": "Credit Card",
+      "transfer": "Transfer",
+      "other": "Other"
+    },
+    "cashRegister": {
+      "title": "Cash Register",
+      "description": "Daily sales control grouped by payment method.",
+      "openedAt": "Opened At",
+      "openedBy": "Opened By",
+      "reopens": "Reopens",
+      "noRegisterToday": "No cash register exists for today.",
+      "totalSales": "Total Sales",
+      "clickToShowAll": "Click to show all sales.",
+      "open": "Open Cash Register",
+      "close": "Close Cash Register",
+      "reopen": "Reopen Cash Register",
+      "openedSuccessfully": "Cash register opened successfully",
+      "closedSuccessfully": "Cash register closed successfully",
+      "reopenedSuccessfully": "Cash register reopened successfully",
+      "invalidPassword": "Invalid admin password",
+      "alreadyExistsToday": "There is already a cash register session for today",
+      "actionFailed": "Cash register action failed",
+      "enterPasswordError": "Enter the admin password",
+      "enterAdminPassword": "Enter the admin password to continue.",
+      "adminPassword": "Admin Password",
+      "processing": "Processing...",
+      "confirm": "Confirm",
+      "openStatus": "OPEN",
+      "closedStatus": "CLOSED"
+    },
+    "calendar": {
+      "title": "Sales Calendar",
+      "from": "From",
+      "to": "To"
+    },
+    "table": {
+      "sale": "Sale",
+      "payment": "Payment",
+      "items": "Items",
+      "total": "Total",
+      "date": "Date"
+    }
+  },
+  "saleForm": {
+    "title": "New Sale",
+    "description": "Create a new sale and update inventory automatically.",
+    "saleDetails": "Sale details",
+    "paymentMethod": "Payment method",
+    "products": "Products",
+    "addProduct": "Add Product",
+    "product": "Product",
+    "searchProductPlaceholder": "Search product by name, SKU or category...",
+    "stock": "Stock",
+    "noProductsFound": "No products found",
+    "selectedProduct": "Selected: {{name}}",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "unitPriceAndStock": "Unit price: ${{price}} · Stock: {{stock}}",
+    "selectProductHelp": "Select a product to calculate price and stock.",
+    "remove": "Remove",
+    "totalAmount": "Total Amount",
+    "createSale": "Create Sale",
+    "creating": "Creating...",
+    "createSuccess": "Sale created successfully",
+    "createError": "Could not create sale",
+    "openRegisterBeforeSale": "Open or reopen cash register before creating sales",
+    "errors": {
+      "addAtLeastOneProduct": "Add at least one product",
+      "duplicateProduct": "The same product cannot be added more than once",
+      "stockExceeded": "One or more products exceed available stock",
+      "completeAllLines": "Complete all product lines before creating the sale",
+      "noOpenCashRegister": "There is no open cash register session",
+      "quantityExceedsStock": "Quantity exceeds available stock",
+      "productAlreadyAdded": "This product is already added"
+    }
+  },
+  "saleDetail": {
+    "title": "Sale #{{id}}",
+    "backToSales": "Back to Sales",
+    "paymentMethod": "Payment Method",
+    "items": "Items",
+    "total": "Total",
+    "notFound": "Sale not found.",
+    "loadError": "Could not load sale",
+    "table": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "subtotal": "Subtotal"
+    }
+  },
+  "supplierOrders": {
+    "title": "Supplier Orders",
+    "description": "Create, send and track purchase orders to suppliers.",
+    "newOrder": "New Supplier Order",
+    "searchPlaceholder": "Search by supplier or product...",
+    "loadError": "Could not load supplier orders",
+    "updateError": "Could not update supplier order",
+    "cancelError": "Could not cancel supplier order",
+    "deleteError": "Could not delete supplier order",
+    "deleteConfirm": "Are you sure you want to delete this supplier order?",
+    "deleteSuccess": "Supplier order deleted successfully",
+    "markSentSuccess": "Supplier order marked as sent",
+    "markCompletedSuccess": "Supplier order completed successfully",
+    "cancelSuccess": "Supplier order cancelled successfully",
+    "noPhoneError": "Supplier does not have a phone number",
+    "whatsappMarkSentError": "WhatsApp opened, but the order could not be marked as sent",
+    "orderNumber": "Order #{{id}}",
+    "itemsCount_one": "{{count}} item",
+    "itemsCount_other": "{{count}} items",
+    "empty": "No supplier orders found for the selected filters.",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} supplier orders",
+    "filters": {
+      "allStatuses": "All statuses"
+    },
+    "status": {
+      "draft": "DRAFT",
+      "sent": "SENT",
+      "completed": "COMPLETED",
+      "cancelled": "CANCELLED"
+    },
+    "table": {
+      "order": "Order",
+      "supplier": "Supplier",
+      "items": "Items",
+      "created": "Created"
+    },
+    "actions": {
+      "details": "Details",
+      "whatsapp": "WhatsApp",
+      "markSent": "Mark Sent",
+      "complete": "Complete",
+      "cancel": "Cancel"
+    }
+  },
+  "supplierOrderForm": {
+    "title": "New Supplier Order",
+    "description": "Create a purchase order to send to a supplier.",
+    "orderDetails": "Order Details",
+    "supplier": "Supplier",
+    "searchSupplierPlaceholder": "Search supplier by name, contact or phone...",
+    "products": "Products",
+    "addProduct": "Add Product",
+    "product": "Product",
+    "searchProductPlaceholder": "Search product by name or SKU...",
+    "productMeta": "SKU: {{sku}} · Stock: {{stock}}",
+    "quantity": "Quantity",
+    "createOrder": "Create Supplier Order",
+    "createSuccess": "Supplier order created successfully",
+    "createError": "Could not create supplier order",
+    "loadError": "Could not load suppliers and products",
+    "errors": {
+      "selectSupplier": "Select a supplier",
+      "addAtLeastOneProduct": "Add at least one product"
+    },
+    "messagePreview": {
+      "title": "WhatsApp Preview",
+      "description": "This message will be sent to the supplier.",
+      "empty": "Select a supplier and products to preview the message.",
+      "greeting": "Hello {{supplierName}}, we would like to place the following order:",
+      "itemLine": "• {{productName}} × {{quantity}}"
+    }
+  },
+  "supplierOrderDetail": {
+    "title": "Order #{{id}}",
+    "description": "Review supplier order details and status.",
+    "backToOrders": "Back to Orders",
+    "loadError": "Could not load supplier order",
+    "updateError": "Could not update supplier order",
+    "cancelError": "Could not cancel supplier order",
+    "cancelConfirm": "Are you sure you want to cancel this supplier order?",
+    "cancelSuccess": "Supplier order cancelled successfully",
+    "markSentSuccess": "Supplier order marked as sent",
+    "markCompletedSuccess": "Supplier order completed successfully",
+    "noPhoneError": "Supplier does not have a phone number",
+    "whatsappMarkSentError": "WhatsApp opened, but the order could not be marked as sent",
+    "summary": {
+      "title": "Order Summary",
+      "supplier": "Supplier",
+      "phone": "Phone",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "items": "Items",
+      "noPhone": "No phone available"
+    },
+    "table": {
+      "product": "Product",
+      "sku": "SKU",
+      "quantity": "Quantity"
+    },
+    "whatsapp": {
+      "title": "WhatsApp Message",
+      "description": "Preview of the message that will be sent to the supplier.",
+      "open": "Open WhatsApp"
+    },
+    "actions": {
+      "title": "Actions",
+      "markSent": "Mark as Sent",
+      "markCompleted": "Mark as Completed",
+      "cancelOrder": "Cancel Order"
+    }
+  },
+  "stockMovements": {
+    "title": "Stock Movements",
+    "description": "Track inventory movements and stock adjustments.",
+    "newMovement": "New Movement",
+    "exportExcel": "Export Excel",
+    "loadError": "Could not load stock movements",
+    "empty": "No stock movements found.",
+    "table": {
+      "product": "Product",
+      "type": "Type",
+      "quantity": "Quantity",
+      "previous": "Previous Stock",
+      "current": "Current Stock",
+      "reason": "Reason",
+      "date": "Date"
+    },
+    "types": {
+      "in": "IN",
+      "out": "OUT",
+      "adjustment": "ADJUSTMENT"
+    }
+  },
+  "adminSettings": {
+    "title": "Administration Settings",
+    "description": "Configure inventory, security and cash register settings.",
+    "loadError": "Could not load system settings",
+    "updateSuccess": "Settings updated successfully",
+    "updateError": "Could not update settings",
+    "saveSettings": "Save Settings",
+    "lastUpdated": "Last updated: {{date}}",
+    "inventory": {
+      "title": "Inventory",
+      "globalLowStockThreshold": "Global Low Stock Threshold",
+      "globalLowStockHelp": "Default low stock threshold used when a product does not have a custom value."
+    },
+    "security": {
+      "title": "Security",
+      "adminAccessPassword": "Administrator Password",
+      "adminAccessPasswordHelp": "This password will be required for sensitive administrative actions.",
+      "keepCurrentPasswordPlaceholder": "Leave empty to keep current password",
+      "setPasswordPlaceholder": "Set administrator password",
+      "passwordConfigured": "Password configured",
+      "noPasswordConfigured": "No password configured"
+    },
+    "cashRegister": {
+      "title": "Cash Register",
+      "businessTimezone": "Business Timezone",
+      "timezonePlaceholder": "Select timezone",
+      "autoCloseTime": "Automatic Close Time",
+      "autoCloseTimeHelp": "Cash registers still open at this time will be automatically closed."
+    }
+  }
+}

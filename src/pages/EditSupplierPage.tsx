@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { getSupplierById, updateSupplier } from '../api/supplierService'
+import LoadingScreen from '../components/LoadingScreen'
 
 function EditSupplierPage() {
-    const { id } = useParams()
     const navigate = useNavigate()
+    const { id } = useParams()
+    const { t } = useTranslation()
 
     const [name, setName] = useState('')
     const [contactName, setContactName] = useState('')
@@ -22,25 +25,26 @@ function EditSupplierPage() {
             if (!id) return
 
             try {
+                setLoading(true)
+
                 const supplier = await getSupplierById(Number(id))
 
                 setName(supplier.name)
-                setContactName(supplier.contactName || '')
-                setEmail(supplier.email || '')
-                setPhone(supplier.phone || '')
-                setAddress(supplier.address || '')
-                setNotes(supplier.notes || '')
+                setContactName(supplier.contactName ?? '')
+                setEmail(supplier.email ?? '')
+                setPhone(supplier.phone ?? '')
+                setAddress(supplier.address ?? '')
+                setNotes(supplier.notes ?? '')
                 setActive(supplier.active)
             } catch {
-                toast.error('Could not load supplier')
-                navigate('/suppliers')
+                toast.error(t('supplierForm.loadError'))
             } finally {
                 setLoading(false)
             }
         }
 
         loadSupplier()
-    }, [id, navigate])
+    }, [id, t])
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -60,83 +64,71 @@ function EditSupplierPage() {
                 active,
             })
 
-            toast.success('Supplier updated successfully')
+            toast.success(t('supplierForm.updateSuccess'))
             navigate('/suppliers')
         } catch {
-            toast.error('Could not update supplier')
+            toast.error(t('supplierForm.updateError'))
         } finally {
             setSaving(false)
         }
     }
 
     if (loading) {
-        return <SupplierFormSkeleton />
+        return <LoadingScreen />
     }
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">Edit Supplier</h1>
+            <h1 className="text-4xl font-bold">
+                {t('supplierForm.editTitle')}
+            </h1>
 
             <p className="mt-2 solaris-muted">
-                Update supplier information for future purchases and orders.
+                {t('supplierForm.editDescription')}
             </p>
 
             <form onSubmit={handleSubmit} className="solaris-panel mt-8 max-w-3xl">
                 <div className="grid gap-5 md:grid-cols-2">
-                    <div>
-                        <label className="text-sm solaris-muted">Supplier Name</label>
-                        <input
-                            required
-                            value={name}
-                            onChange={(event) => setName(event.target.value)}
-                            className="solaris-input mt-2 w-full"
-                        />
-                    </div>
+                    <Input
+                        required
+                        label={t('supplierForm.supplierNameRequired')}
+                        value={name}
+                        onChange={setName}
+                    />
 
-                    <div>
-                        <label className="text-sm solaris-muted">Contact Name</label>
-                        <input
-                            value={contactName}
-                            onChange={(event) => setContactName(event.target.value)}
-                            className="solaris-input mt-2 w-full"
-                        />
-                    </div>
+                    <Input
+                        label={t('supplierForm.contactName')}
+                        value={contactName}
+                        onChange={setContactName}
+                    />
 
-                    <div>
-                        <label className="text-sm solaris-muted">Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            className="solaris-input mt-2 w-full"
-                        />
-                    </div>
+                    <Input
+                        type="email"
+                        label={t('supplierForm.email')}
+                        value={email}
+                        onChange={setEmail}
+                    />
 
-                    <div>
-                        <label className="text-sm solaris-muted">Phone</label>
-                        <input
-                            value={phone}
-                            onChange={(event) => setPhone(event.target.value.replace(/\s/g, ''))}
-                            placeholder="+5492611234567"
-                            className="solaris-input mt-2 w-full"
-                        />
-
-                        <p className="mt-2 text-sm solaris-subtle">
-                            Use international format for future WhatsApp integration, for example +5492611234567.
-                        </p>
-                    </div>
+                    <Input
+                        label={t('supplierForm.phone')}
+                        value={phone}
+                        onChange={(value) => setPhone(value.replace(/\s/g, ''))}
+                        placeholder="+5492611234567"
+                    />
 
                     <div className="md:col-span-2">
-                        <label className="text-sm solaris-muted">Address</label>
-                        <input
+                        <Input
+                            label={t('supplierForm.address')}
                             value={address}
-                            onChange={(event) => setAddress(event.target.value)}
-                            className="solaris-input mt-2 w-full"
+                            onChange={setAddress}
                         />
                     </div>
 
                     <div className="md:col-span-2">
-                        <label className="text-sm solaris-muted">Notes</label>
+                        <label className="text-sm solaris-muted">
+                            {t('supplierForm.notes')}
+                        </label>
+
                         <textarea
                             value={notes}
                             onChange={(event) => setNotes(event.target.value)}
@@ -151,7 +143,10 @@ function EditSupplierPage() {
                             onChange={(event) => setActive(event.target.checked)}
                             className="h-4 w-4"
                         />
-                        <span className="text-sm solaris-muted">Active supplier</span>
+
+                        <span className="text-sm solaris-muted">
+                            {t('supplierForm.activeSupplier')}
+                        </span>
                     </label>
                 </div>
 
@@ -160,7 +155,9 @@ function EditSupplierPage() {
                         disabled={saving}
                         className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                     >
-                        {saving ? 'Saving...' : 'Save Changes'}
+                        {saving
+                            ? t('common.saving')
+                            : t('supplierForm.updateSupplier')}
                     </button>
 
                     <button
@@ -168,7 +165,7 @@ function EditSupplierPage() {
                         onClick={() => navigate('/suppliers')}
                         className="rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
-                        Cancel
+                        {t('common.cancel')}
                     </button>
                 </div>
             </form>
@@ -176,27 +173,37 @@ function EditSupplierPage() {
     )
 }
 
-function SupplierFormSkeleton() {
+type InputProps = {
+    label: string
+    value: string
+    onChange: (value: string) => void
+    type?: string
+    required?: boolean
+    placeholder?: string
+}
+
+function Input({
+                   label,
+                   value,
+                   onChange,
+                   type = 'text',
+                   required = false,
+                   placeholder,
+               }: InputProps) {
     return (
         <div>
-            <div className="h-10 w-64 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+            <label className="text-sm solaris-muted">
+                {label}
+            </label>
 
-            <div className="solaris-panel mt-8 max-w-3xl">
-                <div className="grid gap-5 md:grid-cols-2">
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className={index >= 4 ? 'md:col-span-2' : ''}
-                        >
-                            <div className="h-4 w-32 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                            <div className="mt-2 h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                        </div>
-                    ))}
-                </div>
-
-                <div className="mt-6 h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
+            <input
+                required={required}
+                type={type}
+                value={value}
+                placeholder={placeholder}
+                onChange={(event) => onChange(event.target.value)}
+                className="solaris-input mt-2 w-full"
+            />
         </div>
     )
 }

@@ -12,7 +12,6 @@ import EditProductPage from '../pages/EditProductPage'
 import ImportProductsPage from '../pages/ImportProductsPage'
 import NewCategoryPage from '../pages/NewCategoryPage'
 import EditCategoryPage from '../pages/EditCategoryPage'
-import NewStockMovementPage from '../pages/NewStockMovementPage'
 import AdminSettingsPage from '../pages/AdminSettingsPage'
 import SalesPage from '../pages/SalesPage'
 import NewSalePage from '../pages/NewSalePage'
@@ -60,7 +59,6 @@ function AppRouter() {
                         <Route path="/categories/:id/edit" element={<EditCategoryPage />} />
 
                         <Route path="/stock-movements" element={<StockMovementsPage />} />
-                        <Route path="/stock-movements/new" element={<NewStockMovementPage />} />
 
                         <Route path="/sales" element={<SalesPage />} />
                         <Route path="/sales/new" element={<NewSalePage />} />

@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { deleteSupplier, getSuppliers } from '../api/supplierService'
 import type { Supplier } from '../types/supplier'
+import LoadingScreen from '../components/LoadingScreen'
 
 type StatusFilter = 'all' | 'active' | 'inactive'
 
 function SuppliersPage() {
+    const { t } = useTranslation()
+
     const [suppliers, setSuppliers] = useState<Supplier[]>([])
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState('')
@@ -16,8 +20,12 @@ function SuppliersPage() {
 
     async function loadSuppliers() {
         try {
+            setLoading(true)
+
             const data = await getSuppliers()
             setSuppliers(data)
+        } catch {
+            toast.error(t('suppliers.loadError'))
         } finally {
             setLoading(false)
         }
@@ -25,19 +33,19 @@ function SuppliersPage() {
 
     useEffect(() => {
         loadSuppliers()
-    }, [])
+    }, [t])
 
     async function handleDeleteSupplier(id: number) {
-        const confirmed = window.confirm('Are you sure you want to delete this supplier?')
+        const confirmed = window.confirm(t('suppliers.deleteConfirm'))
 
         if (!confirmed) return
 
         try {
             await deleteSupplier(id)
-            toast.success('Supplier deleted successfully')
+            toast.success(t('suppliers.deleteSuccess'))
             await loadSuppliers()
         } catch {
-            toast.error('Could not delete supplier')
+            toast.error(t('suppliers.deleteError'))
         }
     }
 
@@ -77,17 +85,19 @@ function SuppliersPage() {
     )
 
     if (loading) {
-        return <SuppliersSkeleton />
+        return <LoadingScreen />
     }
 
     return (
         <div>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold">Suppliers</h1>
+                    <h1 className="text-4xl font-bold">
+                        {t('suppliers.title')}
+                    </h1>
 
                     <p className="mt-2 solaris-muted">
-                        Manage suppliers used for purchasing and future orders.
+                        {t('suppliers.description')}
                     </p>
                 </div>
 
@@ -95,7 +105,7 @@ function SuppliersPage() {
                     to="/suppliers/new"
                     className="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-500"
                 >
-                    New Supplier
+                    {t('suppliers.newSupplier')}
                 </Link>
             </div>
 
@@ -107,7 +117,7 @@ function SuppliersPage() {
                             setSearch(event.target.value)
                             setCurrentPage(1)
                         }}
-                        placeholder="Search supplier..."
+                        placeholder={t('suppliers.searchPlaceholder')}
                         className="solaris-input w-full"
                     />
 
@@ -119,9 +129,9 @@ function SuppliersPage() {
                         }}
                         className="solaris-input"
                     >
-                        <option value="all">All statuses</option>
-                        <option value="active">Active only</option>
-                        <option value="inactive">Inactive only</option>
+                        <option value="all">{t('suppliers.filters.allStatuses')}</option>
+                        <option value="active">{t('suppliers.filters.activeOnly')}</option>
+                        <option value="inactive">{t('suppliers.filters.inactiveOnly')}</option>
                     </select>
 
                     <button
@@ -129,13 +139,12 @@ function SuppliersPage() {
                         onClick={clearFilters}
                         className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
-                        Clear Filters
+                        {t('common.clearFilters')}
                     </button>
                 </div>
 
                 <p className="text-sm solaris-muted">
-                    {filteredSuppliers.length} result
-                    {filteredSuppliers.length === 1 ? '' : 's'}
+                    {t('suppliers.results', { count: filteredSuppliers.length })}
                 </p>
             </div>
 
@@ -149,23 +158,15 @@ function SuppliersPage() {
                                 </h2>
 
                                 <p className="mt-1 text-sm solaris-muted">
-                                    {supplier.contactName || 'No contact name'}
+                                    {supplier.contactName || t('suppliers.noContactName')}
                                 </p>
 
                                 <p className="mt-1 text-sm solaris-subtle">
-                                    {supplier.email || 'No email'}
+                                    {supplier.email || t('suppliers.noEmail')}
                                 </p>
                             </div>
 
-                            {supplier.active ? (
-                                <span className="rounded-lg bg-green-500/10 px-3 py-1 text-xs font-medium text-green-500 dark:text-green-300">
-                  ACTIVE
-                </span>
-                            ) : (
-                                <span className="rounded-lg bg-slate-500/10 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-300">
-                  INACTIVE
-                </span>
-                            )}
+                            <StatusBadge active={supplier.active} />
                         </div>
 
                         <div className="mt-4 flex flex-wrap gap-2">
@@ -173,36 +174,57 @@ function SuppliersPage() {
                                 to={`/suppliers/${supplier.id}/edit`}
                                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             >
-                                Edit
+                                {t('common.edit')}
                             </Link>
 
                             <button
                                 onClick={() => handleDeleteSupplier(supplier.id)}
                                 className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                             >
-                                Delete
+                                {t('common.delete')}
                             </button>
                         </div>
                     </div>
                 ))}
+
+                {paginatedSuppliers.length === 0 && (
+                    <div className="solaris-panel text-center solaris-muted">
+                        {t('suppliers.empty')}
+                    </div>
+                )}
             </div>
 
             <div className="solaris-card mt-8 hidden overflow-hidden lg:block">
                 <table className="w-full">
                     <thead className="bg-slate-100 dark:bg-slate-800/50">
                     <tr>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Supplier</th>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Contact</th>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Email</th>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Phone</th>
-                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">Status</th>
-                        <th className="px-6 py-4 text-right text-sm text-slate-600 dark:text-slate-300">Actions</th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('suppliers.table.supplier')}
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('suppliers.table.contact')}
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('suppliers.table.email')}
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('suppliers.table.phone')}
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
+                            {t('suppliers.table.status')}
+                        </th>
+                        <th className="px-6 py-4 text-right text-sm text-slate-600 dark:text-slate-300">
+                            {t('suppliers.table.actions')}
+                        </th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    {filteredSuppliers.map((supplier) => (
-                        <tr key={supplier.id} className="border-t border-slate-200 dark:border-slate-800">
+                    {paginatedSuppliers.map((supplier) => (
+                        <tr
+                            key={supplier.id}
+                            className="border-t border-slate-200 dark:border-slate-800"
+                        >
                             <td className="px-6 py-4 font-medium text-slate-950 dark:text-white">
                                 {supplier.name}
                             </td>
@@ -220,15 +242,7 @@ function SuppliersPage() {
                             </td>
 
                             <td className="px-6 py-4">
-                                {supplier.active ? (
-                                    <span className="rounded-lg bg-green-500/10 px-3 py-1 text-sm font-medium text-green-500 dark:text-green-300">
-                      ACTIVE
-                    </span>
-                                ) : (
-                                    <span className="rounded-lg bg-slate-500/10 px-3 py-1 text-sm font-medium text-slate-500 dark:text-slate-300">
-                      INACTIVE
-                    </span>
-                                )}
+                                <StatusBadge active={supplier.active} />
                             </td>
 
                             <td className="px-6 py-4 text-right">
@@ -237,14 +251,14 @@ function SuppliersPage() {
                                         to={`/suppliers/${supplier.id}/edit`}
                                         className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                                     >
-                                        Edit
+                                        {t('common.edit')}
                                     </Link>
 
                                     <button
                                         onClick={() => handleDeleteSupplier(supplier.id)}
                                         className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                                     >
-                                        Delete
+                                        {t('common.delete')}
                                     </button>
                                 </div>
                             </td>
@@ -253,8 +267,11 @@ function SuppliersPage() {
 
                     {paginatedSuppliers.length === 0 && (
                         <tr>
-                            <td colSpan={6} className="px-6 py-10 text-center solaris-muted">
-                                No suppliers found for the selected filters.
+                            <td
+                                colSpan={6}
+                                className="px-6 py-10 text-center solaris-muted"
+                            >
+                                {t('suppliers.empty')}
                             </td>
                         </tr>
                     )}
@@ -265,7 +282,11 @@ function SuppliersPage() {
             {totalPages > 1 && (
                 <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm solaris-muted">
-                        Page {currentPage} of {totalPages} · {filteredSuppliers.length} suppliers
+                        {t('suppliers.pagination', {
+                            currentPage,
+                            totalPages,
+                            count: filteredSuppliers.length,
+                        })}
                     </p>
 
                     <div className="flex flex-wrap items-center gap-2">
@@ -275,7 +296,7 @@ function SuppliersPage() {
                             onClick={() => setCurrentPage((page) => page - 1)}
                             className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Previous
+                            {t('common.previous')}
                         </button>
 
                         {Array.from({ length: totalPages }).map((_, index) => {
@@ -303,7 +324,7 @@ function SuppliersPage() {
                             onClick={() => setCurrentPage((page) => page + 1)}
                             className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Next
+                            {t('common.next')}
                         </button>
                     </div>
                 </div>
@@ -312,24 +333,25 @@ function SuppliersPage() {
     )
 }
 
-function SuppliersSkeleton() {
+type StatusBadgeProps = {
+    active: boolean
+}
+
+function StatusBadge({ active }: StatusBadgeProps) {
+    const { t } = useTranslation()
+
+    if (active) {
+        return (
+            <span className="rounded-lg bg-green-500/10 px-3 py-1 text-xs font-medium text-green-500 dark:text-green-300 lg:text-sm">
+                {t('suppliers.status.active')}
+            </span>
+        )
+    }
+
     return (
-        <div>
-            <div className="flex items-center justify-between">
-                <div>
-                    <div className="h-10 w-52 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                </div>
-
-                <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
-
-            <div className="mt-8 grid gap-3 md:grid-cols-3">
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
-        </div>
+        <span className="rounded-lg bg-slate-500/10 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-300 lg:text-sm">
+            {t('suppliers.status.inactive')}
+        </span>
     )
 }
 

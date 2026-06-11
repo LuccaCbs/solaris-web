@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { Sun } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { verifyEmail } from '../api/authService'
 
 function VerifyEmailPage() {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
+    const { t } = useTranslation()
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
@@ -15,7 +16,7 @@ function VerifyEmailPage() {
             const token = searchParams.get('token')
 
             if (!token) {
-                setError('Verification token is missing.')
+                setError(t('auth.verifyEmail.missingToken'))
                 setLoading(false)
                 return
             }
@@ -24,44 +25,27 @@ function VerifyEmailPage() {
                 await verifyEmail(token)
                 navigate('/login?verified=true')
             } catch {
-                setError('The verification link is invalid or expired.')
+                setError(t('auth.verifyEmail.invalidToken'))
             } finally {
                 setLoading(false)
             }
         }
 
         verify()
-    }, [navigate, searchParams])
+    }, [navigate, searchParams, t])
 
     return (
-        <main className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+        <main className="flex min-h-screen items-center justify-center bg-black px-4 text-white">
             <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center shadow-2xl">
-                <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-3">
-                        <Sun
-                            className="h-10 w-10 text-yellow-400"
-                            strokeWidth={2.5}
-                        />
-
-                        <h1 className="text-5xl font-bold text-white">
-                            Solaris
-                        </h1>
-                    </div>
-
-                    <p className="mt-1 text-xs tracking-[0.25em] text-slate-500 uppercase">
-                        Business Management Platform
-                    </p>
-                </div>
-
                 {loading && (
-                    <div className="mt-8 rounded-xl border border-blue-500/20 bg-blue-500/10 p-4 text-sm text-blue-300">
-                        Verifying your email...
+                    <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-4 text-sm text-blue-300">
+                        {t('auth.verifyEmail.verifying')}
                     </div>
                 )}
 
                 {error && (
                     <>
-                        <div className="mt-8 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300">
+                        <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300">
                             {error}
                         </div>
 
@@ -69,7 +53,7 @@ function VerifyEmailPage() {
                             to="/login"
                             className="mt-6 inline-block rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500"
                         >
-                            Back to login
+                            {t('auth.verifyEmail.backToLogin')}
                         </Link>
                     </>
                 )}

@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Sun } from 'lucide-react'
 import { forgotPassword } from '../api/authService'
+import { useTranslation } from 'react-i18next'
+import logoWhite from '../assets/logo/solaris-white-logo-only.png'
+
 
 function ForgotPasswordPage() {
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const { t } = useTranslation()
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -19,7 +22,7 @@ function ForgotPasswordPage() {
             const response = await forgotPassword(email)
             setMessage(response.message)
         } catch {
-            setError('Could not request password reset')
+            setError(t('auth.forgotPassword.error'))
         } finally {
             setLoading(false)
         }
@@ -32,18 +35,22 @@ function ForgotPasswordPage() {
                 className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl"
             >
                 <div className="flex flex-col items-center mb-8">
-                    <Sun className="h-10 w-10 text-yellow-400" strokeWidth={2.5} />
+                    <img
+                        src={logoWhite}
+                        alt="Solaris logo"
+                        className="h-25 w-45 object-contain"
+                    />
 
                     <h1 className="mt-4 text-3xl font-bold text-white">
-                        Forgot Password
+                        {t('auth.forgotPassword.title')}
                     </h1>
 
                     <p className="mt-2 text-center text-sm text-slate-400">
-                        Enter your email and we&apos;ll send you a reset link.
+                        {t('auth.forgotPassword.description')}
                     </p>
                 </div>
 
-                <label className="text-sm text-slate-400">Email</label>
+                <label className="text-sm text-slate-400">{t('auth.forgotPassword.email')}</label>
 
                 <input
                     required
@@ -69,13 +76,13 @@ function ForgotPasswordPage() {
                     disabled={loading}
                     className="mt-6 w-full rounded-xl bg-blue-600 py-3 font-semibold hover:bg-blue-500 disabled:opacity-60"
                 >
-                    {loading ? 'Sending...' : 'Send reset link'}
+                    {loading ? t('auth.forgotPassword.sending') : t('auth.forgotPassword.sendResetLink')}
                 </button>
 
                 <p className="mt-6 text-center text-sm text-slate-400">
-                    Remembered your password?{' '}
+                    {t('auth.forgotPassword.rememberedPassword')}{' '}
                     <Link to="/login" className="font-semibold text-blue-400 hover:text-blue-300">
-                        Back to login
+                        {t('auth.forgotPassword.backToLogin')}
                     </Link>
                 </p>
             </form>

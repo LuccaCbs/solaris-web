@@ -5,6 +5,7 @@ import type { Product } from '../types/product'
 import type { Category } from '../types/category'
 import { deleteProduct, getProducts } from '../api/productService'
 import { getCategories } from '../api/categoryService'
+import { useTranslation } from 'react-i18next'
 
 type SortField = 'name' | 'sku' | 'categoryName' | 'price' | 'stockQuantity'
 type SortDirection = 'asc' | 'desc'
@@ -15,7 +16,7 @@ function ProductsPage() {
 
     const initialStockFilter =
         searchParams.get('stock') === 'low' ? 'low' : 'all'
-
+    const { t } = useTranslation()
     const [products, setProducts] = useState<Product[]>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState(true)
@@ -58,16 +59,16 @@ function ProductsPage() {
     }, [searchParams])
 
     async function handleDeleteProduct(id: number) {
-        const confirmed = window.confirm('Are you sure you want to delete this product?')
+        const confirmed = window.confirm(t('products.deleteConfirm'))
 
         if (!confirmed) return
 
         try {
             await deleteProduct(id)
-            toast.success('Product deleted successfully')
+            toast.success(t('products.deleteSuccess'))
             await loadData()
         } catch {
-            toast.error('Could not delete product')
+            toast.error(t('products.deleteError'))
         }
     }
 
@@ -154,10 +155,10 @@ function ProductsPage() {
         <div>
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold">Products</h1>
+                    <h1 className="text-4xl font-bold">{t('products.title')}</h1>
 
                     <p className="mt-2 solaris-muted">
-                        Manage inventory products and stock.
+                        {t('products.description')}
                     </p>
                 </div>
 
@@ -166,14 +167,14 @@ function ProductsPage() {
                         to="/products/import"
                         className="rounded-xl border border-slate-300 px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
-                        Import Products
+                        {t('products.importProducts')}
                     </Link>
 
                     <Link
                         to="/products/new"
                         className="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-500"
                     >
-                        New Product
+                        {t('products.newProduct')}
                     </Link>
                 </div>
             </div>
@@ -186,7 +187,7 @@ function ProductsPage() {
                             setSearch(event.target.value)
                             setCurrentPage(1)
                         }}
-                        placeholder="Search by name or SKU..."
+                        placeholder={t('products.searchPlaceholder')}
                         className="solaris-input w-full"
                     />
 
@@ -198,7 +199,7 @@ function ProductsPage() {
                         }}
                         className="solaris-input"
                     >
-                        <option value="all">All categories</option>
+                        <option value="all">{t('products.allCategories')}</option>
 
                         {categories.map((category) => (
                             <option key={category.id} value={category.name}>
@@ -214,9 +215,9 @@ function ProductsPage() {
                         }
                         className="solaris-input"
                     >
-                        <option value="all">All stock status</option>
-                        <option value="low">Low stock only</option>
-                        <option value="normal">OK stock only</option>
+                        <option value="all">{t('products.allStockStatus')}</option>
+                        <option value="low">{t('products.lowStockOnly')}</option>
+                        <option value="normal">{t('products.okStockOnly')}</option>
                     </select>
 
                     <button
@@ -224,13 +225,12 @@ function ProductsPage() {
                         onClick={clearFilters}
                         className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
-                        Clear Filters
+                        {t('products.clearFilters')}
                     </button>
                 </div>
 
                 <p className="text-sm solaris-muted">
-                    {filteredProducts.length} result
-                    {filteredProducts.length === 1 ? '' : 's'}
+                    {t('products.results', { count: filteredProducts.length })}
                 </p>
             </div>
 
@@ -254,11 +254,11 @@ function ProductsPage() {
 
                             {product.lowStock ? (
                                 <span className="rounded-lg bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400">
-                                    LOW STOCK
+                                    {t('products.status.lowStock')}
                                 </span>
                             ) : (
                                 <span className="rounded-lg bg-green-500/10 px-3 py-1 text-xs font-medium text-green-500 dark:text-green-300">
-                                    OK
+                                    {t('products.status.ok')}
                                 </span>
                             )}
                         </div>
@@ -268,21 +268,23 @@ function ProductsPage() {
                                 to={`/stock-movements/new?productId=${product.id}&type=IN`}
                                 className="rounded-lg bg-blue-500/10 px-3 py-2 text-sm text-blue-500 hover:bg-blue-500/20 dark:text-blue-300"
                             >
-                                Restock
+                                {t('products.actions.restock')}
                             </Link>
 
                             <Link
                                 to={`/products/${product.id}/edit`}
                                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             >
-                                Edit
+
+                                {t('products.actions.edit')}
                             </Link>
 
                             <button
                                 onClick={() => handleDeleteProduct(product.id)}
                                 className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                             >
-                                Delete
+
+                                {t('products.actions.delete')}
                             </button>
                         </div>
                     </div>
@@ -294,31 +296,31 @@ function ProductsPage() {
                     <thead className="bg-slate-100 dark:bg-slate-800/50">
                     <tr>
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
-                            <SortButton label="Product" field="name" currentField={sortField} direction={sortDirection} onSort={handleSort} />
+                            <SortButton label={t('products.table.product')} field="name" currentField={sortField} direction={sortDirection} onSort={handleSort} />
                         </th>
 
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
-                            <SortButton label="SKU" field="sku" currentField={sortField} direction={sortDirection} onSort={handleSort} />
+                            <SortButton label={t('products.table.sku')} field="sku" currentField={sortField} direction={sortDirection} onSort={handleSort} />
                         </th>
 
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
-                            <SortButton label="Category" field="categoryName" currentField={sortField} direction={sortDirection} onSort={handleSort} />
+                            <SortButton label={t('products.table.category')} field="categoryName" currentField={sortField} direction={sortDirection} onSort={handleSort} />
                         </th>
 
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
-                            <SortButton label="Price" field="price" currentField={sortField} direction={sortDirection} onSort={handleSort} />
+                            <SortButton label={t('products.table.price')} field="price" currentField={sortField} direction={sortDirection} onSort={handleSort} />
                         </th>
 
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
-                            <SortButton label="Stock" field="stockQuantity" currentField={sortField} direction={sortDirection} onSort={handleSort} />
+                            <SortButton label={t('products.table.stock')} field="stockQuantity" currentField={sortField} direction={sortDirection} onSort={handleSort} />
                         </th>
 
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
-                            Status
+                            {t('products.table.status')}
                         </th>
 
                         <th className="px-6 py-4 text-right text-sm text-slate-700 dark:text-slate-300">
-                            Actions
+                            {t('products.table.actions')}
                         </th>
                     </tr>
                     </thead>
@@ -397,7 +399,7 @@ function ProductsPage() {
                     {paginatedProducts.length === 0 && (
                         <tr>
                             <td colSpan={7} className="px-6 py-10 text-center solaris-muted">
-                                No products found for the selected filters.
+                                {t('products.empty')}
                             </td>
                         </tr>
                     )}
@@ -408,7 +410,11 @@ function ProductsPage() {
             {totalPages > 1 && (
                 <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm solaris-muted">
-                        Page {currentPage} of {totalPages} · {filteredProducts.length} products
+                        {t('products.pagination', {
+                            currentPage,
+                            totalPages,
+                            count: filteredProducts.length,
+                        })}
                     </p>
 
                     <div className="flex items-center gap-2">
@@ -418,7 +424,7 @@ function ProductsPage() {
                             onClick={() => setCurrentPage((page) => page - 1)}
                             className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Previous
+                            {t('products.previous')}
                         </button>
 
                         {Array.from({ length: totalPages }).map((_, index) => {
@@ -446,7 +452,7 @@ function ProductsPage() {
                             onClick={() => setCurrentPage((page) => page + 1)}
                             className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Next
+                            {t('products.next')}
                         </button>
                     </div>
                 </div>

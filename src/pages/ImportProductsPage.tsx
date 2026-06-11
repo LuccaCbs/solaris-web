@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
     downloadProductImportTemplate,
     importProducts,
@@ -9,6 +10,7 @@ import toast from 'react-hot-toast'
 
 function ImportProductsPage() {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const [file, setFile] = useState<File | null>(null)
     const [importing, setImporting] = useState(false)
@@ -19,7 +21,7 @@ function ImportProductsPage() {
         event.preventDefault()
 
         if (!file) {
-            toast.error('Select an Excel file first')
+            toast.error(t('productImport.selectFileError'))
             return
         }
 
@@ -31,12 +33,12 @@ function ImportProductsPage() {
             setResult(response)
 
             if (response.failedCount > 0) {
-                toast.error('Import completed with errors')
+                toast.error(t('productImport.completedWithErrors'))
             } else {
-                toast.success('Products imported successfully')
+                toast.success(t('productImport.success'))
             }
         } catch {
-            toast.error('Could not import products')
+            toast.error(t('productImport.error'))
         } finally {
             setImporting(false)
         }
@@ -47,11 +49,11 @@ function ImportProductsPage() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 className="text-4xl font-bold">
-                        Import Products
+                        {t('productImport.title')}
                     </h1>
 
                     <p className="mt-2 solaris-muted">
-                        Upload an Excel file to create multiple products at once.
+                        {t('productImport.description')}
                     </p>
                 </div>
 
@@ -60,17 +62,17 @@ function ImportProductsPage() {
                     onClick={() => navigate('/products')}
                     className="rounded-xl border border-slate-300 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                 >
-                    Back to Products
+                    {t('productImport.backToProducts')}
                 </button>
             </div>
 
             <div className="solaris-panel mt-8">
                 <h2 className="text-xl font-semibold">
-                    Excel format
+                    {t('productImport.excelFormat')}
                 </h2>
 
                 <p className="mt-2 solaris-muted">
-                    Your file must use the following columns in the first row:
+                    {t('productImport.excelFormatDescription')}
                 </p>
 
                 <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
@@ -78,13 +80,13 @@ function ImportProductsPage() {
                         <thead className="bg-slate-100 dark:bg-slate-800/50">
                         <tr>
                             {[
-                                'Name',
-                                'SKU',
-                                'Price',
-                                'Stock Quantity',
-                                'Category',
-                                'Custom Low Stock',
-                                'Description',
+                                t('productImport.columns.name'),
+                                t('productImport.columns.sku'),
+                                t('productImport.columns.price'),
+                                t('productImport.columns.stockQuantity'),
+                                t('productImport.columns.category'),
+                                t('productImport.columns.customLowStock'),
+                                t('productImport.columns.description'),
                             ].map((column) => (
                                 <th
                                     key={column}
@@ -99,9 +101,7 @@ function ImportProductsPage() {
                 </div>
 
                 <p className="mt-4 text-sm solaris-subtle">
-                    SKU, Category, Custom Low Stock and Description are optional.
-                    If SKU is empty, Solaris will generate one automatically.
-                    If Category is empty, Solaris will use General.
+                    {t('productImport.optionalColumnsHelp')}
                 </p>
 
                 <button
@@ -109,7 +109,7 @@ function ImportProductsPage() {
                     onClick={downloadProductImportTemplate}
                     className="mt-5 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500"
                 >
-                    Download Template
+                    {t('productImport.downloadTemplate')}
                 </button>
             </div>
 
@@ -117,10 +117,9 @@ function ImportProductsPage() {
                 onSubmit={handleImport}
                 className="solaris-panel mt-6"
             >
-
                 <div className="mt-6">
                     <label className="text-sm solaris-muted">
-                        Import mode
+                        {t('productImport.importMode')}
                     </label>
 
                     <select
@@ -131,25 +130,25 @@ function ImportProductsPage() {
                         className="solaris-input mt-2 w-full sm:w-80"
                     >
                         <option value="CREATE_ONLY">
-                            Create only
+                            {t('productImport.modes.createOnly')}
                         </option>
 
                         <option value="CREATE_OR_UPDATE">
-                            Create or update existing products
+                            {t('productImport.modes.createOrUpdate')}
                         </option>
                     </select>
 
                     <p className="mt-2 text-sm solaris-subtle">
-                        Products are matched by name. In update mode, existing products will be updated instead of failing.
+                        {t('productImport.importModeHelp')}
                     </p>
                 </div>
 
                 <h2 className="text-xl font-semibold">
-                    Upload file
+                    {t('productImport.uploadFile')}
                 </h2>
 
                 <p className="mt-2 solaris-muted">
-                    Select a .xlsx file and start the import.
+                    {t('productImport.uploadFileDescription')}
                 </p>
 
                 <input
@@ -164,7 +163,9 @@ function ImportProductsPage() {
                         disabled={importing}
                         className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                     >
-                        {importing ? 'Importing...' : 'Import Products'}
+                        {importing
+                            ? t('productImport.importing')
+                            : t('productImport.importProducts')}
                     </button>
 
                     <button
@@ -172,7 +173,7 @@ function ImportProductsPage() {
                         onClick={() => navigate('/products')}
                         className="rounded-xl border border-slate-300 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
-                        Cancel
+                        {t('common.cancel')}
                     </button>
                 </div>
             </form>
@@ -180,13 +181,13 @@ function ImportProductsPage() {
             {result && (
                 <div className="solaris-panel mt-6">
                     <h2 className="text-xl font-semibold">
-                        Import result
+                        {t('productImport.result.title')}
                     </h2>
 
                     <div className="mt-4 grid gap-4 sm:grid-cols-3">
                         <div className="rounded-xl bg-green-500/10 p-4 text-green-600 dark:text-green-400">
                             <p className="text-sm font-medium">
-                                Created
+                                {t('productImport.result.created')}
                             </p>
 
                             <p className="mt-1 text-3xl font-bold">
@@ -196,7 +197,7 @@ function ImportProductsPage() {
 
                         <div className="rounded-xl bg-blue-500/10 p-4 text-blue-600 dark:text-blue-400">
                             <p className="text-sm font-medium">
-                                Updated
+                                {t('productImport.result.updated')}
                             </p>
 
                             <p className="mt-1 text-3xl font-bold">
@@ -206,7 +207,7 @@ function ImportProductsPage() {
 
                         <div className="rounded-xl bg-red-500/10 p-4 text-red-600 dark:text-red-400">
                             <p className="text-sm font-medium">
-                                Failed
+                                {t('productImport.result.failed')}
                             </p>
 
                             <p className="mt-1 text-3xl font-bold">
@@ -218,7 +219,7 @@ function ImportProductsPage() {
                     {result.errors.length > 0 && (
                         <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-500/20 dark:bg-red-500/10">
                             <h3 className="font-semibold text-red-600 dark:text-red-400">
-                                Errors
+                                {t('productImport.result.errors')}
                             </h3>
 
                             <ul className="mt-3 space-y-2 text-sm text-red-600 dark:text-red-300">

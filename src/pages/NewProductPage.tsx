@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { createProduct } from '../api/productService'
 import { getCategories } from '../api/categoryService'
 import type { Category } from '../types/category'
@@ -27,6 +28,7 @@ const initialFormState: ProductFormState = {
 
 function NewProductPage() {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const [categories, setCategories] = useState<Category[]>([])
     const [creating, setCreating] = useState(false)
@@ -35,12 +37,16 @@ function NewProductPage() {
 
     useEffect(() => {
         async function loadCategories() {
-            const data = await getCategories()
-            setCategories(data)
+            try {
+                const data = await getCategories()
+                setCategories(data)
+            } catch {
+                toast.error(t('productForm.loadCategoriesError'))
+            }
         }
 
         loadCategories()
-    }, [])
+    }, [t])
 
     function updateForm(field: keyof ProductFormState, value: string) {
         setForm((current) => ({
@@ -68,11 +74,11 @@ function NewProductPage() {
                     : null,
             })
 
-            toast.success('Product created successfully')
+            toast.success(t('productForm.createSuccess'))
             navigate('/products')
         } catch {
-            setError('Could not create product')
-            toast.error('Could not create product')
+            setError(t('productForm.createError'))
+            toast.error(t('productForm.createError'))
         } finally {
             setCreating(false)
         }
@@ -82,48 +88,47 @@ function NewProductPage() {
         <div>
             <div>
                 <h1 className="text-4xl font-bold">
-                    New Product
+                    {t('productForm.newTitle')}
                 </h1>
 
                 <p className="mt-2 solaris-muted">
-                    Create a new inventory product.
+                    {t('productForm.newDescription')}
                 </p>
             </div>
 
-            <form
-                onSubmit={handleCreateProduct}
-                className="solaris-panel mt-8"
-            >
+            <form onSubmit={handleCreateProduct} className="solaris-panel mt-8">
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     <Input
-                        label="Name *"
+                        label={t('productForm.nameRequired')}
                         value={form.name}
                         onChange={(value) => updateForm('name', value)}
                     />
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            SKU <span className="solaris-subtle">(optional)</span>
+                            {t('productForm.sku')}{' '}
+                            <span className="solaris-subtle">
+                                {t('common.optional')}
+                            </span>
                         </label>
 
                         <input
                             value={form.sku}
                             onChange={(event) => updateForm('sku', event.target.value)}
                             className="solaris-input mt-2 w-full"
-                            placeholder="Leave empty to generate automatically"
+                            placeholder={t('productForm.skuPlaceholder')}
                         />
-
                     </div>
 
                     <Input
-                        label="Price *"
+                        label={t('productForm.priceRequired')}
                         type="number"
                         value={form.price}
                         onChange={(value) => updateForm('price', value)}
                     />
 
                     <Input
-                        label="Stock Quantity *"
+                        label={t('productForm.stockQuantityRequired')}
                         type="number"
                         value={form.stockQuantity}
                         onChange={(value) => updateForm('stockQuantity', value)}
@@ -131,7 +136,10 @@ function NewProductPage() {
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            Category <span className="solaris-subtle">(optional)</span>
+                            {t('productForm.category')}{' '}
+                            <span className="solaris-subtle">
+                                {t('common.optional')}
+                            </span>
                         </label>
 
                         <select
@@ -140,14 +148,11 @@ function NewProductPage() {
                             className="solaris-input mt-2 w-full"
                         >
                             <option value="">
-                                Select category
+                                {t('productForm.selectCategory')}
                             </option>
 
                             {categories.map((category) => (
-                                <option
-                                    key={category.id}
-                                    value={category.id}
-                                >
+                                <option key={category.id} value={category.id}>
                                     {category.name}
                                 </option>
                             ))}
@@ -156,7 +161,7 @@ function NewProductPage() {
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            Custom Low Stock Threshold
+                            {t('productForm.customLowStockThreshold')}
                         </label>
 
                         <input
@@ -166,24 +171,25 @@ function NewProductPage() {
                             onChange={(event) =>
                                 updateForm('lowStockThreshold', event.target.value)
                             }
-                            placeholder="Use global setting"
+                            placeholder={t('productForm.globalSettingPlaceholder')}
                             className="solaris-input mt-2 w-full"
                         />
                     </div>
 
                     <div className="md:col-span-2 xl:col-span-3">
-                        <div>
-                            <label className="text-sm solaris-muted">
-                                Description <span className="solaris-subtle">(optional)</span>
-                            </label>
+                        <label className="text-sm solaris-muted">
+                            {t('productForm.description')}{' '}
+                            <span className="solaris-subtle">
+                                {t('common.optional')}
+                            </span>
+                        </label>
 
-                            <input
-                                value={form.description}
-                                onChange={(event) => updateForm('description', event.target.value)}
-                                className="solaris-input mt-2 w-full"
-                                placeholder="Optional product description"
-                            />
-                        </div>
+                        <input
+                            value={form.description}
+                            onChange={(event) => updateForm('description', event.target.value)}
+                            className="solaris-input mt-2 w-full"
+                            placeholder={t('productForm.descriptionPlaceholder')}
+                        />
                     </div>
                 </div>
 
@@ -198,7 +204,9 @@ function NewProductPage() {
                         disabled={creating}
                         className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
                     >
-                        {creating ? 'Creating...' : 'Create Product'}
+                        {creating
+                            ? t('productForm.creating')
+                            : t('productForm.createProduct')}
                     </button>
 
                     <button
@@ -206,7 +214,7 @@ function NewProductPage() {
                         onClick={() => navigate('/products')}
                         className="w-full rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 sm:w-auto"
                     >
-                        Cancel
+                        {t('common.cancel')}
                     </button>
                 </div>
             </form>
@@ -221,12 +229,7 @@ type InputProps = {
     onChange: (value: string) => void
 }
 
-function Input({
-                   label,
-                   value,
-                   type = 'text',
-                   onChange,
-               }: InputProps) {
+function Input({ label, value, type = 'text', onChange }: InputProps) {
     return (
         <div>
             <label className="text-sm solaris-muted">

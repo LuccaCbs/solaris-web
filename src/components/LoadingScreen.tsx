@@ -1,26 +1,38 @@
+import { useTranslation } from 'react-i18next'
+import { useTheme } from '../utils/useTheme'
+
 import logoBlack from '../assets/logo/solaris-black-full-logo.png'
 import logoSilver from '../assets/logo/solaris-white-full-logo.png'
-import { useTheme } from '../utils/useTheme.ts'
+import logoBlackOnly from '../assets/logo/solaris-black-logo-only.png'
+import logoWhiteOnly from '../assets/logo/solaris-white-logo-only.png'
 
 function LoadingScreen() {
     const { theme } = useTheme()
+    const { t } = useTranslation()
 
-    const logoImage = theme === 'dark' ? logoSilver : logoBlack
+    const fullLogo = theme === 'dark' ? logoSilver : logoBlack
+    const spinnerLogo = theme === 'dark' ? logoWhiteOnly : logoBlackOnly
 
     return (
         <main className="flex min-h-screen items-center justify-center bg-slate-100 text-slate-950 dark:bg-slate-950 dark:text-white">
             <div className="flex flex-col items-center">
                 <img
-                    src={logoImage}
-                    alt="Solaris logo"
-                    className="h-24 w-24 animate-pulse object-contain"
+                    src={fullLogo}
+                    alt="Solaris"
+                    className="h-28 w-72 object-contain"
                 />
 
-
-                <div className="mt-8 h-10 w-10 animate-spin rounded-full border-4 border-slate-300 border-t-blue-600 dark:border-slate-800 dark:border-t-blue-500" />
+                <div className="mt-8 flex h-16 w-16 items-center justify-center">
+                    <img
+                        src={spinnerLogo}
+                        alt=""
+                        aria-hidden="true"
+                        className="h-14 w-14 animate-spin object-contain opacity-90"
+                    />
+                </div>
 
                 <p className="mt-5 text-sm text-slate-500 dark:text-slate-400">
-                    Loading workspace...
+                    {t('common.loadingWorkspace')}
                 </p>
             </div>
         </main>

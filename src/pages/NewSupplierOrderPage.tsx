@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { createSupplierOrder } from '../api/supplierOrderService'
 import { getSuppliers } from '../api/supplierService'
 import { getProducts } from '../api/productService'
 import type { Supplier } from '../types/supplier'
 import type { Product } from '../types/product'
+import LoadingScreen from '../components/LoadingScreen'
 
 type OrderItemForm = {
     productId: string
@@ -15,6 +17,7 @@ type OrderItemForm = {
 
 function NewSupplierOrderPage() {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const [suppliers, setSuppliers] = useState<Supplier[]>([])
     const [products, setProducts] = useState<Product[]>([])
@@ -36,13 +39,15 @@ function NewSupplierOrderPage() {
 
                 setSuppliers(suppliersData.filter((supplier) => supplier.active))
                 setProducts(productsData)
+            } catch {
+                toast.error(t('supplierOrderForm.loadError'))
             } finally {
                 setLoading(false)
             }
         }
 
         loadData()
-    }, [])
+    }, [t])
 
     const selectedSupplier = useMemo(() => {
         return suppliers.find((supplier) => supplier.id === Number(supplierId))
@@ -87,16 +92,19 @@ function NewSupplierOrderPage() {
             .filter(Boolean) as { productName: string; quantity: string }[]
 
         if (selectedItems.length === 0) {
-            return `Hola ${supplierName}, te encargo:`
+            return t('supplierOrderForm.messagePreview.greeting', { supplierName })
         }
 
         return [
-            `Hola ${supplierName}, te encargo:`,
-            ...selectedItems.map(
-                (item) => `- ${item.productName} x ${item.quantity}`
+            t('supplierOrderForm.messagePreview.greeting', { supplierName }),
+            ...selectedItems.map((item) =>
+                t('supplierOrderForm.messagePreview.itemLine', {
+                    productName: item.productName,
+                    quantity: item.quantity,
+                })
             ),
         ].join('\n')
-    }, [selectedSupplier, items, products])
+    }, [selectedSupplier, items, products, t])
 
     function selectSupplier(supplier: Supplier) {
         setSupplierId(String(supplier.id))
@@ -127,11 +135,7 @@ function NewSupplierOrderPage() {
             .slice(0, 8)
     }
 
-    function updateItem(
-        index: number,
-        field: keyof OrderItemForm,
-        value: string
-    ) {
+    function updateItem(index: number, field: keyof OrderItemForm, value: string) {
         setItems((currentItems) =>
             currentItems.map((item, itemIndex) =>
                 itemIndex === index ? { ...item, [field]: value } : item
@@ -191,12 +195,12 @@ function NewSupplierOrderPage() {
             }))
 
         if (!supplierId) {
-            toast.error('Select a supplier')
+            toast.error(t('supplierOrderForm.errors.selectSupplier'))
             return
         }
 
         if (validItems.length === 0) {
-            toast.error('Add at least one product')
+            toast.error(t('supplierOrderForm.errors.addAtLeastOneProduct'))
             return
         }
 
@@ -208,25 +212,27 @@ function NewSupplierOrderPage() {
                 items: validItems,
             })
 
-            toast.success('Supplier order created successfully')
+            toast.success(t('supplierOrderForm.createSuccess'))
             navigate('/supplier-orders')
         } catch {
-            toast.error('Could not create supplier order')
+            toast.error(t('supplierOrderForm.createError'))
         } finally {
             setSaving(false)
         }
     }
 
     if (loading) {
-        return <NewSupplierOrderSkeleton />
+        return <LoadingScreen />
     }
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">New Supplier Order</h1>
+            <h1 className="text-4xl font-bold">
+                {t('supplierOrderForm.title')}
+            </h1>
 
             <p className="mt-2 solaris-muted">
-                Create an order request and generate a WhatsApp-ready message.
+                {t('supplierOrderForm.description')}
             </p>
 
             <form
@@ -234,10 +240,14 @@ function NewSupplierOrderPage() {
                 className="mt-8 grid gap-6 xl:grid-cols-[2fr_1fr]"
             >
                 <div className="solaris-panel">
-                    <h2 className="text-xl font-semibold">Order Details</h2>
+                    <h2 className="text-xl font-semibold">
+                        {t('supplierOrderForm.orderDetails')}
+                    </h2>
 
                     <div className="mt-6">
-                        <label className="text-sm solaris-muted">Supplier</label>
+                        <label className="text-sm solaris-muted">
+                            {t('supplierOrderForm.supplier')}
+                        </label>
 
                         <div className="relative mt-2">
                             <input
@@ -247,7 +257,7 @@ function NewSupplierOrderPage() {
                                     setSupplierSearch(event.target.value)
                                     setSupplierId('')
                                 }}
-                                placeholder="Search supplier by name, contact or phone..."
+                                placeholder={t('supplierOrderForm.searchSupplierPlaceholder')}
                                 className="solaris-input w-full"
                             />
 
@@ -257,7 +267,7 @@ function NewSupplierOrderPage() {
                                     onClick={clearSupplier}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
                                 >
-                                    Clear
+                                    {t('common.clear')}
                                 </button>
                             )}
 
@@ -275,7 +285,7 @@ function NewSupplierOrderPage() {
                                             </p>
 
                                             <p className="text-sm solaris-muted">
-                                                {supplier.contactName || 'No contact name'}
+                                                {supplier.contactName || t('suppliers.noContactName')}
                                                 {supplier.phone ? ` · ${supplier.phone}` : ''}
                                             </p>
                                         </button>
@@ -287,14 +297,16 @@ function NewSupplierOrderPage() {
 
                     <div className="mt-8">
                         <div className="flex items-center justify-between gap-4">
-                            <h3 className="font-semibold">Products</h3>
+                            <h3 className="font-semibold">
+                                {t('supplierOrderForm.products')}
+                            </h3>
 
                             <button
                                 type="button"
                                 onClick={addItem}
                                 className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             >
-                                Add Product
+                                {t('supplierOrderForm.addProduct')}
                             </button>
                         </div>
 
@@ -311,7 +323,9 @@ function NewSupplierOrderPage() {
                                         className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950 md:grid-cols-[1fr_140px_auto]"
                                     >
                                         <div>
-                                            <label className="text-sm solaris-muted">Product</label>
+                                            <label className="text-sm solaris-muted">
+                                                {t('supplierOrderForm.product')}
+                                            </label>
 
                                             <div className="relative mt-2">
                                                 <input
@@ -321,7 +335,7 @@ function NewSupplierOrderPage() {
                                                         updateItem(index, 'productSearch', event.target.value)
                                                         updateItem(index, 'productId', '')
                                                     }}
-                                                    placeholder="Search product by name or SKU..."
+                                                    placeholder={t('supplierOrderForm.searchProductPlaceholder')}
                                                     className="solaris-input w-full"
                                                 />
 
@@ -331,7 +345,7 @@ function NewSupplierOrderPage() {
                                                         onClick={() => clearProduct(index)}
                                                         className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
                                                     >
-                                                        Clear
+                                                        {t('common.clear')}
                                                     </button>
                                                 )}
 
@@ -349,7 +363,10 @@ function NewSupplierOrderPage() {
                                                                 </p>
 
                                                                 <p className="text-sm solaris-muted">
-                                                                    SKU: {product.sku} · Stock: {product.stockQuantity}
+                                                                    {t('supplierOrderForm.productMeta', {
+                                                                        sku: product.sku,
+                                                                        stock: product.stockQuantity,
+                                                                    })}
                                                                 </p>
                                                             </button>
                                                         ))}
@@ -359,7 +376,9 @@ function NewSupplierOrderPage() {
                                         </div>
 
                                         <div>
-                                            <label className="text-sm solaris-muted">Quantity</label>
+                                            <label className="text-sm solaris-muted">
+                                                {t('supplierOrderForm.quantity')}
+                                            </label>
 
                                             <input
                                                 required
@@ -380,7 +399,7 @@ function NewSupplierOrderPage() {
                                                 onClick={() => removeItem(index)}
                                                 className="w-full rounded-xl bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-400 hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
                                             >
-                                                Remove
+                                                {t('common.delete')}
                                             </button>
                                         </div>
                                     </div>
@@ -394,7 +413,9 @@ function NewSupplierOrderPage() {
                             disabled={saving}
                             className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                         >
-                            {saving ? 'Saving...' : 'Create Order'}
+                            {saving
+                                ? t('common.saving')
+                                : t('supplierOrderForm.createOrder')}
                         </button>
 
                         <button
@@ -402,16 +423,18 @@ function NewSupplierOrderPage() {
                             onClick={() => navigate('/supplier-orders')}
                             className="rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                     </div>
                 </div>
 
                 <aside className="solaris-panel h-fit">
-                    <h2 className="text-xl font-semibold">Message Preview</h2>
+                    <h2 className="text-xl font-semibold">
+                        {t('supplierOrderForm.messagePreview.title')}
+                    </h2>
 
                     <p className="mt-2 solaris-muted">
-                        This is the message that will be used for WhatsApp.
+                        {t('supplierOrderForm.messagePreview.description')}
                     </p>
 
                     <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
@@ -421,34 +444,12 @@ function NewSupplierOrderPage() {
                             </p>
                         ) : (
                             <p className="text-sm solaris-muted">
-                                Select a supplier and products to preview the message.
+                                {t('supplierOrderForm.messagePreview.empty')}
                             </p>
                         )}
                     </div>
                 </aside>
             </form>
-        </div>
-    )
-}
-
-function NewSupplierOrderSkeleton() {
-    return (
-        <div>
-            <div className="h-10 w-80 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-
-            <div className="mt-8 grid gap-6 xl:grid-cols-[2fr_1fr]">
-                <div className="solaris-panel">
-                    <div className="h-6 w-48 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-6 h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-8 h-32 w-full animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
-                </div>
-
-                <div className="solaris-panel">
-                    <div className="h-6 w-40 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-6 h-40 w-full animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
-                </div>
-            </div>
         </div>
     )
 }

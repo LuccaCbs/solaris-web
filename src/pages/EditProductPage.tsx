@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { getCategories } from '../api/categoryService'
 import { getProductById, updateProduct } from '../api/productService'
 import type { Category } from '../types/category'
 import toast from 'react-hot-toast'
+import LoadingScreen from '../components/LoadingScreen'
 
 type ProductFormState = {
     name: string
@@ -17,6 +19,7 @@ type ProductFormState = {
 function EditProductPage() {
     const navigate = useNavigate()
     const { id } = useParams()
+    const { t } = useTranslation()
 
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState(true)
@@ -53,13 +56,15 @@ function EditProductPage() {
                 })
 
                 setCategories(categoriesData)
+            } catch {
+                toast.error(t('productForm.loadProductError'))
             } finally {
                 setLoading(false)
             }
         }
 
         loadData()
-    }, [id])
+    }, [id, t])
 
     function updateForm(field: keyof ProductFormState, value: string) {
         setForm((current) => ({
@@ -88,42 +93,28 @@ function EditProductPage() {
                     : null,
             })
 
-            toast.success('Product updated successfully')
+            toast.success(t('productForm.updateSuccess'))
             navigate('/products')
         } catch {
-            setError('Could not update product')
-            toast.error('Could not update product')
+            setError(t('productForm.updateError'))
+            toast.error(t('productForm.updateError'))
         } finally {
             setSaving(false)
         }
     }
 
     if (loading) {
-        return (
-            <div>
-                <div className="h-10 w-52 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                <div className="mt-3 h-5 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-
-                <div className="solaris-panel mt-8">
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {Array.from({ length: 6 }).map((_, index) => (
-                            <div key={index}>
-                                <div className="h-4 w-28 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                                <div className="mt-2 h-12 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        )
+        return <LoadingScreen />
     }
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">Edit Product</h1>
+            <h1 className="text-4xl font-bold">
+                {t('productForm.editTitle')}
+            </h1>
 
             <p className="mt-2 solaris-muted">
-                Update inventory product details.
+                {t('productForm.editDescription')}
             </p>
 
             <form
@@ -132,44 +123,41 @@ function EditProductPage() {
             >
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     <Input
-                        label="Name"
+                        label={t('productForm.nameRequired')}
                         value={form.name}
                         onChange={(value) => updateForm('name', value)}
                     />
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            SKU <span className="solaris-subtle">(optional)</span>
+                            {t('productForm.sku')}{' '}
+                            <span className="solaris-subtle">
+                                {t('common.optional')}
+                            </span>
                         </label>
 
                         <input
                             value={form.sku}
                             onChange={(event) => updateForm('sku', event.target.value)}
                             className="solaris-input mt-2 w-full"
-                            placeholder="Leave empty to generate automatically"
+                            placeholder={t('productForm.skuPlaceholder')}
                         />
 
                         <p className="mt-2 text-sm solaris-subtle">
-                            Leave empty to generate a new system SKU automatically.
+                            {t('productForm.emptySkuHelp')}
                         </p>
                     </div>
 
                     <Input
-                        label="Price"
+                        label={t('productForm.priceRequired')}
                         type="number"
                         value={form.price}
                         onChange={(value) => updateForm('price', value)}
                     />
 
-                    {/*
-                      <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-300">
-                       Stock is managed through Stock Movements to preserve audit history.
-                    </div>
-                    */}
-
                     <div>
                         <label className="text-sm solaris-muted">
-                            Category
+                            {t('productForm.category')}
                         </label>
 
                         <select
@@ -178,7 +166,7 @@ function EditProductPage() {
                             className="solaris-input mt-2 w-full"
                         >
                             <option value="">
-                                Select category
+                                {t('productForm.selectCategory')}
                             </option>
 
                             {categories.map((category) => (
@@ -194,7 +182,7 @@ function EditProductPage() {
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            Custom Low Stock Threshold
+                            {t('productForm.customLowStockThreshold')}
                         </label>
 
                         <input
@@ -204,28 +192,29 @@ function EditProductPage() {
                             onChange={(event) =>
                                 updateForm('lowStockThreshold', event.target.value)
                             }
-                            placeholder="Use global setting"
+                            placeholder={t('productForm.globalSettingPlaceholder')}
                             className="solaris-input mt-2 w-full"
                         />
 
                         <p className="mt-2 text-sm solaris-subtle">
-                            Leave empty to use the global low stock threshold.
+                            {t('productForm.lowStockHelp')}
                         </p>
                     </div>
 
                     <div className="md:col-span-2 xl:col-span-3">
-                        <div>
-                            <label className="text-sm solaris-muted">
-                                Description <span className="solaris-subtle">(optional)</span>
-                            </label>
+                        <label className="text-sm solaris-muted">
+                            {t('productForm.description')}{' '}
+                            <span className="solaris-subtle">
+                                {t('common.optional')}
+                            </span>
+                        </label>
 
-                            <input
-                                value={form.description}
-                                onChange={(event) => updateForm('description', event.target.value)}
-                                className="solaris-input mt-2 w-full"
-                                placeholder="Optional product description"
-                            />
-                        </div>
+                        <input
+                            value={form.description}
+                            onChange={(event) => updateForm('description', event.target.value)}
+                            className="solaris-input mt-2 w-full"
+                            placeholder={t('productForm.descriptionPlaceholder')}
+                        />
                     </div>
                 </div>
 
@@ -240,7 +229,9 @@ function EditProductPage() {
                         disabled={saving}
                         className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
                     >
-                        {saving ? 'Saving...' : 'Save Changes'}
+                        {saving
+                            ? t('productForm.updating')
+                            : t('productForm.updateProduct')}
                     </button>
 
                     <button
@@ -248,7 +239,7 @@ function EditProductPage() {
                         onClick={() => navigate('/products')}
                         className="w-full rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 sm:w-auto"
                     >
-                        Cancel
+                        {t('common.cancel')}
                     </button>
                 </div>
             </form>

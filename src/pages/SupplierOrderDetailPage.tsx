@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import {
     cancelSupplierOrder,
@@ -8,10 +9,12 @@ import {
     markSupplierOrderAsSent,
 } from '../api/supplierOrderService'
 import type { SupplierOrder, SupplierOrderStatus } from '../types/supplierOrder'
+import LoadingScreen from '../components/LoadingScreen'
 
 function SupplierOrderDetailPage() {
     const { id } = useParams()
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const [order, setOrder] = useState<SupplierOrder | null>(null)
     const [loading, setLoading] = useState(true)
@@ -21,18 +24,19 @@ function SupplierOrderDetailPage() {
         if (!id) return
 
         try {
+            setLoading(true)
+
             const data = await getSupplierOrderById(Number(id))
             setOrder(data)
         } catch {
-            toast.error('Could not load supplier order')
+            toast.error(t('supplierOrderDetail.loadError'))
             navigate('/supplier-orders')
         } finally {
             setLoading(false)
         }
-    }, [id, navigate])
+    }, [id, navigate, t])
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         void loadOrder()
     }, [loadOrder])
 
@@ -43,10 +47,10 @@ function SupplierOrderDetailPage() {
 
         try {
             await markSupplierOrderAsSent(order.id)
-            toast.success('Order marked as sent')
+            toast.success(t('supplierOrderDetail.markSentSuccess'))
             await loadOrder()
         } catch {
-            toast.error('Could not update order')
+            toast.error(t('supplierOrderDetail.updateError'))
         } finally {
             setProcessing(false)
         }
@@ -59,10 +63,10 @@ function SupplierOrderDetailPage() {
 
         try {
             await markSupplierOrderAsCompleted(order.id)
-            toast.success('Order marked as completed')
+            toast.success(t('supplierOrderDetail.markCompletedSuccess'))
             await loadOrder()
         } catch {
-            toast.error('Could not update order')
+            toast.error(t('supplierOrderDetail.updateError'))
         } finally {
             setProcessing(false)
         }
@@ -71,7 +75,7 @@ function SupplierOrderDetailPage() {
     async function handleCancel() {
         if (!order) return
 
-        const confirmed = window.confirm('Are you sure you want to cancel this supplier order?')
+        const confirmed = window.confirm(t('supplierOrderDetail.cancelConfirm'))
 
         if (!confirmed) return
 
@@ -79,10 +83,10 @@ function SupplierOrderDetailPage() {
 
         try {
             await cancelSupplierOrder(order.id)
-            toast.success('Order cancelled')
+            toast.success(t('supplierOrderDetail.cancelSuccess'))
             await loadOrder()
         } catch {
-            toast.error('Could not cancel order')
+            toast.error(t('supplierOrderDetail.cancelError'))
         } finally {
             setProcessing(false)
         }
@@ -92,7 +96,7 @@ function SupplierOrderDetailPage() {
         if (!order) return
 
         if (!order.supplierPhone) {
-            toast.error('Supplier has no phone number')
+            toast.error(t('supplierOrderDetail.noPhoneError'))
             return
         }
 
@@ -105,16 +109,16 @@ function SupplierOrderDetailPage() {
         if (order.status === 'DRAFT') {
             try {
                 await markSupplierOrderAsSent(order.id)
-                toast.success('Order marked as sent')
+                toast.success(t('supplierOrderDetail.markSentSuccess'))
                 await loadOrder()
             } catch {
-                toast.error('WhatsApp opened, but could not mark order as sent')
+                toast.error(t('supplierOrderDetail.whatsappMarkSentError'))
             }
         }
     }
 
     if (loading) {
-        return <SupplierOrderDetailSkeleton />
+        return <LoadingScreen />
     }
 
     if (!order) {
@@ -126,12 +130,15 @@ function SupplierOrderDetailPage() {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <div className="flex flex-wrap items-center gap-3">
-                        <h1 className="text-4xl font-bold">Supplier Order #{order.id}</h1>
+                        <h1 className="text-4xl font-bold">
+                            {t('supplierOrderDetail.title', { id: order.id })}
+                        </h1>
+
                         <StatusBadge status={order.status} />
                     </div>
 
                     <p className="mt-2 solaris-muted">
-                        Review order details, supplier information and WhatsApp message.
+                        {t('supplierOrderDetail.description')}
                     </p>
                 </div>
 
@@ -139,40 +146,42 @@ function SupplierOrderDetailPage() {
                     to="/supplier-orders"
                     className="rounded-xl border border-slate-300 px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                 >
-                    Back to Orders
+                    {t('supplierOrderDetail.backToOrders')}
                 </Link>
             </div>
 
             <div className="mt-8 grid gap-6 xl:grid-cols-[2fr_1fr]">
                 <section className="space-y-6">
                     <div className="solaris-panel">
-                        <h2 className="text-xl font-semibold">Order Summary</h2>
+                        <h2 className="text-xl font-semibold">
+                            {t('supplierOrderDetail.summary.title')}
+                        </h2>
 
                         <div className="mt-6 grid gap-4 md:grid-cols-3">
                             <InfoCard
-                                label="Supplier"
+                                label={t('supplierOrderDetail.summary.supplier')}
                                 value={order.supplierName}
                             />
 
                             <InfoCard
-                                label="Phone"
-                                value={order.supplierPhone || 'No phone'}
+                                label={t('supplierOrderDetail.summary.phone')}
+                                value={order.supplierPhone || t('supplierOrderDetail.summary.noPhone')}
                             />
 
                             <InfoCard
-                                label="Created"
+                                label={t('supplierOrderDetail.summary.created')}
                                 value={new Date(order.createdAt).toLocaleString()}
                             />
                         </div>
 
                         <div className="mt-4 grid gap-4 md:grid-cols-2">
                             <InfoCard
-                                label="Last Updated"
+                                label={t('supplierOrderDetail.summary.lastUpdated')}
                                 value={new Date(order.updatedAt).toLocaleString()}
                             />
 
                             <InfoCard
-                                label="Items"
+                                label={t('supplierOrderDetail.summary.items')}
                                 value={String(order.items.length)}
                             />
                         </div>
@@ -183,13 +192,15 @@ function SupplierOrderDetailPage() {
                             <thead className="bg-slate-100 dark:bg-slate-800/50">
                             <tr>
                                 <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
-                                    Product
+                                    {t('supplierOrderDetail.table.product')}
                                 </th>
+
                                 <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
-                                    SKU
+                                    {t('supplierOrderDetail.table.sku')}
                                 </th>
+
                                 <th className="px-6 py-4 text-left text-sm text-slate-600 dark:text-slate-300">
-                                    Quantity
+                                    {t('supplierOrderDetail.table.quantity')}
                                 </th>
                             </tr>
                             </thead>
@@ -209,9 +220,9 @@ function SupplierOrderDetailPage() {
                                     </td>
 
                                     <td className="px-6 py-4">
-                      <span className="rounded-lg bg-blue-500/10 px-3 py-1 text-sm text-blue-500 dark:text-blue-300">
-                        {item.quantity}
-                      </span>
+                                            <span className="rounded-lg bg-blue-500/10 px-3 py-1 text-sm text-blue-500 dark:text-blue-300">
+                                                {item.quantity}
+                                            </span>
                                     </td>
                                 </tr>
                             ))}
@@ -222,10 +233,12 @@ function SupplierOrderDetailPage() {
 
                 <aside className="space-y-6">
                     <div className="solaris-panel">
-                        <h2 className="text-xl font-semibold">WhatsApp Message</h2>
+                        <h2 className="text-xl font-semibold">
+                            {t('supplierOrderDetail.whatsapp.title')}
+                        </h2>
 
                         <p className="mt-2 solaris-muted">
-                            Message ready to send to the supplier.
+                            {t('supplierOrderDetail.whatsapp.description')}
                         </p>
 
                         <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
@@ -240,12 +253,14 @@ function SupplierOrderDetailPage() {
                             disabled={!order.supplierPhone || order.status === 'CANCELLED'}
                             className="mt-6 w-full rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                            Open WhatsApp
+                            {t('supplierOrderDetail.whatsapp.open')}
                         </button>
                     </div>
 
                     <div className="solaris-panel">
-                        <h2 className="text-xl font-semibold">Order Actions</h2>
+                        <h2 className="text-xl font-semibold">
+                            {t('supplierOrderDetail.actions.title')}
+                        </h2>
 
                         <div className="mt-6 flex flex-col gap-3">
                             {order.status === 'DRAFT' && (
@@ -255,7 +270,7 @@ function SupplierOrderDetailPage() {
                                     onClick={handleMarkAsSent}
                                     className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                                 >
-                                    Mark Sent
+                                    {t('supplierOrderDetail.actions.markSent')}
                                 </button>
                             )}
 
@@ -266,7 +281,7 @@ function SupplierOrderDetailPage() {
                                     onClick={handleMarkAsCompleted}
                                     className="rounded-xl bg-green-600 px-5 py-3 font-semibold text-white hover:bg-green-500 disabled:opacity-60"
                                 >
-                                    Mark Completed
+                                    {t('supplierOrderDetail.actions.markCompleted')}
                                 </button>
                             )}
 
@@ -277,7 +292,7 @@ function SupplierOrderDetailPage() {
                                     onClick={handleCancel}
                                     className="rounded-xl bg-red-600 px-5 py-3 font-semibold text-white hover:bg-red-500 disabled:opacity-60"
                                 >
-                                    Cancel Order
+                                    {t('supplierOrderDetail.actions.cancelOrder')}
                                 </button>
                             )}
                         </div>
@@ -296,7 +311,10 @@ type InfoCardProps = {
 function InfoCard({ label, value }: InfoCardProps) {
     return (
         <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-950">
-            <p className="text-sm solaris-muted">{label}</p>
+            <p className="text-sm solaris-muted">
+                {label}
+            </p>
+
             <p className="mt-2 font-semibold text-slate-950 dark:text-white">
                 {value}
             </p>
@@ -309,11 +327,13 @@ type StatusBadgeProps = {
 }
 
 function StatusBadge({ status }: StatusBadgeProps) {
+    const { t } = useTranslation()
+
     const labels: Record<SupplierOrderStatus, string> = {
-        DRAFT: 'Draft',
-        SENT: 'Sent',
-        COMPLETED: 'Completed',
-        CANCELLED: 'Cancelled',
+        DRAFT: t('supplierOrders.status.draft'),
+        SENT: t('supplierOrders.status.sent'),
+        COMPLETED: t('supplierOrders.status.completed'),
+        CANCELLED: t('supplierOrders.status.cancelled'),
     }
 
     const classNames: Record<SupplierOrderStatus, string> = {
@@ -325,42 +345,8 @@ function StatusBadge({ status }: StatusBadgeProps) {
 
     return (
         <span className={`rounded-lg px-3 py-1 text-sm font-medium ${classNames[status]}`}>
-      {labels[status]}
-    </span>
-    )
-}
-
-function SupplierOrderDetailSkeleton() {
-    return (
-        <div>
-            <div className="h-10 w-80 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-
-            <div className="mt-8 grid gap-6 xl:grid-cols-[2fr_1fr]">
-                <div className="space-y-6">
-                    <div className="solaris-panel">
-                        <div className="h-6 w-44 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                        <div className="mt-6 grid gap-4 md:grid-cols-3">
-                            {Array.from({ length: 3 }).map((_, index) => (
-                                <div
-                                    key={index}
-                                    className="h-24 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800"
-                                />
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="h-64 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
-                </div>
-
-                <div className="space-y-6">
-                    <div className="solaris-panel">
-                        <div className="h-6 w-48 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                        <div className="mt-6 h-40 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
-                    </div>
-                </div>
-            </div>
-        </div>
+            {labels[status]}
+        </span>
     )
 }
 

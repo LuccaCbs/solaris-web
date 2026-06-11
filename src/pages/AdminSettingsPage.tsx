@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { getSystemSettings, updateSystemSettings } from '../api/systemSettingsService'
 import type { SystemSettings } from '../types/systemSettings'
 import PasswordInput from '../components/PasswordInput'
+import LoadingScreen from '../components/LoadingScreen'
 
 const timezones =
     typeof Intl.supportedValuesOf === 'function'
@@ -18,6 +20,8 @@ const timezones =
         ]
 
 function AdminSettingsPage() {
+    const { t } = useTranslation()
+
     const [settings, setSettings] = useState<SystemSettings | null>(null)
     const [globalLowStockThreshold, setGlobalLowStockThreshold] = useState('')
     const [adminAccessPassword, setAdminAccessPassword] = useState('')
@@ -30,17 +34,20 @@ function AdminSettingsPage() {
         async function loadSettings() {
             try {
                 const data = await getSystemSettings()
+
                 setSettings(data)
                 setGlobalLowStockThreshold(String(data.globalLowStockThreshold))
                 setBusinessTimezone(data.businessTimezone)
                 setCashRegisterAutoCloseTime(data.cashRegisterAutoCloseTime.slice(0, 5))
+            } catch {
+                toast.error(t('adminSettings.loadError'))
             } finally {
                 setLoading(false)
             }
         }
 
         loadSettings()
-    }, [])
+    }, [t])
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -59,32 +66,36 @@ function AdminSettingsPage() {
 
             setSettings(updatedSettings)
             setAdminAccessPassword('')
-            toast.success('Settings updated successfully')
+            toast.success(t('adminSettings.updateSuccess'))
         } catch {
-            toast.error('Could not update settings')
+            toast.error(t('adminSettings.updateError'))
         } finally {
             setSaving(false)
         }
     }
 
     if (loading) {
-        return <AdminSettingsSkeleton />
+        return <LoadingScreen />
     }
 
     return (
         <div>
-            <h1 className="text-4xl font-bold">Admin Settings</h1>
+            <h1 className="text-4xl font-bold">
+                {t('adminSettings.title')}
+            </h1>
 
             <p className="mt-2 solaris-muted">
-                Configure global business rules and security settings used across Solaris.
+                {t('adminSettings.description')}
             </p>
 
             <form onSubmit={handleSubmit} className="solaris-panel mt-8 max-w-2xl">
-                <h2 className="text-xl font-semibold">Inventory Settings</h2>
+                <h2 className="text-xl font-semibold">
+                    {t('adminSettings.inventory.title')}
+                </h2>
 
                 <div className="mt-6">
                     <label className="text-sm solaris-muted">
-                        Global Low Stock Threshold
+                        {t('adminSettings.inventory.globalLowStockThreshold')}
                     </label>
 
                     <input
@@ -97,16 +108,18 @@ function AdminSettingsPage() {
                     />
 
                     <p className="mt-2 text-sm solaris-subtle">
-                        Products without a custom threshold will use this value to determine low stock status.
+                        {t('adminSettings.inventory.globalLowStockHelp')}
                     </p>
                 </div>
 
                 <div className="mt-8 border-t border-slate-200 pt-6 dark:border-slate-800">
-                    <h2 className="text-xl font-semibold">Security Settings</h2>
+                    <h2 className="text-xl font-semibold">
+                        {t('adminSettings.security.title')}
+                    </h2>
 
                     <div className="mt-6">
                         <label className="text-sm solaris-muted">
-                            Admin Access Password
+                            {t('adminSettings.security.adminAccessPassword')}
                         </label>
 
                         <PasswordInput
@@ -114,44 +127,46 @@ function AdminSettingsPage() {
                             onChange={setAdminAccessPassword}
                             placeholder={
                                 settings?.hasAdminAccessPassword
-                                    ? 'Leave empty to keep current password'
-                                    : 'Set admin access password'
+                                    ? t('adminSettings.security.keepCurrentPasswordPlaceholder')
+                                    : t('adminSettings.security.setPasswordPlaceholder')
                             }
                             className="solaris-input mt-2 w-full"
                         />
 
                         <p className="mt-2 text-sm solaris-subtle">
-                            This password will be required for sensitive actions such as opening or closing cash register sessions.
+                            {t('adminSettings.security.adminAccessPasswordHelp')}
                         </p>
 
                         <div className="mt-3">
                             {settings?.hasAdminAccessPassword ? (
                                 <span className="rounded-lg bg-green-500/10 px-3 py-1 text-sm font-medium text-green-500 dark:text-green-300">
-                  Password configured
-                </span>
+                                    {t('adminSettings.security.passwordConfigured')}
+                                </span>
                             ) : (
                                 <span className="rounded-lg bg-yellow-500/10 px-3 py-1 text-sm font-medium text-yellow-600 dark:text-yellow-300">
-                  No password configured
-                </span>
+                                    {t('adminSettings.security.noPasswordConfigured')}
+                                </span>
                             )}
                         </div>
                     </div>
                 </div>
 
                 <div className="mt-8 border-t border-slate-200 pt-6 dark:border-slate-800">
-                    <h2 className="text-xl font-semibold">Cash Register Settings</h2>
+                    <h2 className="text-xl font-semibold">
+                        {t('adminSettings.cashRegister.title')}
+                    </h2>
 
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                         <div>
                             <label className="text-sm solaris-muted">
-                                Business Timezone
+                                {t('adminSettings.cashRegister.businessTimezone')}
                             </label>
 
                             <input
                                 list="business-timezones"
                                 value={businessTimezone}
                                 onChange={(event) => setBusinessTimezone(event.target.value)}
-                                placeholder="Search timezone, e.g. Europe/Madrid"
+                                placeholder={t('adminSettings.cashRegister.timezonePlaceholder')}
                                 className="solaris-input mt-2 w-full"
                             />
 
@@ -166,7 +181,7 @@ function AdminSettingsPage() {
 
                         <div>
                             <label className="text-sm solaris-muted">
-                                Auto Close Time
+                                {t('adminSettings.cashRegister.autoCloseTime')}
                             </label>
 
                             <input
@@ -177,7 +192,7 @@ function AdminSettingsPage() {
                             />
 
                             <p className="mt-2 text-sm solaris-subtle">
-                                Open cash registers will be closed automatically at this business time.
+                                {t('adminSettings.cashRegister.autoCloseTimeHelp')}
                             </p>
                         </div>
                     </div>
@@ -185,7 +200,9 @@ function AdminSettingsPage() {
 
                 {settings && (
                     <p className="mt-6 text-sm solaris-subtle">
-                        Last updated: {new Date(settings.updatedAt).toLocaleString()}
+                        {t('adminSettings.lastUpdated', {
+                            date: new Date(settings.updatedAt).toLocaleString(),
+                        })}
                     </p>
                 )}
 
@@ -193,38 +210,11 @@ function AdminSettingsPage() {
                     disabled={saving}
                     className="mt-6 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                 >
-                    {saving ? 'Saving...' : 'Save Settings'}
+                    {saving
+                        ? t('common.saving')
+                        : t('adminSettings.saveSettings')}
                 </button>
             </form>
-        </div>
-    )
-}
-
-function AdminSettingsSkeleton() {
-    return (
-        <div>
-            <div className="h-10 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            <div className="mt-3 h-5 w-96 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-
-            <div className="solaris-panel mt-8 max-w-2xl">
-                <div className="h-6 w-48 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-
-                <div className="mt-6">
-                    <div className="h-4 w-44 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-2 h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-2 h-4 w-full animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                </div>
-
-                <div className="mt-8 h-px bg-slate-200 dark:bg-slate-800" />
-
-                <div className="mt-6">
-                    <div className="h-6 w-44 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-6 h-4 w-48 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-2 h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                </div>
-
-                <div className="mt-6 h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
         </div>
     )
 }

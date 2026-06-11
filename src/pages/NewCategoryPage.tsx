@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { createCategory } from '../api/categoryService'
 import toast from 'react-hot-toast'
 
 function NewCategoryPage() {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
@@ -19,11 +21,11 @@ function NewCategoryPage() {
         try {
             await createCategory({ name, description })
 
-            toast.success('Category created successfully')
+            toast.success(t('categoryForm.createSuccess'))
             navigate('/categories')
         } catch {
-            setError('Could not create category')
-            toast.error('Could not create category')
+            setError(t('categoryForm.createError'))
+            toast.error(t('categoryForm.createError'))
         } finally {
             setCreating(false)
         }
@@ -32,11 +34,11 @@ function NewCategoryPage() {
     return (
         <div>
             <h1 className="text-4xl font-bold">
-                New Category
+                {t('categoryForm.newTitle')}
             </h1>
 
             <p className="mt-2 solaris-muted">
-                Create a new product category.
+                {t('categoryForm.newDescription')}
             </p>
 
             <form
@@ -45,7 +47,7 @@ function NewCategoryPage() {
             >
                 <div>
                     <label className="text-sm solaris-muted">
-                        Name *
+                        {t('categoryForm.nameRequired')}
                     </label>
 
                     <input
@@ -58,7 +60,10 @@ function NewCategoryPage() {
 
                 <div className="mt-4">
                     <label className="text-sm solaris-muted">
-                        Description <span className="solaris-subtle">(optional)</span>
+                        {t('categoryForm.description')}{' '}
+                        <span className="solaris-subtle">
+                            {t('common.optional')}
+                        </span>
                     </label>
 
                     <input
@@ -79,7 +84,9 @@ function NewCategoryPage() {
                         disabled={creating}
                         className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60 sm:w-auto"
                     >
-                        {creating ? 'Creating...' : 'Create Category'}
+                        {creating
+                            ? t('categoryForm.creating')
+                            : t('categoryForm.createCategory')}
                     </button>
 
                     <button
@@ -87,7 +94,7 @@ function NewCategoryPage() {
                         onClick={() => navigate('/categories')}
                         className="w-full rounded-xl border border-slate-300 px-5 py-3 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 sm:w-auto"
                     >
-                        Cancel
+                        {t('common.cancel')}
                     </button>
                 </div>
             </form>

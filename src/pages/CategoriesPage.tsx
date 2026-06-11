@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { deleteCategory, getCategories } from '../api/categoryService'
 import type { Category } from '../types/category'
 import toast from 'react-hot-toast'
+import LoadingScreen from '../components/LoadingScreen'
 
 type SortField = 'name' | 'description' | 'createdAt'
 type SortDirection = 'asc' | 'desc'
 
 function CategoriesPage() {
+    const { t } = useTranslation()
+
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState('')
@@ -18,8 +22,11 @@ function CategoriesPage() {
 
     async function loadCategories() {
         try {
+            setLoading(true)
             const data = await getCategories()
             setCategories(data)
+        } catch {
+            toast.error(t('categories.loadError'))
         } finally {
             setLoading(false)
         }
@@ -27,21 +34,19 @@ function CategoriesPage() {
 
     useEffect(() => {
         loadCategories()
-    }, [])
+    }, [t])
 
     async function handleDeleteCategory(id: number) {
-        const confirmed = window.confirm(
-            'Are you sure you want to delete this category?'
-        )
+        const confirmed = window.confirm(t('categories.deleteConfirm'))
 
         if (!confirmed) return
 
         try {
             await deleteCategory(id)
-            toast.success('Category deleted successfully')
+            toast.success(t('categories.deleteSuccess'))
             await loadCategories()
         } catch {
-            toast.error('Could not delete category')
+            toast.error(t('categories.deleteError'))
         }
     }
 
@@ -88,17 +93,19 @@ function CategoriesPage() {
     )
 
     if (loading) {
-        return <CategoriesSkeleton />
+        return <LoadingScreen />
     }
 
     return (
         <div>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold">Categories</h1>
+                    <h1 className="text-4xl font-bold">
+                        {t('categories.title')}
+                    </h1>
 
                     <p className="mt-2 solaris-muted">
-                        Organize products into business categories.
+                        {t('categories.description')}
                     </p>
                 </div>
 
@@ -106,7 +113,7 @@ function CategoriesPage() {
                     to="/categories/new"
                     className="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-500"
                 >
-                    New Category
+                    {t('categories.newCategory')}
                 </Link>
             </div>
 
@@ -117,22 +124,18 @@ function CategoriesPage() {
                         setSearch(event.target.value)
                         setCurrentPage(1)
                     }}
-                    placeholder="Search by name, description or date..."
+                    placeholder={t('categories.searchPlaceholder')}
                     className="solaris-input w-full sm:w-96"
                 />
 
                 <p className="text-sm solaris-muted">
-                    {filteredCategories.length} result
-                    {filteredCategories.length === 1 ? '' : 's'}
+                    {t('categories.results', { count: filteredCategories.length })}
                 </p>
             </div>
 
             <div className="mt-8 space-y-4 lg:hidden">
                 {paginatedCategories.map((category) => (
-                    <div
-                        key={category.id}
-                        className="solaris-panel"
-                    >
+                    <div key={category.id} className="solaris-panel">
                         <div>
                             <h2 className="font-semibold text-slate-950 dark:text-white">
                                 {category.name}
@@ -143,31 +146,33 @@ function CategoriesPage() {
                             </p>
 
                             <p className="mt-3 text-xs solaris-subtle">
-                                Created: {new Date(category.createdAt).toLocaleString()}
+                                {t('categories.created')}: {new Date(category.createdAt).toLocaleString()}
                             </p>
                         </div>
 
-                        <div className="mt-4 flex flex-wrap gap-2">
-                            <Link
-                                to={`/categories/${category.id}/edit`}
-                                className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                            >
-                                Edit
-                            </Link>
+                        {!category.systemCategory && (
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                <Link
+                                    to={`/categories/${category.id}/edit`}
+                                    className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                                >
+                                    {t('categories.actions.edit')}
+                                </Link>
 
-                            <button
-                                onClick={() => handleDeleteCategory(category.id)}
-                                className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500 hover:bg-red-500/20 dark:text-red-400"
-                            >
-                                Delete
-                            </button>
-                        </div>
+                                <button
+                                    onClick={() => handleDeleteCategory(category.id)}
+                                    className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500 hover:bg-red-500/20 dark:text-red-400"
+                                >
+                                    {t('categories.actions.delete')}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 ))}
 
                 {paginatedCategories.length === 0 && (
                     <div className="solaris-panel text-center solaris-muted">
-                        No categories found for the selected filters.
+                        {t('categories.empty')}
                     </div>
                 )}
             </div>
@@ -178,7 +183,7 @@ function CategoriesPage() {
                     <tr>
                         <th className="px-6 py-4 text-left text-sm solaris-muted">
                             <SortButton
-                                label="Name"
+                                label={t('categories.table.name')}
                                 field="name"
                                 currentField={sortField}
                                 direction={sortDirection}
@@ -188,7 +193,7 @@ function CategoriesPage() {
 
                         <th className="px-6 py-4 text-left text-sm solaris-muted">
                             <SortButton
-                                label="Description"
+                                label={t('categories.table.description')}
                                 field="description"
                                 currentField={sortField}
                                 direction={sortDirection}
@@ -198,7 +203,7 @@ function CategoriesPage() {
 
                         <th className="px-6 py-4 text-left text-sm solaris-muted">
                             <SortButton
-                                label="Created At"
+                                label={t('categories.table.createdAt')}
                                 field="createdAt"
                                 currentField={sortField}
                                 direction={sortDirection}
@@ -207,7 +212,7 @@ function CategoriesPage() {
                         </th>
 
                         <th className="px-6 py-4 text-right text-sm solaris-muted">
-                            Actions
+                            {t('categories.table.actions')}
                         </th>
                     </tr>
                     </thead>
@@ -238,14 +243,14 @@ function CategoriesPage() {
                                                 to={`/categories/${category.id}/edit`}
                                                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                                             >
-                                                Edit
+                                                {t('categories.actions.edit')}
                                             </Link>
 
                                             <button
                                                 onClick={() => handleDeleteCategory(category.id)}
                                                 className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500 hover:bg-red-500/20 dark:text-red-400"
                                             >
-                                                Delete
+                                                {t('categories.actions.delete')}
                                             </button>
                                         </>
                                     )}
@@ -260,7 +265,7 @@ function CategoriesPage() {
                                 colSpan={4}
                                 className="px-6 py-10 text-center solaris-muted"
                             >
-                                No categories found for the selected filters.
+                                {t('categories.empty')}
                             </td>
                         </tr>
                     )}
@@ -271,7 +276,11 @@ function CategoriesPage() {
             {totalPages > 1 && (
                 <div className="solaris-panel mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm solaris-muted">
-                        Page {currentPage} of {totalPages} · {filteredCategories.length} categories
+                        {t('categories.pagination', {
+                            currentPage,
+                            totalPages,
+                            count: filteredCategories.length,
+                        })}
                     </p>
 
                     <div className="flex flex-wrap items-center gap-2">
@@ -281,7 +290,7 @@ function CategoriesPage() {
                             onClick={() => setCurrentPage((page) => page - 1)}
                             className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Previous
+                            {t('categories.previous')}
                         </button>
 
                         {Array.from({ length: totalPages }).map((_, index) => {
@@ -309,7 +318,7 @@ function CategoriesPage() {
                             onClick={() => setCurrentPage((page) => page + 1)}
                             className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                         >
-                            Next
+                            {t('categories.next')}
                         </button>
                     </div>
                 </div>
@@ -347,71 +356,6 @@ function SortButton({
                 {isActive ? (direction === 'asc' ? '↑' : '↓') : '↕'}
             </span>
         </button>
-    )
-}
-
-function CategoriesSkeleton() {
-    return (
-        <div>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <div className="h-10 w-52 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-3 h-5 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                </div>
-
-                <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
-
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800 sm:w-96" />
-                <div className="h-5 w-20 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
-
-            <div className="solaris-card mt-8 hidden overflow-hidden lg:block">
-                <div className="grid grid-cols-4 gap-4 bg-slate-100 px-6 py-4 dark:bg-slate-800/50">
-                    {Array.from({ length: 4 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className="h-4 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-700"
-                        />
-                    ))}
-                </div>
-
-                <div className="divide-y divide-slate-200 dark:divide-slate-800">
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className="grid grid-cols-4 gap-4 px-6 py-5"
-                        >
-                            {Array.from({ length: 4 }).map((_, columnIndex) => (
-                                <div
-                                    key={columnIndex}
-                                    className="h-5 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800"
-                                />
-                            ))}
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <div className="mt-8 space-y-4 lg:hidden">
-                {Array.from({ length: 4 }).map((_, index) => (
-                    <div
-                        key={index}
-                        className="solaris-panel"
-                    >
-                        <div className="h-5 w-40 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                        <div className="mt-3 h-4 w-full animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                        <div className="mt-3 h-4 w-56 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-
-                        <div className="mt-4 flex gap-2">
-                            <div className="h-9 w-16 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                            <div className="h-9 w-20 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
     )
 }
 

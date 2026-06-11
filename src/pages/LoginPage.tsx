@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { loginUser } from '../api/authService'
 import PasswordInput from '../components/PasswordInput'
+import { useTranslation } from 'react-i18next'
 import logo from '../assets/logo/solaris-white-full-logo.png'
 
 function LoginPage() {
@@ -16,6 +17,7 @@ function LoginPage() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const { t } = useTranslation()
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -27,7 +29,7 @@ function LoginPage() {
             localStorage.setItem('solaris_token', data.token)
             navigate('/')
         } catch {
-            setError('Invalid credentials or email not verified')
+            setError(t('auth.login.invalidCredentials'))
         } finally {
             setLoading(false)
         }
@@ -53,24 +55,24 @@ function LoginPage() {
 
                 {registered && (
                     <div className="mt-5 rounded-xl border border-blue-500/20 bg-blue-500/10 p-4 text-sm text-blue-300">
-                        Account created. Check your email to verify your account before signing in.
+                        {t('auth.login.registeredMessage')}
                     </div>
                 )}
 
                 {verified && (
                     <div className="mt-5 rounded-xl border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-300">
-                        Email verified successfully. You can now sign in.
+                        {t('auth.login.verifiedMessage')}
                     </div>
                 )}
 
                 {passwordReset && (
                     <div className="mt-5 rounded-xl border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-300">
-                        Password updated successfully. You can now sign in.
+                        {t('auth.login.passwordResetMessage')}
                     </div>
                 )}
 
                 <div className="mt-6">
-                    <label className="text-sm text-slate-400">Email</label>
+                    <label className="text-sm text-slate-400">{t('auth.login.email')}</label>
                     <input
                         className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
                         value={email}
@@ -80,7 +82,7 @@ function LoginPage() {
                 </div>
 
                 <div className="mt-4">
-                    <label className="text-sm text-slate-400">Password</label>
+                    <label className="text-sm text-slate-400">{t('auth.login.password')}</label>
                     <PasswordInput
                         required
                         value={password}
@@ -94,7 +96,7 @@ function LoginPage() {
                         to="/forgot-password"
                         className="text-sm font-semibold text-blue-400 hover:text-blue-300"
                     >
-                        Forgot password?
+                        {t('auth.login.forgotPassword')}
                     </Link>
                 </div>
 
@@ -108,16 +110,16 @@ function LoginPage() {
                     disabled={loading}
                     className="mt-5 w-full rounded-xl bg-blue-600 py-3 font-semibold hover:bg-blue-500 disabled:opacity-60"
                 >
-                    {loading ? 'Signing in...' : 'Sign in'}
+                    {loading ? t('auth.login.signingIn') : t('auth.login.signIn')}
                 </button>
 
                 <p className="mt-5 text-center text-sm text-slate-400">
-                    Don&apos;t have an account?{' '}
+                    {t('auth.login.noAccount')}{' '}
                     <Link
                         to="/register"
                         className="font-semibold text-blue-400 hover:text-blue-300"
                     >
-                        Register
+                        {t('auth.login.register')}
                     </Link>
                 </p>
             </form>
