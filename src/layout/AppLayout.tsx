@@ -15,6 +15,7 @@ import {
     Truck,
     ClipboardList,
     User,
+    ScrollText,
 } from 'lucide-react'
 import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useTheme } from '../utils/useTheme'
@@ -43,6 +44,11 @@ function AppLayout() {
         { label: t('nav.categories'), to: '/categories', icon: FolderTree },
         { label: t('nav.suppliers'), to: '/suppliers', icon: Truck },
         { label: t('nav.movementHistory'), to: '/stock-movements', icon: History },
+        {
+            label: t('nav.auditLogs'),
+            to: '/audit-logs',
+            icon: ScrollText,
+        },
     ]
 
     async function handleAdminSettingsClick() {

@@ -75,6 +75,7 @@
     "categories": "Categorías",
     "suppliers": "Proveedores",
     "movementHistory": "Historial de movimientos",
+    "auditLogs": "Auditoría",
     "adminSettings": "Configuración de administrador",
     "myProfile": "Mi perfil"
   },
@@ -658,6 +659,53 @@
       "timezonePlaceholder": "Seleccionar zona horaria",
       "autoCloseTime": "Hora de cierre automático",
       "autoCloseTimeHelp": "Las cajas que permanezcan abiertas a esta hora se cerrarán automáticamente."
+    }
+  },
+  "auditLogs": {
+    "title": "Auditoría",
+    "description": "Consulta las acciones importantes realizadas dentro del sistema.",
+    "loadError": "No se pudieron cargar los registros de auditoría",
+    "searchPlaceholder": "Buscar registros...",
+    "empty": "No se encontraron registros de auditoría.",
+    "systemUser": "Sistema",
+    "results_one": "{{count}} registro",
+    "results_other": "{{count}} registros",
+    "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} registros",
+    "filters": {
+      "allActions": "Todas las acciones",
+      "allEntities": "Todas las entidades"
+    },
+    "table": {
+      "user": "Usuario",
+      "action": "Acción",
+      "entity": "Entidad",
+      "entityName": "Nombre de entidad"
+    },
+    "actions": {
+      "CREATE": "Crear",
+      "UPDATE": "Actualizar",
+      "DELETE": "Eliminar",
+      "REGISTER_USER": "Registro de usuario",
+      "LOGIN": "Inicio de sesión",
+      "LOGOUT": "Cierre de sesión",
+      "OPEN_CASH_REGISTER": "Apertura de caja",
+      "CLOSE_CASH_REGISTER": "Cierre de caja",
+      "REOPEN_CASH_REGISTER": "Reapertura de caja",
+      "CREATE_SALE": "Crear venta",
+      "CREATE_SUPPLIER_ORDER": "Crear orden de proveedor",
+      "COMPLETE_SUPPLIER_ORDER": "Completar orden de proveedor",
+      "CANCEL_SUPPLIER_ORDER": "Cancelar orden de proveedor",
+      "UPDATE_SETTINGS": "Actualizar configuración"
+    },
+    "entities": {
+      "PRODUCT": "Producto",
+      "CATEGORY": "Categoría",
+      "SUPPLIER": "Proveedor",
+      "SALE": "Venta",
+      "CASH_REGISTER": "Caja",
+      "SUPPLIER_ORDER": "Orden de proveedor",
+      "SYSTEM_SETTINGS": "Configuración del sistema",
+      "USER": "Usuario"
     }
   }
 }

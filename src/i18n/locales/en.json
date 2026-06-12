@@ -75,6 +75,7 @@
     "categories": "Categories",
     "suppliers": "Suppliers",
     "movementHistory": "Movement History",
+    "auditLogs": "Audit Logs",
     "adminSettings": "Admin Settings",
     "myProfile": "My Profile"
   },
@@ -658,6 +659,53 @@
       "timezonePlaceholder": "Select timezone",
       "autoCloseTime": "Automatic Close Time",
       "autoCloseTimeHelp": "Cash registers still open at this time will be automatically closed."
+    }
+  },
+  "auditLogs": {
+    "title": "Audit Logs",
+    "description": "Track important actions performed throughout the system.",
+    "loadError": "Could not load audit logs",
+    "searchPlaceholder": "Search audit logs...",
+    "empty": "No audit records found.",
+    "systemUser": "System",
+    "results_one": "{{count}} record",
+    "results_other": "{{count}} records",
+    "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} records",
+    "filters": {
+      "allActions": "All actions",
+      "allEntities": "All entities"
+    },
+    "table": {
+      "user": "User",
+      "action": "Action",
+      "entity": "Entity",
+      "entityName": "Entity Name"
+    },
+    "actions": {
+      "CREATE": "Create",
+      "UPDATE": "Update",
+      "DELETE": "Delete",
+      "REGISTER_USER": "User Registration",
+      "LOGIN": "Login",
+      "LOGOUT": "Logout",
+      "OPEN_CASH_REGISTER": "Open Cash Register",
+      "CLOSE_CASH_REGISTER": "Close Cash Register",
+      "REOPEN_CASH_REGISTER": "Reopen Cash Register",
+      "CREATE_SALE": "Create Sale",
+      "CREATE_SUPPLIER_ORDER": "Create Supplier Order",
+      "COMPLETE_SUPPLIER_ORDER": "Complete Supplier Order",
+      "CANCEL_SUPPLIER_ORDER": "Cancel Supplier Order",
+      "UPDATE_SETTINGS": "Update Settings"
+    },
+    "entities": {
+      "PRODUCT": "Product",
+      "CATEGORY": "Category",
+      "SUPPLIER": "Supplier",
+      "SALE": "Sale",
+      "CASH_REGISTER": "Cash Register",
+      "SUPPLIER_ORDER": "Supplier Order",
+      "SYSTEM_SETTINGS": "System Settings",
+      "USER": "User"
     }
   }
 }

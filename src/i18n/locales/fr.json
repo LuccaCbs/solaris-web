@@ -75,6 +75,7 @@
     "categories": "Catégories",
     "suppliers": "Fournisseurs",
     "movementHistory": "Historique des mouvements",
+    "auditLogs": "Journal d’audit",
     "adminSettings": "Paramètres administrateur",
     "myProfile": "Mon profil"
   },
@@ -655,6 +656,53 @@
       "timezonePlaceholder": "Sélectionner un fuseau horaire",
       "autoCloseTime": "Heure de fermeture automatique",
       "autoCloseTimeHelp": "Les caisses encore ouvertes à cette heure seront fermées automatiquement."
+    }
+  },
+  "auditLogs": {
+    "title": "Journal d’audit",
+    "description": "Consultez les actions importantes réalisées dans le système.",
+    "loadError": "Impossible de charger les journaux d’audit",
+    "searchPlaceholder": "Rechercher dans les journaux...",
+    "empty": "Aucun enregistrement d’audit trouvé.",
+    "systemUser": "Système",
+    "results_one": "{{count}} enregistrement",
+    "results_other": "{{count}} enregistrements",
+    "pagination": "Page {{currentPage}} sur {{totalPages}} · {{count}} enregistrements",
+    "filters": {
+      "allActions": "Toutes les actions",
+      "allEntities": "Toutes les entités"
+    },
+    "table": {
+      "user": "Utilisateur",
+      "action": "Action",
+      "entity": "Entité",
+      "entityName": "Nom de l’entité"
+    },
+    "actions": {
+      "CREATE": "Créer",
+      "UPDATE": "Mettre à jour",
+      "DELETE": "Supprimer",
+      "REGISTER_USER": "Inscription utilisateur",
+      "LOGIN": "Connexion",
+      "LOGOUT": "Déconnexion",
+      "OPEN_CASH_REGISTER": "Ouverture de caisse",
+      "CLOSE_CASH_REGISTER": "Fermeture de caisse",
+      "REOPEN_CASH_REGISTER": "Réouverture de caisse",
+      "CREATE_SALE": "Créer une vente",
+      "CREATE_SUPPLIER_ORDER": "Créer une commande fournisseur",
+      "COMPLETE_SUPPLIER_ORDER": "Finaliser une commande fournisseur",
+      "CANCEL_SUPPLIER_ORDER": "Annuler une commande fournisseur",
+      "UPDATE_SETTINGS": "Mettre à jour les paramètres"
+    },
+    "entities": {
+      "PRODUCT": "Produit",
+      "CATEGORY": "Catégorie",
+      "SUPPLIER": "Fournisseur",
+      "SALE": "Vente",
+      "CASH_REGISTER": "Caisse",
+      "SUPPLIER_ORDER": "Commande fournisseur",
+      "SYSTEM_SETTINGS": "Paramètres système",
+      "USER": "Utilisateur"
     }
   }
 }

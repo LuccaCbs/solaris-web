@@ -73,6 +73,7 @@
     "categories": "Categories",
     "suppliers": "Proveïdors",
     "movementHistory": "Historial de moviments",
+    "auditLogs": "Auditoria",
     "adminSettings": "Configuració d’administrador",
     "myProfile": "El meu perfil"
   },
@@ -654,6 +655,53 @@
       "timezonePlaceholder": "Seleccionar zona horària",
       "autoCloseTime": "Hora de tancament automàtic",
       "autoCloseTimeHelp": "Les caixes que continuïn obertes a aquesta hora es tancaran automàticament."
+    }
+  },
+  "auditLogs": {
+    "title": "Auditoria",
+    "description": "Consulta les accions importants realitzades dins del sistema.",
+    "loadError": "No s'han pogut carregar els registres d'auditoria",
+    "searchPlaceholder": "Cercar registres...",
+    "empty": "No s'han trobat registres d'auditoria.",
+    "systemUser": "Sistema",
+    "results_one": "{{count}} registre",
+    "results_other": "{{count}} registres",
+    "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} registres",
+    "filters": {
+      "allActions": "Totes les accions",
+      "allEntities": "Totes les entitats"
+    },
+    "table": {
+      "user": "Usuari",
+      "action": "Acció",
+      "entity": "Entitat",
+      "entityName": "Nom de l'entitat"
+    },
+    "actions": {
+      "CREATE": "Crear",
+      "UPDATE": "Actualitzar",
+      "DELETE": "Eliminar",
+      "REGISTER_USER": "Registre d'usuari",
+      "LOGIN": "Inici de sessió",
+      "LOGOUT": "Tancament de sessió",
+      "OPEN_CASH_REGISTER": "Obertura de caixa",
+      "CLOSE_CASH_REGISTER": "Tancament de caixa",
+      "REOPEN_CASH_REGISTER": "Reobertura de caixa",
+      "CREATE_SALE": "Crear venda",
+      "CREATE_SUPPLIER_ORDER": "Crear comanda de proveïdor",
+      "COMPLETE_SUPPLIER_ORDER": "Completar comanda de proveïdor",
+      "CANCEL_SUPPLIER_ORDER": "Cancel·lar comanda de proveïdor",
+      "UPDATE_SETTINGS": "Actualitzar configuració"
+    },
+    "entities": {
+      "PRODUCT": "Producte",
+      "CATEGORY": "Categoria",
+      "SUPPLIER": "Proveïdor",
+      "SALE": "Venda",
+      "CASH_REGISTER": "Caixa",
+      "SUPPLIER_ORDER": "Comanda de proveïdor",
+      "SYSTEM_SETTINGS": "Configuració del sistema",
+      "USER": "Usuari"
     }
   }
 }

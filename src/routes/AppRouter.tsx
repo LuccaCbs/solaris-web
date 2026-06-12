@@ -27,6 +27,7 @@ import ResetPasswordPage from '../pages/ResetPasswordPage'
 import VerifyEmailPage from '../pages/VerifyEmailPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import ProfilePage from '../pages/ProfilePage'
+import AuditLogsPage from '../pages/AuditLogsPage'
 
 function AppRouter() {
     return (
@@ -59,6 +60,7 @@ function AppRouter() {
                         <Route path="/categories/:id/edit" element={<EditCategoryPage />} />
 
                         <Route path="/stock-movements" element={<StockMovementsPage />} />
+                        <Route path="/audit-logs" element={<AuditLogsPage />} />
 
                         <Route path="/sales" element={<SalesPage />} />
                         <Route path="/sales/new" element={<NewSalePage />} />
@@ -66,6 +68,9 @@ function AppRouter() {
 
                         <Route path="/admin/settings" element={<AdminSettingsPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
+
+
+
                     </Route>
                 </Route>
                 <Route path="*" element={<NotFoundPage />} />
