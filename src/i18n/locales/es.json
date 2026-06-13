@@ -1,47 +1,31 @@
 {
   "common": {
     "loadingWorkspace": "Cargando espacio de trabajo...",
-
     "save": "Guardar",
     "saving": "Guardando...",
     "cancel": "Cancelar",
-
     "create": "Crear",
     "creating": "Creando...",
-
     "edit": "Editar",
     "update": "Actualizar",
     "updating": "Actualizando...",
-
     "delete": "Eliminar",
-
     "search": "Buscar",
-
     "yes": "Sí",
     "no": "No",
-
     "active": "Activo",
     "inactive": "Inactivo",
-
     "status": "Estado",
-
     "previous": "Anterior",
     "next": "Siguiente",
-
     "clearFilters": "Limpiar filtros",
-
     "optional": "(opcional)",
-
     "loading": "Cargando...",
     "noData": "No hay datos disponibles",
-
     "actions": "Acciones",
-
     "logout": "Cerrar sesión",
     "settings": "Configuración",
-
     "clear": "Limpiar",
-
     "date": "Fecha",
     "quantity": "Cantidad",
     "reason": "Motivo",
@@ -51,7 +35,6 @@
     "details": "Detalles",
     "export": "Exportar",
     "saveChanges": "Guardar cambios",
-
     "from": "Desde",
     "to": "Hasta",
     "all": "Todos",
@@ -143,28 +126,28 @@
     "login": "Iniciar sesión"
   },
   "dashboard": {
-  "title": "Panel de Solaris",
-  "description": "Resumen rápido de ventas, alertas de stock y órdenes a proveedores.",
-  "loadError": "No se pudo cargar el panel",
-  "sales": "ventas",
-  "income": "ingresos",
-  "day": "Día",
-  "productsNeedRestock": "productos necesitan reposición",
-  "viewFilteredOrders": "Ver órdenes filtradas",
-  "monthlyOverviewTitle": "Resumen de ventas mensuales",
-  "monthlyOverviewDescription": "Ingresos diarios y cantidad de ventas del mes actual.",
-  "cards": {
-    "monthlySales": "Ventas mensuales",
-    "todaySales": "Ventas de hoy",
-    "lowStockProducts": "Productos con bajo stock",
-    "supplierOrders": "Órdenes a proveedores"
+    "title": "Panel de Solaris",
+    "description": "Resumen rápido de ventas, alertas de stock y órdenes a proveedores.",
+    "loadError": "No se pudo cargar el panel",
+    "sales": "ventas",
+    "income": "ingresos",
+    "day": "Día",
+    "productsNeedRestock": "productos necesitan reposición",
+    "viewFilteredOrders": "Ver órdenes filtradas",
+    "monthlyOverviewTitle": "Resumen de ventas mensuales",
+    "monthlyOverviewDescription": "Ingresos diarios y cantidad de ventas del mes actual.",
+    "cards": {
+      "monthlySales": "Ventas mensuales",
+      "todaySales": "Ventas de hoy",
+      "lowStockProducts": "Productos con bajo stock",
+      "supplierOrders": "Órdenes a proveedores"
+    },
+    "orderStatus": {
+      "sent": "Enviadas",
+      "completed": "Completadas",
+      "cancelled": "Canceladas"
+    }
   },
-  "orderStatus": {
-    "sent": "Enviadas",
-    "completed": "Completadas",
-    "cancelled": "Canceladas"
-  }
-},
   "profile": {
     "title": "Mi perfil",
     "description": "Gestiona los datos de tu cuenta y contraseña.",
@@ -388,6 +371,23 @@
       "updated": "Actualizados",
       "failed": "Fallidos",
       "errors": "Errores"
+    },
+    "image": {
+      "title": "Importar desde imagen con IA",
+      "description": "Sube una foto o captura con productos. Solaris generará una vista previa antes de importar.",
+      "generatePreview": "Generar vista previa desde imagen",
+      "processing": "Procesando imagen...",
+      "selectImageError": "Selecciona una imagen",
+      "noProductsDetected": "No se detectaron productos en la imagen",
+      "detectedSuccess": "Productos detectados. Revisa la vista previa antes de importar.",
+      "processingError": "Error procesando imagen",
+      "previewTitle": "Vista previa de productos detectados",
+      "previewDescription": "Revisa y ajusta los datos antes de importarlos.",
+      "noProductsToImport": "No hay productos para importar",
+      "importSuccess": "Productos importados desde imagen",
+      "importError": "Error importando productos generados desde imagen",
+      "importGeneratedProducts": "Importar productos generados",
+      "discardPreview": "Descartar vista previa"
     }
   },
   "sales": {

@@ -1,47 +1,31 @@
 {
   "common": {
     "loadingWorkspace": "Chargement de l’espace de travail...",
-
     "save": "Enregistrer",
     "saving": "Enregistrement...",
     "cancel": "Annuler",
-
     "create": "Créer",
     "creating": "Création...",
-
     "edit": "Modifier",
     "update": "Mettre à jour",
     "updating": "Mise à jour...",
-
     "delete": "Supprimer",
-
     "search": "Rechercher",
-
     "yes": "Oui",
     "no": "Non",
-
     "active": "Actif",
     "inactive": "Inactif",
-
     "status": "État",
-
     "previous": "Précédent",
     "next": "Suivant",
-
     "clearFilters": "Effacer les filtres",
-
     "optional": "(optionnel)",
-
     "loading": "Chargement...",
     "noData": "Aucune donnée disponible",
-
     "actions": "Actions",
-
     "logout": "Déconnexion",
     "settings": "Paramètres",
-
     "clear": "Effacer",
-
     "date": "Date",
     "quantity": "Quantité",
     "reason": "Motif",
@@ -51,7 +35,6 @@
     "details": "Détails",
     "export": "Exporter",
     "saveChanges": "Enregistrer les modifications",
-
     "from": "Du",
     "to": "Au",
     "all": "Tous",
@@ -139,29 +122,30 @@
     "goBack": "Retour",
     "dashboard": "Tableau de bord",
     "login": "Connexion"
-  },"dashboard": {
-  "title": "Tableau de bord Solaris",
-  "description": "Aperçu rapide des ventes, alertes de stock et commandes fournisseurs.",
-  "loadError": "Impossible de charger le tableau de bord",
-  "sales": "ventes",
-  "income": "revenus",
-  "day": "Jour",
-  "productsNeedRestock": "produits nécessitent un réassort",
-  "viewFilteredOrders": "Voir les commandes filtrées",
-  "monthlyOverviewTitle": "Aperçu des ventes mensuelles",
-  "monthlyOverviewDescription": "Revenus quotidiens et nombre de ventes du mois en cours.",
-  "cards": {
-    "monthlySales": "Ventes mensuelles",
-    "todaySales": "Ventes du jour",
-    "lowStockProducts": "Produits en stock faible",
-    "supplierOrders": "Commandes fournisseurs"
   },
-  "orderStatus": {
-    "sent": "Envoyées",
-    "completed": "Terminées",
-    "cancelled": "Annulées"
-  }
-},
+  "dashboard": {
+    "title": "Tableau de bord Solaris",
+    "description": "Aperçu rapide des ventes, alertes de stock et commandes fournisseurs.",
+    "loadError": "Impossible de charger le tableau de bord",
+    "sales": "ventes",
+    "income": "revenus",
+    "day": "Jour",
+    "productsNeedRestock": "produits nécessitent un réassort",
+    "viewFilteredOrders": "Voir les commandes filtrées",
+    "monthlyOverviewTitle": "Aperçu des ventes mensuelles",
+    "monthlyOverviewDescription": "Revenus quotidiens et nombre de ventes du mois en cours.",
+    "cards": {
+      "monthlySales": "Ventes mensuelles",
+      "todaySales": "Ventes du jour",
+      "lowStockProducts": "Produits en stock faible",
+      "supplierOrders": "Commandes fournisseurs"
+    },
+    "orderStatus": {
+      "sent": "Envoyées",
+      "completed": "Terminées",
+      "cancelled": "Annulées"
+    }
+  },
   "profile": {
     "title": "Mon profil",
     "description": "Gérez les informations de votre compte et votre mot de passe.",
@@ -385,6 +369,23 @@
       "updated": "Mis à jour",
       "failed": "Échoués",
       "errors": "Erreurs"
+    },
+    "image": {
+      "title": "Importer depuis une image avec IA",
+      "description": "Téléversez une photo ou une capture contenant des produits. Solaris générera un aperçu avant l’importation.",
+      "generatePreview": "Générer un aperçu depuis l’image",
+      "processing": "Traitement de l’image...",
+      "selectImageError": "Sélectionnez une image",
+      "noProductsDetected": "Aucun produit détecté dans l’image",
+      "detectedSuccess": "Produits détectés. Vérifiez l’aperçu avant d’importer.",
+      "processingError": "Erreur lors du traitement de l’image",
+      "previewTitle": "Aperçu des produits détectés",
+      "previewDescription": "Vérifiez et ajustez les données avant de les importer.",
+      "noProductsToImport": "Aucun produit à importer",
+      "importSuccess": "Produits importés depuis l’image",
+      "importError": "Erreur lors de l’importation des produits générés depuis l’image",
+      "importGeneratedProducts": "Importer les produits générés",
+      "discardPreview": "Ignorer l’aperçu"
     }
   },
   "sales": {

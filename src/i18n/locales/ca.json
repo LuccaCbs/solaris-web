@@ -1,45 +1,30 @@
 {
   "common": {
     "loadingWorkspace": "Carregant espai de treball...",
-
     "save": "Desar",
     "saving": "Desant...",
     "cancel": "Cancel·lar",
-
     "create": "Crear",
     "creating": "Creant...",
-
     "edit": "Editar",
     "update": "Actualitzar",
     "updating": "Actualitzant...",
-
     "delete": "Eliminar",
-
     "search": "Cercar",
-
     "yes": "Sí",
     "no": "No",
-
     "active": "Actiu",
     "inactive": "Inactiu",
-
     "status": "Estat",
-
     "previous": "Anterior",
     "next": "Següent",
-
     "clearFilters": "Netejar filtres",
-
     "optional": "(opcional)",
-
     "loading": "Carregant...",
     "noData": "Sense dades disponibles",
-
     "actions": "Accions",
-
     "logout": "Tancar sessió",
     "settings": "Configuració",
-
     "date": "Data",
     "quantity": "Quantitat",
     "reason": "Motiu",
@@ -49,7 +34,6 @@
     "details": "Detalls",
     "export": "Exportar",
     "saveChanges": "Desar canvis",
-
     "from": "Des de",
     "to": "Fins a",
     "all": "Tots",
@@ -384,6 +368,23 @@
       "updated": "Actualitzats",
       "failed": "Fallits",
       "errors": "Errors"
+    },
+    "image": {
+      "title": "Importar des d’imatge amb IA",
+      "description": "Puja una foto o captura amb productes. Solaris generarà una vista prèvia abans d’importar.",
+      "generatePreview": "Generar vista prèvia des d’imatge",
+      "processing": "Processant imatge...",
+      "selectImageError": "Selecciona una imatge",
+      "noProductsDetected": "No s’han detectat productes a la imatge",
+      "detectedSuccess": "Productes detectats. Revisa la vista prèvia abans d’importar.",
+      "processingError": "Error processant la imatge",
+      "previewTitle": "Vista prèvia de productes detectats",
+      "previewDescription": "Revisa i ajusta les dades abans d’importar-les.",
+      "noProductsToImport": "No hi ha productes per importar",
+      "importSuccess": "Productes importats des d’imatge",
+      "importError": "Error important productes generats des d’imatge",
+      "importGeneratedProducts": "Importar productes generats",
+      "discardPreview": "Descartar vista prèvia"
     }
   },
   "sales": {

@@ -1,47 +1,31 @@
 {
   "common": {
     "loadingWorkspace": "Loading workspace...",
-
     "save": "Save",
     "saving": "Saving...",
     "cancel": "Cancel",
-
     "create": "Create",
     "creating": "Creating...",
-
     "edit": "Edit",
     "update": "Update",
     "updating": "Updating...",
-
     "delete": "Delete",
-
     "search": "Search",
-
     "yes": "Yes",
     "no": "No",
-
     "active": "Active",
     "inactive": "Inactive",
-
     "status": "Status",
-
     "previous": "Previous",
     "next": "Next",
-
     "clearFilters": "Clear Filters",
-
     "optional": "(optional)",
-
     "loading": "Loading...",
     "noData": "No data available",
-
     "actions": "Actions",
-
     "logout": "Logout",
     "settings": "Settings",
-
     "clear": "Clear",
-
     "date": "Date",
     "quantity": "Quantity",
     "reason": "Reason",
@@ -51,7 +35,6 @@
     "details": "Details",
     "export": "Export",
     "saveChanges": "Save Changes",
-
     "from": "From",
     "to": "To",
     "all": "All",
@@ -143,28 +126,28 @@
     "login": "Login"
   },
   "dashboard": {
-  "title": "Solaris Dashboard",
-  "description": "Quick overview of sales, stock alerts and supplier orders.",
-  "loadError": "Could not load dashboard",
-  "sales": "sales",
-  "income": "income",
-  "day": "Day",
-  "productsNeedRestock": "products need restock",
-  "viewFilteredOrders": "View filtered orders",
-  "monthlyOverviewTitle": "Monthly Sales Overview",
-  "monthlyOverviewDescription": "Daily income and sales count for the current month.",
-  "cards": {
-    "monthlySales": "Monthly Sales",
-    "todaySales": "Today Sales",
-    "lowStockProducts": "Low Stock Products",
-    "supplierOrders": "Supplier Orders"
+    "title": "Solaris Dashboard",
+    "description": "Quick overview of sales, stock alerts and supplier orders.",
+    "loadError": "Could not load dashboard",
+    "sales": "sales",
+    "income": "income",
+    "day": "Day",
+    "productsNeedRestock": "products need restock",
+    "viewFilteredOrders": "View filtered orders",
+    "monthlyOverviewTitle": "Monthly Sales Overview",
+    "monthlyOverviewDescription": "Daily income and sales count for the current month.",
+    "cards": {
+      "monthlySales": "Monthly Sales",
+      "todaySales": "Today Sales",
+      "lowStockProducts": "Low Stock Products",
+      "supplierOrders": "Supplier Orders"
+    },
+    "orderStatus": {
+      "sent": "Sent",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
   },
-  "orderStatus": {
-    "sent": "Sent",
-    "completed": "Completed",
-    "cancelled": "Cancelled"
-  }
-},
   "profile": {
     "title": "My Profile",
     "description": "Manage your account details and password.",
@@ -388,6 +371,23 @@
       "updated": "Updated",
       "failed": "Failed",
       "errors": "Errors"
+    },
+    "image": {
+      "title": "Import from image with AI",
+      "description": "Upload a photo or screenshot with products. Solaris will generate a preview before importing.",
+      "generatePreview": "Generate preview from image",
+      "processing": "Processing image...",
+      "selectImageError": "Select an image",
+      "noProductsDetected": "No products were detected in the image",
+      "detectedSuccess": "Products detected. Review the preview before importing.",
+      "processingError": "Error processing image",
+      "previewTitle": "Detected products preview",
+      "previewDescription": "Review and adjust the data before importing it.",
+      "noProductsToImport": "There are no products to import",
+      "importSuccess": "Products imported from image",
+      "importError": "Error importing products generated from image",
+      "importGeneratedProducts": "Import generated products",
+      "discardPreview": "Discard preview"
     }
   },
   "sales": {
