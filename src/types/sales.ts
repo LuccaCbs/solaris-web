@@ -1,3 +1,5 @@
+export type SaleItemType = 'PRODUCT' | 'CUSTOM'
+
 export type PaymentMethod =
     | 'CASH'
     | 'DEBIT_CARD'
@@ -7,8 +9,14 @@ export type PaymentMethod =
 
 export type SaleItem = {
     id: number
-    productId: number
-    productName: string
+    type: SaleItemType
+
+    productId: number | null
+    productName: string | null
+
+    customName: string | null
+    unitLabel: string | null
+
     quantity: number
     unitPrice: number
     subtotal: number
@@ -16,7 +24,7 @@ export type SaleItem = {
 
 export type Sale = {
     id: number
-    cashRegisterSessionId: number
+    cashRegisterSessionId: number | null
     paymentMethod: PaymentMethod
     totalAmount: number
     createdAt: string
@@ -34,10 +42,21 @@ export type DailySalesSummary = {
     otherTotal: number
 }
 
+export type CreateSaleItemRequest =
+    | {
+    type: 'PRODUCT'
+    productId: number
+    quantity: number
+}
+    | {
+    type: 'CUSTOM'
+    customName: string
+    quantity: number
+    unitLabel: string
+    unitPrice: number
+}
+
 export type CreateSaleRequest = {
     paymentMethod: PaymentMethod
-    items: {
-        productId: number
-        quantity: number
-    }[]
+    items: CreateSaleItemRequest[]
 }

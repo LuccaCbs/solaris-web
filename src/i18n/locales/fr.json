@@ -477,7 +477,18 @@
       "noOpenCashRegister": "Aucune caisse n'est actuellement ouverte",
       "quantityExceedsStock": "La quantité dépasse le stock disponible",
       "productAlreadyAdded": "Ce produit a déjà été ajouté"
-    }
+    },
+    "addCustomItem": "Ajouter un article libre",
+    "itemType": "Type d’article",
+    "itemTypes": {
+      "product": "Produit",
+      "custom": "Article libre"
+    },
+    "customName": "Nom de l’article libre",
+    "customNamePlaceholder": "Exemple : 100 g de biscuits sucrés",
+    "unitLabel": "Unité",
+    "unitPrice": "Prix unitaire",
+    "customItemHelp": "Les articles libres sont ajoutés à la vente sans affecter le stock des produits."
   },
   "saleDetail": {
     "title": "Vente #{{id}}",

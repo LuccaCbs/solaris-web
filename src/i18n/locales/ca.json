@@ -476,7 +476,18 @@
       "noOpenCashRegister": "No hi ha cap caixa oberta actualment",
       "quantityExceedsStock": "La quantitat supera l'estoc disponible",
       "productAlreadyAdded": "Aquest producte ja ha estat afegit"
-    }
+    },
+    "addCustomItem": "Afegir ítem lliure",
+    "itemType": "Tipus d’ítem",
+    "itemTypes": {
+      "product": "Producte",
+      "custom": "Ítem lliure"
+    },
+    "customName": "Nom de l’ítem lliure",
+    "customNamePlaceholder": "Exemple: 100 g de galetes dolces",
+    "unitLabel": "Unitat",
+    "unitPrice": "Preu unitari",
+    "customItemHelp": "Els ítems lliures s’afegeixen a la venda sense afectar l’estoc dels productes."
   },
   "saleDetail": {
     "title": "Venda #{{id}}",

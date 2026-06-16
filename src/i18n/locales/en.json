@@ -479,7 +479,18 @@
       "noOpenCashRegister": "There is no open cash register session",
       "quantityExceedsStock": "Quantity exceeds available stock",
       "productAlreadyAdded": "This product is already added"
-    }
+    },
+    "addCustomItem": "Add Custom Item",
+    "itemType": "Item type",
+    "itemTypes": {
+      "product": "Product",
+      "custom": "Custom item"
+    },
+    "customName": "Custom item name",
+    "customNamePlaceholder": "Example: 100g sweet cookies",
+    "unitLabel": "Unit",
+    "unitPrice": "Unit price",
+    "customItemHelp": "Custom items are added to the sale without affecting product stock."
   },
   "saleDetail": {
     "title": "Sale #{{id}}",

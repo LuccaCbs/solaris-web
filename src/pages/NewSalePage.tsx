@@ -5,13 +5,37 @@ import toast from 'react-hot-toast'
 import { getProducts } from '../api/productService'
 import { createSale } from '../api/salesService'
 import type { Product } from '../types/product'
-import type { PaymentMethod } from '../types/sales'
+import type { PaymentMethod, SaleItemType } from '../types/sales'
 import { getCurrentCashRegister } from '../api/cashRegisterService'
 
 type SaleFormItem = {
+    type: SaleItemType
     productId: string
     productSearch: string
+    customName: string
     quantity: string
+    unitLabel: string
+    unitPrice: string
+}
+
+const emptyProductItem: SaleFormItem = {
+    type: 'PRODUCT',
+    productId: '',
+    productSearch: '',
+    customName: '',
+    quantity: '1',
+    unitLabel: '',
+    unitPrice: '',
+}
+
+const emptyCustomItem: SaleFormItem = {
+    type: 'CUSTOM',
+    productId: '',
+    productSearch: '',
+    customName: '',
+    quantity: '1',
+    unitLabel: 'unit',
+    unitPrice: '',
 }
 
 function NewSalePage() {
@@ -20,9 +44,7 @@ function NewSalePage() {
 
     const [products, setProducts] = useState<Product[]>([])
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('CASH')
-    const [items, setItems] = useState<SaleFormItem[]>([
-        { productId: '', productSearch: '', quantity: '1' },
-    ])
+    const [items, setItems] = useState<SaleFormItem[]>([emptyProductItem])
     const [creating, setCreating] = useState(false)
 
     useEffect(() => {
@@ -43,16 +65,24 @@ function NewSalePage() {
 
     const totalAmount = useMemo(() => {
         return items.reduce((total, item) => {
-            const product = products.find((current) => current.id === Number(item.productId))
             const quantity = Number(item.quantity)
 
-            if (!product || !quantity) return total
+            if (!quantity) return total
 
-            return total + product.price * quantity
+            if (item.type === 'PRODUCT') {
+                const product = products.find((current) => current.id === Number(item.productId))
+
+                if (!product) return total
+
+                return total + product.price * quantity
+            }
+
+            return total + Number(item.unitPrice || 0) * quantity
         }, 0)
     }, [items, products])
 
     const selectedProductIds = items
+        .filter((item) => item.type === 'PRODUCT')
         .map((item) => item.productId)
         .filter(Boolean)
 
@@ -60,6 +90,8 @@ function NewSalePage() {
         new Set(selectedProductIds).size !== selectedProductIds.length
 
     const hasStockErrors = items.some((item) => {
+        if (item.type !== 'PRODUCT') return false
+
         const product = products.find((current) => current.id === Number(item.productId))
 
         if (!product) return false
@@ -68,7 +100,13 @@ function NewSalePage() {
     })
 
     const hasInvalidItems = items.some((item) => {
-        return !item.productId || Number(item.quantity) <= 0
+        if (Number(item.quantity) <= 0) return true
+
+        if (item.type === 'PRODUCT') {
+            return !item.productId
+        }
+
+        return !item.customName.trim() || Number(item.unitPrice) < 0 || item.unitPrice === ''
     })
 
     const hasFormErrors = hasDuplicateProducts || hasStockErrors || hasInvalidItems
@@ -81,11 +119,24 @@ function NewSalePage() {
         )
     }
 
-    function addItem() {
-        setItems((current) => [
-            ...current,
-            { productId: '', productSearch: '', quantity: '1' },
-        ])
+    function changeItemType(index: number, type: SaleItemType) {
+        setItems((current) =>
+            current.map((item, currentIndex) => {
+                if (currentIndex !== index) return item
+
+                return type === 'PRODUCT'
+                    ? { ...emptyProductItem, quantity: item.quantity || '1' }
+                    : { ...emptyCustomItem, quantity: item.quantity || '1' }
+            })
+        )
+    }
+
+    function addProductItem() {
+        setItems((current) => [...current, { ...emptyProductItem }])
+    }
+
+    function addCustomItem() {
+        setItems((current) => [...current, { ...emptyCustomItem }])
     }
 
     function removeItem(index: number) {
@@ -109,18 +160,6 @@ function NewSalePage() {
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
 
-        const validItems = items
-            .filter((item) => item.productId && Number(item.quantity) > 0)
-            .map((item) => ({
-                productId: Number(item.productId),
-                quantity: Number(item.quantity),
-            }))
-
-        if (validItems.length === 0) {
-            toast.error(t('saleForm.errors.addAtLeastOneProduct'))
-            return
-        }
-
         if (hasDuplicateProducts) {
             toast.error(t('saleForm.errors.duplicateProduct'))
             return
@@ -133,6 +172,29 @@ function NewSalePage() {
 
         if (hasInvalidItems) {
             toast.error(t('saleForm.errors.completeAllLines'))
+            return
+        }
+
+        const validItems = items.map((item) => {
+            if (item.type === 'PRODUCT') {
+                return {
+                    type: 'PRODUCT' as const,
+                    productId: Number(item.productId),
+                    quantity: Number(item.quantity),
+                }
+            }
+
+            return {
+                type: 'CUSTOM' as const,
+                customName: item.customName.trim(),
+                quantity: Number(item.quantity),
+                unitLabel: item.unitLabel.trim() || 'unit',
+                unitPrice: Number(item.unitPrice),
+            }
+        })
+
+        if (validItems.length === 0) {
+            toast.error(t('saleForm.errors.addAtLeastOneProduct'))
             return
         }
 
@@ -209,42 +271,38 @@ function NewSalePage() {
                             }
                             className="solaris-input mt-2 w-full"
                         >
-                            <option value="CASH">
-                                {t('sales.payment.cash')}
-                            </option>
-
-                            <option value="DEBIT_CARD">
-                                {t('sales.payment.debitCard')}
-                            </option>
-
-                            <option value="CREDIT_CARD">
-                                {t('sales.payment.creditCard')}
-                            </option>
-
-                            <option value="TRANSFER">
-                                {t('sales.payment.transfer')}
-                            </option>
-
-                            <option value="OTHER">
-                                {t('sales.payment.other')}
-                            </option>
+                            <option value="CASH">{t('sales.payment.cash')}</option>
+                            <option value="DEBIT_CARD">{t('sales.payment.debitCard')}</option>
+                            <option value="CREDIT_CARD">{t('sales.payment.creditCard')}</option>
+                            <option value="TRANSFER">{t('sales.payment.transfer')}</option>
+                            <option value="OTHER">{t('sales.payment.other')}</option>
                         </select>
                     </div>
                 </div>
 
                 <div className="solaris-panel">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <h2 className="text-xl font-semibold">
                             {t('saleForm.products')}
                         </h2>
 
-                        <button
-                            type="button"
-                            onClick={addItem}
-                            className="rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500/20 dark:text-blue-300"
-                        >
-                            {t('saleForm.addProduct')}
-                        </button>
+                        <div className="flex flex-col gap-2 sm:flex-row">
+                            <button
+                                type="button"
+                                onClick={addProductItem}
+                                className="rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500/20 dark:text-blue-300"
+                            >
+                                {t('saleForm.addProduct')}
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={addCustomItem}
+                                className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-500 hover:bg-emerald-500/20 dark:text-emerald-300"
+                            >
+                                {t('saleForm.addCustomItem')}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="mt-6 space-y-4">
@@ -253,15 +311,18 @@ function NewSalePage() {
                                 (product) => product.id === Number(item.productId)
                             )
 
-                            const subtotal = selectedProduct
-                                ? selectedProduct.price * Number(item.quantity || 0)
-                                : 0
+                            const subtotal = item.type === 'PRODUCT'
+                                ? selectedProduct
+                                    ? selectedProduct.price * Number(item.quantity || 0)
+                                    : 0
+                                : Number(item.unitPrice || 0) * Number(item.quantity || 0)
 
-                            const exceedsStock = selectedProduct
+                            const exceedsStock = item.type === 'PRODUCT' && selectedProduct
                                 ? Number(item.quantity) > selectedProduct.stockQuantity
                                 : false
 
                             const isDuplicated =
+                                item.type === 'PRODUCT' &&
                                 item.productId &&
                                 items.filter((current) => current.productId === item.productId).length > 1
 
@@ -283,28 +344,48 @@ function NewSalePage() {
                                     key={index}
                                     className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950"
                                 >
-                                    <div className="grid gap-4 md:grid-cols-4">
-                                        <div className="relative md:col-span-2">
-                                            <label className="text-sm solaris-muted">
-                                                {t('saleForm.product')}
-                                            </label>
+                                    <div className="mb-4 max-w-xs">
+                                        <label className="text-sm solaris-muted">
+                                            {t('saleForm.itemType')}
+                                        </label>
 
-                                            <input
-                                                required
-                                                value={item.productSearch}
-                                                onChange={(event) => {
-                                                    updateItem(index, 'productSearch', event.target.value)
-                                                    updateItem(index, 'productId', '')
-                                                }}
-                                                placeholder={t('saleForm.searchProductPlaceholder')}
-                                                className="solaris-input mt-2 w-full"
-                                            />
+                                        <select
+                                            value={item.type}
+                                            onChange={(event) =>
+                                                changeItemType(index, event.target.value as SaleItemType)
+                                            }
+                                            className="solaris-input mt-2 w-full"
+                                        >
+                                            <option value="PRODUCT">
+                                                {t('saleForm.itemTypes.product')}
+                                            </option>
+                                            <option value="CUSTOM">
+                                                {t('saleForm.itemTypes.custom')}
+                                            </option>
+                                        </select>
+                                    </div>
 
-                                            {item.productSearch && !item.productId && (
-                                                <div className="absolute z-20 mt-2 max-h-64 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-950">
-                                                    {filteredProducts
-                                                        .slice(0, 8)
-                                                        .map((product) => (
+                                    {item.type === 'PRODUCT' ? (
+                                        <div className="grid gap-4 md:grid-cols-4">
+                                            <div className="relative md:col-span-2">
+                                                <label className="text-sm solaris-muted">
+                                                    {t('saleForm.product')}
+                                                </label>
+
+                                                <input
+                                                    required
+                                                    value={item.productSearch}
+                                                    onChange={(event) => {
+                                                        updateItem(index, 'productSearch', event.target.value)
+                                                        updateItem(index, 'productId', '')
+                                                    }}
+                                                    placeholder={t('saleForm.searchProductPlaceholder')}
+                                                    className="solaris-input mt-2 w-full"
+                                                />
+
+                                                {item.productSearch && !item.productId && (
+                                                    <div className="absolute z-20 mt-2 max-h-64 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-950">
+                                                        {filteredProducts.slice(0, 8).map((product) => (
                                                             <button
                                                                 key={product.id}
                                                                 type="button"
@@ -333,60 +414,103 @@ function NewSalePage() {
                                                             </button>
                                                         ))}
 
-                                                    {filteredProducts.length === 0 && (
-                                                        <div className="px-4 py-3 text-sm solaris-muted">
-                                                            {t('saleForm.noProductsFound')}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
+                                                        {filteredProducts.length === 0 && (
+                                                            <div className="px-4 py-3 text-sm solaris-muted">
+                                                                {t('saleForm.noProductsFound')}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
 
-                                            {item.productId && selectedProduct && (
-                                                <p className="mt-2 text-sm text-green-500 dark:text-green-300">
-                                                    {t('saleForm.selectedProduct', {
-                                                        name: selectedProduct.name,
-                                                    })}
-                                                </p>
-                                            )}
-                                        </div>
+                                                {item.productId && selectedProduct && (
+                                                    <p className="mt-2 text-sm text-green-500 dark:text-green-300">
+                                                        {t('saleForm.selectedProduct', {
+                                                            name: selectedProduct.name,
+                                                        })}
+                                                    </p>
+                                                )}
+                                            </div>
 
-                                        <div>
-                                            <label className="text-sm solaris-muted">
-                                                {t('saleForm.quantity')}
-                                            </label>
-
-                                            <input
-                                                required
-                                                min={1}
-                                                type="number"
+                                            <QuantityInput
                                                 value={item.quantity}
-                                                onChange={(event) =>
-                                                    updateItem(index, 'quantity', event.target.value)
-                                                }
-                                                className="solaris-input mt-2 w-full"
+                                                onChange={(value) => updateItem(index, 'quantity', value)}
                                             />
+
+                                            <SubtotalBox subtotal={subtotal} />
                                         </div>
+                                    ) : (
+                                        <div className="grid gap-4 md:grid-cols-5">
+                                            <div className="md:col-span-2">
+                                                <label className="text-sm solaris-muted">
+                                                    {t('saleForm.customName')}
+                                                </label>
 
-                                        <div>
-                                            <label className="text-sm solaris-muted">
-                                                {t('saleForm.subtotal')}
-                                            </label>
+                                                <input
+                                                    required
+                                                    value={item.customName}
+                                                    onChange={(event) =>
+                                                        updateItem(index, 'customName', event.target.value)
+                                                    }
+                                                    placeholder={t('saleForm.customNamePlaceholder')}
+                                                    className="solaris-input mt-2 w-full"
+                                                />
+                                            </div>
 
-                                            <div className="mt-2 rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold dark:border-slate-700 dark:bg-slate-900">
-                                                ${subtotal.toFixed(2)}
+                                            <QuantityInput
+                                                value={item.quantity}
+                                                onChange={(value) => updateItem(index, 'quantity', value)}
+                                            />
+
+                                            <div>
+                                                <label className="text-sm solaris-muted">
+                                                    {t('saleForm.unitLabel')}
+                                                </label>
+
+                                                <input
+                                                    value={item.unitLabel}
+                                                    onChange={(event) =>
+                                                        updateItem(index, 'unitLabel', event.target.value)
+                                                    }
+                                                    placeholder="unit"
+                                                    className="solaris-input mt-2 w-full"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="text-sm solaris-muted">
+                                                    {t('saleForm.unitPrice')}
+                                                </label>
+
+                                                <input
+                                                    required
+                                                    min={0}
+                                                    step="0.01"
+                                                    type="number"
+                                                    value={item.unitPrice}
+                                                    onChange={(event) =>
+                                                        updateItem(index, 'unitPrice', event.target.value)
+                                                    }
+                                                    className="solaris-input mt-2 w-full"
+                                                />
+                                            </div>
+
+                                            <div className="md:col-span-5">
+                                                <SubtotalBox subtotal={subtotal} />
                                             </div>
                                         </div>
-                                    </div>
+                                    )}
 
                                     <div className="mt-4 flex items-center justify-between">
                                         <div>
                                             <p className="text-sm solaris-muted">
-                                                {selectedProduct
-                                                    ? t('saleForm.unitPriceAndStock', {
-                                                        price: selectedProduct.price,
-                                                        stock: selectedProduct.stockQuantity,
-                                                    })
-                                                    : t('saleForm.selectProductHelp')}
+                                                {item.type === 'PRODUCT'
+                                                    ? selectedProduct
+                                                        ? t('saleForm.unitPriceAndStock', {
+                                                            price: selectedProduct.price,
+                                                            stock: selectedProduct.stockQuantity,
+                                                        })
+                                                        : t('saleForm.selectProductHelp')
+                                                    : t('saleForm.customItemHelp')}
                                             </p>
 
                                             {exceedsStock && (
@@ -449,6 +573,48 @@ function NewSalePage() {
                     </div>
                 </div>
             </form>
+        </div>
+    )
+}
+
+type QuantityInputProps = {
+    value: string
+    onChange: (value: string) => void
+}
+
+function QuantityInput({ value, onChange }: QuantityInputProps) {
+    const { t } = useTranslation()
+
+    return (
+        <div>
+            <label className="text-sm solaris-muted">
+                {t('saleForm.quantity')}
+            </label>
+
+            <input
+                required
+                min={1}
+                type="number"
+                value={value}
+                onChange={(event) => onChange(event.target.value)}
+                className="solaris-input mt-2 w-full"
+            />
+        </div>
+    )
+}
+
+function SubtotalBox({ subtotal }: { subtotal: number }) {
+    const { t } = useTranslation()
+
+    return (
+        <div>
+            <label className="text-sm solaris-muted">
+                {t('saleForm.subtotal')}
+            </label>
+
+            <div className="mt-2 rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold dark:border-slate-700 dark:bg-slate-900">
+                ${subtotal.toFixed(2)}
+            </div>
         </div>
     )
 }

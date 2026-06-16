@@ -479,7 +479,18 @@
       "noOpenCashRegister": "No existe una caja abierta",
       "quantityExceedsStock": "La cantidad supera el stock disponible",
       "productAlreadyAdded": "Este producto ya fue agregado"
-    }
+    },
+    "addCustomItem": "Agregar ítem libre",
+    "itemType": "Tipo de ítem",
+    "itemTypes": {
+      "product": "Producto",
+      "custom": "Ítem libre"
+    },
+    "customName": "Nombre del ítem libre",
+    "customNamePlaceholder": "Ejemplo: 100g de galletas dulces",
+    "unitLabel": "Unidad",
+    "unitPrice": "Precio unitario",
+    "customItemHelp": "Los ítems libres se agregan a la venta sin afectar el stock de productos."
   },
   "saleDetail": {
     "title": "Venta #{{id}}",
