@@ -28,6 +28,7 @@ import VerifyEmailPage from '../pages/VerifyEmailPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import ProfilePage from '../pages/ProfilePage'
 import AuditLogsPage from '../pages/AuditLogsPage'
+import RestockProductPage from '../pages/RestockProductPage'
 
 function AppRouter() {
     return (
@@ -69,7 +70,7 @@ function AppRouter() {
                         <Route path="/admin/settings" element={<AdminSettingsPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
 
-
+                        <Route path="/products/:id/restock" element={<RestockProductPage />} />
 
                     </Route>
                 </Route>

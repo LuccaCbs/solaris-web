@@ -372,7 +372,7 @@ function ProductsPage() {
                             <td className="px-6 py-4 text-right">
                                 <div className="flex justify-end gap-2">
                                     <Link
-                                        to={`/stock-movements/new?productId=${product.id}&type=IN`}
+                                        to={`/products/${product.id}/restock`}
                                         className="rounded-lg bg-blue-500/10 px-3 py-2 text-sm text-blue-500 hover:bg-blue-500/20 dark:text-blue-300"
                                     >
                                         Restock

@@ -718,5 +718,18 @@
       "SYSTEM_SETTINGS": "System Settings",
       "USER": "User"
     }
+  },
+  "restockProduct": {
+    "title": "Restock Product",
+    "description": "Add stock to an existing product.",
+    "quantity": "Quantity to add",
+    "reason": "Reason",
+    "reasonPlaceholder": "Example: Supplier delivery, manual restock...",
+    "defaultReason": "Product restock",
+    "confirm": "Confirm Restock",
+    "success": "Product restocked successfully",
+    "error": "Could not restock product",
+    "loadError": "Could not load product",
+    "invalidQuantity": "Quantity must be greater than zero"
   }
 }
