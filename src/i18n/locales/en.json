@@ -63,6 +63,17 @@
     "myProfile": "My Profile"
   },
   "auth": {
+    "organization": {
+      "label": "Organization",
+      "fallbackName": "Organization #{{id}}",
+      "store": "Store #{{id}}"
+    },
+    "roles": {
+      "OWNER": "Owner",
+      "ADMIN": "Administrator",
+      "MANAGER": "Manager",
+      "CASHIER": "Cashier"
+    },
     "login": {
       "email": "Email",
       "password": "Password",
@@ -75,6 +86,17 @@
       "registeredMessage": "Account created. Check your email to verify your account before signing in.",
       "verifiedMessage": "Email verified successfully. You can now sign in.",
       "passwordResetMessage": "Password updated successfully. You can now sign in."
+    },
+    "organization": {
+      "label": "Organization",
+      "fallbackName": "Organization #{{id}}",
+      "store": "Store #{{id}}"
+    },
+    "roles": {
+      "OWNER": "Owner",
+      "ADMIN": "Administrator",
+      "MANAGER": "Manager",
+      "CASHIER": "Cashier"
     },
     "register": {
       "title": "Create account",

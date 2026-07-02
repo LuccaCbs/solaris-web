@@ -1,4 +1,5 @@
 import axiosClient from './axiosClient'
+import type { SelectOrganizationRequest } from '../types/auth'
 
 type LoginRequest = {
     email: string
@@ -16,12 +17,21 @@ type AuthResponse = {
     token: string
 }
 
+export type { AuthResponse }
+
 type RegisterResponse = {
     message: string
 }
 
 export async function loginUser(data: LoginRequest): Promise<AuthResponse> {
     const response = await axiosClient.post<AuthResponse>('/auth/authenticate', data)
+    return response.data
+}
+
+export async function selectOrganization(
+    data: SelectOrganizationRequest
+): Promise<AuthResponse> {
+    const response = await axiosClient.post<AuthResponse>('/auth/select-organization', data)
     return response.data
 }
 

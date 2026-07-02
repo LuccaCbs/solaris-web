@@ -63,6 +63,17 @@
     "myProfile": "Mon profil"
   },
   "auth": {
+    "organization": {
+      "label": "Organisation",
+      "fallbackName": "Organisation #{{id}}",
+      "store": "Magasin #{{id}}"
+    },
+    "roles": {
+      "OWNER": "Propriétaire",
+      "ADMIN": "Administrateur",
+      "MANAGER": "Responsable",
+      "CASHIER": "Caissier"
+    },
     "login": {
       "email": "Email",
       "password": "Mot de passe",
@@ -75,6 +86,17 @@
       "registeredMessage": "Compte créé. Vérifiez votre email avant de vous connecter.",
       "verifiedMessage": "Email vérifié avec succès. Vous pouvez vous connecter.",
       "passwordResetMessage": "Mot de passe mis à jour. Vous pouvez vous connecter."
+    },
+    "organization": {
+      "label": "Organisation",
+      "fallbackName": "Organisation #{{id}}",
+      "store": "Magasin #{{id}}"
+    },
+    "roles": {
+      "OWNER": "Propriétaire",
+      "ADMIN": "Administrateur",
+      "MANAGER": "Responsable",
+      "CASHIER": "Caissier"
     },
     "register": {
       "title": "Créer un compte",

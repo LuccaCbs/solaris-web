@@ -62,6 +62,17 @@
     "myProfile": "El meu perfil"
   },
   "auth": {
+    "organization": {
+      "label": "Organització",
+      "fallbackName": "Organització #{{id}}",
+      "store": "Botiga #{{id}}"
+    },
+    "roles": {
+      "OWNER": "Propietari",
+      "ADMIN": "Administrador",
+      "MANAGER": "Gerent",
+      "CASHIER": "Caixer"
+    },
     "login": {
       "email": "Email",
       "password": "Contrasenya",
@@ -74,6 +85,17 @@
       "registeredMessage": "Compte creat. Revisa el teu email per verificar-lo abans d’iniciar sessió.",
       "verifiedMessage": "Email verificat correctament. Ja pots iniciar sessió.",
       "passwordResetMessage": "Contrasenya actualitzada correctament. Ja pots iniciar sessió."
+    },
+    "organization": {
+      "label": "Organització",
+      "fallbackName": "Organització #{{id}}",
+      "store": "Botiga #{{id}}"
+    },
+    "roles": {
+      "OWNER": "Propietari",
+      "ADMIN": "Administrador",
+      "MANAGER": "Gerent",
+      "CASHIER": "Caixer"
     },
     "register": {
       "title": "Crear compte",

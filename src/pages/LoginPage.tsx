@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { loginUser } from '../api/authService'
+import { useAuth } from '../context/AuthContext'
 import PasswordInput from '../components/PasswordInput'
 import { useTranslation } from 'react-i18next'
 import logo from '../assets/logo/solaris-white-full-logo.png'
@@ -18,6 +19,7 @@ function LoginPage() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const { t } = useTranslation()
+    const { login, getDefaultPath } = useAuth()
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -26,8 +28,8 @@ function LoginPage() {
 
         try {
             const data = await loginUser({ email, password })
-            localStorage.setItem('solaris_token', data.token)
-            navigate('/')
+            login(data.token)
+            navigate(getDefaultPath())
         } catch {
             setError(t('auth.login.invalidCredentials'))
         } finally {

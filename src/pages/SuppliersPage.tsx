@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { deleteSupplier, getSuppliers } from '../api/supplierService'
+import { useAuth } from '../context/AuthContext'
 import type { Supplier } from '../types/supplier'
+import { canDeleteSuppliers } from '../utils/roleAccess'
 import LoadingScreen from '../components/LoadingScreen'
 
 type StatusFilter = 'all' | 'active' | 'inactive'
 
 function SuppliersPage() {
     const { t } = useTranslation()
+    const { role } = useAuth()
+    const canDelete = canDeleteSuppliers(role)
 
     const [suppliers, setSuppliers] = useState<Supplier[]>([])
     const [loading, setLoading] = useState(true)
@@ -177,12 +181,14 @@ function SuppliersPage() {
                                 {t('common.edit')}
                             </Link>
 
-                            <button
-                                onClick={() => handleDeleteSupplier(supplier.id)}
-                                className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
-                            >
-                                {t('common.delete')}
-                            </button>
+                            {canDelete && (
+                                <button
+                                    onClick={() => handleDeleteSupplier(supplier.id)}
+                                    className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
+                                >
+                                    {t('common.delete')}
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}
@@ -254,12 +260,14 @@ function SuppliersPage() {
                                         {t('common.edit')}
                                     </Link>
 
-                                    <button
-                                        onClick={() => handleDeleteSupplier(supplier.id)}
-                                        className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
-                                    >
-                                        {t('common.delete')}
-                                    </button>
+                                    {canDelete && (
+                                        <button
+                                            onClick={() => handleDeleteSupplier(supplier.id)}
+                                            className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
+                                        >
+                                            {t('common.delete')}
+                                        </button>
+                                    )}
                                 </div>
                             </td>
                         </tr>

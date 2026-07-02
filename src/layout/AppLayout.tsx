@@ -18,12 +18,13 @@ import {
     ScrollText,
 } from 'lucide-react'
 import AdminPasswordModal from '../components/AdminPasswordModal'
+import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../utils/useTheme'
 import { getSystemSettings } from '../api/systemSettingsService'
 import { useTranslation } from 'react-i18next'
 import { NovaCopilotButton } from '../features/nova/components/NovaCopilotButton'
 import { NovaCopilotPanel } from '../features/nova/components/NovaCopilotPanel'
-
+import type { OrganizationRole } from '../types/auth'
 
 import logoSilver from '../assets/logo/solaris-white-full-logo.png'
 import logoGold from '../assets/logo/solaris-black-full-logo.png'
@@ -37,23 +38,54 @@ function AppLayout() {
     const { theme, toggleTheme } = useTheme()
     const { t, i18n } = useTranslation()
     const [isNovaOpen, setIsNovaOpen] = useState(false)
+    const {
+        logout,
+        hasMinimumRole,
+        orgId,
+        orgName,
+        role,
+        storeId,
+        user,
+    } = useAuth()
 
     const logoImage = theme === 'dark' ? logoSilver : logoGold
 
-    const navItems = [
-        { label: t('nav.dashboard'), to: '/', icon: BarChart3 },
-        { label: t('nav.sales'), to: '/sales', icon: ShoppingCart },
-        { label: t('nav.supplierOrders'), to: '/supplier-orders', icon: ClipboardList },
-        { label: t('nav.products'), to: '/products', icon: Boxes },
-        { label: t('nav.categories'), to: '/categories', icon: FolderTree },
-        { label: t('nav.suppliers'), to: '/suppliers', icon: Truck },
-        { label: t('nav.movementHistory'), to: '/stock-movements', icon: History },
+    type NavItem = {
+        label: string
+        to: string
+        icon: React.ElementType
+        minimumRole: OrganizationRole
+    }
+
+    const allNavItems: NavItem[] = [
+        { label: t('nav.dashboard'), to: '/', icon: BarChart3, minimumRole: 'CASHIER' },
+        { label: t('nav.sales'), to: '/sales', icon: ShoppingCart, minimumRole: 'CASHIER' },
+        {
+            label: t('nav.supplierOrders'),
+            to: '/supplier-orders',
+            icon: ClipboardList,
+            minimumRole: 'MANAGER',
+        },
+        { label: t('nav.products'), to: '/products', icon: Boxes, minimumRole: 'MANAGER' },
+        { label: t('nav.categories'), to: '/categories', icon: FolderTree, minimumRole: 'MANAGER' },
+        { label: t('nav.suppliers'), to: '/suppliers', icon: Truck, minimumRole: 'MANAGER' },
+        {
+            label: t('nav.movementHistory'),
+            to: '/stock-movements',
+            icon: History,
+            minimumRole: 'MANAGER',
+        },
         {
             label: t('nav.auditLogs'),
             to: '/audit-logs',
             icon: ScrollText,
+            minimumRole: 'ADMIN',
         },
     ]
+
+    const navItems = allNavItems.filter((item) => hasMinimumRole(item.minimumRole))
+    const canAccessAdminSettings = hasMinimumRole('ADMIN')
+    const organizationLabel = orgName ?? (orgId ? t('auth.organization.fallbackName', { id: orgId }) : null)
 
     async function handleAdminSettingsClick() {
         const settings = await getSystemSettings()
@@ -68,8 +100,7 @@ function AppLayout() {
     }
 
     function handleLogout() {
-        localStorage.removeItem('solaris_token')
-        sessionStorage.removeItem('solaris_cash_register_opened')
+        logout()
         navigate('/login')
     }
 
@@ -113,6 +144,26 @@ function AppLayout() {
                         <X size={20} />
                     </button>
                 </div>
+
+                {organizationLabel && (
+                    <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950/60">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            {t('auth.organization.label')}
+                        </p>
+                        <p className="mt-1 truncate text-sm font-medium text-slate-900 dark:text-white">
+                            {organizationLabel}
+                        </p>
+                        {role && (
+                            <p className="mt-1 text-xs text-slate-500">
+                                {t(`auth.roles.${role}`)}
+                                {storeId ? ` · ${t('auth.organization.store', { id: storeId })}` : ''}
+                            </p>
+                        )}
+                        {user?.email && (
+                            <p className="mt-1 truncate text-xs text-slate-500">{user.email}</p>
+                        )}
+                    </div>
+                )}
 
                 <nav className="mt-10 space-y-2">
                     {navItems.map((item) => (
@@ -162,12 +213,14 @@ function AppLayout() {
                                 </select>
                             </div>
 
-                            <SidebarButton
-                                label={t('nav.adminSettings')}
-                                icon={Settings}
-                                active={location.pathname === '/admin/settings'}
-                                onClick={handleAdminSettingsClick}
-                            />
+                            {canAccessAdminSettings && (
+                                <SidebarButton
+                                    label={t('nav.adminSettings')}
+                                    icon={Settings}
+                                    active={location.pathname === '/admin/settings'}
+                                    onClick={handleAdminSettingsClick}
+                                />
+                            )}
 
                             <SidebarLink
                                 label={t('nav.myProfile')}

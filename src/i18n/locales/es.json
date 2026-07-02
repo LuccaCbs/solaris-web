@@ -63,6 +63,17 @@
     "myProfile": "Mi perfil"
   },
   "auth": {
+    "organization": {
+      "label": "Organización",
+      "fallbackName": "Organización #{{id}}",
+      "store": "Tienda #{{id}}"
+    },
+    "roles": {
+      "OWNER": "Propietario",
+      "ADMIN": "Administrador",
+      "MANAGER": "Gerente",
+      "CASHIER": "Cajero"
+    },
     "login": {
       "email": "Email",
       "password": "Contraseña",
@@ -75,6 +86,17 @@
       "registeredMessage": "Cuenta creada. Revisa tu email para verificarla antes de iniciar sesión.",
       "verifiedMessage": "Email verificado correctamente. Ya puedes iniciar sesión.",
       "passwordResetMessage": "Contraseña actualizada correctamente. Ya puedes iniciar sesión."
+    },
+    "organization": {
+      "label": "Organización",
+      "fallbackName": "Organización #{{id}}",
+      "store": "Tienda #{{id}}"
+    },
+    "roles": {
+      "OWNER": "Propietario",
+      "ADMIN": "Administrador",
+      "MANAGER": "Gerente",
+      "CASHIER": "Cajero"
     },
     "register": {
       "title": "Crear cuenta",

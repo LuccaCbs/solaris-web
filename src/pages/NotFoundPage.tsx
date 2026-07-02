@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Home, LogIn } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../context/AuthContext'
 
 function NotFoundPage() {
     const navigate = useNavigate()
     const { t } = useTranslation()
-
-    const isAuthenticated = Boolean(localStorage.getItem('solaris_token'))
+    const { isAuthenticated, getDefaultPath } = useAuth()
 
     return (
         <main className="flex min-h-screen items-center justify-center bg-slate-100 px-4 text-slate-950 dark:bg-slate-950 dark:text-white">
@@ -35,7 +35,7 @@ function NotFoundPage() {
 
                     <button
                         type="button"
-                        onClick={() => navigate(isAuthenticated ? '/' : '/login')}
+                        onClick={() => navigate(isAuthenticated ? getDefaultPath() : '/login')}
                         className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500"
                     >
                         {isAuthenticated ? (
