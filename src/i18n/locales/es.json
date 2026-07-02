@@ -784,6 +784,92 @@
       "timezonePlaceholder": "Seleccionar zona horaria",
       "autoCloseTime": "Hora de cierre automático",
       "autoCloseTimeHelp": "Las cajas que permanezcan abiertas a esta hora se cerrarán automáticamente."
+    },
+    "fiscal": {
+      "title": "Facturación electrónica (AFIP)",
+      "description": "Configurá los datos fiscales de la organización para emitir comprobantes.",
+      "cuit": "CUIT",
+      "razonSocial": "Razón social",
+      "condicionIva": "Condición IVA",
+      "provider": "Proveedor fiscal",
+      "providerMock": "Mock (desarrollo / sandbox)",
+      "providerTusFacturas": "TusFacturas (REST)",
+      "apiKey": "API Key del proveedor",
+      "keepApiKeyPlaceholder": "Dejar vacío para mantener la clave actual",
+      "setApiKeyPlaceholder": "Ingresar API Key",
+      "save": "Guardar configuración fiscal",
+      "updateSuccess": "Configuración fiscal actualizada",
+      "updateError": "No se pudo actualizar la configuración fiscal",
+      "noOrganization": "Seleccioná una organización para configurar facturación",
+      "condicion": {
+        "responsableInscripto": "Responsable Inscripto",
+        "monotributo": "Monotributo",
+        "exento": "Exento"
+      }
+    }
+  },
+  "fiscal": {
+    "cae": "CAE",
+    "caeVencimiento": "Vencimiento CAE",
+    "puntoVenta": "Punto de venta",
+    "importeNeto": "Importe neto",
+    "importeIva": "Importe IVA",
+    "tipoComprobante": {
+      "facturaB": "Factura B",
+      "facturaC": "Factura C"
+    },
+    "invoice": {
+      "button": "Facturar",
+      "confirm": "Emitir factura",
+      "processing": "Facturando...",
+      "success": "Comprobante emitido correctamente",
+      "error": "No se pudo emitir el comprobante",
+      "rejected": "El comprobante fue rechazado por el proveedor fiscal",
+      "viewDocument": "Ver comprobante",
+      "withCustomer": "Facturar con cliente",
+      "consumidorFinal": "Facturar (Consumidor Final)",
+      "customerModalTitle": "Datos del cliente",
+      "customerModalDescription": "Seleccioná un cliente o dejá Consumidor Final para Factura B.",
+      "selectCustomer": "Cliente",
+      "loadCustomersError": "No se pudieron cargar los clientes",
+      "noCustomers": "No hay clientes registrados"
+    },
+    "listTitle": "Comprobantes fiscales",
+    "listDescription": "Facturas electrónicas emitidas contra AFIP.",
+    "loadError": "No se pudieron cargar los comprobantes fiscales",
+    "notFound": "Comprobante no encontrado",
+    "empty": "Todavía no hay comprobantes emitidos.",
+    "importeTotal": "Importe total",
+    "customer": "Cliente",
+    "status": "Estado",
+    "backToList": "Volver al listado",
+    "comprobanteNumber": "PV {{puntoVenta}} · N° {{numero}}",
+    "table": {
+      "date": "Fecha",
+      "type": "Tipo"
+    },
+    "statusValues": {
+      "PENDING": "Pendiente",
+      "AUTHORIZED": "Autorizado",
+      "REJECTED": "Rechazado"
+    }
+  },
+  "fiscalDocument": {
+    "loadError": "No se pudo cargar el comprobante fiscal",
+    "notFound": "Comprobante no encontrado",
+    "viewSale": "Ver venta",
+    "backToSales": "Volver a ventas",
+    "backToList": "Volver al listado",
+    "importeTotal": "Importe total",
+    "customer": "Cliente",
+    "comprobanteNumber": "PV {{puntoVenta}} · N° {{numero}}",
+    "pdf": "Comprobante PDF",
+    "downloadPdf": "Descargar PDF",
+    "pdfPlaceholder": "El PDF estará disponible cuando el proveedor fiscal lo genere.",
+    "status": {
+      "PENDING": "Pendiente",
+      "AUTHORIZED": "Autorizado",
+      "REJECTED": "Rechazado"
     }
   },
   "auditLogs": {

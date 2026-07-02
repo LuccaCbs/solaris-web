@@ -784,6 +784,66 @@
       "timezonePlaceholder": "Select timezone",
       "autoCloseTime": "Automatic Close Time",
       "autoCloseTimeHelp": "Cash registers still open at this time will be automatically closed."
+    },
+    "fiscal": {
+      "title": "Electronic invoicing (AFIP)",
+      "description": "Configure organization fiscal data to issue invoices.",
+      "cuit": "CUIT",
+      "razonSocial": "Business name",
+      "condicionIva": "IVA condition",
+      "provider": "Fiscal provider",
+      "providerMock": "Mock (dev / sandbox)",
+      "providerTusFacturas": "TusFacturas (REST)",
+      "apiKey": "Provider API Key",
+      "keepApiKeyPlaceholder": "Leave empty to keep current key",
+      "setApiKeyPlaceholder": "Enter API Key",
+      "save": "Save fiscal settings",
+      "updateSuccess": "Fiscal settings updated",
+      "updateError": "Could not update fiscal settings",
+      "noOrganization": "Select an organization to configure invoicing",
+      "condicion": {
+        "responsableInscripto": "Registered taxpayer",
+        "monotributo": "Monotributo",
+        "exento": "Exempt"
+      }
+    }
+  },
+  "fiscal": {
+    "cae": "CAE",
+    "caeVencimiento": "CAE expiry",
+    "puntoVenta": "Point of sale",
+    "importeNeto": "Net amount",
+    "importeIva": "IVA amount",
+    "tipoComprobante": {
+      "facturaB": "Invoice B",
+      "facturaC": "Invoice C"
+    },
+    "invoice": {
+      "button": "Issue invoice",
+      "confirm": "Issue invoice",
+      "processing": "Issuing...",
+      "success": "Invoice issued successfully",
+      "error": "Could not issue invoice",
+      "viewDocument": "View invoice",
+      "customerModalTitle": "Customer details",
+      "customerModalDescription": "Select a customer or leave Consumer Final for Invoice B.",
+      "selectCustomer": "Customer",
+      "consumidorFinal": "Consumer Final",
+      "loadCustomersError": "Could not load customers"
+    }
+  },
+  "fiscalDocument": {
+    "loadError": "Could not load fiscal document",
+    "notFound": "Fiscal document not found",
+    "viewSale": "View sale",
+    "backToSales": "Back to sales",
+    "pdf": "Invoice PDF",
+    "downloadPdf": "Download PDF",
+    "pdfPlaceholder": "PDF will be available when the fiscal provider generates it.",
+    "status": {
+      "PENDING": "Pending",
+      "AUTHORIZED": "Authorized",
+      "REJECTED": "Rejected"
     }
   },
   "auditLogs": {

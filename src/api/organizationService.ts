@@ -1,24 +1,26 @@
 import axiosClient from './axiosClient'
 import type { OrganizationRole } from '../types/auth'
 
+export type OrganizationMemberStatus = 'ACTIVE' | 'INVITED' | 'SUSPENDED'
+
 export type OrganizationMember = {
     id: number
+    type?: 'MEMBER' | 'INVITE'
     email: string
-    firstname?: string
-    lastname?: string
+    firstname?: string | null
+    lastname?: string | null
     role: OrganizationRole
-    status: 'ACTIVE' | 'INVITED' | 'SUSPENDED'
-    storeId: number | null
-    storeName: string | null
-    createdAt?: string
-    expiresAt?: string
+    storeId?: number | null
+    storeName?: string | null
+    status: OrganizationMemberStatus
+    createdAt?: string | null
+    expiresAt?: string | null
     pendingInvite: boolean
 }
 
 export type OrganizationStore = {
     id: number
     name: string
-    active: boolean
 }
 
 export type OrganizationInviteRequest = {
@@ -28,50 +30,41 @@ export type OrganizationInviteRequest = {
 }
 
 export type OrganizationInvitePreview = {
-    organizationName: string
     email: string
+    organizationName: string
     role: OrganizationRole
     existingUser: boolean
     expired: boolean
 }
 
-export type AcceptOrganizationInviteRequest = {
+export type AcceptInviteRequest = {
     token: string
     password?: string
     firstname?: string
     lastname?: string
 }
 
-type AuthResponse = {
-    token: string
-}
-
 function getAuthHeaders() {
     const token = localStorage.getItem('solaris_token')
-
-    if (!token) {
-        return {}
-    }
 
     return {
         Authorization: `Bearer ${token}`,
     }
 }
 
-export async function getOrganizationMembers(
-    orgId: number
-): Promise<OrganizationMember[]> {
+export async function getOrganizationMembers(orgId: number): Promise<OrganizationMember[]> {
     const response = await axiosClient.get<OrganizationMember[]>(
         `/organizations/${orgId}/members`,
         { headers: getAuthHeaders() }
     )
 
-    return response.data
+    return response.data.map((member) => ({
+        ...member,
+        pendingInvite: member.pendingInvite ?? member.type === 'INVITE',
+    }))
 }
 
-export async function getOrganizationStores(
-    orgId: number
-): Promise<OrganizationStore[]> {
+export async function getOrganizationStores(orgId: number): Promise<OrganizationStore[]> {
     const response = await axiosClient.get<OrganizationStore[]>(
         `/organizations/${orgId}/stores`,
         { headers: getAuthHeaders() }
@@ -83,28 +76,19 @@ export async function getOrganizationStores(
 export async function createOrganizationInvite(
     orgId: number,
     data: OrganizationInviteRequest
-) {
-    const response = await axiosClient.post(
-        `/organizations/${orgId}/invites`,
-        data,
-        { headers: getAuthHeaders() }
-    )
-
-    return response.data
+): Promise<void> {
+    await axiosClient.post(`/organizations/${orgId}/invites`, data, {
+        headers: getAuthHeaders(),
+    })
 }
 
-export async function revokeOrganizationInvite(
-    orgId: number,
-    inviteId: number
-): Promise<void> {
+export async function revokeOrganizationInvite(orgId: number, inviteId: number): Promise<void> {
     await axiosClient.delete(`/organizations/${orgId}/invites/${inviteId}`, {
         headers: getAuthHeaders(),
     })
 }
 
-export async function previewOrganizationInvite(
-    token: string
-): Promise<OrganizationInvitePreview> {
+export async function previewOrganizationInvite(token: string): Promise<OrganizationInvitePreview> {
     const response = await axiosClient.get<OrganizationInvitePreview>(
         '/organizations/invites/preview',
         { params: { token } }
@@ -114,9 +98,9 @@ export async function previewOrganizationInvite(
 }
 
 export async function acceptOrganizationInvite(
-    data: AcceptOrganizationInviteRequest
-): Promise<AuthResponse> {
-    const response = await axiosClient.post<AuthResponse>(
+    data: AcceptInviteRequest
+): Promise<{ token: string }> {
+    const response = await axiosClient.post<{ token: string }>(
         '/organizations/invites/accept',
         data
     )

@@ -1,11 +1,5 @@
 export type ProductIvaRate = 'EXENTO' | 'REDUCIDO_10_5' | 'GENERAL_21'
 
-export const PRODUCT_IVA_RATES: ProductIvaRate[] = [
-    'EXENTO',
-    'REDUCIDO_10_5',
-    'GENERAL_21',
-]
-
 export type Product = {
     id: number
     name: string
@@ -21,3 +15,9 @@ export type Product = {
     active?: boolean
     ivaRate: ProductIvaRate
 }
+
+export const PRODUCT_IVA_RATES: ProductIvaRate[] = [
+    'EXENTO',
+    'REDUCIDO_10_5',
+    'GENERAL_21',
+]

@@ -34,6 +34,7 @@ type RouteAccessRule = {
 const ROUTE_ACCESS_RULES: RouteAccessRule[] = [
     { pattern: /^\/$/, minimumRole: 'CASHIER' },
     { pattern: /^\/sales(\/|$)/, minimumRole: 'CASHIER' },
+    { pattern: /^\/fiscal-documents(\/|$)/, minimumRole: 'CASHIER' },
     { pattern: /^\/profile(\/|$)/, minimumRole: 'CASHIER' },
     { pattern: /^\/products(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/categories(\/|$)/, minimumRole: 'MANAGER' },

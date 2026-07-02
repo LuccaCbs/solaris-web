@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { getSystemSettings, updateSystemSettings } from '../api/systemSettingsService'
+import { getFiscalConfig, updateFiscalConfig } from '../api/fiscalService'
+import { useAuth } from '../context/AuthContext'
+import type { FiscalProviderType, CondicionIva } from '../types/fiscal'
 import type { SystemSettings } from '../types/systemSettings'
 import PasswordInput from '../components/PasswordInput'
 import LoadingScreen from '../components/LoadingScreen'
@@ -21,6 +24,7 @@ const timezones =
 
 function AdminSettingsPage() {
     const { t } = useTranslation()
+    const { orgId } = useAuth()
 
     const [settings, setSettings] = useState<SystemSettings | null>(null)
     const [globalLowStockThreshold, setGlobalLowStockThreshold] = useState('')
@@ -29,6 +33,15 @@ function AdminSettingsPage() {
     const [saving, setSaving] = useState(false)
     const [businessTimezone, setBusinessTimezone] = useState('')
     const [cashRegisterAutoCloseTime, setCashRegisterAutoCloseTime] = useState('')
+
+    const [fiscalCuit, setFiscalCuit] = useState('')
+    const [fiscalRazonSocial, setFiscalRazonSocial] = useState('')
+    const [fiscalCondicionIva, setFiscalCondicionIva] = useState<CondicionIva>('RESPONSABLE_INSCRIPTO')
+    const [fiscalPuntoVenta, setFiscalPuntoVenta] = useState('')
+    const [fiscalProvider, setFiscalProvider] = useState<FiscalProviderType>('MOCK')
+    const [fiscalApiKey, setFiscalApiKey] = useState('')
+    const [hasFiscalApiKey, setHasFiscalApiKey] = useState(false)
+    const [savingFiscal, setSavingFiscal] = useState(false)
 
     useEffect(() => {
         async function loadSettings() {
@@ -39,6 +52,18 @@ function AdminSettingsPage() {
                 setGlobalLowStockThreshold(String(data.globalLowStockThreshold))
                 setBusinessTimezone(data.businessTimezone)
                 setCashRegisterAutoCloseTime(data.cashRegisterAutoCloseTime.slice(0, 5))
+
+                if (orgId) {
+                    const fiscal = await getFiscalConfig(orgId)
+                    setFiscalCuit(fiscal.cuit ?? '')
+                    setFiscalRazonSocial(fiscal.razonSocial ?? '')
+                    setFiscalCondicionIva(fiscal.condicionIva)
+                    setFiscalPuntoVenta(
+                        fiscal.fiscalPuntoVenta != null ? String(fiscal.fiscalPuntoVenta) : ''
+                    )
+                    setFiscalProvider(fiscal.fiscalProvider ?? 'MOCK')
+                    setHasFiscalApiKey(fiscal.hasFiscalApiKey)
+                }
             } catch {
                 toast.error(t('adminSettings.loadError'))
             } finally {
@@ -47,7 +72,37 @@ function AdminSettingsPage() {
         }
 
         loadSettings()
-    }, [t])
+    }, [t, orgId])
+
+    async function handleFiscalSubmit(event: React.FormEvent) {
+        event.preventDefault()
+
+        if (!orgId) {
+            toast.error(t('adminSettings.fiscal.noOrganization'))
+            return
+        }
+
+        setSavingFiscal(true)
+
+        try {
+            const updated = await updateFiscalConfig(orgId, {
+                cuit: fiscalCuit.trim() || undefined,
+                razonSocial: fiscalRazonSocial.trim() || undefined,
+                condicionIva: fiscalCondicionIva,
+                fiscalPuntoVenta: fiscalPuntoVenta ? Number(fiscalPuntoVenta) : null,
+                fiscalProvider,
+                fiscalApiKey: fiscalApiKey.trim() || undefined,
+            })
+
+            setHasFiscalApiKey(updated.hasFiscalApiKey)
+            setFiscalApiKey('')
+            toast.success(t('adminSettings.fiscal.updateSuccess'))
+        } catch {
+            toast.error(t('adminSettings.fiscal.updateError'))
+        } finally {
+            setSavingFiscal(false)
+        }
+    }
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -215,6 +270,125 @@ function AdminSettingsPage() {
                         : t('adminSettings.saveSettings')}
                 </button>
             </form>
+
+            {orgId && (
+                <form onSubmit={handleFiscalSubmit} className="solaris-panel mt-8 max-w-2xl">
+                    <h2 className="text-xl font-semibold">
+                        {t('adminSettings.fiscal.title')}
+                    </h2>
+
+                    <p className="mt-2 text-sm solaris-subtle">
+                        {t('adminSettings.fiscal.description')}
+                    </p>
+
+                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label className="text-sm solaris-muted">
+                                {t('adminSettings.fiscal.cuit')}
+                            </label>
+                            <input
+                                value={fiscalCuit}
+                                onChange={(event) => setFiscalCuit(event.target.value)}
+                                placeholder="20-12345678-9"
+                                className="solaris-input mt-2 w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-sm solaris-muted">
+                                {t('adminSettings.fiscal.razonSocial')}
+                            </label>
+                            <input
+                                value={fiscalRazonSocial}
+                                onChange={(event) => setFiscalRazonSocial(event.target.value)}
+                                className="solaris-input mt-2 w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-sm solaris-muted">
+                                {t('adminSettings.fiscal.condicionIva')}
+                            </label>
+                            <select
+                                value={fiscalCondicionIva}
+                                onChange={(event) =>
+                                    setFiscalCondicionIva(event.target.value as CondicionIva)
+                                }
+                                className="solaris-input mt-2 w-full"
+                            >
+                                <option value="RESPONSABLE_INSCRIPTO">
+                                    {t('adminSettings.fiscal.condicion.responsableInscripto')}
+                                </option>
+                                <option value="MONOTRIBUTO">
+                                    {t('adminSettings.fiscal.condicion.monotributo')}
+                                </option>
+                                <option value="EXENTO">
+                                    {t('adminSettings.fiscal.condicion.exento')}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="text-sm solaris-muted">
+                                {t('fiscal.puntoVenta')}
+                            </label>
+                            <input
+                                type="number"
+                                min={1}
+                                value={fiscalPuntoVenta}
+                                onChange={(event) => setFiscalPuntoVenta(event.target.value)}
+                                className="solaris-input mt-2 w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-sm solaris-muted">
+                                {t('adminSettings.fiscal.provider')}
+                            </label>
+                            <select
+                                value={fiscalProvider}
+                                onChange={(event) =>
+                                    setFiscalProvider(event.target.value as FiscalProviderType)
+                                }
+                                className="solaris-input mt-2 w-full"
+                            >
+                                <option value="MOCK">
+                                    {t('adminSettings.fiscal.providerMock')}
+                                </option>
+                                <option value="TUSFACTURAS">
+                                    {t('adminSettings.fiscal.providerTusFacturas')}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="text-sm solaris-muted">
+                                {t('adminSettings.fiscal.apiKey')}
+                            </label>
+                            <PasswordInput
+                                value={fiscalApiKey}
+                                onChange={setFiscalApiKey}
+                                placeholder={
+                                    hasFiscalApiKey
+                                        ? t('adminSettings.fiscal.keepApiKeyPlaceholder')
+                                        : t('adminSettings.fiscal.setApiKeyPlaceholder')
+                                }
+                                className="solaris-input mt-2 w-full"
+                            />
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={savingFiscal}
+                        className="mt-6 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
+                    >
+                        {savingFiscal
+                            ? t('common.saving')
+                            : t('adminSettings.fiscal.save')}
+                    </button>
+                </form>
+            )}
         </div>
     )
 }

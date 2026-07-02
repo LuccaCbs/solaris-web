@@ -21,6 +21,7 @@ export type UpdateProductRequest = {
     lowStockThreshold: number | null
     ivaRate?: ProductIvaRate
 }
+
 function getAuthHeaders() {
     const token = localStorage.getItem('solaris_token')
 

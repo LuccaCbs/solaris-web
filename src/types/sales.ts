@@ -29,6 +29,8 @@ export type Sale = {
     totalAmount: number
     createdAt: string
     items: SaleItem[]
+    invoiced?: boolean
+    fiscalDocumentId?: number | null
 }
 
 export type DailySalesSummary = {

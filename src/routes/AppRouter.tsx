@@ -36,6 +36,8 @@ import AuditLogsPage from '../pages/AuditLogsPage'
 import RestockProductPage from '../pages/RestockProductPage'
 import TeamPage from '../pages/TeamPage'
 import AcceptInvitePage from '../pages/AcceptInvitePage'
+import FiscalDocumentsPage from '../pages/FiscalDocumentsPage'
+import FiscalDocumentDetailPage from '../pages/FiscalDocumentDetailPage'
 
 function AppRouter() {
     return (
@@ -80,6 +82,8 @@ function AppRouter() {
                             <Route path="/sales" element={<SalesPage />} />
                             <Route path="/sales/new" element={<NewSalePage />} />
                             <Route path="/sales/:id" element={<SaleDetailPage />} />
+                            <Route path="/fiscal-documents" element={<FiscalDocumentsPage />} />
+                            <Route path="/fiscal-documents/:id" element={<FiscalDocumentDetailPage />} />
 
                             <Route path="/admin/settings" element={<AdminSettingsPage />} />
                             <Route path="/team" element={<TeamPage />} />

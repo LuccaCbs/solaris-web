@@ -1,5 +1,6 @@
 import axiosClient from './axiosClient'
 import type { CreateSaleRequest, DailySalesSummary, Sale } from '../types/sales'
+import type { FiscalDocument } from '../types/fiscal'
 
 function getAuthHeaders() {
     const token = localStorage.getItem('solaris_token')
@@ -38,6 +39,19 @@ export async function getSaleById(id: number): Promise<Sale> {
     const response = await axiosClient.get<Sale>(`/sales/${id}`, {
         headers: getAuthHeaders(),
     })
+
+    return response.data
+}
+
+export async function emitInvoiceForSale(
+    saleId: number,
+    customerId?: number
+): Promise<FiscalDocument> {
+    const response = await axiosClient.post(
+        `/sales/${saleId}/invoice`,
+        customerId ? { customerId } : {},
+        { headers: getAuthHeaders() }
+    )
 
     return response.data
 }
