@@ -5,7 +5,7 @@ import type {
     FiscalConfigRequest,
     FiscalDocument,
 } from '../types/fiscal'
-
+import { buildFiscalConfigPayload } from '../utils/fiscalUtils'
 export async function getFiscalConfig(orgId: number): Promise<FiscalConfig> {
     const response = await axiosClient.get<FiscalConfig>(`/organizations/${orgId}/fiscal-config`)
     return response.data
@@ -17,8 +17,9 @@ export async function updateFiscalConfig(
 ): Promise<FiscalConfig> {
     const response = await axiosClient.put<FiscalConfig>(
         `/organizations/${orgId}/fiscal-config`,
-        data
+        buildFiscalConfigPayload(data)
     )
+
     return response.data
 }
 

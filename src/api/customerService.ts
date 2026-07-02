@@ -1,5 +1,6 @@
 import axiosClient from './axiosClient'
 import type { Customer, CustomerRequest } from '../types/customer'
+import { buildCustomerPayload } from '../utils/fiscalUtils'
 
 function getAuthHeaders() {
     const token = localStorage.getItem('solaris_token')
@@ -30,9 +31,13 @@ export async function getCustomerById(id: number): Promise<Customer> {
 }
 
 export async function createCustomer(data: CustomerRequest): Promise<Customer> {
-    const response = await axiosClient.post<Customer>('/customers', data, {
-        headers: getAuthHeaders(),
-    })
+    const response = await axiosClient.post<Customer>(
+        '/customers',
+        buildCustomerPayload(data),
+        {
+            headers: getAuthHeaders(),
+        }
+    )
 
     return response.data
 }
@@ -41,9 +46,13 @@ export async function updateCustomer(
     id: number,
     data: CustomerRequest
 ): Promise<Customer> {
-    const response = await axiosClient.put<Customer>(`/customers/${id}`, data, {
-        headers: getAuthHeaders(),
-    })
+    const response = await axiosClient.put<Customer>(
+        `/customers/${id}`,
+        buildCustomerPayload(data),
+        {
+            headers: getAuthHeaders(),
+        }
+    )
 
     return response.data
 }

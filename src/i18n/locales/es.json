@@ -789,6 +789,8 @@
       "title": "Facturación electrónica (AFIP)",
       "description": "Configurá los datos fiscales de la organización para emitir comprobantes.",
       "cuit": "CUIT",
+      "cuitRequired": "El CUIT es obligatorio para facturar",
+      "cuitInvalid": "El CUIT debe tener 11 dígitos",
       "razonSocial": "Razón social",
       "condicionIva": "Condición IVA",
       "provider": "Proveedor fiscal",

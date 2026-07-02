@@ -789,6 +789,8 @@
       "title": "Electronic invoicing (AFIP)",
       "description": "Configure organization fiscal data to issue invoices.",
       "cuit": "CUIT",
+      "cuitRequired": "CUIT is required for invoicing",
+      "cuitInvalid": "CUIT must contain 11 digits",
       "razonSocial": "Business name",
       "condicionIva": "IVA condition",
       "provider": "Fiscal provider",

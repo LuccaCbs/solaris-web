@@ -8,6 +8,19 @@ import type { FiscalProviderType, CondicionIva } from '../types/fiscal'
 import type { SystemSettings } from '../types/systemSettings'
 import PasswordInput from '../components/PasswordInput'
 import LoadingScreen from '../components/LoadingScreen'
+import { formatCuitForDisplay, normalizeCuit } from '../utils/fiscalUtils'
+
+function getApiErrorMessage(error: unknown) {
+    const apiError = error as {
+        response?: {
+            data?: {
+                message?: string
+            }
+        }
+    }
+
+    return apiError.response?.data?.message || ''
+}
 
 const timezones =
     typeof Intl.supportedValuesOf === 'function'
@@ -55,7 +68,7 @@ function AdminSettingsPage() {
 
                 if (orgId) {
                     const fiscal = await getFiscalConfig(orgId)
-                    setFiscalCuit(fiscal.cuit ?? '')
+                    setFiscalCuit(formatCuitForDisplay(fiscal.cuit))
                     setFiscalRazonSocial(fiscal.razonSocial ?? '')
                     setFiscalCondicionIva(fiscal.condicionIva)
                     setFiscalPuntoVenta(
@@ -82,11 +95,23 @@ function AdminSettingsPage() {
             return
         }
 
+        if (!fiscalCuit.trim()) {
+            toast.error(t('adminSettings.fiscal.cuitRequired'))
+            return
+        }
+
+        const normalizedCuit = normalizeCuit(fiscalCuit)
+
+        if (normalizedCuit.length !== 11) {
+            toast.error(t('adminSettings.fiscal.cuitInvalid'))
+            return
+        }
+
         setSavingFiscal(true)
 
         try {
             const updated = await updateFiscalConfig(orgId, {
-                cuit: fiscalCuit.trim() || undefined,
+                cuit: normalizedCuit,
                 razonSocial: fiscalRazonSocial.trim() || undefined,
                 condicionIva: fiscalCondicionIva,
                 fiscalPuntoVenta: fiscalPuntoVenta ? Number(fiscalPuntoVenta) : null,
@@ -95,10 +120,17 @@ function AdminSettingsPage() {
             })
 
             setHasFiscalApiKey(updated.hasFiscalApiKey)
+            setFiscalCuit(formatCuitForDisplay(updated.cuit))
+            setFiscalRazonSocial(updated.razonSocial ?? '')
+            setFiscalCondicionIva(updated.condicionIva)
+            setFiscalPuntoVenta(
+                updated.fiscalPuntoVenta != null ? String(updated.fiscalPuntoVenta) : ''
+            )
+            setFiscalProvider(updated.fiscalProvider ?? 'MOCK')
             setFiscalApiKey('')
             toast.success(t('adminSettings.fiscal.updateSuccess'))
-        } catch {
-            toast.error(t('adminSettings.fiscal.updateError'))
+        } catch (error) {
+            toast.error(getApiErrorMessage(error) || t('adminSettings.fiscal.updateError'))
         } finally {
             setSavingFiscal(false)
         }
@@ -287,6 +319,7 @@ function AdminSettingsPage() {
                                 {t('adminSettings.fiscal.cuit')}
                             </label>
                             <input
+                                required
                                 value={fiscalCuit}
                                 onChange={(event) => setFiscalCuit(event.target.value)}
                                 placeholder="20-12345678-9"
@@ -333,6 +366,7 @@ function AdminSettingsPage() {
                                 {t('fiscal.puntoVenta')}
                             </label>
                             <input
+                                required
                                 type="number"
                                 min={1}
                                 value={fiscalPuntoVenta}
