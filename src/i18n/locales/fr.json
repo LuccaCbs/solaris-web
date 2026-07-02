@@ -57,6 +57,7 @@
     "products": "Produits",
     "categories": "Catégories",
     "suppliers": "Fournisseurs",
+    "customers": "Clients",
     "movementHistory": "Historique des mouvements",
     "auditLogs": "Journal d’audit",
     "adminSettings": "Paramètres administrateur",
@@ -365,6 +366,72 @@
     "updateSuccess": "Fournisseur mis à jour avec succès",
     "updateError": "Impossible de mettre à jour le fournisseur",
     "loadError": "Impossible de charger le fournisseur"
+  },
+  "customers": {
+    "title": "Clients",
+    "description": "Gérez les clients pour les ventes et la facturation.",
+    "newCustomer": "Nouveau client",
+    "searchPlaceholder": "Rechercher un client...",
+    "loadError": "Impossible de charger les clients",
+    "deleteConfirm": "Voulez-vous vraiment supprimer ce client ?",
+    "deleteSuccess": "Client supprimé avec succès",
+    "deleteError": "Impossible de supprimer le client",
+    "noEmail": "Aucun email",
+    "empty": "Aucun client trouvé pour les filtres sélectionnés.",
+    "results_one": "{{count}} résultat",
+    "results_other": "{{count}} résultats",
+    "pagination": "Page {{currentPage}} sur {{totalPages}} · {{count}} clients",
+    "filters": {
+      "allStatuses": "Tous les statuts",
+      "activeOnly": "Actifs uniquement",
+      "inactiveOnly": "Inactifs uniquement"
+    },
+    "status": {
+      "active": "ACTIF",
+      "inactive": "INACTIF"
+    },
+    "documentTypes": {
+      "CUIT": "CUIT",
+      "CUIL": "CUIL",
+      "DNI": "DNI"
+    },
+    "condicionesIva": {
+      "RESPONSABLE_INSCRIPTO": "Responsable inscrit",
+      "MONOTRIBUTO": "Monotributo",
+      "EXENTO": "Exonéré",
+      "CONSUMIDOR_FINAL": "Consommateur final",
+      "NO_CATEGORIZADO": "Non catégorisé"
+    },
+    "table": {
+      "customer": "Client",
+      "document": "Document",
+      "condicionIva": "Statut fiscal",
+      "email": "Email",
+      "phone": "Téléphone",
+      "status": "Statut",
+      "actions": "Actions"
+    }
+  },
+  "customerForm": {
+    "newTitle": "Nouveau client",
+    "newDescription": "Créez un client pour les ventes et la facturation.",
+    "documentTypeRequired": "Type de document *",
+    "documentNumberRequired": "Numéro de document *",
+    "razonSocialRequired": "Raison sociale / Nom *",
+    "email": "Email",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "condicionIvaRequired": "Statut fiscal *",
+    "activeCustomer": "Client actif",
+    "createCustomer": "Créer le client",
+    "createSuccess": "Client créé avec succès",
+    "createError": "Impossible de créer le client",
+    "editTitle": "Modifier le client",
+    "editDescription": "Mettez à jour les informations du client.",
+    "updateCustomer": "Mettre à jour le client",
+    "updateSuccess": "Client mis à jour avec succès",
+    "updateError": "Impossible de mettre à jour le client",
+    "loadError": "Impossible de charger le client"
   },
   "productImport": {
     "title": "Importer des produits",

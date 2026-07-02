@@ -22,6 +22,10 @@ export function canDeleteSuppliers(userRole: OrganizationRole | null): boolean {
     return hasMinimumRole(userRole, 'MANAGER')
 }
 
+export function canDeleteCustomers(userRole: OrganizationRole | null): boolean {
+    return hasMinimumRole(userRole, 'MANAGER')
+}
+
 type RouteAccessRule = {
     pattern: RegExp
     minimumRole: OrganizationRole
@@ -34,6 +38,7 @@ const ROUTE_ACCESS_RULES: RouteAccessRule[] = [
     { pattern: /^\/products(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/categories(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/suppliers(\/|$)/, minimumRole: 'MANAGER' },
+    { pattern: /^\/customers(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/supplier-orders(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/stock-movements(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/audit-logs(\/|$)/, minimumRole: 'ADMIN' },

@@ -56,6 +56,7 @@
     "products": "Productes",
     "categories": "Categories",
     "suppliers": "Proveïdors",
+    "customers": "Clients",
     "movementHistory": "Historial de moviments",
     "auditLogs": "Auditoria",
     "adminSettings": "Configuració d’administrador",
@@ -364,6 +365,72 @@
     "updateSuccess": "Proveïdor actualitzat correctament",
     "updateError": "No s’ha pogut actualitzar el proveïdor",
     "loadError": "No s’ha pogut carregar el proveïdor"
+  },
+  "customers": {
+    "title": "Clients",
+    "description": "Gestiona clients per a vendes i facturació.",
+    "newCustomer": "Nou client",
+    "searchPlaceholder": "Cercar client...",
+    "loadError": "No s’han pogut carregar els clients",
+    "deleteConfirm": "Segur que vols eliminar aquest client?",
+    "deleteSuccess": "Client eliminat correctament",
+    "deleteError": "No s’ha pogut eliminar el client",
+    "noEmail": "Sense email",
+    "empty": "No s’han trobat clients per als filtres seleccionats.",
+    "results_one": "{{count}} resultat",
+    "results_other": "{{count}} resultats",
+    "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} clients",
+    "filters": {
+      "allStatuses": "Tots els estats",
+      "activeOnly": "Només actius",
+      "inactiveOnly": "Només inactius"
+    },
+    "status": {
+      "active": "ACTIU",
+      "inactive": "INACTIU"
+    },
+    "documentTypes": {
+      "CUIT": "CUIT",
+      "CUIL": "CUIL",
+      "DNI": "DNI"
+    },
+    "condicionesIva": {
+      "RESPONSABLE_INSCRIPTO": "Responsable inscrit",
+      "MONOTRIBUTO": "Monotributo",
+      "EXENTO": "Exempt",
+      "CONSUMIDOR_FINAL": "Consumidor final",
+      "NO_CATEGORIZADO": "No categoritzat"
+    },
+    "table": {
+      "customer": "Client",
+      "document": "Document",
+      "condicionIva": "Condició IVA",
+      "email": "Email",
+      "phone": "Telèfon",
+      "status": "Estat",
+      "actions": "Accions"
+    }
+  },
+  "customerForm": {
+    "newTitle": "Nou client",
+    "newDescription": "Crea un client per a vendes i facturació.",
+    "documentTypeRequired": "Tipus de document *",
+    "documentNumberRequired": "Número de document *",
+    "razonSocialRequired": "Raó social / Nom *",
+    "email": "Email",
+    "phone": "Telèfon",
+    "address": "Adreça",
+    "condicionIvaRequired": "Condició IVA *",
+    "activeCustomer": "Client actiu",
+    "createCustomer": "Crear client",
+    "createSuccess": "Client creat correctament",
+    "createError": "No s’ha pogut crear el client",
+    "editTitle": "Editar client",
+    "editDescription": "Actualitza la informació del client.",
+    "updateCustomer": "Actualitzar client",
+    "updateSuccess": "Client actualitzat correctament",
+    "updateError": "No s’ha pogut actualitzar el client",
+    "loadError": "No s’ha pogut carregar el client"
   },
   "productImport": {
     "title": "Importar productes",

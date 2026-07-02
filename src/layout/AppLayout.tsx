@@ -13,6 +13,7 @@ import {
     X,
     ShoppingCart,
     Truck,
+    Users,
     ClipboardList,
     User,
     ScrollText,
@@ -69,6 +70,7 @@ function AppLayout() {
         { label: t('nav.products'), to: '/products', icon: Boxes, minimumRole: 'MANAGER' },
         { label: t('nav.categories'), to: '/categories', icon: FolderTree, minimumRole: 'MANAGER' },
         { label: t('nav.suppliers'), to: '/suppliers', icon: Truck, minimumRole: 'MANAGER' },
+        { label: t('nav.customers'), to: '/customers', icon: Users, minimumRole: 'MANAGER' },
         {
             label: t('nav.movementHistory'),
             to: '/stock-movements',

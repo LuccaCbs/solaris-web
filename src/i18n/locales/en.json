@@ -57,6 +57,7 @@
     "products": "Products",
     "categories": "Categories",
     "suppliers": "Suppliers",
+    "customers": "Customers",
     "movementHistory": "Movement History",
     "auditLogs": "Audit Logs",
     "adminSettings": "Admin Settings",
@@ -367,6 +368,72 @@
     "updateSuccess": "Supplier updated successfully",
     "updateError": "Could not update supplier",
     "loadError": "Could not load supplier"
+  },
+  "customers": {
+    "title": "Customers",
+    "description": "Manage customers for sales and billing.",
+    "newCustomer": "New Customer",
+    "searchPlaceholder": "Search customer...",
+    "loadError": "Could not load customers",
+    "deleteConfirm": "Are you sure you want to delete this customer?",
+    "deleteSuccess": "Customer deleted successfully",
+    "deleteError": "Could not delete customer",
+    "noEmail": "No email",
+    "empty": "No customers found for the selected filters.",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} customers",
+    "filters": {
+      "allStatuses": "All statuses",
+      "activeOnly": "Active only",
+      "inactiveOnly": "Inactive only"
+    },
+    "status": {
+      "active": "ACTIVE",
+      "inactive": "INACTIVE"
+    },
+    "documentTypes": {
+      "CUIT": "CUIT",
+      "CUIL": "CUIL",
+      "DNI": "DNI"
+    },
+    "condicionesIva": {
+      "RESPONSABLE_INSCRIPTO": "Registered taxpayer",
+      "MONOTRIBUTO": "Monotributo",
+      "EXENTO": "Exempt",
+      "CONSUMIDOR_FINAL": "Final consumer",
+      "NO_CATEGORIZADO": "Uncategorized"
+    },
+    "table": {
+      "customer": "Customer",
+      "document": "Document",
+      "condicionIva": "Tax status",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  },
+  "customerForm": {
+    "newTitle": "New Customer",
+    "newDescription": "Create a customer for sales and billing.",
+    "documentTypeRequired": "Document type *",
+    "documentNumberRequired": "Document number *",
+    "razonSocialRequired": "Business name / Name *",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "condicionIvaRequired": "Tax status *",
+    "activeCustomer": "Active customer",
+    "createCustomer": "Create Customer",
+    "createSuccess": "Customer created successfully",
+    "createError": "Could not create customer",
+    "editTitle": "Edit Customer",
+    "editDescription": "Update customer information.",
+    "updateCustomer": "Update Customer",
+    "updateSuccess": "Customer updated successfully",
+    "updateError": "Could not update customer",
+    "loadError": "Could not load customer"
   },
   "productImport": {
     "title": "Import Products",
