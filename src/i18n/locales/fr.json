@@ -189,12 +189,9 @@
     "next": "Suivant",
     "status": {
       "lowStock": "STOCK FAIBLE",
-      "ok": "OK"
-    },
-    "actions": {
-      "restock": "Réapprovisionner",
-      "edit": "Modifier",
-      "delete": "Supprimer"
+      "ok": "OK",
+      "active": "Actif",
+      "inactive": "Inactif"
     },
     "table": {
       "product": "Produit",
@@ -204,6 +201,21 @@
       "stock": "Stock",
       "status": "État",
       "actions": "Actions"
+    },
+    "activeOnly": "Produits actifs",
+    "inactiveOnly": "Produits inactifs",
+    "allActiveStatus": "Tous les statuts",
+    "deactivateConfirm": "Êtes-vous sûr de vouloir désactiver ce produit ?",
+    "deactivateSuccess": "Produit désactivé avec succès.",
+    "deactivateError": "Impossible de désactiver le produit.",
+    "activateConfirm": "Êtes-vous sûr de vouloir activer ce produit ?",
+    "activateSuccess": "Produit activé avec succès.",
+    "activateError": "Impossible d'activer le produit.",
+    "actions": {
+      "restock": "Réapprovisionner",
+      "edit": "Modifier",
+      "deactivate": "Désactiver",
+      "activate": "Activer"
     }
   },
   "categories": {
@@ -528,6 +540,10 @@
     "results_one": "{{count}} résultat",
     "results_other": "{{count}} résultats",
     "pagination": "Page {{currentPage}} sur {{totalPages}} · {{count}} commandes fournisseur",
+    "edit": "Modifier",
+    "editTitle": "Modifier la commande fournisseur",
+    "editUnavailable": "Seules les commandes fournisseur à l'état de brouillon peuvent être modifiées.",
+    "updateSuccess": "Commande fournisseur mise à jour avec succès.",
     "filters": {
       "allStatuses": "Tous les statuts"
     },
@@ -715,6 +731,89 @@
       "SUPPLIER_ORDER": "Commande fournisseur",
       "SYSTEM_SETTINGS": "Paramètres système",
       "USER": "Utilisateur"
+    }
+  },
+  "restockProduct": {
+    "title": "Réapprovisionner le produit",
+    "description": "Ajoutez du stock à un produit existant.",
+    "quantity": "Quantité à ajouter",
+    "reason": "Motif",
+    "reasonPlaceholder": "Exemple : Livraison fournisseur, réapprovisionnement manuel...",
+    "defaultReason": "Réapprovisionnement du produit",
+    "confirm": "Confirmer le réapprovisionnement",
+    "success": "Produit réapprovisionné avec succès",
+    "error": "Impossible de réapprovisionner le produit",
+    "loadError": "Impossible de charger le produit",
+    "invalidQuantity": "La quantité doit être supérieure à zéro"
+  },
+  "nova": {
+    "title": "Nova Copilot",
+    "subtitle": "Assistant opérationnel Solaris",
+    "open": "Ouvrir Nova",
+    "close": "Fermer Nova",
+    "emptyState": "Bonjour, je suis Nova. Je peux vous aider à rechercher des produits, créer des produits, mettre à jour le stock ou consulter les produits en rupture de stock.",
+    "loading": "Nova réfléchit...",
+    "newChat": "Nouvelle conversation",
+    "input": {
+      "placeholder": "Écrivez à Nova...",
+      "send": "Envoyer"
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "groups": {
+        "products": "Produits",
+        "suppliers": "Fournisseurs",
+        "dashboard": "Tableau de bord"
+      },
+      "searchProduct": "Rechercher un produit",
+      "searchProductMessage": "Rechercher le produit Coca Cola",
+      "createProduct": "Créer un produit",
+      "createProductMessage": "Créer le produit Coca Cola 2L prix 2500 stock 30 catégorie Boissons",
+      "updateProduct": "Mettre à jour un produit",
+      "updateProductHelp": "Vous pouvez mettre à jour un produit en indiquant le produit et les informations à modifier. Exemple : \"Mettre à jour le produit Coca Cola prix 2500\".",
+      "deactivateProduct": "Désactiver un produit",
+      "deactivateProductHelp": "Vous pouvez désactiver un produit en indiquant son nom. Exemple : \"Désactiver le produit Coca Cola\".",
+      "updateStock": "Mettre à jour le stock",
+      "updateStockMessage": "Ajouter 5 unités à Coca Cola 2L",
+      "dashboard": "Voir le tableau de bord",
+      "dashboardMessage": "Résumé du tableau de bord",
+      "lowStock": "Produits en stock faible",
+      "lowStockMessage": "Produits en stock faible",
+      "searchProductHelp": "Vous pouvez rechercher des produits par nom, SKU ou description. Par exemple : \"Rechercher le produit Coca Cola\".",
+      "createProductHelp": "Vous pouvez créer un produit en indiquant le nom, le prix, le stock initial et la catégorie. Par exemple : \"Créer le produit Coca Cola 2L prix 2500 stock 30 catégorie Boissons\".",
+      "updateStockHelp": "Vous pouvez mettre à jour le stock en indiquant le produit et la quantité. Par exemple : \"Ajouter 5 unités à Coca Cola 2L\" ou \"Mettre le stock de Coca Cola 2L à 50\".",
+      "dashboardHelp": "Vous pouvez demander un résumé du tableau de bord. Par exemple : \"Résumé du tableau de bord\".",
+      "lowStockHelp": "Vous pouvez consulter les produits en stock faible. Par exemple : \"Produits en stock faible\".",
+      "createSupplier": "Créer un fournisseur",
+      "createSupplierHelp": "Vous pouvez créer un fournisseur en indiquant le nom, le contact, l’e-mail, le téléphone et l’adresse. Exemple : \"Créer un fournisseur Global Food avec comme contact Supplier Test et le numéro de téléphone +349999999\".",
+      "searchSupplier": "Rechercher un fournisseur",
+      "searchSupplierHelp": "Vous pouvez rechercher des fournisseurs par nom, contact, e-mail, téléphone ou adresse. Exemple : \"Rechercher le fournisseur Global Food\".",
+      "updateSupplier": "Mettre à jour un fournisseur",
+      "updateSupplierHelp": "Vous pouvez mettre à jour un fournisseur en indiquant quel fournisseur et quelle information vous souhaitez modifier. Exemple : \"Mettre à jour le fournisseur Global Food e-mail achats@globalfood.com\".",
+      "deleteSupplier": "Supprimer un fournisseur",
+      "deleteSupplierHelp": "Vous pouvez supprimer un fournisseur en indiquant son nom. Exemple : \"Supprimer le fournisseur Global Food\"."
+    },
+    "timeline": {
+      "title": "Actions récentes",
+      "empty": "Il n’y a pas encore d’actions récentes.",
+      "events": {
+        "create_product": "Produit créé",
+        "update_product": "Produit mis à jour",
+        "activate_product": "Produit activé",
+        "deactivate_product": "Produit désactivé",
+        "update_stock": "Stock mis à jour",
+        "create_category": "Catégorie créée",
+        "create_supplier": "Fournisseur créé",
+        "update_supplier": "Fournisseur mis à jour",
+        "delete_supplier": "Fournisseur supprimé",
+        "create_supplier_order": "Commande fournisseur créée",
+        "update_supplier_order": "Commande fournisseur mise à jour"
+      }
+    },
+    "confirmation": {
+      "title": "Confirmation requise",
+      "confirm": "Confirmer",
+      "cancel": "Annuler"
     }
   }
 }

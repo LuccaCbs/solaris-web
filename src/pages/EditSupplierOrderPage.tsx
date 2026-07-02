@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 
-import { createSupplierOrder } from '../api/supplierOrderService'
+import {
+    getSupplierOrderById,
+    updateSupplierOrder,
+} from '../api/supplierOrderService'
 import { getSuppliers } from '../api/supplierService'
 import { getProducts } from '../api/productService'
 import type { Supplier } from '../types/supplier'
@@ -12,8 +15,9 @@ import LoadingScreen from '../components/LoadingScreen'
 import { SupplierOrderForm } from '../features/supplier-orders/components/SupplierOrderForm'
 import type { OrderItemForm } from '../features/supplier-orders/types/supplierOrderForm.types'
 
-function NewSupplierOrderPage() {
+function EditSupplierOrderPage() {
     const navigate = useNavigate()
+    const { id } = useParams<{ id: string }>()
     const { t } = useTranslation()
 
     const [suppliers, setSuppliers] = useState<Supplier[]>([])
@@ -29,22 +33,48 @@ function NewSupplierOrderPage() {
     useEffect(() => {
         async function loadData() {
             try {
-                const [suppliersData, productsData] = await Promise.all([
-                    getSuppliers(),
-                    getProducts(),
-                ])
+                const [suppliersData, productsData, order] =
+                    await Promise.all([
+                        getSuppliers(),
+                        getProducts(),
+                        getSupplierOrderById(Number(id)),
+                    ])
+
+                if (order.status !== 'DRAFT') {
+                    toast.error(t('supplierOrders.editUnavailable'))
+                    navigate('/supplier-orders')
+                    return
+                }
 
                 setSuppliers(suppliersData.filter((supplier) => supplier.active))
                 setProducts(productsData)
+                setSupplierId(String(order.supplierId))
+
+                const supplier = suppliersData.find(
+                    (currentSupplier) => currentSupplier.id === order.supplierId,
+                )
+
+                if (supplier) {
+                    setSupplierSearch(supplier.name)
+                }
+
+                setItems(
+                    order.items.map((item) => ({
+                        productId: String(item.productId),
+                        productSearch: `${item.productName} · ${item.productSku}`,
+                        quantity: String(item.quantity),
+                    })),
+                )
             } catch {
                 toast.error(t('supplierOrderForm.loadError'))
+                navigate('/supplier-orders')
             } finally {
                 setLoading(false)
             }
         }
 
         void loadData()
-    }, [t])
+    }, [id, navigate, t])
 
     const selectedSupplier = useMemo(() => {
         return suppliers.find((supplier) => supplier.id === Number(supplierId))
@@ -90,7 +120,11 @@ function NewSupplierOrderPage() {
 
     function selectSupplier(supplier: Supplier) {
         setSupplierId(String(supplier.id))
-        setSupplierSearch(supplier.name)
+        setSupplierSearch(
+            supplier.contactName
+                ? `${supplier.name} · ${supplier.contactName}`
+                : supplier.name,
+        )
     }
 
     function clearSupplier() {
@@ -174,15 +208,15 @@ function NewSupplierOrderPage() {
         setSaving(true)
 
         try {
-            await createSupplierOrder({
+            await updateSupplierOrder(Number(id), {
                 supplierId: Number(supplierId),
                 items: validItems,
             })
 
-            toast.success(t('supplierOrderForm.createSuccess'))
+            toast.success(t('supplierOrders.updateSuccess'))
             navigate('/supplier-orders')
         } catch {
-            toast.error(t('supplierOrderForm.createError'))
+            toast.error(t('supplierOrders.updateError'))
         } finally {
             setSaving(false)
         }
@@ -194,9 +228,9 @@ function NewSupplierOrderPage() {
 
     return (
         <SupplierOrderForm
-            title={t('supplierOrderForm.title')}
+            title={t('supplierOrders.editTitle')}
             description={t('supplierOrderForm.description')}
-            submitLabel={t('supplierOrderForm.createOrder')}
+            submitLabel={t('supplierOrders.actions.edit')}
             saving={saving}
             suppliers={suppliers}
             products={products}
@@ -204,7 +238,10 @@ function NewSupplierOrderPage() {
             supplierSearch={supplierSearch}
             items={items}
             messagePreview={messagePreview}
-            onSupplierSearchChange={setSupplierSearch}
+            onSupplierSearchChange={(value) => {
+                setSupplierSearch(value)
+                setSupplierId('')
+            }}
             onSelectSupplier={selectSupplier}
             onClearSupplier={clearSupplier}
             onUpdateItem={updateItem}
@@ -218,4 +255,4 @@ function NewSupplierOrderPage() {
     )
 }
 
-export default NewSupplierOrderPage
+export default EditSupplierOrderPage

@@ -28,9 +28,10 @@ function getAuthHeaders() {
     }
 }
 
-export async function getProducts(): Promise<Product[]> {
+export async function getProducts(active?: boolean): Promise<Product[]> {
     const response = await axiosClient.get<Product[]>('/products', {
         headers: getAuthHeaders(),
+        params: active === undefined ? undefined : { active },
     })
 
     return response.data
@@ -52,10 +53,28 @@ export async function createProduct(data: {
     return response.data
 }
 
-export async function deleteProduct(id: number): Promise<void> {
-    await axiosClient.delete(`/products/${id}`, {
-        headers: getAuthHeaders(),
-    })
+export async function deactivateProduct(id: number): Promise<Product> {
+    const response = await axiosClient.patch<Product>(
+        `/products/${id}/deactivate`,
+        {},
+        {
+            headers: getAuthHeaders(),
+        }
+    )
+
+    return response.data
+}
+
+export async function activateProduct(id: number): Promise<Product> {
+    const response = await axiosClient.patch<Product>(
+        `/products/${id}/activate`,
+        {},
+        {
+            headers: getAuthHeaders(),
+        }
+    )
+
+    return response.data
 }
 
 export async function getProductById(id: number): Promise<Product> {

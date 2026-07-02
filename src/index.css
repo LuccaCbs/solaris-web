@@ -1,3 +1,5 @@
+/* stylelint-disable at-rule-no-unknown */
+
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -27,4 +29,40 @@
         filter: invert(1);
         cursor: pointer;
     }
+}
+
+/* Scrollbar Solaris */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(51 65 85); /* slate-700 */
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(71 85 105); /* slate-600 */
+}
+
+/* Light mode */
+
+::-webkit-scrollbar-thumb {
+    background: rgb(148 163 184); /* slate-400 */
+}
+
+/* Dark mode */
+
+.dark ::-webkit-scrollbar-thumb {
+    background: rgb(51 65 85); /* slate-700 */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgb(71 85 105); /* slate-600 */
 }

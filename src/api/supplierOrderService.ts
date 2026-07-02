@@ -35,6 +35,21 @@ export async function createSupplierOrder(
     return response.data
 }
 
+export async function updateSupplierOrder(
+    id: number,
+    request: SupplierOrderRequest
+): Promise<SupplierOrder> {
+    const response = await axiosClient.put<SupplierOrder>(
+        `/supplier-orders/${id}`,
+        request,
+        {
+            headers: getAuthHeaders(),
+        }
+    )
+
+    return response.data
+}
+
 export async function markSupplierOrderAsSent(id: number): Promise<SupplierOrder> {
     const response = await axiosClient.patch<SupplierOrder>(
         `/supplier-orders/${id}/sent`,

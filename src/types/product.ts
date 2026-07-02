@@ -10,4 +10,5 @@ export type Product = {
     lowStock: boolean
     categoryId: number
     categoryName: string
+    active?: boolean
 }

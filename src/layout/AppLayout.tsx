@@ -21,6 +21,9 @@ import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useTheme } from '../utils/useTheme'
 import { getSystemSettings } from '../api/systemSettingsService'
 import { useTranslation } from 'react-i18next'
+import { NovaCopilotButton } from '../features/nova/components/NovaCopilotButton'
+import { NovaCopilotPanel } from '../features/nova/components/NovaCopilotPanel'
+
 
 import logoSilver from '../assets/logo/solaris-white-full-logo.png'
 import logoGold from '../assets/logo/solaris-black-full-logo.png'
@@ -33,6 +36,7 @@ function AppLayout() {
     const [adminPasswordModalOpen, setAdminPasswordModalOpen] = useState(false)
     const { theme, toggleTheme } = useTheme()
     const { t, i18n } = useTranslation()
+    const [isNovaOpen, setIsNovaOpen] = useState(false)
 
     const logoImage = theme === 'dark' ? logoSilver : logoGold
 
@@ -228,6 +232,16 @@ function AppLayout() {
                     navigate('/admin/settings')
                 }}
             />
+
+            <NovaCopilotPanel
+                isOpen={isNovaOpen}
+                onClose={() => setIsNovaOpen(false)}
+            />
+
+            <NovaCopilotButton
+                isOpen={isNovaOpen}
+                onClick={() => setIsNovaOpen((current) => !current)}
+            />
         </div>
     )
 }
@@ -306,6 +320,7 @@ function SidebarButton({
             <Icon size={18} />
             <span className="font-medium">{label}</span>
         </button>
+
     )
 }
 

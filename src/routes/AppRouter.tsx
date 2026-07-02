@@ -21,6 +21,7 @@ import NewSupplierPage from '../pages/NewSupplierPage'
 import EditSupplierPage from '../pages/EditSupplierPage'
 import SupplierOrdersPage from '../pages/SupplierOrdersPage'
 import NewSupplierOrderPage from '../pages/NewSupplierOrderPage'
+import EditSupplierOrderPage from '../pages/EditSupplierOrderPage'
 import SupplierOrderDetailPage from '../pages/SupplierOrderDetailPage'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
 import ResetPasswordPage from '../pages/ResetPasswordPage'
@@ -54,6 +55,7 @@ function AppRouter() {
 
                         <Route path="/supplier-orders" element={<SupplierOrdersPage />} />
                         <Route path="/supplier-orders/new" element={<NewSupplierOrderPage />} />
+                        <Route path="/supplier-orders/:id/edit" element={<EditSupplierOrderPage />} />
                         <Route path="/supplier-orders/:id" element={<SupplierOrderDetailPage />} />
 
                         <Route path="/categories" element={<CategoriesPage />} />

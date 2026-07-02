@@ -188,12 +188,9 @@
     "next": "Següent",
     "status": {
       "lowStock": "ESTOC BAIX",
-      "ok": "OK"
-    },
-    "actions": {
-      "restock": "Reposar",
-      "edit": "Editar",
-      "delete": "Eliminar"
+      "ok": "OK",
+      "active": "Actiu",
+      "inactive": "Inactiu"
     },
     "table": {
       "product": "Producte",
@@ -203,6 +200,21 @@
       "stock": "Estoc",
       "status": "Estat",
       "actions": "Accions"
+    },
+    "activeOnly": "Productes actius",
+    "inactiveOnly": "Productes inactius",
+    "allActiveStatus": "Tots els estats",
+    "deactivateConfirm": "Segur que vols donar de baixa aquest producte?",
+    "deactivateSuccess": "Producte donat de baixa correctament.",
+    "deactivateError": "No s'ha pogut donar de baixa el producte.",
+    "activateConfirm": "Segur que vols activar aquest producte?",
+    "activateSuccess": "Producte activat correctament.",
+    "activateError": "No s'ha pogut activar el producte.",
+    "actions": {
+      "restock": "Reposar",
+      "edit": "Editar",
+      "deactivate": "Donar de baixa",
+      "activate": "Activar"
     }
   },
   "categories": {
@@ -527,6 +539,10 @@
     "results_one": "{{count}} resultat",
     "results_other": "{{count}} resultats",
     "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} comandes",
+    "edit": "Editar",
+    "editTitle": "Editar comanda al proveïdor",
+    "editUnavailable": "Només es poden editar les comandes al proveïdor en estat d'esborrany.",
+    "updateSuccess": "Comanda al proveïdor actualitzada correctament.",
     "filters": {
       "allStatuses": "Tots els estats"
     },
@@ -714,6 +730,89 @@
       "SUPPLIER_ORDER": "Comanda de proveïdor",
       "SYSTEM_SETTINGS": "Configuració del sistema",
       "USER": "Usuari"
+    }
+  },
+  "restockProduct": {
+    "title": "Reposar producte",
+    "description": "Afegeix estoc a un producte existent.",
+    "quantity": "Quantitat a afegir",
+    "reason": "Motiu",
+    "reasonPlaceholder": "Exemple: lliurament del proveïdor, reposició manual...",
+    "defaultReason": "Reposició de producte",
+    "confirm": "Confirmar reposició",
+    "success": "Producte reposat correctament",
+    "error": "No s'ha pogut reposar el producte",
+    "loadError": "No s'ha pogut carregar el producte",
+    "invalidQuantity": "La quantitat ha de ser superior a zero"
+  },
+  "nova": {
+    "title": "Nova Copilot",
+    "subtitle": "Assistent operatiu de Solaris",
+    "open": "Obrir Nova",
+    "close": "Tancar Nova",
+    "emptyState": "Hola, sóc Nova. Puc ajudar-te a cercar productes, crear productes, actualitzar l'estoc o consultar productes amb baix estoc.",
+    "loading": "Nova està pensant...",
+    "newChat": "Nou xat",
+    "input": {
+      "placeholder": "Escriu a Nova...",
+      "send": "Enviar"
+    },
+    "quickActions": {
+      "title": "Accions ràpides",
+      "groups": {
+        "products": "Productes",
+        "suppliers": "Proveïdors",
+        "dashboard": "Tauler"
+      },
+      "searchProduct": "Cercar producte",
+      "searchProductMessage": "Cercar producte Coca Cola",
+      "createProduct": "Crear producte",
+      "createProductMessage": "Crear producte Coca Cola 2L preu 2500 estoc 30 categoria Begudes",
+      "updateProduct": "Actualitzar producte",
+      "updateProductHelp": "Pots actualitzar un producte indicant quin producte i quines dades vols modificar. Exemple: \"Actualitzar producte Coca Cola preu 2500\".",
+      "deactivateProduct": "Donar de baixa producte",
+      "deactivateProductHelp": "Pots donar de baixa un producte indicant-ne el nom. Exemple: \"Donar de baixa producte Coca Cola\".",
+      "updateStock": "Actualitzar estoc",
+      "updateStockMessage": "Afegir 5 unitats a Coca Cola 2L",
+      "dashboard": "Veure panell",
+      "dashboardMessage": "Resum del panell",
+      "lowStock": "Productes amb baix estoc",
+      "lowStockMessage": "Productes amb baix estoc",
+      "searchProductHelp": "Pots cercar productes pel nom, SKU o descripció. Per exemple: \"Cercar producte Coca Cola\".",
+      "createProductHelp": "Pots crear un producte indicant el nom, el preu, l'estoc inicial i la categoria. Per exemple: \"Crear producte Coca Cola 2L preu 2500 estoc 30 categoria Begudes\".",
+      "updateStockHelp": "Pots actualitzar l'estoc indicant el producte i la quantitat. Per exemple: \"Afegir 5 unitats a Coca Cola 2L\" o \"Actualitzar l'estoc de Coca Cola 2L a 50\".",
+      "dashboardHelp": "Pots demanar un resum del panell. Per exemple: \"Resum del panell\".",
+      "lowStockHelp": "Pots consultar productes amb baix estoc. Per exemple: \"Productes amb baix estoc\".",
+      "createSupplier": "Crear proveïdor",
+      "createSupplierHelp": "Pots crear un proveïdor indicant el nom, el contacte, el correu electrònic, el telèfon i l’adreça. Exemple: \"Crear proveïdor Global Food contacte Supplier Test telèfon +349999999\".",
+      "searchSupplier": "Cercar proveïdor",
+      "searchSupplierHelp": "Pots cercar proveïdors per nom, contacte, correu electrònic, telèfon o adreça. Exemple: \"Cercar proveïdor Global Food\".",
+      "updateSupplier": "Actualitzar proveïdor",
+      "updateSupplierHelp": "Pots actualitzar un proveïdor indicant quin proveïdor i quina dada vols modificar. Exemple: \"Actualitzar proveïdor Global Food correu compres@globalfood.com\".",
+      "deleteSupplier": "Eliminar proveïdor",
+      "deleteSupplierHelp": "Pots eliminar un proveïdor indicant-ne el nom. Exemple: \"Eliminar proveïdor Global Food\"."
+    },
+    "timeline": {
+      "title": "Accions recents",
+      "empty": "Encara no hi ha accions recents.",
+      "events": {
+        "create_product": "Producte creat",
+        "update_product": "Producte actualitzat",
+        "activate_product": "Producte activat",
+        "deactivate_product": "Producte donat de baixa",
+        "update_stock": "Estoc actualitzat",
+        "create_category": "Categoria creada",
+        "create_supplier": "Proveïdor creat",
+        "update_supplier": "Proveïdor actualitzat",
+        "delete_supplier": "Proveïdor eliminat",
+        "create_supplier_order": "Comanda al proveïdor creada",
+        "update_supplier_order": "Comanda al proveïdor actualitzada"
+      }
+    },
+    "confirmation": {
+      "title": "Confirmació requerida",
+      "confirm": "Confirmar",
+      "cancel": "Cancel·lar"
     }
   }
 }

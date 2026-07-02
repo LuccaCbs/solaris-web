@@ -191,12 +191,9 @@
     "next": "Siguiente",
     "status": {
       "lowStock": "BAJO STOCK",
-      "ok": "OK"
-    },
-    "actions": {
-      "restock": "Reponer",
-      "edit": "Editar",
-      "delete": "Eliminar"
+      "ok": "OK",
+      "active": "Activo",
+      "inactive": "Inactivo"
     },
     "table": {
       "product": "Producto",
@@ -206,6 +203,21 @@
       "stock": "Stock",
       "status": "Estado",
       "actions": "Acciones"
+    },
+    "activeOnly": "Productos activos",
+    "inactiveOnly": "Productos inactivos",
+    "allActiveStatus": "Todos los estados",
+    "deactivateConfirm": "¿Seguro que querés dar de baja este producto?",
+    "deactivateSuccess": "Producto dado de baja correctamente.",
+    "deactivateError": "No se pudo dar de baja el producto.",
+    "activateConfirm": "¿Seguro que querés activar este producto?",
+    "activateSuccess": "Producto activado correctamente.",
+    "activateError": "No se pudo activar el producto.",
+    "actions": {
+      "restock": "Reponer",
+      "edit": "Editar",
+      "deactivate": "Dar de baja",
+      "activate": "Activar"
     }
   },
   "categories": {
@@ -530,6 +542,10 @@
     "results_one": "{{count}} resultado",
     "results_other": "{{count}} resultados",
     "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} órdenes",
+    "edit": "Editar",
+    "editTitle": "Editar pedido a proveedor",
+    "editUnavailable": "Solo se pueden editar pedidos en borrador.",
+    "updateSuccess": "Pedido a proveedor actualizado correctamente.",
     "filters": {
       "allStatuses": "Todos los estados"
     },
@@ -550,7 +566,8 @@
       "whatsapp": "WhatsApp",
       "markSent": "Marcar enviada",
       "complete": "Completar",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "edit": "Editar"
     }
   },
   "supplierOrderForm": {
@@ -717,6 +734,93 @@
       "SUPPLIER_ORDER": "Orden de proveedor",
       "SYSTEM_SETTINGS": "Configuración del sistema",
       "USER": "Usuario"
+    }
+  },
+  "restockProduct": {
+    "title": "Reabastecer producto",
+    "description": "Agrega stock a un producto existente.",
+    "quantity": "Cantidad a agregar",
+    "reason": "Motivo",
+    "reasonPlaceholder": "Ejemplo: Entrega de proveedor, reposición manual...",
+    "defaultReason": "Reposición de producto",
+    "confirm": "Confirmar reposición",
+    "success": "Producto reabastecido correctamente",
+    "error": "No se pudo reabastecer el producto",
+    "loadError": "No se pudo cargar el producto",
+    "invalidQuantity": "La cantidad debe ser mayor que cero"
+  },
+  "nova": {
+    "title": "Nova Copilot",
+    "subtitle": "Asistente operacional Solaris",
+    "open": "Abrir Nova",
+    "close": "Cerrar Nova",
+    "emptyState": "Hola, soy Nova. Puedo ayudarte a buscar productos, crear productos, actualizar stock o ver productos con bajo stock.",
+    "loading": "Nova está pensando...",
+    "newChat": "Nuevo chat",
+    "input": {
+      "placeholder": "Escribile a Nova...",
+      "send": "Enviar"
+    },
+    "quickActions": {
+      "title": "Acciones rápidas",
+      "groups": {
+        "products": "Productos",
+        "suppliers": "Proveedores",
+        "dashboard": "Panel"
+      },
+      "searchProduct": "Buscar producto",
+      "searchProductMessage": "Buscar producto Coca Cola",
+      "createProduct": "Crear producto",
+      "createProductMessage": "Crear producto Coca Cola 2L, precio 2500, stock 30, categoría Bebidas",
+      "updateProduct": "Actualizar producto",
+      "updateProductHelp": "Podés actualizar un producto indicando cuál producto y qué datos querés modificar. Ejemplo: \"Actualizar producto Coca Cola precio 2500\".",
+      "deactivateProduct": "Dar de baja producto",
+      "deactivateProductHelp": "Podés dar de baja un producto indicando su nombre. Ejemplo: \"Dar de baja producto Coca Cola\".",
+      "updateStock": "Actualizar stock",
+      "updateStockMessage": "Agregar 5 unidades a Coca Cola 2L",
+      "dashboard": "Ver dashboard",
+      "dashboardMessage": "Resumen del dashboard",
+      "lowStock": "Productos bajo stock",
+      "lowStockMessage": "Productos con bajo stock",
+      "searchProductHelp": "Puedes buscar productos indicando el nombre, SKU o una descripción. Por ejemplo: \"Buscar producto Coca Cola\".",
+      "createProductHelp": "Puedes crear un producto indicando nombre, precio, stock inicial y categoría. Por ejemplo: \"Crear producto Coca Cola 2L, precio 2500, stock 30, categoría Bebidas\".",
+      "updateStockHelp": "Puedes actualizar stock indicando el producto y la cantidad. Por ejemplo: \"Agregar 5 unidades a Coca Cola 2L\" o \"Actualizar stock de Coca Cola 2L a 50\".",
+      "dashboardHelp": "Puedes pedir un resumen del dashboard. Por ejemplo: \"Resumen del dashboard\".",
+      "lowStockHelp": "Puedes consultar productos con bajo stock. Por ejemplo: \"Productos con bajo stock\".",
+      "createSupplier": "Crear proveedor",
+      "createSupplierHelp": "Podés crear un proveedor indicando nombre, contacto, email, teléfono y dirección. Ejemplo: \"Crear proveedor Global Food contacto Supplier Test teléfono +349999999\".",
+      "searchSupplier": "Buscar proveedor",
+      "searchSupplierHelp": "Podés buscar proveedores por nombre, contacto, email, teléfono o dirección. Ejemplo: \"Buscar proveedor Global Food\".",
+      "updateSupplier": "Actualizar proveedor",
+      "updateSupplierHelp": "Podés actualizar un proveedor indicando cuál proveedor y qué dato querés cambiar. Ejemplo: \"Actualizar proveedor Global Food email compras@globalfood.com\".",
+      "deleteSupplier": "Eliminar proveedor",
+      "deleteSupplierHelp": "Podés eliminar un proveedor indicando su nombre. Ejemplo: \"Eliminar proveedor Global Food\"."
+    },
+    "timeline": {
+      "title": "Acciones recientes",
+      "empty": "Todavía no hay acciones recientes.",
+      "events": {
+        "create_product": "Producto creado",
+        "update_product": "Producto actualizado",
+        "deactivate_product": "Producto dado de baja",
+        "activate_product": "Producto activado",
+        "update_stock": "Stock actualizado",
+        "create_category": "Categoría creada",
+        "create_supplier": "Proveedor creado",
+        "update_supplier": "Proveedor actualizado",
+        "delete_supplier": "Proveedor eliminado",
+        "create_supplier_order": "Pedido a proveedor creado",
+        "update_supplier_order": "Pedido a proveedor actualizado"
+      }
+    },
+    "confirmation": {
+      "title": "Confirmación requerida",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    },
+    "supplierOrderCard": {
+      "title": "Pedido a proveedor #{{id}}",
+      "messagePreview": "Vista previa del mensaje"
     }
   }
 }

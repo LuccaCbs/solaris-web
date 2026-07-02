@@ -191,12 +191,9 @@
     "next": "Next",
     "status": {
       "lowStock": "LOW STOCK",
-      "ok": "OK"
-    },
-    "actions": {
-      "restock": "Restock",
-      "edit": "Edit",
-      "delete": "Delete"
+      "ok": "OK",
+      "active": "Active",
+      "inactive": "Inactive"
     },
     "table": {
       "product": "Product",
@@ -206,6 +203,21 @@
       "stock": "Stock",
       "status": "Status",
       "actions": "Actions"
+    },
+    "activeOnly": "Active products",
+    "inactiveOnly": "Inactive products",
+    "allActiveStatus": "All statuses",
+    "deactivateConfirm": "Are you sure you want to deactivate this product?",
+    "deactivateSuccess": "Product deactivated successfully.",
+    "deactivateError": "Could not deactivate product.",
+    "activateConfirm": "Are you sure you want to activate this product?",
+    "activateSuccess": "Product activated successfully.",
+    "activateError": "Could not activate product.",
+    "actions": {
+      "restock": "Restock",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "activate": "Activate"
     }
   },
   "categories": {
@@ -530,6 +542,10 @@
     "results_one": "{{count}} result",
     "results_other": "{{count}} results",
     "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} supplier orders",
+    "edit": "Edit",
+    "editTitle": "Edit supplier order",
+    "editUnavailable": "Only draft supplier orders can be edited.",
+    "updateSuccess": "Supplier order updated successfully.",
     "filters": {
       "allStatuses": "All statuses"
     },
@@ -550,7 +566,8 @@
       "whatsapp": "WhatsApp",
       "markSent": "Mark Sent",
       "complete": "Complete",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "edit": "Edit"
     }
   },
   "supplierOrderForm": {
@@ -731,5 +748,79 @@
     "error": "Could not restock product",
     "loadError": "Could not load product",
     "invalidQuantity": "Quantity must be greater than zero"
+  },
+  "nova": {
+    "title": "Nova Copilot",
+    "subtitle": "Solaris operational assistant",
+    "open": "Open Nova",
+    "close": "Close Nova",
+    "emptyState": "Hi, I am Nova. I can help you search products, create products, update stock, or view low-stock products.",
+    "loading": "Nova is thinking...",
+    "newChat": "New chat",
+    "input": {
+      "placeholder": "Message Nova...",
+      "send": "Send"
+    },
+    "quickActions": {
+      "title": "Quick actions",
+      "groups": {
+        "products": "Products",
+        "suppliers": "Suppliers",
+        "dashboard": "Dashboard"
+      },
+      "searchProduct": "Search product",
+      "searchProductMessage": "Search product Coca Cola",
+      "createProduct": "Create product",
+      "createProductMessage": "Create product Coca Cola 2L price 2500 stock 30 category Drinks",
+      "updateProduct": "Update product",
+      "updateProductHelp": "You can update a product by specifying the product and the data to change. Example: \"Update product Coca Cola price 2500\".",
+      "deactivateProduct": "Deactivate product",
+      "deactivateProductHelp": "You can deactivate a product by specifying its name. Example: \"Deactivate product Coca Cola\".",
+      "updateStock": "Update stock",
+      "updateStockMessage": "Add 5 units to Coca Cola 2L",
+      "dashboard": "View dashboard",
+      "dashboardMessage": "Dashboard summary",
+      "lowStock": "Low-stock products",
+      "lowStockMessage": "Low stock products",
+      "searchProductHelp": "You can search products by name, SKU, or description. For example: \"Search product Coca Cola\".",
+      "createProductHelp": "You can create a product by providing name, price, initial stock, and category. For example: \"Create product Coca Cola 2L price 2500 stock 30 category Drinks\".",
+      "updateStockHelp": "You can update stock by providing the product and quantity. For example: \"Add 5 units to Coca Cola 2L\" or \"Update stock of Coca Cola 2L to 50\".",
+      "dashboardHelp": "You can ask for a dashboard summary. For example: \"Dashboard summary\".",
+      "lowStockHelp": "You can check low-stock products. For example: \"Low stock products\".",
+      "createSupplier": "Create supplier",
+      "createSupplierHelp": "You can create a supplier by providing name, contact, email, phone and address. Example: \"Create supplier Global Food with contact name Supplier Test and phone number +349999999\".",
+      "searchSupplier": "Search supplier",
+      "searchSupplierHelp": "You can search suppliers by name, contact, email, phone or address. Example: \"Search supplier Global Food\".",
+      "updateSupplier": "Update supplier",
+      "updateSupplierHelp": "You can update a supplier by specifying the supplier and the data to change. Example: \"Update supplier Global Food email compras@globalfood.com\".",
+      "deleteSupplier": "Delete supplier",
+      "deleteSupplierHelp": "You can delete a supplier by specifying its name. Example: \"Delete supplier Global Food\"."
+    },
+    "timeline": {
+      "title": "Recent actions",
+      "empty": "There are no recent actions yet.",
+      "events": {
+        "create_product": "Product created",
+        "update_product": "Product updated",
+        "deactivate_product": "Product deactivated",
+        "activate_product": "Product activated",
+        "update_stock": "Stock updated",
+        "create_category": "Category created",
+        "create_supplier": "Supplier created",
+        "update_supplier": "Supplier updated",
+        "delete_supplier": "Supplier deleted",
+        "create_supplier_order": "Supplier order created",
+        "update_supplier_order": "Supplier order updated"
+      }
+    },
+    "confirmation": {
+      "title": "Confirmation required",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "supplierOrderCard": {
+      "title": "Supplier order #{{id}}",
+      "messagePreview": "Message preview"
+    }
   }
 }

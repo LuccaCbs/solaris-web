@@ -1,7 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
+import {
+    Ban,
+    CheckCircle2,
+    Eye,
+    Menu,
+    MessageCircle,
+    Send,
+    SquarePen,
+    Trash2,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+
 import {
     cancelSupplierOrder,
     deleteSupplierOrder,
@@ -16,12 +28,17 @@ type StatusFilter = 'ALL' | SupplierOrderStatus
 
 function SupplierOrdersPage() {
     const { t } = useTranslation()
+    const navigate = useNavigate()
 
     const [orders, setOrders] = useState<SupplierOrder[]>([])
     const [loading, setLoading] = useState(true)
     const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL')
     const [search, setSearch] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
+    const [openActionsOrderId, setOpenActionsOrderId] = useState<number | null>(
+        null,
+    )
+
     const pageSize = 10
 
     async function loadOrders() {
@@ -37,7 +54,7 @@ function SupplierOrdersPage() {
     }
 
     useEffect(() => {
-        loadOrders()
+        void loadOrders()
     }, [t])
 
     const filteredOrders = useMemo(() => {
@@ -52,14 +69,17 @@ function SupplierOrdersPage() {
                     !normalizedSearch ||
                     order.supplierName.toLowerCase().includes(normalizedSearch) ||
                     order.items.some((item) =>
-                        item.productName.toLowerCase().includes(normalizedSearch)
+                        item.productName
+                            .toLowerCase()
+                            .includes(normalizedSearch),
                     )
 
                 return matchesStatus && matchesSearch
             })
             .sort(
                 (a, b) =>
-                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime(),
             )
     }, [orders, statusFilter, search])
 
@@ -67,7 +87,7 @@ function SupplierOrdersPage() {
 
     const paginatedOrders = filteredOrders.slice(
         (currentPage - 1) * pageSize,
-        currentPage * pageSize
+        currentPage * pageSize,
     )
 
     function clearFilters() {
@@ -143,6 +163,12 @@ function SupplierOrdersPage() {
         }
     }
 
+    function toggleActions(orderId: number) {
+        setOpenActionsOrderId((currentId) =>
+            currentId === orderId ? null : orderId,
+        )
+    }
+
     if (loading) {
         return <LoadingScreen />
     }
@@ -188,11 +214,21 @@ function SupplierOrdersPage() {
                         }}
                         className="solaris-input"
                     >
-                        <option value="ALL">{t('supplierOrders.filters.allStatuses')}</option>
-                        <option value="DRAFT">{t('supplierOrders.status.draft')}</option>
-                        <option value="SENT">{t('supplierOrders.status.sent')}</option>
-                        <option value="COMPLETED">{t('supplierOrders.status.completed')}</option>
-                        <option value="CANCELLED">{t('supplierOrders.status.cancelled')}</option>
+                        <option value="ALL">
+                            {t('supplierOrders.filters.allStatuses')}
+                        </option>
+                        <option value="DRAFT">
+                            {t('supplierOrders.status.draft')}
+                        </option>
+                        <option value="SENT">
+                            {t('supplierOrders.status.sent')}
+                        </option>
+                        <option value="COMPLETED">
+                            {t('supplierOrders.status.completed')}
+                        </option>
+                        <option value="CANCELLED">
+                            {t('supplierOrders.status.cancelled')}
+                        </option>
                     </select>
 
                     <button
@@ -205,7 +241,9 @@ function SupplierOrdersPage() {
                 </div>
 
                 <p className="text-sm solaris-muted">
-                    {t('supplierOrders.results', { count: filteredOrders.length })}
+                    {t('supplierOrders.results', {
+                        count: filteredOrders.length,
+                    })}
                 </p>
             </div>
 
@@ -215,7 +253,9 @@ function SupplierOrdersPage() {
                         <div className="flex items-start justify-between gap-4">
                             <div>
                                 <h2 className="font-semibold text-slate-950 dark:text-white">
-                                    {t('supplierOrders.orderNumber', { id: order.id })}
+                                    {t('supplierOrders.orderNumber', {
+                                        id: order.id,
+                                    })}
                                 </h2>
 
                                 <p className="mt-1 text-sm solaris-muted">
@@ -236,25 +276,32 @@ function SupplierOrdersPage() {
                                     count: order.items.length,
                                 })}
                             </p>
-
-                            <p className="mt-2 whitespace-pre-line text-sm text-slate-700 dark:text-slate-300">
-                                {order.messagePreview}
-                            </p>
                         </div>
 
-                        <OrderActions
-                            order={order}
-                            onWhatsApp={openWhatsApp}
-                            onSent={handleMarkAsSent}
-                            onCompleted={handleMarkAsCompleted}
-                            onCancel={handleCancel}
-                            onDelete={handleDelete}
-                        />
+                        <div className="mt-3 flex justify-end">
+                            <OrderActions
+                                order={order}
+                                onDetails={(id) =>
+                                    navigate(`/supplier-orders/${id}`)
+                                }
+                                onWhatsApp={openWhatsApp}
+                                onSent={handleMarkAsSent}
+                                onCompleted={handleMarkAsCompleted}
+                                onCancel={handleCancel}
+                                onDelete={handleDelete}
+                                onEdit={(id) =>
+                                    navigate(`/supplier-orders/${id}/edit`)
+                                }
+                                isOpen={openActionsOrderId === order.id}
+                                onToggle={() => toggleActions(order.id)}
+                                onClose={() => setOpenActionsOrderId(null)}
+                            />
+                        </div>
                     </div>
                 ))}
             </div>
 
-            <div className="solaris-card mt-8 hidden overflow-hidden lg:block">
+            <div className="solaris-card mt-8 hidden overflow-visible lg:block">
                 <table className="w-full">
                     <thead className="bg-slate-100 dark:bg-slate-800/50">
                     <tr>
@@ -286,7 +333,9 @@ function SupplierOrdersPage() {
                             className="border-t border-slate-200 dark:border-slate-800"
                         >
                             <td className="px-6 py-4 font-medium text-slate-950 dark:text-white">
-                                {t('supplierOrders.orderNumber', { id: order.id })}
+                                {t('supplierOrders.orderNumber', {
+                                    id: order.id,
+                                })}
                             </td>
 
                             <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
@@ -305,14 +354,27 @@ function SupplierOrdersPage() {
                                 {new Date(order.createdAt).toLocaleString()}
                             </td>
 
-                            <td className="px-6 py-4 text-right">
+                            <td className="relative overflow-visible px-6 py-4">
                                 <OrderActions
                                     order={order}
+                                    onDetails={(id) =>
+                                        navigate(`/supplier-orders/${id}`)
+                                    }
                                     onWhatsApp={openWhatsApp}
                                     onSent={handleMarkAsSent}
                                     onCompleted={handleMarkAsCompleted}
                                     onCancel={handleCancel}
                                     onDelete={handleDelete}
+                                    onEdit={(id) =>
+                                        navigate(
+                                            `/supplier-orders/${id}/edit`,
+                                        )
+                                    }
+                                    isOpen={openActionsOrderId === order.id}
+                                    onToggle={() => toggleActions(order.id)}
+                                    onClose={() =>
+                                        setOpenActionsOrderId(null)
+                                    }
                                 />
                             </td>
                         </tr>
@@ -408,7 +470,9 @@ function StatusBadge({ status }: StatusBadgeProps) {
     }
 
     return (
-        <span className={`rounded-lg px-3 py-1 text-sm font-medium ${classNames[status]}`}>
+        <span
+            className={`rounded-lg px-3 py-1 text-sm font-medium ${classNames[status]}`}
+        >
             {labels[status]}
         </span>
     )
@@ -416,78 +480,178 @@ function StatusBadge({ status }: StatusBadgeProps) {
 
 type OrderActionsProps = {
     order: SupplierOrder
+    onDetails: (id: number) => void
     onWhatsApp: (order: SupplierOrder) => void
     onSent: (id: number) => void
     onCompleted: (id: number) => void
     onCancel: (id: number) => void
     onDelete: (id: number) => void
+    onEdit: (id: number) => void
+    isOpen: boolean
+    onToggle: () => void
+    onClose: () => void
+}
+
+type ActionMenuItemProps = {
+    icon: LucideIcon
+    label: string
+    onClick: () => void
+    danger?: boolean
+    disabled?: boolean
+}
+
+function ActionMenuItem({
+                            icon: Icon,
+                            label,
+                            onClick,
+                            danger = false,
+                            disabled = false,
+                        }: ActionMenuItemProps) {
+    return (
+        <button
+            type="button"
+            disabled={disabled}
+            onClick={onClick}
+            className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                danger
+                    ? 'text-red-400 hover:bg-red-500/10'
+                    : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'
+            }`}
+        >
+            <Icon className="h-4 w-4 flex-shrink-0" />
+            <span>{label}</span>
+        </button>
+    )
 }
 
 function OrderActions({
                           order,
+                          onDetails,
                           onWhatsApp,
                           onSent,
                           onCompleted,
                           onCancel,
                           onDelete,
+                          onEdit,
+                          isOpen,
+                          onToggle,
+                          onClose,
                       }: OrderActionsProps) {
     const { t } = useTranslation()
 
+    function handleAction(action: () => void) {
+        action()
+        onClose()
+    }
+
+    const canEdit = order.status === 'DRAFT'
+    const canMarkSent = order.status === 'DRAFT'
+    const canComplete = order.status === 'SENT'
+    const canCancel =
+        order.status !== 'COMPLETED' && order.status !== 'CANCELLED'
+    const canDelete = order.status !== 'COMPLETED'
+    const canWhatsApp = Boolean(order.supplierPhone) && order.status !== 'CANCELLED'
+
     return (
-        <div className="flex flex-wrap justify-end gap-2">
-            <Link
-                to={`/supplier-orders/${order.id}`}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-                {t('supplierOrders.actions.details')}
-            </Link>
-
+        <div className="relative flex justify-end lg:overflow-visible">
             <button
                 type="button"
-                onClick={() => onWhatsApp(order)}
-                disabled={!order.supplierPhone || order.status === 'CANCELLED'}
-                className="rounded-lg bg-emerald-500/10 px-3 py-2 text-sm text-emerald-500 hover:bg-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-emerald-300"
+                onClick={onToggle}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                aria-label={t('common.actions')}
             >
-                {t('supplierOrders.actions.whatsapp')}
+                <Menu className="h-5 w-5" />
             </button>
 
-            {order.status === 'DRAFT' && (
-                <button
-                    type="button"
-                    onClick={() => onSent(order.id)}
-                    className="rounded-lg bg-blue-500/10 px-3 py-2 text-sm text-blue-500 hover:bg-blue-500/20 dark:text-blue-300"
-                >
-                    {t('supplierOrders.actions.markSent')}
-                </button>
-            )}
+            {isOpen && (
+                <>
+                    <button
+                        type="button"
+                        aria-label={t('common.close')}
+                        onClick={onClose}
+                        className="fixed inset-0 z-40 cursor-default bg-black/20 lg:hidden"
+                    />
 
-            {order.status === 'SENT' && (
-                <button
-                    type="button"
-                    onClick={() => onCompleted(order.id)}
-                    className="rounded-lg bg-green-500/10 px-3 py-2 text-sm text-green-500 hover:bg-green-500/20 dark:text-green-300"
-                >
-                    {t('supplierOrders.actions.complete')}
-                </button>
-            )}
+                    <div className="fixed inset-x-4 bottom-24 z-50 max-h-[60vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900 lg:absolute lg:inset-auto lg:right-0 lg:top-11 lg:w-64">
+                        <div className="border-b border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 dark:border-slate-800 dark:text-slate-200">
+                            {t('common.actions')}
+                        </div>
 
-            {order.status !== 'COMPLETED' && order.status !== 'CANCELLED' && (
-                <button
-                    type="button"
-                    onClick={() => onCancel(order.id)}
-                    className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
-                >
-                    {t('supplierOrders.actions.cancel')}
-                </button>
-            )}
+                        <ActionMenuItem
+                            icon={Eye}
+                            label={t('supplierOrders.actions.details')}
+                            onClick={() =>
+                                handleAction(() => onDetails(order.id))
+                            }
+                        />
 
-            <button
-                type="button"
-                onClick={() => onDelete(order.id)}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-                {t('common.delete')}
-            </button>
+                        {canEdit && (
+                            <ActionMenuItem
+                                icon={SquarePen}
+                                label={t('supplierOrders.actions.edit')}
+                                onClick={() =>
+                                    handleAction(() => onEdit(order.id))
+                                }
+                            />
+                        )}
+
+                        <ActionMenuItem
+                            icon={MessageCircle}
+                            label={t('supplierOrders.actions.whatsapp')}
+                            disabled={!canWhatsApp}
+                            onClick={() =>
+                                handleAction(() => onWhatsApp(order))
+                            }
+                        />
+
+                        {canMarkSent && (
+                            <ActionMenuItem
+                                icon={Send}
+                                label={t('supplierOrders.actions.markSent')}
+                                onClick={() =>
+                                    handleAction(() => onSent(order.id))
+                                }
+                            />
+                        )}
+
+                        {canComplete && (
+                            <ActionMenuItem
+                                icon={CheckCircle2}
+                                label={t('supplierOrders.actions.complete')}
+                                onClick={() =>
+                                    handleAction(() => onCompleted(order.id))
+                                }
+                            />
+                        )}
+
+                        {(canCancel || canDelete) && (
+                            <div className="my-1 border-t border-slate-200 dark:border-slate-800" />
+                        )}
+
+                        {canCancel && (
+                            <ActionMenuItem
+                                icon={Ban}
+                                label={t('supplierOrders.actions.cancel')}
+                                danger
+                                onClick={() =>
+                                    handleAction(() => onCancel(order.id))
+                                }
+                            />
+                        )}
+
+                        {canDelete && (
+                            <ActionMenuItem
+                                icon={Trash2}
+                                label={t('common.delete')}
+                                danger
+                                onClick={() =>
+                                    handleAction(() => onDelete(order.id))
+                                }
+                            />
+                        )}
+                    </div>
+                </>
+            )}
         </div>
     )
 }
