@@ -43,6 +43,7 @@ const ROUTE_ACCESS_RULES: RouteAccessRule[] = [
     { pattern: /^\/stock-movements(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/audit-logs(\/|$)/, minimumRole: 'ADMIN' },
     { pattern: /^\/admin(\/|$)/, minimumRole: 'ADMIN' },
+    { pattern: /^\/team(\/|$)/, minimumRole: 'ADMIN' },
 ]
 
 export function getRouteMinimumRole(pathname: string): OrganizationRole | null {

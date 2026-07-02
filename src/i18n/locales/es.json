@@ -61,6 +61,7 @@
     "movementHistory": "Historial de movimientos",
     "auditLogs": "Auditoría",
     "adminSettings": "Configuración de administrador",
+    "team": "Equipo",
     "myProfile": "Mi perfil"
   },
   "auth": {
@@ -223,6 +224,7 @@
       "sku": "SKU",
       "category": "Categoría",
       "price": "Precio",
+      "ivaRate": "IVA",
       "stock": "Stock",
       "status": "Estado",
       "actions": "Acciones"
@@ -297,7 +299,13 @@
     "editDescription": "Actualiza la información del producto.",
     "loadProductError": "No se pudo cargar el producto",
     "emptySkuHelp": "Déjalo vacío para generar automáticamente un nuevo SKU del sistema.",
-    "lowStockHelp": "Déjalo vacío para usar el umbral global de bajo stock."
+    "lowStockHelp": "Déjalo vacío para usar el umbral global de bajo stock.",
+    "ivaRate": "Alícuota IVA",
+    "ivaRates": {
+      "EXENTO": "Exento (0%)",
+      "REDUCIDO_10_5": "Reducido (10,5%)",
+      "GENERAL_21": "General (21%)"
+    }
   },
   "categoryForm": {
     "newTitle": "Nueva categoría",
@@ -910,6 +918,45 @@
     "supplierOrderCard": {
       "title": "Pedido a proveedor #{{id}}",
       "messagePreview": "Vista previa del mensaje"
+    }
+  },
+  "team": {
+    "title": "Equipo",
+    "description": "Invitá usuarios y gestioná los miembros de tu organización.",
+    "inviteTitle": "Invitar miembro",
+    "emailPlaceholder": "usuario@empresa.com",
+    "role": "Rol",
+    "store": "Sucursal",
+    "allStores": "Todas las sucursales",
+    "sendInvite": "Enviar invitación",
+    "inviting": "Enviando...",
+    "inviteSuccess": "Invitación enviada correctamente",
+    "inviteError": "No se pudo enviar la invitación",
+    "revokeInvite": "Revocar",
+    "revokeConfirm": "¿Seguro que querés revocar esta invitación?",
+    "revokeSuccess": "Invitación revocada",
+    "revokeError": "No se pudo revocar la invitación",
+    "loadError": "No se pudo cargar el equipo",
+    "noAccess": "No tenés permisos para gestionar el equipo.",
+    "empty": "Todavía no hay miembros ni invitaciones pendientes.",
+    "status": {
+      "pending": "Pendiente",
+      "ACTIVE": "Activo",
+      "INVITED": "Invitado",
+      "SUSPENDED": "Suspendido"
+    },
+    "accept": {
+      "title": "Aceptar invitación",
+      "description": "Te invitaron a unirte a {{organization}} como {{role}}.",
+      "loading": "Cargando invitación...",
+      "missingToken": "Falta el token de invitación.",
+      "invalidToken": "La invitación no es válida.",
+      "expired": "Esta invitación expiró.",
+      "acceptButton": "Aceptar invitación",
+      "accepting": "Aceptando...",
+      "success": "Invitación aceptada correctamente",
+      "error": "No se pudo aceptar la invitación",
+      "backToLogin": "Volver al inicio de sesión"
     }
   }
 }

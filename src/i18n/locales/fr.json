@@ -61,6 +61,7 @@
     "movementHistory": "Historique des mouvements",
     "auditLogs": "Journal d’audit",
     "adminSettings": "Paramètres administrateur",
+    "team": "Équipe",
     "myProfile": "Mon profil"
   },
   "auth": {
@@ -221,6 +222,7 @@
       "sku": "SKU",
       "category": "Catégorie",
       "price": "Prix",
+      "ivaRate": "TVA",
       "stock": "Stock",
       "status": "État",
       "actions": "Actions"
@@ -295,7 +297,13 @@
     "editDescription": "Mettre à jour les informations du produit.",
     "loadProductError": "Impossible de charger le produit",
     "emptySkuHelp": "Laisser vide pour générer automatiquement un nouveau SKU système.",
-    "lowStockHelp": "Laisser vide pour utiliser le seuil global de stock faible."
+    "lowStockHelp": "Laisser vide pour utiliser le seuil global de stock faible.",
+    "ivaRate": "Taux de TVA",
+    "ivaRates": {
+      "EXENTO": "Exonéré (0%)",
+      "REDUCIDO_10_5": "Réduit (10,5%)",
+      "GENERAL_21": "Général (21%)"
+    }
   },
   "categoryForm": {
     "newTitle": "Nouvelle catégorie",
@@ -903,6 +911,45 @@
       "title": "Confirmation requise",
       "confirm": "Confirmer",
       "cancel": "Annuler"
+    }
+  },
+  "team": {
+    "title": "Équipe",
+    "description": "Invitez des utilisateurs et gérez les membres de votre organisation.",
+    "inviteTitle": "Inviter un membre",
+    "emailPlaceholder": "utilisateur@entreprise.com",
+    "role": "Rôle",
+    "store": "Magasin",
+    "allStores": "Tous les magasins",
+    "sendInvite": "Envoyer l'invitation",
+    "inviting": "Envoi...",
+    "inviteSuccess": "Invitation envoyée avec succès",
+    "inviteError": "Impossible d'envoyer l'invitation",
+    "revokeInvite": "Révoquer",
+    "revokeConfirm": "Voulez-vous vraiment révoquer cette invitation ?",
+    "revokeSuccess": "Invitation révoquée",
+    "revokeError": "Impossible de révoquer l'invitation",
+    "loadError": "Impossible de charger l'équipe",
+    "noAccess": "Vous n'avez pas la permission de gérer l'équipe.",
+    "empty": "Aucun membre ni invitation en attente.",
+    "status": {
+      "pending": "En attente",
+      "ACTIVE": "Actif",
+      "INVITED": "Invité",
+      "SUSPENDED": "Suspendu"
+    },
+    "accept": {
+      "title": "Accepter l'invitation",
+      "description": "Vous avez été invité à rejoindre {{organization}} en tant que {{role}}.",
+      "loading": "Chargement de l'invitation...",
+      "missingToken": "Le jeton d'invitation est manquant.",
+      "invalidToken": "Cette invitation n'est pas valide.",
+      "expired": "Cette invitation a expiré.",
+      "acceptButton": "Accepter l'invitation",
+      "accepting": "Acceptation...",
+      "success": "Invitation acceptée avec succès",
+      "error": "Impossible d'accepter l'invitation",
+      "backToLogin": "Retour à la connexion"
     }
   }
 }

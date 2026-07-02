@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { getCategories } from '../api/categoryService'
 import { getProductById, updateProduct } from '../api/productService'
 import type { Category } from '../types/category'
+import { PRODUCT_IVA_RATES, type ProductIvaRate } from '../types/product'
 import toast from 'react-hot-toast'
 import LoadingScreen from '../components/LoadingScreen'
 
@@ -14,6 +15,7 @@ type ProductFormState = {
     price: string
     categoryId: string
     lowStockThreshold: string
+    ivaRate: ProductIvaRate
 }
 
 function EditProductPage() {
@@ -32,6 +34,7 @@ function EditProductPage() {
         price: '',
         categoryId: '',
         lowStockThreshold: '',
+        ivaRate: 'GENERAL_21',
     })
 
     useEffect(() => {
@@ -53,6 +56,7 @@ function EditProductPage() {
                     lowStockThreshold: product.lowStockThreshold !== null
                         ? String(product.lowStockThreshold)
                         : '',
+                    ivaRate: product.ivaRate ?? 'GENERAL_21',
                 })
 
                 setCategories(categoriesData)
@@ -91,6 +95,7 @@ function EditProductPage() {
                 lowStockThreshold: form.lowStockThreshold
                     ? Number(form.lowStockThreshold)
                     : null,
+                ivaRate: form.ivaRate,
             })
 
             toast.success(t('productForm.updateSuccess'))
@@ -175,6 +180,26 @@ function EditProductPage() {
                                     value={category.id}
                                 >
                                     {category.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="text-sm solaris-muted">
+                            {t('productForm.ivaRate')} *
+                        </label>
+
+                        <select
+                            value={form.ivaRate}
+                            onChange={(event) =>
+                                updateForm('ivaRate', event.target.value)
+                            }
+                            className="solaris-input mt-2 w-full"
+                        >
+                            {PRODUCT_IVA_RATES.map((rate) => (
+                                <option key={rate} value={rate}>
+                                    {t(`productForm.ivaRates.${rate}`)}
                                 </option>
                             ))}
                         </select>

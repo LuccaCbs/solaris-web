@@ -17,6 +17,7 @@ import {
     ClipboardList,
     User,
     ScrollText,
+    UsersRound,
 } from 'lucide-react'
 import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useAuth } from '../context/AuthContext'
@@ -81,6 +82,12 @@ function AppLayout() {
             label: t('nav.auditLogs'),
             to: '/audit-logs',
             icon: ScrollText,
+            minimumRole: 'ADMIN',
+        },
+        {
+            label: t('nav.team'),
+            to: '/team',
+            icon: UsersRound,
             minimumRole: 'ADMIN',
         },
     ]

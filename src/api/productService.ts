@@ -1,5 +1,5 @@
 import axiosClient from './axiosClient'
-import type { Product } from '../types/product'
+import type { Product, ProductIvaRate } from '../types/product'
 
 export type CreateProductRequest = {
     name: string
@@ -9,6 +9,7 @@ export type CreateProductRequest = {
     stockQuantity: number
     categoryId: number
     lowStockThreshold: number | null
+    ivaRate?: ProductIvaRate
 }
 
 export type UpdateProductRequest = {
@@ -18,8 +19,8 @@ export type UpdateProductRequest = {
     price: number
     categoryId: number
     lowStockThreshold: number | null
+    ivaRate?: ProductIvaRate
 }
-
 function getAuthHeaders() {
     const token = localStorage.getItem('solaris_token')
 
@@ -44,7 +45,8 @@ export async function createProduct(data: {
     price: number;
     stockQuantity: number;
     categoryId: number | null;
-    lowStockThreshold: number | null
+    lowStockThreshold: number | null;
+    ivaRate?: ProductIvaRate;
 }): Promise<Product> {
     const response = await axiosClient.post<Product>('/products', data, {
         headers: getAuthHeaders(),
@@ -93,7 +95,8 @@ export async function updateProduct(
         sku: string;
         price: number;
         categoryId: number | null;
-        lowStockThreshold: number | null
+        lowStockThreshold: number | null;
+        ivaRate?: ProductIvaRate;
     }
 ): Promise<Product> {
     const response = await axiosClient.put<Product>(`/products/${id}`, data, {

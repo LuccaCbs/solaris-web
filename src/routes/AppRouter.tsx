@@ -34,6 +34,8 @@ import NotFoundPage from '../pages/NotFoundPage'
 import ProfilePage from '../pages/ProfilePage'
 import AuditLogsPage from '../pages/AuditLogsPage'
 import RestockProductPage from '../pages/RestockProductPage'
+import TeamPage from '../pages/TeamPage'
+import AcceptInvitePage from '../pages/AcceptInvitePage'
 
 function AppRouter() {
     return (
@@ -44,6 +46,7 @@ function AppRouter() {
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
+                <Route path="/accept-invite" element={<AcceptInvitePage />} />
 
                 <Route element={<ProtectedRoute />}>
                     <Route element={<AppLayout />}>
@@ -79,6 +82,7 @@ function AppRouter() {
                             <Route path="/sales/:id" element={<SaleDetailPage />} />
 
                             <Route path="/admin/settings" element={<AdminSettingsPage />} />
+                            <Route path="/team" element={<TeamPage />} />
                             <Route path="/profile" element={<ProfilePage />} />
 
                             <Route path="/products/:id/restock" element={<RestockProductPage />} />

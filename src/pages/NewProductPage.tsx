@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { createProduct } from '../api/productService'
 import { getCategories } from '../api/categoryService'
 import type { Category } from '../types/category'
+import { PRODUCT_IVA_RATES, type ProductIvaRate } from '../types/product'
 import toast from 'react-hot-toast'
 
 type ProductFormState = {
@@ -14,6 +15,7 @@ type ProductFormState = {
     stockQuantity: string
     categoryId: string
     lowStockThreshold: string
+    ivaRate: ProductIvaRate
 }
 
 const initialFormState: ProductFormState = {
@@ -24,6 +26,7 @@ const initialFormState: ProductFormState = {
     stockQuantity: '',
     categoryId: '',
     lowStockThreshold: '',
+    ivaRate: 'GENERAL_21',
 }
 
 function NewProductPage() {
@@ -72,6 +75,7 @@ function NewProductPage() {
                 lowStockThreshold: form.lowStockThreshold
                     ? Number(form.lowStockThreshold)
                     : null,
+                ivaRate: form.ivaRate,
             })
 
             toast.success(t('productForm.createSuccess'))
@@ -154,6 +158,26 @@ function NewProductPage() {
                             {categories.map((category) => (
                                 <option key={category.id} value={category.id}>
                                     {category.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="text-sm solaris-muted">
+                            {t('productForm.ivaRate')} *
+                        </label>
+
+                        <select
+                            value={form.ivaRate}
+                            onChange={(event) =>
+                                updateForm('ivaRate', event.target.value)
+                            }
+                            className="solaris-input mt-2 w-full"
+                        >
+                            {PRODUCT_IVA_RATES.map((rate) => (
+                                <option key={rate} value={rate}>
+                                    {t(`productForm.ivaRates.${rate}`)}
                                 </option>
                             ))}
                         </select>

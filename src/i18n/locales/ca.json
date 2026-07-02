@@ -60,6 +60,7 @@
     "movementHistory": "Historial de moviments",
     "auditLogs": "Auditoria",
     "adminSettings": "Configuració d’administrador",
+    "team": "Equip",
     "myProfile": "El meu perfil"
   },
   "auth": {
@@ -220,6 +221,7 @@
       "sku": "SKU",
       "category": "Categoria",
       "price": "Preu",
+      "ivaRate": "IVA",
       "stock": "Estoc",
       "status": "Estat",
       "actions": "Accions"
@@ -294,7 +296,13 @@
     "editDescription": "Actualitza la informació del producte.",
     "loadProductError": "No s’ha pogut carregar el producte",
     "emptySkuHelp": "Deixa-ho buit per generar automàticament un nou SKU del sistema.",
-    "lowStockHelp": "Deixa-ho buit per utilitzar el llindar global d’estoc baix."
+    "lowStockHelp": "Deixa-ho buit per utilitzar el llindar global d’estoc baix.",
+    "ivaRate": "Tipus d'IVA",
+    "ivaRates": {
+      "EXENTO": "Exempt (0%)",
+      "REDUCIDO_10_5": "Reduït (10,5%)",
+      "GENERAL_21": "General (21%)"
+    }
   },
   "categoryForm": {
     "newTitle": "Nova categoria",
@@ -902,6 +910,45 @@
       "title": "Confirmació requerida",
       "confirm": "Confirmar",
       "cancel": "Cancel·lar"
+    }
+  },
+  "team": {
+    "title": "Equip",
+    "description": "Convida usuaris i gestiona els membres de la teva organització.",
+    "inviteTitle": "Convidar membre",
+    "emailPlaceholder": "usuari@empresa.com",
+    "role": "Rol",
+    "store": "Botiga",
+    "allStores": "Totes les botigues",
+    "sendInvite": "Enviar invitació",
+    "inviting": "Enviant...",
+    "inviteSuccess": "Invitació enviada correctament",
+    "inviteError": "No s'ha pogut enviar la invitació",
+    "revokeInvite": "Revocar",
+    "revokeConfirm": "Segur que vols revocar aquesta invitació?",
+    "revokeSuccess": "Invitació revocada",
+    "revokeError": "No s'ha pogut revocar la invitació",
+    "loadError": "No s'ha pogut carregar l'equip",
+    "noAccess": "No tens permisos per gestionar l'equip.",
+    "empty": "Encara no hi ha membres ni invitacions pendents.",
+    "status": {
+      "pending": "Pendent",
+      "ACTIVE": "Actiu",
+      "INVITED": "Convidat",
+      "SUSPENDED": "Suspès"
+    },
+    "accept": {
+      "title": "Acceptar invitació",
+      "description": "T'han convidat a unir-te a {{organization}} com a {{role}}.",
+      "loading": "Carregant invitació...",
+      "missingToken": "Falta el token d'invitació.",
+      "invalidToken": "La invitació no és vàlida.",
+      "expired": "Aquesta invitació ha caducat.",
+      "acceptButton": "Acceptar invitació",
+      "accepting": "Acceptant...",
+      "success": "Invitació acceptada correctament",
+      "error": "No s'ha pogut acceptar la invitació",
+      "backToLogin": "Tornar a l'inici de sessió"
     }
   }
 }

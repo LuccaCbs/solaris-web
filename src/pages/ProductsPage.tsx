@@ -372,6 +372,9 @@ function ProductsPage() {
 
                                 <p className="mt-1 text-sm solaris-subtle">
                                     {product.categoryName}
+                                    {product.ivaRate
+                                        ? ` · ${t(`productForm.ivaRates.${product.ivaRate}`)}`
+                                        : ''}
                                 </p>
                             </div>
 
@@ -447,6 +450,10 @@ function ProductsPage() {
                         </th>
 
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
+                            {t('products.table.ivaRate')}
+                        </th>
+
+                        <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
                             <SortButton
                                 label={t('products.table.stock')}
                                 field="stockQuantity"
@@ -495,6 +502,12 @@ function ProductsPage() {
                                 ${product.price}
                             </td>
 
+                            <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
+                                {product.ivaRate
+                                    ? t(`productForm.ivaRates.${product.ivaRate}`)
+                                    : t('productForm.ivaRates.GENERAL_21')}
+                            </td>
+
                             <td className="px-6 py-4">
                                     <span className="rounded-lg bg-blue-500/10 px-3 py-1 text-sm text-blue-500 dark:text-blue-300">
                                         {product.stockQuantity}
@@ -533,7 +546,7 @@ function ProductsPage() {
                     {paginatedProducts.length === 0 && (
                         <tr>
                             <td
-                                colSpan={7}
+                                colSpan={8}
                                 className="px-6 py-10 text-center solaris-muted"
                             >
                                 {t('products.empty')}

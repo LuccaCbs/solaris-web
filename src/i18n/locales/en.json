@@ -61,6 +61,7 @@
     "movementHistory": "Movement History",
     "auditLogs": "Audit Logs",
     "adminSettings": "Admin Settings",
+    "team": "Team",
     "myProfile": "My Profile"
   },
   "auth": {
@@ -223,6 +224,7 @@
       "sku": "SKU",
       "category": "Category",
       "price": "Price",
+      "ivaRate": "VAT",
       "stock": "Stock",
       "status": "Status",
       "actions": "Actions"
@@ -297,7 +299,13 @@
     "editDescription": "Update product information.",
     "loadProductError": "Could not load product",
     "emptySkuHelp": "Leave empty to generate a new system SKU automatically.",
-    "lowStockHelp": "Leave empty to use the global low stock threshold."
+    "lowStockHelp": "Leave empty to use the global low stock threshold.",
+    "ivaRate": "VAT rate",
+    "ivaRates": {
+      "EXENTO": "Exempt (0%)",
+      "REDUCIDO_10_5": "Reduced (10.5%)",
+      "GENERAL_21": "General (21%)"
+    }
   },
   "categoryForm": {
     "newTitle": "New Category",
@@ -910,6 +918,45 @@
     "supplierOrderCard": {
       "title": "Supplier order #{{id}}",
       "messagePreview": "Message preview"
+    }
+  },
+  "team": {
+    "title": "Team",
+    "description": "Invite users and manage your organization members.",
+    "inviteTitle": "Invite member",
+    "emailPlaceholder": "user@company.com",
+    "role": "Role",
+    "store": "Store",
+    "allStores": "All stores",
+    "sendInvite": "Send invite",
+    "inviting": "Sending...",
+    "inviteSuccess": "Invite sent successfully",
+    "inviteError": "Could not send invite",
+    "revokeInvite": "Revoke",
+    "revokeConfirm": "Are you sure you want to revoke this invite?",
+    "revokeSuccess": "Invite revoked",
+    "revokeError": "Could not revoke invite",
+    "loadError": "Could not load team",
+    "noAccess": "You do not have permission to manage the team.",
+    "empty": "No members or pending invites yet.",
+    "status": {
+      "pending": "Pending",
+      "ACTIVE": "Active",
+      "INVITED": "Invited",
+      "SUSPENDED": "Suspended"
+    },
+    "accept": {
+      "title": "Accept invitation",
+      "description": "You were invited to join {{organization}} as {{role}}.",
+      "loading": "Loading invitation...",
+      "missingToken": "Invitation token is missing.",
+      "invalidToken": "This invitation is not valid.",
+      "expired": "This invitation has expired.",
+      "acceptButton": "Accept invitation",
+      "accepting": "Accepting...",
+      "success": "Invitation accepted successfully",
+      "error": "Could not accept invitation",
+      "backToLogin": "Back to login"
     }
   }
 }
