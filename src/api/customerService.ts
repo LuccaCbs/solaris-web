@@ -4,6 +4,10 @@ import type { Customer, CustomerRequest } from '../types/customer'
 function getAuthHeaders() {
     const token = localStorage.getItem('solaris_token')
 
+    if (!token) {
+        return {}
+    }
+
     return {
         Authorization: `Bearer ${token}`,
     }
