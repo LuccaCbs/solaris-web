@@ -8,6 +8,14 @@ export type CreateStockMovementRequest = {
     reason: string
 }
 
+export type BulkStockMovementRequest = {
+    reason: string
+    items: {
+        productId: number
+        quantity: number
+    }[]
+}
+
 function getAuthHeaders() {
     const token = localStorage.getItem('solaris_token')
 
@@ -30,6 +38,20 @@ export async function createStockMovement(
     const response = await axiosClient.post<StockMovement>('/stock-movements', data, {
         headers: getAuthHeaders(),
     })
+
+    return response.data
+}
+
+export async function createBulkStockMovements(
+    data: BulkStockMovementRequest,
+): Promise<StockMovement[]> {
+    const response = await axiosClient.post<StockMovement[]>(
+        '/stock-movements/batch',
+        data,
+        {
+            headers: getAuthHeaders(),
+        },
+    )
 
     return response.data
 }

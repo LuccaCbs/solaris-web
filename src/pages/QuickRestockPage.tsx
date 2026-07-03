@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { Trash2 } from 'lucide-react'
 import { getProductByBarcode, getProductById } from '../api/productService'
-import { createStockMovement } from '../api/stockMovementService'
+import { createBulkStockMovements } from '../api/stockMovementService'
 import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
 import { BarcodeScanInput } from '../components/barcode/BarcodeScanInput'
 import {
@@ -108,36 +108,23 @@ function QuickRestockPage() {
         setSaving(true)
 
         const movementReason = reason.trim() || t('restockProduct.defaultReason')
-        let processedCount = 0
 
         try {
-            for (const item of items) {
-                await createStockMovement({
+            const movements = await createBulkStockMovements({
+                reason: movementReason,
+                items: items.map((item) => ({
                     productId: item.product.id,
-                    type: 'IN',
                     quantity: Number(item.quantity),
-                    reason: movementReason,
-                })
-                processedCount += 1
-            }
+                })),
+            })
 
             toast.success(
-                t('quickRestock.successBatch', { count: processedCount }),
+                t('quickRestock.successBatch', { count: movements.length }),
             )
             setItems([])
             setReason('')
         } catch {
-            if (processedCount > 0) {
-                toast.error(
-                    t('quickRestock.partialError', {
-                        processed: processedCount,
-                        total: items.length,
-                    }),
-                )
-                setItems((current) => current.slice(processedCount))
-            } else {
-                toast.error(t('restockProduct.error'))
-            }
+            toast.error(t('restockProduct.error'))
         } finally {
             setSaving(false)
         }
