@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 
 import { createSupplierOrder } from '../api/supplierOrderService'
 import { getSuppliers } from '../api/supplierService'
-import { getProducts } from '../api/productService'
+import { getProductByBarcode, getProducts } from '../api/productService'
+import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
+import { addScannedProductToOrderItems } from '../features/supplier-orders/utils/addScannedProductToOrderItems'
 import type { Supplier } from '../types/supplier'
 import type { Product } from '../types/product'
 import LoadingScreen from '../components/LoadingScreen'
@@ -151,6 +153,28 @@ function NewSupplierOrderPage() {
         )
     }
 
+    const handleBarcodeScan = useCallback(
+        async (code: string) => {
+            try {
+                const product =
+                    products.find((item) => item.barcode === code) ??
+                    (await getProductByBarcode(code))
+
+                setItems((currentItems) =>
+                    addScannedProductToOrderItems(currentItems, product),
+                )
+                toast.success(
+                    t('barcode.scan.addedToSupplierOrder', { name: product.name }),
+                )
+            } catch {
+                toast.error(t('barcode.scan.notFound'))
+            }
+        },
+        [products, t],
+    )
+
+    useBarcodeScanner({ onScan: handleBarcodeScan })
+
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
 
@@ -214,6 +238,7 @@ function NewSupplierOrderPage() {
             onRemoveItem={removeItem}
             onSubmit={handleSubmit}
             onCancel={() => navigate('/supplier-orders')}
+            onBarcodeScan={handleBarcodeScan}
         />
     )
 }

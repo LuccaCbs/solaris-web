@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { getStockMovements } from '../api/stockMovementService'
@@ -47,6 +48,12 @@ function StockMovementsPage() {
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row">
+                    <Link
+                        to="/stock/restock"
+                        className="rounded-xl bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-blue-500"
+                    >
+                        {t('stockMovements.quickRestock')}
+                    </Link>
 
                     <button
                         type="button"

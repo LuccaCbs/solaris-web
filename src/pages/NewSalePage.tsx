@@ -8,6 +8,7 @@ import type { Product } from '../types/product'
 import type { PaymentMethod, SaleItemType } from '../types/sales'
 import { getCurrentCashRegister } from '../api/cashRegisterService'
 import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
+import { BarcodeScanInput } from '../components/barcode/BarcodeScanInput'
 
 type SaleFormItem = {
     type: SaleItemType
@@ -320,6 +321,10 @@ function NewSalePage() {
 
             <div className="mt-4 rounded-xl border border-dashed border-blue-500/40 bg-blue-500/5 px-4 py-3 text-sm text-blue-700 dark:text-blue-200">
                 {t('barcode.scan.readySale')}
+            </div>
+
+            <div className="mt-4 max-w-md">
+                <BarcodeScanInput onScan={handleBarcodeScan} />
             </div>
 
             <form

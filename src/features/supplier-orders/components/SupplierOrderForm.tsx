@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import type { Supplier } from '../../../types/supplier'
 import type { Product } from '../../../types/product'
 import type { OrderItemForm } from '../types/supplierOrderForm.types'
+import { BarcodeScanInput } from '../../../components/barcode/BarcodeScanInput'
 
 type SupplierOrderFormProps = {
     title: string
@@ -35,6 +36,7 @@ type SupplierOrderFormProps = {
 
     onSubmit: (event: React.FormEvent) => void
     onCancel: () => void
+    onBarcodeScan: (barcode: string) => void
 }
 
 export function SupplierOrderForm({
@@ -58,6 +60,7 @@ export function SupplierOrderForm({
                                       onRemoveItem,
                                       onSubmit,
                                       onCancel,
+                                      onBarcodeScan,
                                   }: SupplierOrderFormProps) {
     const { t } = useTranslation()
 
@@ -99,6 +102,14 @@ export function SupplierOrderForm({
             <h1 className="text-4xl font-bold">{title}</h1>
 
             <p className="mt-2 solaris-muted">{description}</p>
+
+            <div className="mt-4 rounded-xl border border-dashed border-blue-500/40 bg-blue-500/5 px-4 py-3 text-sm text-blue-700 dark:text-blue-200">
+                {t('barcode.scan.readySupplierOrder')}
+            </div>
+
+            <div className="mt-4 max-w-md">
+                <BarcodeScanInput onScan={onBarcodeScan} />
+            </div>
 
             <form
                 onSubmit={onSubmit}

@@ -244,14 +244,25 @@
       "deactivate": "Dar de baja",
       "activate": "Activar",
       "printLabel": "Imprimir etiqueta"
+    },
+    "selection": {
+      "count": "{{count}} producto(s) seleccionado(s)",
+      "printLabels": "Imprimir etiquetas",
+      "clear": "Limpiar selección",
+      "selectPage": "Seleccionar todos los productos de esta página",
+      "selectProduct": "Seleccionar {{name}}"
     }
   },
   "barcode": {
     "scan": {
       "ready": "Lector de código de barras activo. Escaneá un producto para buscarlo.",
       "readySale": "Lector activo. Escaneá productos para agregarlos a la venta.",
+      "readyRestock": "Lector activo. Escaneá un producto para reabastecerlo.",
+      "readySupplierOrder": "Lector activo. Escaneá productos para agregarlos al pedido.",
+      "inputPlaceholder": "Escaneá acá o hacé clic y usá el lector",
       "found": "Producto encontrado: {{name}}",
       "addedToSale": "{{name}} agregado a la venta",
+      "addedToSupplierOrder": "{{name}} agregado al pedido a proveedor",
       "notFound": "No se encontró un producto con ese código de barras",
       "inactiveProduct": "El producto escaneado está inactivo"
     },
@@ -768,6 +779,7 @@
     "title": "Movimientos de stock",
     "description": "Controla movimientos de inventario y ajustes de stock.",
     "newMovement": "Nuevo movimiento",
+    "quickRestock": "Reposición rápida",
     "exportExcel": "Exportar Excel",
     "loadError": "No se pudieron cargar los movimientos de stock",
     "empty": "No se encontraron movimientos de stock.",
@@ -970,7 +982,16 @@
     "success": "Producto reabastecido correctamente",
     "error": "No se pudo reabastecer el producto",
     "loadError": "No se pudo cargar el producto",
-    "invalidQuantity": "La cantidad debe ser mayor que cero"
+    "invalidQuantity": "La cantidad debe ser mayor que cero",
+    "scanConfirmed": "Producto confirmado. Ingresá la cantidad a agregar.",
+    "scanSwitched": "Abriendo reposición de {{name}}."
+  },
+  "quickRestock": {
+    "title": "Reposición rápida",
+    "description": "Escaneá códigos de barras para agregar stock rápidamente.",
+    "emptySelection": "Escaneá un producto para comenzar.",
+    "noProductSelected": "Escaneá un producto antes de confirmar la reposición.",
+    "success": "Se agregaron {{quantity}} unidad(es) a {{name}}."
   },
   "nova": {
     "title": "Nova Copilot",

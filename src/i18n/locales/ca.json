@@ -239,7 +239,42 @@
       "restock": "Reposar",
       "edit": "Editar",
       "deactivate": "Donar de baixa",
-      "activate": "Activar"
+      "activate": "Activar",
+      "printLabel": "Imprimir etiqueta"
+    },
+    "selection": {
+      "count": "{{count}} producte(s) seleccionat(s)",
+      "printLabels": "Imprimir etiquetes",
+      "clear": "Netejar selecció",
+      "selectPage": "Seleccionar tots els productes d'aquesta pàgina",
+      "selectProduct": "Seleccionar {{name}}"
+    }
+  },
+  "barcode": {
+    "scan": {
+      "ready": "Lector de codi de barres actiu. Escaneja un producte per cercar-lo.",
+      "readySale": "Lector actiu. Escaneja productes per afegir-los a la venda.",
+      "readyRestock": "Lector actiu. Escaneja un producte per reposar-lo.",
+      "readySupplierOrder": "Lector actiu. Escaneja productes per afegir-los a la comanda.",
+      "inputPlaceholder": "Escaneja aquí o fes clic i usa el lector",
+      "found": "Producte trobat: {{name}}",
+      "addedToSale": "{{name}} afegit a la venda",
+      "addedToSupplierOrder": "{{name}} afegit a la comanda de proveïdor",
+      "notFound": "No s'ha trobat cap producte amb aquest codi de barres",
+      "inactiveProduct": "El producte escanejat està inactiu"
+    },
+    "print": {
+      "title": "Imprimir etiquetes",
+      "subtitle": "{{count}} producte(s) seleccionat(s)",
+      "copies": "Còpies per producte",
+      "labelSize": "Mida de l'etiqueta",
+      "showPrice": "Mostrar preu",
+      "action": "Imprimir",
+      "sizes": {
+        "thermal58": "Tèrmica 58 mm",
+        "thermal80": "Tèrmica 80 mm",
+        "sheet": "Full A4 / adhesives"
+      }
     }
   },
   "categories": {
@@ -734,6 +769,7 @@
     "title": "Moviments d'estoc",
     "description": "Controla els moviments d'inventari i els ajustos d'estoc.",
     "newMovement": "Nou moviment",
+    "quickRestock": "Reposició ràpida",
     "exportExcel": "Exportar Excel",
     "loadError": "No s'han pogut carregar els moviments d'estoc",
     "empty": "No s'han trobat moviments d'estoc.",
@@ -840,7 +876,16 @@
     "success": "Producte reposat correctament",
     "error": "No s'ha pogut reposar el producte",
     "loadError": "No s'ha pogut carregar el producte",
-    "invalidQuantity": "La quantitat ha de ser superior a zero"
+    "invalidQuantity": "La quantitat ha de ser superior a zero",
+    "scanConfirmed": "Producte confirmat. Introdueix la quantitat a afegir.",
+    "scanSwitched": "Obrint reposició de {{name}}."
+  },
+  "quickRestock": {
+    "title": "Reposició ràpida",
+    "description": "Escaneja codis de barres per afegir estoc ràpidament.",
+    "emptySelection": "Escaneja un producte per començar.",
+    "noProductSelected": "Escaneja un producte abans de confirmar la reposició.",
+    "success": "S'han afegit {{quantity}} unitat(s) a {{name}}."
   },
   "nova": {
     "title": "Nova Copilot",

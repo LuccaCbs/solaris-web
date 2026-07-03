@@ -42,7 +42,7 @@ export function useBarcodeScanner({
             }
 
             if (target.dataset.barcodeScanner === 'true') {
-                return false
+                return true
             }
 
             const tagName = target.tagName

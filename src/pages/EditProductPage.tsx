@@ -7,6 +7,7 @@ import type { Category } from '../types/category'
 import { PRODUCT_IVA_RATES, BARCODE_FORMATS, type BarcodeFormat, type ProductIvaRate } from '../types/product'
 import toast from 'react-hot-toast'
 import LoadingScreen from '../components/LoadingScreen'
+import { BarcodePreviewField } from '../components/barcode/BarcodePreviewField'
 
 type ProductFormState = {
     name: string
@@ -170,6 +171,15 @@ function EditProductPage() {
                             ))}
                         </select>
                     </div>
+
+                    {form.barcode.trim() && (
+                        <div className="md:col-span-2 xl:col-span-3">
+                            <BarcodePreviewField
+                                value={form.barcode}
+                                format={form.barcodeFormat}
+                            />
+                        </div>
+                    )}
 
                     <Input
                         label={t('productForm.priceRequired')}

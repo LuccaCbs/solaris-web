@@ -34,6 +34,7 @@ import NotFoundPage from '../pages/NotFoundPage'
 import ProfilePage from '../pages/ProfilePage'
 import AuditLogsPage from '../pages/AuditLogsPage'
 import RestockProductPage from '../pages/RestockProductPage'
+import QuickRestockPage from '../pages/QuickRestockPage'
 import TeamPage from '../pages/TeamPage'
 import AcceptInvitePage from '../pages/AcceptInvitePage'
 import FiscalDocumentsPage from '../pages/FiscalDocumentsPage'
@@ -77,6 +78,7 @@ function AppRouter() {
                             <Route path="/categories/:id/edit" element={<EditCategoryPage />} />
 
                             <Route path="/stock-movements" element={<StockMovementsPage />} />
+                            <Route path="/stock/restock" element={<QuickRestockPage />} />
                             <Route path="/audit-logs" element={<AuditLogsPage />} />
 
                             <Route path="/sales" element={<SalesPage />} />

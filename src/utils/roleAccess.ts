@@ -42,6 +42,7 @@ const ROUTE_ACCESS_RULES: RouteAccessRule[] = [
     { pattern: /^\/customers(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/supplier-orders(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/stock-movements(\/|$)/, minimumRole: 'MANAGER' },
+    { pattern: /^\/stock(\/|$)/, minimumRole: 'MANAGER' },
     { pattern: /^\/audit-logs(\/|$)/, minimumRole: 'ADMIN' },
     { pattern: /^\/admin(\/|$)/, minimumRole: 'ADMIN' },
     { pattern: /^\/team(\/|$)/, minimumRole: 'ADMIN' },

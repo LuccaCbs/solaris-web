@@ -23,6 +23,7 @@ import {
 import { getCategories } from '../api/categoryService'
 import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
 import { PrintProductLabelsModal } from '../components/barcode/PrintProductLabelsModal'
+import { BarcodeScanInput } from '../components/barcode/BarcodeScanInput'
 
 type SortField = 'name' | 'barcode' | 'categoryName' | 'price' | 'stockQuantity'
 type SortDirection = 'asc' | 'desc'
@@ -53,6 +54,7 @@ function ProductsPage() {
         number | null
     >(null)
     const [printProducts, setPrintProducts] = useState<Product[] | null>(null)
+    const [selectedProductIds, setSelectedProductIds] = useState<number[]>([])
 
     const pageSize = 10
 
@@ -240,6 +242,44 @@ function ProductsPage() {
         currentPage * pageSize,
     )
 
+    const pageProductIds = paginatedProducts.map((product) => product.id)
+    const allPageSelected =
+        pageProductIds.length > 0 &&
+        pageProductIds.every((productId) => selectedProductIds.includes(productId))
+
+    function toggleProductSelection(productId: number) {
+        setSelectedProductIds((current) =>
+            current.includes(productId)
+                ? current.filter((id) => id !== productId)
+                : [...current, productId],
+        )
+    }
+
+    function toggleAllPageProducts() {
+        if (allPageSelected) {
+            setSelectedProductIds((current) =>
+                current.filter((productId) => !pageProductIds.includes(productId)),
+            )
+            return
+        }
+
+        setSelectedProductIds((current) => [
+            ...new Set([...current, ...pageProductIds]),
+        ])
+    }
+
+    function handleBulkPrintLabels() {
+        const selected = filteredProducts.filter((product) =>
+            selectedProductIds.includes(product.id),
+        )
+
+        if (selected.length === 0) {
+            return
+        }
+
+        setPrintProducts(selected)
+    }
+
     function renderProductStatus(product: Product) {
         return (
             <div className="flex flex-wrap gap-2">
@@ -305,6 +345,39 @@ function ProductsPage() {
             <div className="mt-4 rounded-xl border border-dashed border-blue-500/40 bg-blue-500/5 px-4 py-3 text-sm text-blue-700 dark:text-blue-200">
                 {t('barcode.scan.ready')}
             </div>
+
+            <div className="mt-4 max-w-md">
+                <BarcodeScanInput onScan={handleBarcodeScan} />
+            </div>
+
+            {selectedProductIds.length > 0 && (
+                <div className="mt-4 flex flex-col gap-3 rounded-xl border border-blue-500/20 bg-blue-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-sm font-medium text-blue-700 dark:text-blue-200">
+                        {t('products.selection.count', {
+                            count: selectedProductIds.length,
+                        })}
+                    </p>
+
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                        <button
+                            type="button"
+                            onClick={handleBulkPrintLabels}
+                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500"
+                        >
+                            <Printer size={16} />
+                            {t('products.selection.printLabels')}
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => setSelectedProductIds([])}
+                            className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                            {t('products.selection.clear')}
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="grid gap-3 md:grid-cols-5">
@@ -392,22 +465,31 @@ function ProductsPage() {
                 {paginatedProducts.map((product) => (
                     <div key={product.id} className="solaris-panel">
                         <div className="flex items-start justify-between gap-4">
-                            <div>
-                                <h2 className="font-semibold text-slate-950 dark:text-white">
-                                    {product.name}
-                                </h2>
+                            <label className="flex items-start gap-3">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedProductIds.includes(product.id)}
+                                    onChange={() => toggleProductSelection(product.id)}
+                                    className="mt-1"
+                                />
 
-                                <p className="mt-1 text-sm solaris-muted">
-                                    {product.barcode}
-                                </p>
+                                <div>
+                                    <h2 className="font-semibold text-slate-950 dark:text-white">
+                                        {product.name}
+                                    </h2>
 
-                                <p className="mt-1 text-sm solaris-subtle">
-                                    {product.categoryName}
-                                    {product.ivaRate
-                                        ? ` · ${t(`productForm.ivaRates.${product.ivaRate}`)}`
-                                        : ''}
-                                </p>
-                            </div>
+                                    <p className="mt-1 text-sm solaris-muted">
+                                        {product.barcode}
+                                    </p>
+
+                                    <p className="mt-1 text-sm solaris-subtle">
+                                        {product.categoryName}
+                                        {product.ivaRate
+                                            ? ` · ${t(`productForm.ivaRates.${product.ivaRate}`)}`
+                                            : ''}
+                                    </p>
+                                </div>
+                            </label>
 
                             {renderProductStatus(product)}
                         </div>
@@ -420,9 +502,7 @@ function ProductsPage() {
                             <ProductActions
                                 product={product}
                                 onRestock={(id) =>
-                                    navigate(
-                                        `/stock-movements/new?productId=${id}&type=IN`,
-                                    )
+                                    navigate(`/products/${id}/restock`)
                                 }
                                 onEdit={(id) => navigate(`/products/${id}/edit`)}
                                 onPrintLabels={(selected) => setPrintProducts([selected])}
@@ -441,6 +521,15 @@ function ProductsPage() {
                 <table className="min-w-[1100px] w-full">
                     <thead className="bg-slate-100 dark:bg-slate-800/50">
                     <tr>
+                        <th className="px-4 py-4 text-left">
+                            <input
+                                type="checkbox"
+                                checked={allPageSelected}
+                                onChange={toggleAllPageProducts}
+                                aria-label={t('products.selection.selectPage')}
+                            />
+                        </th>
+
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
                             <SortButton
                                 label={t('products.table.product')}
@@ -511,6 +600,17 @@ function ProductsPage() {
                             key={product.id}
                             className="border-t border-slate-200 dark:border-slate-800"
                         >
+                            <td className="px-4 py-4">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedProductIds.includes(product.id)}
+                                    onChange={() => toggleProductSelection(product.id)}
+                                    aria-label={t('products.selection.selectProduct', {
+                                        name: product.name,
+                                    })}
+                                />
+                            </td>
+
                             <td className="px-6 py-4">
                                 <div>
                                     <p className="font-medium text-slate-950 dark:text-white">
@@ -579,7 +679,7 @@ function ProductsPage() {
                     {paginatedProducts.length === 0 && (
                         <tr>
                             <td
-                                colSpan={8}
+                                colSpan={9}
                                 className="px-6 py-10 text-center solaris-muted"
                             >
                                 {t('products.empty')}

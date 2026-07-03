@@ -244,14 +244,25 @@
       "deactivate": "Deactivate",
       "activate": "Activate",
       "printLabel": "Print label"
+    },
+    "selection": {
+      "count": "{{count}} product(s) selected",
+      "printLabels": "Print labels",
+      "clear": "Clear selection",
+      "selectPage": "Select all products on this page",
+      "selectProduct": "Select {{name}}"
     }
   },
   "barcode": {
     "scan": {
       "ready": "Barcode scanner active. Scan a product to search.",
       "readySale": "Scanner active. Scan products to add them to the sale.",
+      "readyRestock": "Scanner active. Scan a product to restock it.",
+      "readySupplierOrder": "Scanner active. Scan products to add them to the order.",
+      "inputPlaceholder": "Scan here or click and use the barcode reader",
       "found": "Product found: {{name}}",
       "addedToSale": "{{name}} added to sale",
+      "addedToSupplierOrder": "{{name}} added to supplier order",
       "notFound": "No product found with that barcode",
       "inactiveProduct": "The scanned product is inactive"
     },
@@ -768,6 +779,7 @@
     "title": "Stock Movements",
     "description": "Track inventory movements and stock adjustments.",
     "newMovement": "New Movement",
+    "quickRestock": "Quick restock",
     "exportExcel": "Export Excel",
     "loadError": "Could not load stock movements",
     "empty": "No stock movements found.",
@@ -944,7 +956,16 @@
     "success": "Product restocked successfully",
     "error": "Could not restock product",
     "loadError": "Could not load product",
-    "invalidQuantity": "Quantity must be greater than zero"
+    "invalidQuantity": "Quantity must be greater than zero",
+    "scanConfirmed": "Product confirmed. Enter the quantity to add.",
+    "scanSwitched": "Opening restock for {{name}}."
+  },
+  "quickRestock": {
+    "title": "Quick restock",
+    "description": "Scan product barcodes to add stock quickly.",
+    "emptySelection": "Scan a product barcode to begin.",
+    "noProductSelected": "Scan a product before confirming restock.",
+    "success": "{{quantity}} unit(s) added to {{name}}."
   },
   "nova": {
     "title": "Nova Copilot",
