@@ -68,6 +68,23 @@ export function NovaQuickActionsPanel({
                 },
             ],
         },
+        {
+            title: t('nova.quickActions.groups.sales'),
+            actions: [
+                {
+                    label: t('nova.quickActions.listSales'),
+                    message: t('nova.quickActions.listSalesHelp'),
+                },
+                {
+                    label: t('nova.quickActions.showSale'),
+                    message: t('nova.quickActions.showSaleHelp'),
+                },
+                {
+                    label: t('nova.quickActions.dailySalesSummary'),
+                    message: t('nova.quickActions.dailySalesSummaryHelp'),
+                },
+            ],
+        },
     ]
 
     return (

@@ -959,7 +959,8 @@
       "groups": {
         "products": "Productos",
         "suppliers": "Proveedores",
-        "dashboard": "Panel"
+        "dashboard": "Panel",
+        "sales": "Ventas"
       },
       "searchProduct": "Buscar producto",
       "searchProductMessage": "Buscar producto Coca Cola",
@@ -987,7 +988,13 @@
       "updateSupplier": "Actualizar proveedor",
       "updateSupplierHelp": "Podés actualizar un proveedor indicando cuál proveedor y qué dato querés cambiar. Ejemplo: \"Actualizar proveedor Global Food email compras@globalfood.com\".",
       "deleteSupplier": "Eliminar proveedor",
-      "deleteSupplierHelp": "Podés eliminar un proveedor indicando su nombre. Ejemplo: \"Eliminar proveedor Global Food\"."
+      "deleteSupplierHelp": "Podés eliminar un proveedor indicando su nombre. Ejemplo: \"Eliminar proveedor Global Food\".",
+      "listSales": "Ver ventas",
+      "listSalesHelp": "Podés consultar ventas recientes o filtrar por fecha. Ejemplo: \"Ventas de hoy\" o \"Ver ventas\".",
+      "showSale": "Ver venta",
+      "showSaleHelp": "Podés ver el detalle de una venta por número. Ejemplo: \"Ver venta #13\".",
+      "dailySalesSummary": "Resumen de ventas del día",
+      "dailySalesSummaryHelp": "Podés pedir totales por medio de pago. Ejemplo: \"Resumen de ventas de hoy\"."
     },
     "timeline": {
       "title": "Acciones recientes",
@@ -1014,6 +1021,24 @@
     "supplierOrderCard": {
       "title": "Pedido a proveedor #{{id}}",
       "messagePreview": "Vista previa del mensaje"
+    },
+    "salesListCard": {
+      "title": "Venta #{{id}}",
+      "items": "{{count}} ítems",
+      "invoiced": "Facturada"
+    },
+    "saleCard": {
+      "title": "Venta #{{id}}",
+      "lineDetail": "{{quantity}} x ${{unitPrice}}",
+      "invoiced": "Facturada",
+      "notInvoiced": "Sin facturar",
+      "viewInApp": "Ver en ventas",
+      "viewInvoice": "Ver comprobante"
+    },
+    "salesSummaryCard": {
+      "title": "Resumen {{date}}",
+      "salesCount": "Cantidad de ventas",
+      "totalSales": "Total vendido"
     }
   },
   "team": {

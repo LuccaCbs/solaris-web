@@ -25,6 +25,9 @@ export type NovaIntent =
     | 'delete_supplier_order'
     | 'update_supplier_order'
     | 'show_supplier_order'
+    | 'list_sales'
+    | 'show_sale'
+    | 'get_daily_sales_summary'
     | 'unknown'
 
 export interface NovaMessage {

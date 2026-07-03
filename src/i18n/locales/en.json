@@ -933,7 +933,8 @@
       "groups": {
         "products": "Products",
         "suppliers": "Suppliers",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "sales": "Sales"
       },
       "searchProduct": "Search product",
       "searchProductMessage": "Search product Coca Cola",
@@ -961,7 +962,13 @@
       "updateSupplier": "Update supplier",
       "updateSupplierHelp": "You can update a supplier by specifying the supplier and the data to change. Example: \"Update supplier Global Food email compras@globalfood.com\".",
       "deleteSupplier": "Delete supplier",
-      "deleteSupplierHelp": "You can delete a supplier by specifying its name. Example: \"Delete supplier Global Food\"."
+      "deleteSupplierHelp": "You can delete a supplier by specifying its name. Example: \"Delete supplier Global Food\".",
+      "listSales": "View sales",
+      "listSalesHelp": "You can browse recent sales or filter by date. Example: \"Sales today\" or \"Show sales\".",
+      "showSale": "View sale",
+      "showSaleHelp": "You can view a sale by number. Example: \"Show sale #13\".",
+      "dailySalesSummary": "Daily sales summary",
+      "dailySalesSummaryHelp": "You can ask for totals by payment method. Example: \"Sales summary for today\"."
     },
     "timeline": {
       "title": "Recent actions",
@@ -988,6 +995,24 @@
     "supplierOrderCard": {
       "title": "Supplier order #{{id}}",
       "messagePreview": "Message preview"
+    },
+    "salesListCard": {
+      "title": "Sale #{{id}}",
+      "items": "{{count}} items",
+      "invoiced": "Invoiced"
+    },
+    "saleCard": {
+      "title": "Sale #{{id}}",
+      "lineDetail": "{{quantity}} x ${{unitPrice}}",
+      "invoiced": "Invoiced",
+      "notInvoiced": "Not invoiced",
+      "viewInApp": "View in sales",
+      "viewInvoice": "View invoice"
+    },
+    "salesSummaryCard": {
+      "title": "Summary {{date}}",
+      "salesCount": "Sales count",
+      "totalSales": "Total sold"
     }
   },
   "team": {

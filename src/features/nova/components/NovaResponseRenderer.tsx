@@ -9,6 +9,10 @@ import {
     NovaSupplierOrderCard,
     type SupplierOrder,
 } from './NovaSupplierOrderCard'
+import { NovaSalesListCard } from './NovaSalesListCard'
+import { NovaSaleDetailCard } from './NovaSaleDetailCard'
+import { NovaDailySalesSummaryCard } from './NovaDailySalesSummaryCard'
+import type { DailySalesSummary, Sale } from '../../../types/sales'
 
 interface NovaResponseRendererProps {
     message: NovaMessage
@@ -23,6 +27,28 @@ function isSupplierOrder(value: unknown): value is SupplierOrder {
         'supplierName' in value &&
         'status' in value &&
         'items' in value
+    )
+}
+
+function isSale(value: unknown): value is Sale {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'id' in value &&
+        'paymentMethod' in value &&
+        'totalAmount' in value &&
+        'items' in value &&
+        Array.isArray((value as Sale).items)
+    )
+}
+
+function isDailySalesSummary(value: unknown): value is DailySalesSummary {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'date' in value &&
+        'salesCount' in value &&
+        'totalSales' in value
     )
 }
 
@@ -112,6 +138,45 @@ export function NovaResponseRenderer({
         isSupplierOrder(message.data)
     ) {
         return <NovaSupplierOrderCard order={message.data} />
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'list_sales' &&
+        Array.isArray(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaSalesListCard sales={message.data as Sale[]} />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'show_sale' &&
+        isSale(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaSaleDetailCard sale={message.data} />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'get_daily_sales_summary' &&
+        isDailySalesSummary(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaDailySalesSummaryCard summary={message.data} />
+            </div>
+        )
     }
 
     if (
