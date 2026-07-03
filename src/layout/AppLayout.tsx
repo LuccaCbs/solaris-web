@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
     BarChart3,
@@ -102,6 +102,18 @@ function AppLayout() {
     const navItems = allNavItems.filter((item) => hasMinimumRole(item.minimumRole))
     const canAccessAdminSettings = hasMinimumRole('ADMIN')
     const organizationLabel = orgName ?? (orgId ? t('auth.organization.fallbackName', { id: orgId }) : null)
+
+    useEffect(() => {
+        function openNova() {
+            setIsNovaOpen(true)
+        }
+
+        window.addEventListener('solaris:open-nova', openNova)
+
+        return () => {
+            window.removeEventListener('solaris:open-nova', openNova)
+        }
+    }, [])
 
     async function handleAdminSettingsClick() {
         const settings = await getSystemSettings()

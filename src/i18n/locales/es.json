@@ -152,22 +152,61 @@
   },
   "dashboard": {
     "title": "Panel de Solaris",
-    "description": "Resumen rápido de ventas, alertas de stock y órdenes a proveedores.",
+    "description": "Resumen operativo del día: ventas, caja, alertas y acciones rápidas.",
     "loadError": "No se pudo cargar el panel",
     "sales": "ventas",
     "income": "ingresos",
     "day": "Día",
     "productsNeedRestock": "productos necesitan reposición",
-    "viewFilteredOrders": "Ver órdenes filtradas",
-    "monthlyOverviewTitle": "Resumen de ventas mensuales",
-    "monthlyOverviewDescription": "Ingresos diarios y cantidad de ventas del mes actual.",
+    "viewSupplierOrders": "Ver órdenes a proveedor",
+    "monthlyOverviewTitle": "Ingresos diarios del mes",
+    "monthlyOverviewDescription": "Evolución de ingresos del mes en curso.",
+    "quickActions": {
+      "title": "Acciones rápidas",
+      "newSale": "Nueva venta",
+      "merchandiseIntake": "Ingreso de mercadería",
+      "products": "Productos",
+      "nova": "Abrir Nova"
+    },
+    "cashRegister": {
+      "open": "Caja abierta",
+      "closed": "Caja cerrada",
+      "openedAt": "Abierta el {{time}} por {{user}}",
+      "goToSales": "Ir a ventas"
+    },
+    "comparison": {
+      "vsYesterday": "vs ayer",
+      "vsPreviousMonth": "vs mes anterior"
+    },
+    "alerts": {
+      "title": "Alertas operativas",
+      "lowStock": "{{count}} producto(s) con bajo stock — ingresar mercadería",
+      "draftOrders": "{{count}} pedido(s) a proveedor en borrador",
+      "sentOrders": "{{count}} pedido(s) enviados pendientes de recepción",
+      "rejectedFiscal": "{{count}} factura(s) fiscal(es) rechazada(s) hoy",
+      "inactiveProducts": "{{count}} producto(s) inactivo(s)"
+    },
+    "recentSales": {
+      "title": "Últimas ventas",
+      "description": "Actividad reciente de la caja.",
+      "empty": "No hay ventas registradas todavía.",
+      "items": "{{count}} ítem(s)"
+    },
+    "topProducts": {
+      "title": "Top productos del mes",
+      "description": "Los 5 productos más vendidos del mes en curso.",
+      "empty": "Todavía no hay ventas este mes.",
+      "units": "{{count}} unidad(es)"
+    },
     "cards": {
-      "monthlySales": "Ventas mensuales",
+      "monthlySales": "Ventas del mes",
       "todaySales": "Ventas de hoy",
       "lowStockProducts": "Productos con bajo stock",
+      "pendingOrders": "Pedidos pendientes",
       "supplierOrders": "Órdenes a proveedores"
     },
     "orderStatus": {
+      "draft": "Borradores",
       "sent": "Enviadas",
       "completed": "Completadas",
       "cancelled": "Canceladas"

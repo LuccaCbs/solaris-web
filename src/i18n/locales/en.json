@@ -152,22 +152,61 @@
   },
   "dashboard": {
     "title": "Solaris Dashboard",
-    "description": "Quick overview of sales, stock alerts and supplier orders.",
+    "description": "Daily operational overview: sales, cash register, alerts, and quick actions.",
     "loadError": "Could not load dashboard",
     "sales": "sales",
     "income": "income",
     "day": "Day",
     "productsNeedRestock": "products need restock",
-    "viewFilteredOrders": "View filtered orders",
-    "monthlyOverviewTitle": "Monthly Sales Overview",
-    "monthlyOverviewDescription": "Daily income and sales count for the current month.",
+    "viewSupplierOrders": "View supplier orders",
+    "monthlyOverviewTitle": "Daily revenue this month",
+    "monthlyOverviewDescription": "Revenue trend for the current month.",
+    "quickActions": {
+      "title": "Quick actions",
+      "newSale": "New sale",
+      "merchandiseIntake": "Merchandise intake",
+      "products": "Products",
+      "nova": "Open Nova"
+    },
+    "cashRegister": {
+      "open": "Cash register open",
+      "closed": "Cash register closed",
+      "openedAt": "Opened at {{time}} by {{user}}",
+      "goToSales": "Go to sales"
+    },
+    "comparison": {
+      "vsYesterday": "vs yesterday",
+      "vsPreviousMonth": "vs previous month"
+    },
+    "alerts": {
+      "title": "Operational alerts",
+      "lowStock": "{{count}} low-stock product(s) — restock now",
+      "draftOrders": "{{count}} supplier order draft(s)",
+      "sentOrders": "{{count}} sent order(s) awaiting receipt",
+      "rejectedFiscal": "{{count}} fiscal invoice(s) rejected today",
+      "inactiveProducts": "{{count}} inactive product(s)"
+    },
+    "recentSales": {
+      "title": "Recent sales",
+      "description": "Latest register activity.",
+      "empty": "No sales recorded yet.",
+      "items": "{{count}} item(s)"
+    },
+    "topProducts": {
+      "title": "Top products this month",
+      "description": "Top 5 best-selling products in the current month.",
+      "empty": "No sales this month yet.",
+      "units": "{{count}} unit(s)"
+    },
     "cards": {
       "monthlySales": "Monthly Sales",
       "todaySales": "Today Sales",
       "lowStockProducts": "Low Stock Products",
+      "pendingOrders": "Pending orders",
       "supplierOrders": "Supplier Orders"
     },
     "orderStatus": {
+      "draft": "Drafts",
       "sent": "Sent",
       "completed": "Completed",
       "cancelled": "Cancelled"

@@ -149,22 +149,61 @@
   },
   "dashboard": {
     "title": "Tauler de Solaris",
-    "description": "Resum ràpid de vendes, alertes d’estoc i comandes a proveïdors.",
+    "description": "Resum operatiu: vendes, caixa, alertes i accions ràpides.",
     "loadError": "No s’ha pogut carregar el tauler",
     "sales": "vendes",
     "income": "ingressos",
     "day": "Dia",
     "productsNeedRestock": "productes necessiten reposició",
-    "viewFilteredOrders": "Veure comandes filtrades",
-    "monthlyOverviewTitle": "Resum de vendes mensuals",
-    "monthlyOverviewDescription": "Ingressos diaris i nombre de vendes del mes actual.",
+    "viewSupplierOrders": "Veure comandes a proveïdor",
+    "monthlyOverviewTitle": "Ingressos diaris del mes",
+    "monthlyOverviewDescription": "Tendència d’ingressos del mes en curs.",
+    "quickActions": {
+      "title": "Accions ràpides",
+      "newSale": "Nova venda",
+      "merchandiseIntake": "Ingrés de mercaderia",
+      "products": "Productes",
+      "nova": "Obrir Nova"
+    },
+    "cashRegister": {
+      "open": "Caixa oberta",
+      "closed": "Caixa tancada",
+      "openedAt": "Oberta el {{time}} per {{user}}",
+      "goToSales": "Anar a vendes"
+    },
+    "comparison": {
+      "vsYesterday": "vs ahir",
+      "vsPreviousMonth": "vs mes anterior"
+    },
+    "alerts": {
+      "title": "Alertes operatives",
+      "lowStock": "{{count}} producte(s) amb estoc baix",
+      "draftOrders": "{{count}} comanda(es) en esborrany",
+      "sentOrders": "{{count}} comanda(es) enviades pendents",
+      "rejectedFiscal": "{{count}} factura(es) rebutjada(es) avui",
+      "inactiveProducts": "{{count}} producte(s) inactiu(s)"
+    },
+    "recentSales": {
+      "title": "Últimes vendes",
+      "description": "Activitat recent de la caixa.",
+      "empty": "Encara no hi ha vendes.",
+      "items": "{{count}} ítem(s)"
+    },
+    "topProducts": {
+      "title": "Top productes del mes",
+      "description": "Els 5 productes més venuts aquest mes.",
+      "empty": "Encara no hi ha vendes aquest mes.",
+      "units": "{{count}} unitat(s)"
+    },
     "cards": {
       "monthlySales": "Vendes mensuals",
       "todaySales": "Vendes d’avui",
       "lowStockProducts": "Productes amb estoc baix",
+      "pendingOrders": "Comandes pendents",
       "supplierOrders": "Comandes a proveïdors"
     },
     "orderStatus": {
+      "draft": "Esborranys",
       "sent": "Enviades",
       "completed": "Completades",
       "cancelled": "Cancel·lades"
