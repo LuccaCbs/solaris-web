@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { Building2, CreditCard, Plus, Store } from 'lucide-react'
+import { Building2, CreditCard, Gift, Plus, Store } from 'lucide-react'
 
 import { getOrganizationStores } from '../api/organizationService'
 import {
@@ -10,11 +10,13 @@ import {
     getOrganizationSubscription,
     initiateStoreAddonCheckout,
     purchaseStoreAddonMock,
+    redeemOrganizationPromoCode,
 } from '../api/subscriptionService'
 import LoadingScreen from '../components/LoadingScreen'
 import { useAuth } from '../context/AuthContext'
+import { useEntitlements } from '../hooks/useEntitlements'
 import type { OrganizationStore } from '../api/organizationService'
-import type { OrganizationSubscription, StoreAddonCheckout } from '../types/subscription'
+import type { OrganizationSubscription, PromoCodeRedemption, StoreAddonCheckout } from '../types/subscription'
 
 function getApiErrorMessage(error: unknown) {
     const apiError = error as {
@@ -37,21 +39,43 @@ function formatDate(value?: string | null) {
     return new Date(value).toLocaleDateString()
 }
 
-function formatCurrency(value?: number | null) {
+function formatMoney(value?: number | null, currency = 'ARS') {
     if (value == null) {
         return '—'
     }
 
-    return new Intl.NumberFormat('es-AR', {
+    const locale = currency === 'EUR' ? 'es-ES' : 'es-AR'
+
+    return new Intl.NumberFormat(locale, {
         style: 'currency',
-        currency: 'ARS',
-        maximumFractionDigits: 0,
+        currency,
+        maximumFractionDigits: currency === 'EUR' ? 2 : 0,
     }).format(value)
+}
+
+function resolveCheckoutPrice(checkout: StoreAddonCheckout | null, subscription: OrganizationSubscription | null) {
+    const currency = checkout?.currency || subscription?.defaultCurrency || 'ARS'
+    const amount = checkout?.unitPrice ?? checkout?.unitPriceArs ?? null
+
+    return { currency, amount }
+}
+
+function resolvePaymentProviderLabel(
+    checkout: StoreAddonCheckout | null,
+    subscription: OrganizationSubscription,
+    t: (key: string, options?: Record<string, unknown>) => string
+) {
+    const provider = checkout?.provider || subscription.preferredBillingProvider || subscription.billingProvider
+
+    return t(`billing.paymentProviders.${provider}`, {
+        defaultValue: checkout?.providerDisplayName || subscription.paymentProviderDisplayName || provider,
+    })
 }
 
 function BillingPage() {
     const { t } = useTranslation()
     const { orgId, hasMinimumRole } = useAuth()
+    const { refreshEntitlements } = useEntitlements()
     const [searchParams, setSearchParams] = useSearchParams()
 
     const [subscription, setSubscription] = useState<OrganizationSubscription | null>(null)
@@ -60,6 +84,9 @@ function BillingPage() {
     const [loading, setLoading] = useState(true)
     const [creatingStore, setCreatingStore] = useState(false)
     const [purchasingAddon, setPurchasingAddon] = useState(false)
+    const [redeemingPromoCode, setRedeemingPromoCode] = useState(false)
+    const [promoCode, setPromoCode] = useState('')
+    const [lastPromoRedemption, setLastPromoRedemption] = useState<PromoCodeRedemption | null>(null)
 
     const [storeName, setStoreName] = useState('')
     const [storeAddress, setStoreAddress] = useState('')
@@ -206,6 +233,29 @@ function BillingPage() {
         }
     }
 
+    async function handleRedeemPromoCode(event: React.FormEvent) {
+        event.preventDefault()
+
+        if (!orgId || !promoCode.trim()) {
+            return
+        }
+
+        setRedeemingPromoCode(true)
+
+        try {
+            const response = await redeemOrganizationPromoCode(orgId, promoCode)
+            setLastPromoRedemption(response.redemption)
+            setPromoCode('')
+            toast.success(response.message || t('billing.promoCodeSuccess'))
+            await Promise.all([loadBilling(), refreshEntitlements()])
+        } catch (error) {
+            const message = getApiErrorMessage(error)
+            toast.error(message || t('billing.promoCodeError'))
+        } finally {
+            setRedeemingPromoCode(false)
+        }
+    }
+
     if (!canViewBilling) {
         return (
             <div className="mx-auto max-w-4xl">
@@ -219,6 +269,15 @@ function BillingPage() {
     }
 
     const storeLimitReached = subscription.activeStoreCount >= subscription.allowedStores
+    const promoModuleSet = new Set(subscription.promoModules ?? [])
+    const checkoutPrice = resolveCheckoutPrice(checkout, subscription)
+    const paymentProviderLabel = resolvePaymentProviderLabel(checkout, subscription, t)
+    const walletMethods = (
+        checkout?.supportedPaymentMethods
+        ?? (subscription.preferredBillingProvider === 'STRIPE'
+            ? (['GOOGLE_PAY', 'APPLE_PAY'] as const)
+            : [])
+    ).filter((method) => method === 'GOOGLE_PAY' || method === 'APPLE_PAY')
 
     return (
         <div className="mx-auto max-w-5xl space-y-8">
@@ -238,7 +297,7 @@ function BillingPage() {
                             {t('billing.planTitle')}
                         </h2>
 
-                        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
                             <div>
                                 <p className="text-xs uppercase tracking-wide text-slate-500">{t('billing.plan')}</p>
                                 <p className="mt-1 font-medium text-slate-950 dark:text-white">
@@ -264,12 +323,40 @@ function BillingPage() {
                             </div>
 
                             <div>
+                                <p className="text-xs uppercase tracking-wide text-slate-500">{t('billing.paymentProvider')}</p>
+                                <p className="mt-1 font-medium text-slate-950 dark:text-white">
+                                    {paymentProviderLabel}
+                                </p>
+                            </div>
+
+                            <div>
                                 <p className="text-xs uppercase tracking-wide text-slate-500">{t('billing.periodEnd')}</p>
                                 <p className="mt-1 font-medium text-slate-950 dark:text-white">
                                     {formatDate(subscription.currentPeriodEnd || subscription.trialEndsAt)}
                                 </p>
                             </div>
                         </div>
+
+                        {(subscription.defaultCurrency || subscription.countryCode) && (
+                            <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">
+                                {t('billing.jurisdictionHint', {
+                                    country: t(`billing.countries.${subscription.countryCode}`, {
+                                        defaultValue: subscription.countryCode,
+                                    }),
+                                    currency: subscription.defaultCurrency,
+                                })}
+                            </p>
+                        )}
+
+                        {walletMethods.length > 0 && (
+                            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                                {t('billing.walletMethodsHint', {
+                                    methods: walletMethods
+                                        .map((method) => t(`billing.paymentMethods.${method}`))
+                                        .join(', '),
+                                })}
+                            </p>
+                        )}
 
                         {subscription.extraStoresPurchased > 0 && (
                             <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">
@@ -286,13 +373,87 @@ function BillingPage() {
                                     {subscription.activeModules.map((moduleCode) => (
                                         <span
                                             key={moduleCode}
-                                            className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                                            className={
+                                                promoModuleSet.has(moduleCode)
+                                                    ? 'rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200'
+                                                    : 'rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200'
+                                            }
+                                            title={
+                                                promoModuleSet.has(moduleCode)
+                                                    ? t('billing.promoModulesHint')
+                                                    : undefined
+                                            }
                                         >
                                             {t(`billing.modules.${moduleCode}`, { defaultValue: moduleCode })}
                                         </span>
                                     ))}
                                 </div>
+                                {(subscription.promoModules?.length ?? 0) > 0 && (
+                                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                                        {t('billing.promoModulesHint')}
+                                    </p>
+                                )}
                             </div>
+                        )}
+
+                        {canManageBilling && (
+                            <form
+                                onSubmit={handleRedeemPromoCode}
+                                className="mt-6 rounded-xl border border-slate-200 p-4 dark:border-slate-800"
+                            >
+                                <div className="flex items-start gap-3">
+                                    <div className="rounded-lg bg-slate-100 p-2 dark:bg-slate-800">
+                                        <Gift className="text-slate-700 dark:text-slate-200" size={18} />
+                                    </div>
+
+                                    <div className="flex-1">
+                                        <h3 className="font-medium text-slate-950 dark:text-white">
+                                            {t('billing.promoCodeTitle')}
+                                        </h3>
+                                        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                                            {t('billing.promoCodeDescription')}
+                                        </p>
+
+                                        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+                                            <label className="block flex-1">
+                                                <span className="text-sm text-slate-600 dark:text-slate-300">
+                                                    {t('billing.promoCodeLabel')}
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    value={promoCode}
+                                                    onChange={(event) => setPromoCode(event.target.value.toUpperCase())}
+                                                    placeholder={t('billing.promoCodePlaceholder')}
+                                                    className="solaris-input mt-1 w-full uppercase"
+                                                    autoComplete="off"
+                                                    spellCheck={false}
+                                                    disabled={redeemingPromoCode}
+                                                />
+                                            </label>
+
+                                            <button
+                                                type="submit"
+                                                disabled={redeemingPromoCode || !promoCode.trim()}
+                                                className="solaris-button-primary sm:mb-0.5"
+                                            >
+                                                {redeemingPromoCode
+                                                    ? t('billing.promoCodeRedeeming')
+                                                    : t('billing.promoCodeRedeem')}
+                                            </button>
+                                        </div>
+
+                                        {lastPromoRedemption && (
+                                            <p className="mt-3 text-sm text-emerald-700 dark:text-emerald-300">
+                                                {lastPromoRedemption.accessValidUntil
+                                                    ? t('billing.promoCodeValidUntil', {
+                                                          date: formatDate(lastPromoRedemption.accessValidUntil),
+                                                      })
+                                                    : t('billing.promoCodePermanent')}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </form>
                         )}
 
                         {storeLimitReached && canManageBilling && (
@@ -307,7 +468,9 @@ function BillingPage() {
                                     disabled={purchasingAddon}
                                     className="solaris-button-primary mt-4"
                                 >
-                                    {purchasingAddon ? t('billing.upgrading') : t('billing.upgradeCtaMercadoPago')}
+                                    {purchasingAddon
+                                        ? t('billing.upgrading')
+                                        : t('billing.upgradeCtaProvider', { provider: paymentProviderLabel })}
                                 </button>
 
                                 {checkout?.checkoutUrl && (
@@ -315,7 +478,7 @@ function BillingPage() {
                                         href={checkout.checkoutUrl}
                                         className="solaris-button-primary mt-4 inline-flex"
                                     >
-                                        {t('billing.payWithMercadoPago')}
+                                        {t('billing.payWithProvider', { provider: paymentProviderLabel })}
                                     </a>
                                 )}
 
@@ -323,7 +486,10 @@ function BillingPage() {
                                     <div className="mt-4 space-y-2">
                                         <p className="text-sm text-slate-700 dark:text-slate-300">
                                             {t('billing.mockCheckoutDescription', {
-                                                price: formatCurrency(checkout.unitPriceArs ?? null),
+                                                price: formatMoney(
+                                                    checkoutPrice.amount,
+                                                    checkoutPrice.currency
+                                                ),
                                             })}
                                         </p>
 

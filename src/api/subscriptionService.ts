@@ -1,18 +1,14 @@
 import axiosClient from './axiosClient'
 import type {
     CreateStorePayload,
-    ModuleCode,
+    OrganizationEntitlements,
     OrganizationSubscription,
+    RedeemPromoCodeResponse,
     StoreAddonCheckout,
 } from '../types/subscription'
 import type { OrganizationStore } from './organizationService'
 
-export type OrganizationEntitlements = {
-    activeModules: ModuleCode[]
-    planModules: ModuleCode[]
-    addonModules: ModuleCode[]
-    promoModules: ModuleCode[]
-}
+export type { OrganizationEntitlements } from '../types/subscription'
 
 export async function getOrganizationEntitlements(
     orgId: number
@@ -53,6 +49,18 @@ export async function purchaseStoreAddonMock(
     const response = await axiosClient.post<OrganizationSubscription>(
         `/organizations/${orgId}/subscription/store-addon/mock-purchase`,
         { quantity }
+    )
+
+    return response.data
+}
+
+export async function redeemOrganizationPromoCode(
+    orgId: number,
+    code: string
+): Promise<RedeemPromoCodeResponse> {
+    const response = await axiosClient.post<RedeemPromoCodeResponse>(
+        `/organizations/${orgId}/promo-codes/redeem`,
+        { code: code.trim() }
     )
 
     return response.data

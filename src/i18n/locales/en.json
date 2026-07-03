@@ -1200,7 +1200,26 @@
     "storeLimitReached": "You reached your store limit. Purchase an additional slot to create a new store.",
     "upgradeCta": "Add store slot",
     "upgradeCtaMercadoPago": "Pay with Mercado Pago",
+    "upgradeCtaProvider": "Pay with {{provider}}",
     "payWithMercadoPago": "Continue to Mercado Pago",
+    "payWithProvider": "Continue with {{provider}}",
+    "paymentProvider": "Payment provider",
+    "jurisdictionHint": "Operating in {{country}} · currency {{currency}}",
+    "walletMethodsHint": "Available methods: {{methods}} (depends on device and browser)",
+    "countries": {
+      "AR": "Argentina",
+      "ES": "Spain"
+    },
+    "paymentProviders": {
+      "MERCADOPAGO": "Mercado Pago",
+      "STRIPE": "Stripe",
+      "NONE": "No provider"
+    },
+    "paymentMethods": {
+      "CARD": "Card",
+      "GOOGLE_PAY": "Google Pay",
+      "APPLE_PAY": "Apple Pay"
+    },
     "paymentSuccess": "Payment approved. Your store slot will be available shortly.",
     "paymentPending": "Payment pending confirmation.",
     "paymentFailure": "Payment was not completed.",
@@ -1235,6 +1254,17 @@
       "STARTER": "Starter"
     },
     "modulesTitle": "Active modules",
+    "promoModulesHint": "Granted by promo code",
+    "promoCodeTitle": "Promo code",
+    "promoCodeDescription": "Redeem a code to unlock modules or extend your plan.",
+    "promoCodeLabel": "Code",
+    "promoCodePlaceholder": "SOLARISFREE1",
+    "promoCodeRedeem": "Redeem code",
+    "promoCodeRedeeming": "Redeeming...",
+    "promoCodeSuccess": "Promo code redeemed successfully",
+    "promoCodeError": "Could not redeem promo code",
+    "promoCodeValidUntil": "Promotional access valid until {{date}}",
+    "promoCodePermanent": "Promotional access active with no expiry date",
     "modules": {
       "CORE": "Core POS",
       "INVENTORY": "Inventory",

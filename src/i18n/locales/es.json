@@ -1226,7 +1226,26 @@
     "storeLimitReached": "Alcanzaste el límite de sucursales. Contratá un slot adicional para crear una nueva sucursal.",
     "upgradeCta": "Agregar sucursal",
     "upgradeCtaMercadoPago": "Pagar con Mercado Pago",
+    "upgradeCtaProvider": "Pagar con {{provider}}",
     "payWithMercadoPago": "Continuar a Mercado Pago",
+    "payWithProvider": "Continuar con {{provider}}",
+    "paymentProvider": "Medio de pago",
+    "jurisdictionHint": "Operación en {{country}} · moneda {{currency}}",
+    "walletMethodsHint": "Métodos disponibles: {{methods}} (según dispositivo y navegador)",
+    "countries": {
+      "AR": "Argentina",
+      "ES": "España"
+    },
+    "paymentProviders": {
+      "MERCADOPAGO": "Mercado Pago",
+      "STRIPE": "Stripe",
+      "NONE": "Sin proveedor"
+    },
+    "paymentMethods": {
+      "CARD": "Tarjeta",
+      "GOOGLE_PAY": "Google Pay",
+      "APPLE_PAY": "Apple Pay"
+    },
     "paymentSuccess": "Pago aprobado. Tu sucursal estará disponible en breve.",
     "paymentPending": "Pago pendiente de confirmación.",
     "paymentFailure": "El pago no se completó.",
@@ -1261,6 +1280,17 @@
       "STARTER": "Starter"
     },
     "modulesTitle": "Módulos activos",
+    "promoModulesHint": "Otorgados por código promocional",
+    "promoCodeTitle": "Código promocional",
+    "promoCodeDescription": "Canjeá un código para desbloquear módulos o extender tu plan.",
+    "promoCodeLabel": "Código",
+    "promoCodePlaceholder": "SOLARISFREE1",
+    "promoCodeRedeem": "Canjear código",
+    "promoCodeRedeeming": "Canjeando...",
+    "promoCodeSuccess": "Código canjeado correctamente",
+    "promoCodeError": "No se pudo canjear el código",
+    "promoCodeValidUntil": "Acceso promocional vigente hasta {{date}}",
+    "promoCodePermanent": "Acceso promocional activo sin fecha de vencimiento",
     "modules": {
       "CORE": "POS básico",
       "INVENTORY": "Inventario",
