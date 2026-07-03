@@ -12,7 +12,12 @@ import {
 import { NovaSalesListCard } from './NovaSalesListCard'
 import { NovaSaleDetailCard } from './NovaSaleDetailCard'
 import { NovaDailySalesSummaryCard } from './NovaDailySalesSummaryCard'
+import { NovaCustomerCard } from './NovaCustomerCard'
+import { NovaFiscalDocumentsListCard } from './NovaFiscalDocumentsListCard'
+import { NovaFiscalDocumentDetailCard } from './NovaFiscalDocumentDetailCard'
 import type { DailySalesSummary, Sale } from '../../../types/sales'
+import type { Customer } from '../../../types/customer'
+import type { FiscalDocument } from '../../../types/fiscal'
 
 interface NovaResponseRendererProps {
     message: NovaMessage
@@ -49,6 +54,28 @@ function isDailySalesSummary(value: unknown): value is DailySalesSummary {
         'date' in value &&
         'salesCount' in value &&
         'totalSales' in value
+    )
+}
+
+function isCustomer(value: unknown): value is Customer {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'id' in value &&
+        'razonSocial' in value &&
+        'documentNumber' in value &&
+        'condicionIva' in value
+    )
+}
+
+function isFiscalDocument(value: unknown): value is FiscalDocument {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'id' in value &&
+        'tipoComprobante' in value &&
+        'status' in value &&
+        'importeTotal' in value
     )
 }
 
@@ -175,6 +202,84 @@ export function NovaResponseRenderer({
             <div className="space-y-3">
                 <p className="whitespace-pre-line">{message.content}</p>
                 <NovaDailySalesSummaryCard summary={message.data} />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        (message.intent === 'search_customer' || message.intent === 'show_customer') &&
+        message.data
+    ) {
+        if (Array.isArray(message.data)) {
+            return (
+                <div className="space-y-3">
+                    <p className="whitespace-pre-line">{message.content}</p>
+                    {(message.data as Customer[]).map((customer) => (
+                        <NovaCustomerCard key={customer.id} customer={customer} />
+                    ))}
+                </div>
+            )
+        }
+
+        if (isCustomer(message.data)) {
+            return (
+                <div className="space-y-3">
+                    <p className="whitespace-pre-line">{message.content}</p>
+                    <NovaCustomerCard customer={message.data} />
+                </div>
+            )
+        }
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'list_fiscal_documents' &&
+        Array.isArray(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaFiscalDocumentsListCard documents={message.data as FiscalDocument[]} />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'show_fiscal_document' &&
+        isFiscalDocument(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaFiscalDocumentDetailCard document={message.data} />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'create_sale' &&
+        isSale(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaSaleDetailCard sale={message.data} />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'emit_invoice' &&
+        isFiscalDocument(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaFiscalDocumentDetailCard document={message.data} />
             </div>
         )
     }

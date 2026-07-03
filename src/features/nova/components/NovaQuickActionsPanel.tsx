@@ -83,6 +83,35 @@ export function NovaQuickActionsPanel({
                     label: t('nova.quickActions.dailySalesSummary'),
                     message: t('nova.quickActions.dailySalesSummaryHelp'),
                 },
+                {
+                    label: t('nova.quickActions.createSale'),
+                    message: t('nova.quickActions.createSaleHelp'),
+                },
+                {
+                    label: t('nova.quickActions.emitInvoice'),
+                    message: t('nova.quickActions.emitInvoiceHelp'),
+                },
+            ],
+        },
+        {
+            title: t('nova.quickActions.groups.customersFiscal'),
+            actions: [
+                {
+                    label: t('nova.quickActions.searchCustomer'),
+                    message: t('nova.quickActions.searchCustomerHelp'),
+                },
+                {
+                    label: t('nova.quickActions.showCustomer'),
+                    message: t('nova.quickActions.showCustomerHelp'),
+                },
+                {
+                    label: t('nova.quickActions.listFiscalDocuments'),
+                    message: t('nova.quickActions.listFiscalDocumentsHelp'),
+                },
+                {
+                    label: t('nova.quickActions.showFiscalDocument'),
+                    message: t('nova.quickActions.showFiscalDocumentHelp'),
+                },
             ],
         },
     ]

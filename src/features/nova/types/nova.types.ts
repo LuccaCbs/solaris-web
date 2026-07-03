@@ -28,6 +28,12 @@ export type NovaIntent =
     | 'list_sales'
     | 'show_sale'
     | 'get_daily_sales_summary'
+    | 'search_customer'
+    | 'show_customer'
+    | 'list_fiscal_documents'
+    | 'show_fiscal_document'
+    | 'create_sale'
+    | 'emit_invoice'
     | 'unknown'
 
 export interface NovaMessage {
@@ -65,6 +71,8 @@ export type NovaActionEventType =
     | 'delete_supplier_order'
     | 'update_supplier_order'
     | 'show_supplier_order'
+    | 'create_sale'
+    | 'emit_invoice'
 
 export interface NovaActionEvent {
     id: string

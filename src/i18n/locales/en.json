@@ -934,7 +934,8 @@
         "products": "Products",
         "suppliers": "Suppliers",
         "dashboard": "Dashboard",
-        "sales": "Sales"
+        "sales": "Sales",
+        "customersFiscal": "Customers & fiscal"
       },
       "searchProduct": "Search product",
       "searchProductMessage": "Search product Coca Cola",
@@ -968,7 +969,19 @@
       "showSale": "View sale",
       "showSaleHelp": "You can view a sale by number. Example: \"Show sale #13\".",
       "dailySalesSummary": "Daily sales summary",
-      "dailySalesSummaryHelp": "You can ask for totals by payment method. Example: \"Sales summary for today\"."
+      "dailySalesSummaryHelp": "You can ask for totals by payment method. Example: \"Sales summary for today\".",
+      "searchCustomer": "Search customer",
+      "searchCustomerHelp": "You can search customers by name or document. Example: \"Search customer John Doe\".",
+      "showCustomer": "View customer",
+      "showCustomerHelp": "You can view a customer by number. Example: \"Show customer #5\".",
+      "listFiscalDocuments": "View fiscal documents",
+      "listFiscalDocumentsHelp": "You can list issued invoices. Example: \"Show fiscal documents\".",
+      "showFiscalDocument": "View document",
+      "showFiscalDocumentHelp": "You can view a document by number. Example: \"Show invoice #4\".",
+      "createSale": "Register sale",
+      "createSaleHelp": "You can register a sale with payment method and products. Example: \"Create cash sale with 2 Coca Cola\".",
+      "emitInvoice": "Invoice sale",
+      "emitInvoiceHelp": "You can issue an invoice for a sale. Example: \"Invoice sale #13\" or \"Invoice sale #13 for customer John Doe\"."
     },
     "timeline": {
       "title": "Recent actions",
@@ -984,7 +997,9 @@
         "update_supplier": "Supplier updated",
         "delete_supplier": "Supplier deleted",
         "create_supplier_order": "Supplier order created",
-        "update_supplier_order": "Supplier order updated"
+        "update_supplier_order": "Supplier order updated",
+        "create_sale": "Sale registered",
+        "emit_invoice": "Fiscal document issued"
       }
     },
     "confirmation": {
@@ -1013,6 +1028,19 @@
       "title": "Summary {{date}}",
       "salesCount": "Sales count",
       "totalSales": "Total sold"
+    },
+    "customerCard": {
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "viewInApp": "View in customers",
+      "edit": "Edit customer"
+    },
+    "fiscalDocumentsListCard": {
+      "number": "POS {{puntoVenta}} · No. {{numero}}"
+    },
+    "fiscalDocumentCard": {
+      "viewInApp": "View document"
     }
   },
   "team": {

@@ -960,7 +960,8 @@
         "products": "Productos",
         "suppliers": "Proveedores",
         "dashboard": "Panel",
-        "sales": "Ventas"
+        "sales": "Ventas",
+        "customersFiscal": "Clientes y fiscal"
       },
       "searchProduct": "Buscar producto",
       "searchProductMessage": "Buscar producto Coca Cola",
@@ -994,7 +995,19 @@
       "showSale": "Ver venta",
       "showSaleHelp": "Podés ver el detalle de una venta por número. Ejemplo: \"Ver venta #13\".",
       "dailySalesSummary": "Resumen de ventas del día",
-      "dailySalesSummaryHelp": "Podés pedir totales por medio de pago. Ejemplo: \"Resumen de ventas de hoy\"."
+      "dailySalesSummaryHelp": "Podés pedir totales por medio de pago. Ejemplo: \"Resumen de ventas de hoy\".",
+      "searchCustomer": "Buscar cliente",
+      "searchCustomerHelp": "Podés buscar clientes por nombre o documento. Ejemplo: \"Buscar cliente Lucca Vergara\".",
+      "showCustomer": "Ver cliente",
+      "showCustomerHelp": "Podés ver un cliente por número. Ejemplo: \"Ver cliente #5\".",
+      "listFiscalDocuments": "Ver comprobantes fiscales",
+      "listFiscalDocumentsHelp": "Podés listar facturas emitidas. Ejemplo: \"Ver comprobantes fiscales\".",
+      "showFiscalDocument": "Ver comprobante",
+      "showFiscalDocumentHelp": "Podés ver un comprobante por número. Ejemplo: \"Ver comprobante #4\".",
+      "createSale": "Registrar venta",
+      "createSaleHelp": "Podés registrar una venta indicando medio de pago y productos. Ejemplo: \"Crear venta en efectivo con 2 Coca Cola\".",
+      "emitInvoice": "Facturar venta",
+      "emitInvoiceHelp": "Podés emitir factura para una venta. Ejemplo: \"Facturar venta #13\" o \"Facturar venta #13 para cliente Lucca Vergara\"."
     },
     "timeline": {
       "title": "Acciones recientes",
@@ -1010,7 +1023,9 @@
         "update_supplier": "Proveedor actualizado",
         "delete_supplier": "Proveedor eliminado",
         "create_supplier_order": "Pedido a proveedor creado",
-        "update_supplier_order": "Pedido a proveedor actualizado"
+        "update_supplier_order": "Pedido a proveedor actualizado",
+        "create_sale": "Venta registrada",
+        "emit_invoice": "Comprobante fiscal emitido"
       }
     },
     "confirmation": {
@@ -1039,6 +1054,19 @@
       "title": "Resumen {{date}}",
       "salesCount": "Cantidad de ventas",
       "totalSales": "Total vendido"
+    },
+    "customerCard": {
+      "email": "Email",
+      "phone": "Teléfono",
+      "address": "Domicilio",
+      "viewInApp": "Ver en clientes",
+      "edit": "Editar cliente"
+    },
+    "fiscalDocumentsListCard": {
+      "number": "PV {{puntoVenta}} · N° {{numero}}"
+    },
+    "fiscalDocumentCard": {
+      "viewInApp": "Ver comprobante"
     }
   },
   "team": {
