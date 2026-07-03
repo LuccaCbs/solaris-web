@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Building2, CreditCard, Plus, Store } from 'lucide-react'
 
@@ -51,6 +52,7 @@ function formatCurrency(value?: number | null) {
 function BillingPage() {
     const { t } = useTranslation()
     const { orgId, hasMinimumRole } = useAuth()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const [subscription, setSubscription] = useState<OrganizationSubscription | null>(null)
     const [stores, setStores] = useState<OrganizationStore[]>([])
@@ -91,6 +93,34 @@ function BillingPage() {
         void loadBilling()
     }, [orgId])
 
+    useEffect(() => {
+        const paymentStatus = searchParams.get('status')
+
+        if (!paymentStatus) {
+            return
+        }
+
+        if (paymentStatus === 'success') {
+            toast.success(t('billing.paymentSuccess'))
+            void loadBilling()
+        } else if (paymentStatus === 'pending') {
+            toast(t('billing.paymentPending'))
+            void loadBilling()
+        } else if (paymentStatus === 'failure') {
+            toast.error(t('billing.paymentFailure'))
+        }
+
+        const nextParams = new URLSearchParams(searchParams)
+        nextParams.delete('status')
+        nextParams.delete('payment_id')
+        nextParams.delete('preference_id')
+        nextParams.delete('external_reference')
+        nextParams.delete('collection_id')
+        nextParams.delete('collection_status')
+        setSearchParams(nextParams, { replace: true })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     async function handleCreateStore(event: React.FormEvent) {
         event.preventDefault()
 
@@ -129,12 +159,18 @@ function BillingPage() {
 
         try {
             const checkoutData = await initiateStoreAddonCheckout(orgId, 1)
+
+            if (checkoutData.checkoutUrl) {
+                window.location.href = checkoutData.checkoutUrl
+                return
+            }
+
             setCheckout(checkoutData)
 
             if (checkoutData.mockPurchaseAvailable) {
                 toast(t('billing.mockCheckoutHint'))
             } else {
-                toast(t('billing.checkoutPending'))
+                toast.error(checkoutData.message || t('billing.checkoutPending'))
             }
         } catch {
             toast.error(t('billing.upgradeError'))
@@ -243,8 +279,17 @@ function BillingPage() {
                                     disabled={purchasingAddon}
                                     className="solaris-button-primary mt-4"
                                 >
-                                    {purchasingAddon ? t('billing.upgrading') : t('billing.upgradeCta')}
+                                    {purchasingAddon ? t('billing.upgrading') : t('billing.upgradeCtaMercadoPago')}
                                 </button>
+
+                                {checkout?.checkoutUrl && (
+                                    <a
+                                        href={checkout.checkoutUrl}
+                                        className="solaris-button-primary mt-4 inline-flex"
+                                    >
+                                        {t('billing.payWithMercadoPago')}
+                                    </a>
+                                )}
 
                                 {checkout?.mockPurchaseAvailable && (
                                     <div className="mt-4 space-y-2">

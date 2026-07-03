@@ -26,6 +26,8 @@ export type StoreAddonCheckout = {
     quantity: number
     unitPriceArs?: number | null
     mockPurchaseAvailable?: boolean
+    checkoutId?: number | null
+    preferenceId?: string | null
 }
 
 export type CreateStorePayload = {
