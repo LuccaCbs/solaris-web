@@ -64,20 +64,21 @@
 }
 
 @media print {
-  body * {
-    visibility: hidden;
+  body > *:not(#barcode-labels-print) {
+    display: none !important;
   }
 
-  .barcode-print-root,
-  .barcode-print-root * {
-    visibility: visible;
-  }
-
-  .barcode-print-root {
-    position: absolute;
-    left: 0;
-    top: 0;
+  #barcode-labels-print {
+    display: block !important;
     width: 100%;
+  }
+
+  .barcode-label {
+    border: none;
+  }
+
+  @page {
+    margin: 8mm;
   }
 }
 
@@ -134,10 +135,4 @@
 
 .barcode-label-sheet {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-@media print {
-  @page {
-    margin: 8mm;
-  }
 }
