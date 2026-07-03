@@ -63,6 +63,7 @@
     "auditLogs": "Audit Logs",
     "adminSettings": "Admin Settings",
     "billing": "Billing & Stores",
+    "organization": "Organization",
     "team": "Team",
     "myProfile": "My Profile"
   },
@@ -1163,6 +1164,8 @@
     "revokeSuccess": "Invite revoked",
     "revokeError": "Could not revoke invite",
     "loadError": "Could not load team",
+    "roleUpdateSuccess": "Member role updated",
+    "roleUpdateError": "Could not update member role",
     "noAccess": "You do not have permission to manage the team.",
     "empty": "No members or pending invites yet.",
     "status": {
@@ -1232,5 +1235,24 @@
       "PAST_DUE": "Past due",
       "CANCELED": "Canceled"
     }
+  },
+  "organization": {
+    "title": "Organization",
+    "description": "Manage your organization name and store labels.",
+    "profileTitle": "Organization profile",
+    "profileDescription": "This name is shown across Solaris to identify your business.",
+    "displayName": "Organization name",
+    "fiscalHint": "Legal and fiscal data is configured separately in Admin Settings.",
+    "storesTitle": "Stores",
+    "storesDescription": "Rename your stores to distinguish branches, for example Main Street or Downtown.",
+    "storeName": "Store name",
+    "saveStore": "Save store",
+    "noStores": "No stores registered yet.",
+    "saveSuccess": "Organization updated successfully",
+    "saveError": "Could not update organization",
+    "storeSaveSuccess": "Store updated successfully",
+    "storeSaveError": "Could not update store",
+    "loadError": "Could not load organization",
+    "noAccess": "You do not have permission to manage the organization."
   }
 }

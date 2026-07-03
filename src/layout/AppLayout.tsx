@@ -7,6 +7,7 @@ import {
     History,
     LogOut,
     Menu,
+    Building2,
     CreditCard,
     Moon,
     Settings,
@@ -25,6 +26,7 @@ import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../utils/useTheme'
 import { getSystemSettings } from '../api/systemSettingsService'
+import { getOrganization } from '../api/organizationService'
 import { useTranslation } from 'react-i18next'
 import { NovaCopilotButton } from '../features/nova/components/NovaCopilotButton'
 import { NovaCopilotPanel } from '../features/nova/components/NovaCopilotPanel'
@@ -50,6 +52,7 @@ function AppLayout() {
         role,
         storeId,
         user,
+        setOrgName,
     } = useAuth()
 
     const logoImage = theme === 'dark' ? logoSilver : logoGold
@@ -103,6 +106,16 @@ function AppLayout() {
     const navItems = allNavItems.filter((item) => hasMinimumRole(item.minimumRole))
     const canAccessAdminSettings = hasMinimumRole('ADMIN')
     const organizationLabel = orgName ?? (orgId ? t('auth.organization.fallbackName', { id: orgId }) : null)
+
+    useEffect(() => {
+        if (!orgId) {
+            return
+        }
+
+        void getOrganization(orgId)
+            .then((organization) => setOrgName(organization.displayName))
+            .catch(() => {})
+    }, [orgId, setOrgName])
 
     useEffect(() => {
         function openNova() {
@@ -241,6 +254,16 @@ function AppLayout() {
                                     <option value="ca">Català</option>
                                 </select>
                             </div>
+
+                            {canAccessAdminSettings && (
+                                <SidebarLink
+                                    label={t('nav.organization')}
+                                    to="/admin/organization"
+                                    icon={Building2}
+                                    active={location.pathname === '/admin/organization'}
+                                    onClick={closeSidebar}
+                                />
+                            )}
 
                             {canAccessAdminSettings && (
                                 <SidebarLink

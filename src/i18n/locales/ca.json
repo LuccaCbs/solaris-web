@@ -62,6 +62,7 @@
     "auditLogs": "Auditoria",
     "adminSettings": "Configuració d’administrador",
     "billing": "Facturació i sucursals",
+    "organization": "Organització",
     "team": "Equip",
     "myProfile": "El meu perfil"
   },
@@ -1026,6 +1027,8 @@
     "revokeSuccess": "Invitació revocada",
     "revokeError": "No s'ha pogut revocar la invitació",
     "loadError": "No s'ha pogut carregar l'equip",
+    "roleUpdateSuccess": "Rol del membre actualitzat",
+    "roleUpdateError": "No s'ha pogut actualitzar el rol del membre",
     "noAccess": "No tens permisos per gestionar l'equip.",
     "empty": "Encara no hi ha membres ni invitacions pendents.",
     "status": {
@@ -1095,5 +1098,24 @@
       "PAST_DUE": "Vençuda",
       "CANCELED": "Cancel·lada"
     }
+  },
+  "organization": {
+    "title": "Organització",
+    "description": "Gestiona el nom de la teva organització i les etiquetes de sucursal.",
+    "profileTitle": "Perfil de l'organització",
+    "profileDescription": "Aquest nom es mostra a Solaris per identificar el teu negoci.",
+    "displayName": "Nom de l'organització",
+    "fiscalHint": "Les dades legals i fiscals es configuren per separat a Configuració d'administrador.",
+    "storesTitle": "Sucursals",
+    "storesDescription": "Canvia el nom de les sucursals per distingir-les, per exemple Carrer 1 o Carrer 27.",
+    "storeName": "Nom de la sucursal",
+    "saveStore": "Desar sucursal",
+    "noStores": "Encara no hi ha sucursals registrades.",
+    "saveSuccess": "Organització actualitzada correctament",
+    "saveError": "No s'ha pogut actualitzar l'organització",
+    "storeSaveSuccess": "Sucursal actualitzada correctament",
+    "storeSaveError": "No s'ha pogut actualitzar la sucursal",
+    "loadError": "No s'ha pogut carregar l'organització",
+    "noAccess": "No tens permisos per gestionar l'organització."
   }
 }

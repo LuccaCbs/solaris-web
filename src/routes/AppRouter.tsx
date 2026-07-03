@@ -40,6 +40,7 @@ import AcceptInvitePage from '../pages/AcceptInvitePage'
 import FiscalDocumentsPage from '../pages/FiscalDocumentsPage'
 import FiscalDocumentDetailPage from '../pages/FiscalDocumentDetailPage'
 import BillingPage from '../pages/BillingPage'
+import OrganizationPage from '../pages/OrganizationPage'
 
 function AppRouter() {
     return (
@@ -90,6 +91,7 @@ function AppRouter() {
 
                             <Route path="/admin/settings" element={<AdminSettingsPage />} />
                             <Route path="/admin/billing" element={<BillingPage />} />
+                            <Route path="/admin/organization" element={<OrganizationPage />} />
                             <Route path="/team" element={<TeamPage />} />
                             <Route path="/profile" element={<ProfilePage />} />
 

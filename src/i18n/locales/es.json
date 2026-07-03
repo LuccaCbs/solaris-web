@@ -63,6 +63,7 @@
     "auditLogs": "Auditoría",
     "adminSettings": "Configuración de administrador",
     "billing": "Facturación y sucursales",
+    "organization": "Organización",
     "team": "Equipo",
     "myProfile": "Mi perfil"
   },
@@ -1189,6 +1190,8 @@
     "revokeSuccess": "Invitación revocada",
     "revokeError": "No se pudo revocar la invitación",
     "loadError": "No se pudo cargar el equipo",
+    "roleUpdateSuccess": "Rol del miembro actualizado",
+    "roleUpdateError": "No se pudo actualizar el rol del miembro",
     "noAccess": "No tenés permisos para gestionar el equipo.",
     "empty": "Todavía no hay miembros ni invitaciones pendientes.",
     "status": {
@@ -1258,5 +1261,24 @@
       "PAST_DUE": "Vencida",
       "CANCELED": "Cancelada"
     }
+  },
+  "organization": {
+    "title": "Organización",
+    "description": "Gestioná el nombre de tu organización y las etiquetas de sucursales.",
+    "profileTitle": "Perfil de la organización",
+    "profileDescription": "Este nombre se muestra en Solaris para identificar tu negocio.",
+    "displayName": "Nombre de la organización",
+    "fiscalHint": "Los datos legales y fiscales se configuran por separado en Configuración de administrador.",
+    "storesTitle": "Sucursales",
+    "storesDescription": "Renombrá tus sucursales para distinguirlas, por ejemplo Calle 1 o Calle 27.",
+    "storeName": "Nombre de la sucursal",
+    "saveStore": "Guardar sucursal",
+    "noStores": "Todavía no hay sucursales registradas.",
+    "saveSuccess": "Organización actualizada correctamente",
+    "saveError": "No se pudo actualizar la organización",
+    "storeSaveSuccess": "Sucursal actualizada correctamente",
+    "storeSaveError": "No se pudo actualizar la sucursal",
+    "loadError": "No se pudo cargar la organización",
+    "noAccess": "No tenés permisos para gestionar la organización."
   }
 }

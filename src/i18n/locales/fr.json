@@ -63,6 +63,7 @@
     "auditLogs": "Journal d’audit",
     "adminSettings": "Paramètres administrateur",
     "billing": "Facturation et magasins",
+    "organization": "Organisation",
     "team": "Équipe",
     "myProfile": "Mon profil"
   },
@@ -1027,6 +1028,8 @@
     "revokeSuccess": "Invitation révoquée",
     "revokeError": "Impossible de révoquer l'invitation",
     "loadError": "Impossible de charger l'équipe",
+    "roleUpdateSuccess": "Rôle du membre mis à jour",
+    "roleUpdateError": "Impossible de mettre à jour le rôle du membre",
     "noAccess": "Vous n'avez pas la permission de gérer l'équipe.",
     "empty": "Aucun membre ni invitation en attente.",
     "status": {
@@ -1096,5 +1099,24 @@
       "PAST_DUE": "En retard",
       "CANCELED": "Annulé"
     }
+  },
+  "organization": {
+    "title": "Organisation",
+    "description": "Gérez le nom de votre organisation et les libellés des magasins.",
+    "profileTitle": "Profil de l'organisation",
+    "profileDescription": "Ce nom est affiché dans Solaris pour identifier votre entreprise.",
+    "displayName": "Nom de l'organisation",
+    "fiscalHint": "Les données légales et fiscales se configurent séparément dans les paramètres administrateur.",
+    "storesTitle": "Magasins",
+    "storesDescription": "Renommez vos magasins pour les distinguer, par exemple Rue 1 ou Centre-ville.",
+    "storeName": "Nom du magasin",
+    "saveStore": "Enregistrer le magasin",
+    "noStores": "Aucun magasin enregistré pour le moment.",
+    "saveSuccess": "Organisation mise à jour avec succès",
+    "saveError": "Impossible de mettre à jour l'organisation",
+    "storeSaveSuccess": "Magasin mis à jour avec succès",
+    "storeSaveError": "Impossible de mettre à jour le magasin",
+    "loadError": "Impossible de charger l'organisation",
+    "noAccess": "Vous n'avez pas la permission de gérer l'organisation."
   }
 }

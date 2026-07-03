@@ -9,6 +9,7 @@ import {
     getOrganizationMembers,
     getOrganizationStores,
     revokeOrganizationInvite,
+    updateOrganizationMemberRole,
     type OrganizationMember,
     type OrganizationStore,
 } from '../api/organizationService'
@@ -27,6 +28,7 @@ function TeamPage() {
     const [email, setEmail] = useState('')
     const [inviteRole, setInviteRole] = useState<OrganizationRole>('MANAGER')
     const [storeId, setStoreId] = useState('')
+    const [updatingMemberId, setUpdatingMemberId] = useState<number | null>(null)
 
     const canInvite = hasMinimumRole('ADMIN')
 
@@ -102,6 +104,53 @@ function TeamPage() {
         }
 
         return INVITE_ROLES.filter((role) => role !== 'ADMIN')
+    }
+
+    function editableRolesForMember(member: OrganizationMember): OrganizationRole[] {
+        if (member.pendingInvite || member.role === 'OWNER') {
+            return []
+        }
+
+        if (currentRole === 'OWNER') {
+            return ['ADMIN', 'MANAGER', 'CASHIER']
+        }
+
+        if (currentRole === 'ADMIN') {
+            if (member.role === 'ADMIN') {
+                return []
+            }
+
+            return ['MANAGER', 'CASHIER']
+        }
+
+        return []
+    }
+
+    function canEditMemberRole(member: OrganizationMember): boolean {
+        return editableRolesForMember(member).length > 0
+    }
+
+    async function handleRoleChange(member: OrganizationMember, role: OrganizationRole) {
+        if (!orgId || role === member.role) {
+            return
+        }
+
+        setUpdatingMemberId(member.id)
+
+        try {
+            await updateOrganizationMemberRole(orgId, member.id, {
+                role,
+                storeId: member.storeId ?? null,
+            })
+
+            toast.success(t('team.roleUpdateSuccess'))
+            await loadTeam()
+        } catch (error) {
+            const apiError = error as { response?: { data?: { message?: string } } }
+            toast.error(apiError.response?.data?.message || t('team.roleUpdateError'))
+        } finally {
+            setUpdatingMemberId(null)
+        }
     }
 
     if (!canInvite) {
@@ -231,7 +280,27 @@ function TeamPage() {
                                         : '—'}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {t(`auth.roles.${member.role}`)}
+                                    {canEditMemberRole(member) ? (
+                                        <select
+                                            value={member.role}
+                                            disabled={updatingMemberId === member.id}
+                                            onChange={(event) =>
+                                                void handleRoleChange(
+                                                    member,
+                                                    event.target.value as OrganizationRole
+                                                )
+                                            }
+                                            className="solaris-input"
+                                        >
+                                            {editableRolesForMember(member).map((role) => (
+                                                <option key={role} value={role}>
+                                                    {t(`auth.roles.${role}`)}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        t(`auth.roles.${member.role}`)
+                                    )}
                                 </td>
                                 <td className="px-6 py-4">
                                     <span

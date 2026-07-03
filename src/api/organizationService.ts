@@ -26,6 +26,18 @@ export type OrganizationStore = {
     active?: boolean
 }
 
+export type OrganizationProfile = {
+    id: number
+    displayName: string
+    razonSocial: string
+    timezone: string
+}
+
+export type UpdateOrganizationMemberRolePayload = {
+    role: OrganizationRole
+    storeId?: number | null
+}
+
 export type OrganizationInviteRequest = {
     email: string
     role: OrganizationRole
@@ -74,6 +86,52 @@ export async function getOrganizationStores(orgId: number): Promise<Organization
     )
 
     return response.data
+}
+
+export async function getOrganization(orgId: number): Promise<OrganizationProfile> {
+    const response = await axiosClient.get<OrganizationProfile>(
+        `/organizations/${orgId}`,
+        { headers: getAuthHeaders() }
+    )
+
+    return response.data
+}
+
+export async function updateOrganization(
+    orgId: number,
+    data: Pick<OrganizationProfile, 'displayName'>
+): Promise<OrganizationProfile> {
+    const response = await axiosClient.patch<OrganizationProfile>(
+        `/organizations/${orgId}`,
+        data,
+        { headers: getAuthHeaders() }
+    )
+
+    return response.data
+}
+
+export async function updateOrganizationStore(
+    orgId: number,
+    storeId: number,
+    data: { name: string; address?: string; afipPuntoVenta?: number }
+): Promise<OrganizationStore> {
+    const response = await axiosClient.patch<OrganizationStore>(
+        `/organizations/${orgId}/stores/${storeId}`,
+        data,
+        { headers: getAuthHeaders() }
+    )
+
+    return response.data
+}
+
+export async function updateOrganizationMemberRole(
+    orgId: number,
+    memberId: number,
+    data: UpdateOrganizationMemberRolePayload
+): Promise<void> {
+    await axiosClient.patch(`/organizations/${orgId}/members/${memberId}`, data, {
+        headers: getAuthHeaders(),
+    })
 }
 
 export async function createOrganizationInvite(
