@@ -2,6 +2,7 @@ export type CashRegisterStatus = 'OPEN' | 'CLOSED'
 
 export type CashRegisterSession = {
     id: number
+    storeId?: number | null
     openedAt: string
     closedAt: string | null
     openedBy: string
