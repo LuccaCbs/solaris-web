@@ -261,6 +261,7 @@
       "found": "Produit trouvé : {{name}}",
       "addedToSale": "{{name}} ajouté à la vente",
       "addedToSupplierOrder": "{{name}} ajouté à la commande fournisseur",
+      "addedToRestock": "{{name}} ajouté à la liste de réception",
       "notFound": "Aucun produit trouvé avec ce code-barres",
       "inactiveProduct": "Le produit scanné est inactif"
     },
@@ -770,7 +771,7 @@
     "title": "Mouvements de stock",
     "description": "Suivez les mouvements d'inventaire et les ajustements de stock.",
     "newMovement": "Nouveau mouvement",
-    "quickRestock": "Réapprovisionnement rapide",
+    "quickRestock": "Réception de marchandises",
     "exportExcel": "Exporter Excel",
     "loadError": "Impossible de charger les mouvements de stock",
     "empty": "Aucun mouvement de stock trouvé.",
@@ -882,11 +883,21 @@
     "scanSwitched": "Ouverture du réapprovisionnement de {{name}}."
   },
   "quickRestock": {
-    "title": "Réapprovisionnement rapide",
-    "description": "Scannez des codes-barres pour ajouter du stock rapidement.",
-    "emptySelection": "Scannez un produit pour commencer.",
-    "noProductSelected": "Scannez un produit avant de confirmer le réapprovisionnement.",
-    "success": "{{quantity}} unité(s) ajoutée(s) à {{name}}."
+    "title": "Réception de marchandises",
+    "description": "Scannez des produits pour constituer un lot de réception, ajustez les quantités et confirmez tout en une fois.",
+    "emptyList": "Scannez des produits pour commencer la liste de réception.",
+    "preloaded": "{{name}} ajouté à la liste de réception.",
+    "confirmAll": "Confirmer la réception",
+    "clearAll": "Vider la liste",
+    "remove": "Retirer",
+    "summary": "{{products}} produit(s), {{units}} unité(s) au total.",
+    "successBatch": "{{count}} produit(s) réapprovisionné(s) avec succès.",
+    "partialError": "{{processed}} produits sur {{total}} ont été réapprovisionnés avant une erreur.",
+    "table": {
+      "product": "Produit",
+      "currentStock": "Stock actuel",
+      "quantity": "Quantité à ajouter"
+    }
   },
   "nova": {
     "title": "Nova Copilot",

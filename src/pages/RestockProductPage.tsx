@@ -1,19 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import LoadingScreen from '../components/LoadingScreen'
-import { getProductByBarcode, getProductById } from '../api/productService'
+import { getProductById } from '../api/productService'
 import { createStockMovement } from '../api/stockMovementService'
-import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
-import { BarcodeScanInput } from '../components/barcode/BarcodeScanInput'
 import type { Product } from '../types/product'
 
 function RestockProductPage() {
     const { id } = useParams()
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const quantityRef = useRef<HTMLInputElement>(null)
 
     const [product, setProduct] = useState<Product | null>(null)
     const [quantity, setQuantity] = useState('1')
@@ -38,40 +35,6 @@ function RestockProductPage() {
 
         loadProduct()
     }, [id, navigate, t])
-
-    const handleBarcodeScan = useCallback(
-        async (code: string) => {
-            if (!product) {
-                return
-            }
-
-            if (code === product.barcode) {
-                toast.success(t('restockProduct.scanConfirmed'))
-                quantityRef.current?.focus()
-                quantityRef.current?.select()
-                return
-            }
-
-            try {
-                const scannedProduct = await getProductByBarcode(code)
-
-                if (scannedProduct.active === false) {
-                    toast.error(t('barcode.scan.inactiveProduct'))
-                    return
-                }
-
-                toast.success(
-                    t('restockProduct.scanSwitched', { name: scannedProduct.name }),
-                )
-                navigate(`/products/${scannedProduct.id}/restock`)
-            } catch {
-                toast.error(t('barcode.scan.notFound'))
-            }
-        },
-        [navigate, product, t],
-    )
-
-    useBarcodeScanner({ onScan: handleBarcodeScan })
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -118,14 +81,6 @@ function RestockProductPage() {
 
             <p className="mt-2 solaris-muted">{t('restockProduct.description')}</p>
 
-            <div className="mt-4 rounded-xl border border-dashed border-blue-500/40 bg-blue-500/5 px-4 py-3 text-sm text-blue-700 dark:text-blue-200">
-                {t('barcode.scan.readyRestock')}
-            </div>
-
-            <div className="mt-4 max-w-md">
-                <BarcodeScanInput onScan={handleBarcodeScan} />
-            </div>
-
             <form onSubmit={handleSubmit} className="solaris-panel mt-8 max-w-2xl">
                 <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-950">
                     <p className="text-sm solaris-muted">{t('common.product')}</p>
@@ -149,7 +104,6 @@ function RestockProductPage() {
                     </label>
 
                     <input
-                        ref={quantityRef}
                         required
                         min={1}
                         type="number"

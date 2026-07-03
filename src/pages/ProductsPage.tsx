@@ -327,6 +327,13 @@ function ProductsPage() {
 
                 <div className="flex flex-col gap-3 sm:flex-row">
                     <Link
+                        to="/stock/restock"
+                        className="rounded-xl border border-blue-500/20 bg-blue-500/10 px-5 py-3 text-center font-semibold text-blue-600 hover:bg-blue-500/20 dark:text-blue-300"
+                    >
+                        {t('quickRestock.title')}
+                    </Link>
+
+                    <Link
                         to="/products/import"
                         className="rounded-xl border border-slate-300 px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
@@ -502,7 +509,7 @@ function ProductsPage() {
                             <ProductActions
                                 product={product}
                                 onRestock={(id) =>
-                                    navigate(`/products/${id}/restock`)
+                                    navigate(`/stock/restock?productId=${id}`)
                                 }
                                 onEdit={(id) => navigate(`/products/${id}/edit`)}
                                 onPrintLabels={(selected) => setPrintProducts([selected])}
@@ -654,7 +661,7 @@ function ProductsPage() {
                                 <ProductActions
                                     product={product}
                                     onRestock={(id) =>
-                                        navigate(`/products/${id}/restock`)
+                                        navigate(`/stock/restock?productId=${id}`)
                                     }
                                     onEdit={(id) =>
                                         navigate(`/products/${id}/edit`)

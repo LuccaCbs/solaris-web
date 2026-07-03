@@ -263,6 +263,7 @@
       "found": "Producto encontrado: {{name}}",
       "addedToSale": "{{name}} agregado a la venta",
       "addedToSupplierOrder": "{{name}} agregado al pedido a proveedor",
+      "addedToRestock": "{{name}} agregado al listado de ingreso",
       "notFound": "No se encontró un producto con ese código de barras",
       "inactiveProduct": "El producto escaneado está inactivo"
     },
@@ -779,7 +780,7 @@
     "title": "Movimientos de stock",
     "description": "Controla movimientos de inventario y ajustes de stock.",
     "newMovement": "Nuevo movimiento",
-    "quickRestock": "Reposición rápida",
+    "quickRestock": "Ingreso de mercadería",
     "exportExcel": "Exportar Excel",
     "loadError": "No se pudieron cargar los movimientos de stock",
     "empty": "No se encontraron movimientos de stock.",
@@ -987,11 +988,21 @@
     "scanSwitched": "Abriendo reposición de {{name}}."
   },
   "quickRestock": {
-    "title": "Reposición rápida",
-    "description": "Escaneá códigos de barras para agregar stock rápidamente.",
-    "emptySelection": "Escaneá un producto para comenzar.",
-    "noProductSelected": "Escaneá un producto antes de confirmar la reposición.",
-    "success": "Se agregaron {{quantity}} unidad(es) a {{name}}."
+    "title": "Ingreso de mercadería",
+    "description": "Escaneá productos para armar un lote de ingreso, ajustá cantidades y confirmá todo junto.",
+    "emptyList": "Escaneá productos para comenzar el listado de ingreso.",
+    "preloaded": "{{name}} agregado al listado de ingreso.",
+    "confirmAll": "Confirmar ingreso",
+    "clearAll": "Limpiar listado",
+    "remove": "Quitar",
+    "summary": "{{products}} producto(s), {{units}} unidad(es) en total.",
+    "successBatch": "Se reabastecieron {{count}} producto(s) correctamente.",
+    "partialError": "Se reabastecieron {{processed}} de {{total}} productos antes de ocurrir un error.",
+    "table": {
+      "product": "Producto",
+      "currentStock": "Stock actual",
+      "quantity": "Cantidad a agregar"
+    }
   },
   "nova": {
     "title": "Nova Copilot",

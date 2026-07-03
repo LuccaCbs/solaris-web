@@ -263,6 +263,7 @@
       "found": "Product found: {{name}}",
       "addedToSale": "{{name}} added to sale",
       "addedToSupplierOrder": "{{name}} added to supplier order",
+      "addedToRestock": "{{name}} added to intake list",
       "notFound": "No product found with that barcode",
       "inactiveProduct": "The scanned product is inactive"
     },
@@ -779,7 +780,7 @@
     "title": "Stock Movements",
     "description": "Track inventory movements and stock adjustments.",
     "newMovement": "New Movement",
-    "quickRestock": "Quick restock",
+    "quickRestock": "Merchandise intake",
     "exportExcel": "Export Excel",
     "loadError": "Could not load stock movements",
     "empty": "No stock movements found.",
@@ -961,11 +962,21 @@
     "scanSwitched": "Opening restock for {{name}}."
   },
   "quickRestock": {
-    "title": "Quick restock",
-    "description": "Scan product barcodes to add stock quickly.",
-    "emptySelection": "Scan a product barcode to begin.",
-    "noProductSelected": "Scan a product before confirming restock.",
-    "success": "{{quantity}} unit(s) added to {{name}}."
+    "title": "Merchandise intake",
+    "description": "Scan products to build a batch intake list, adjust quantities, and confirm everything at once.",
+    "emptyList": "Scan products to start building the intake list.",
+    "preloaded": "{{name}} added to the intake list.",
+    "confirmAll": "Confirm intake",
+    "clearAll": "Clear list",
+    "remove": "Remove",
+    "summary": "{{products}} product(s), {{units}} unit(s) total.",
+    "successBatch": "{{count}} product(s) restocked successfully.",
+    "partialError": "{{processed}} of {{total}} products were restocked before an error occurred.",
+    "table": {
+      "product": "Product",
+      "currentStock": "Current stock",
+      "quantity": "Quantity to add"
+    }
   },
   "nova": {
     "title": "Nova Copilot",

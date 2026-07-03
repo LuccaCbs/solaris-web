@@ -260,6 +260,7 @@
       "found": "Producte trobat: {{name}}",
       "addedToSale": "{{name}} afegit a la venda",
       "addedToSupplierOrder": "{{name}} afegit a la comanda de proveïdor",
+      "addedToRestock": "{{name}} afegit al llistat d'ingrés",
       "notFound": "No s'ha trobat cap producte amb aquest codi de barres",
       "inactiveProduct": "El producte escanejat està inactiu"
     },
@@ -769,7 +770,7 @@
     "title": "Moviments d'estoc",
     "description": "Controla els moviments d'inventari i els ajustos d'estoc.",
     "newMovement": "Nou moviment",
-    "quickRestock": "Reposició ràpida",
+    "quickRestock": "Ingrés de mercaderia",
     "exportExcel": "Exportar Excel",
     "loadError": "No s'han pogut carregar els moviments d'estoc",
     "empty": "No s'han trobat moviments d'estoc.",
@@ -881,11 +882,21 @@
     "scanSwitched": "Obrint reposició de {{name}}."
   },
   "quickRestock": {
-    "title": "Reposició ràpida",
-    "description": "Escaneja codis de barres per afegir estoc ràpidament.",
-    "emptySelection": "Escaneja un producte per començar.",
-    "noProductSelected": "Escaneja un producte abans de confirmar la reposició.",
-    "success": "S'han afegit {{quantity}} unitat(s) a {{name}}."
+    "title": "Ingrés de mercaderia",
+    "description": "Escaneja productes per crear un lot d'ingrés, ajusta quantitats i confirma-ho tot junts.",
+    "emptyList": "Escaneja productes per començar el llistat d'ingrés.",
+    "preloaded": "{{name}} afegit al llistat d'ingrés.",
+    "confirmAll": "Confirmar ingrés",
+    "clearAll": "Netejar llistat",
+    "remove": "Treure",
+    "summary": "{{products}} producte(s), {{units}} unitat(s) en total.",
+    "successBatch": "S'han repost {{count}} producte(s) correctament.",
+    "partialError": "S'han repost {{processed}} de {{total}} productes abans d'un error.",
+    "table": {
+      "product": "Producte",
+      "currentStock": "Estoc actual",
+      "quantity": "Quantitat a afegir"
+    }
   },
   "nova": {
     "title": "Nova Copilot",
