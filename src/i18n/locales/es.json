@@ -62,6 +62,7 @@
     "movementHistory": "Historial de movimientos",
     "auditLogs": "Auditoría",
     "adminSettings": "Configuración de administrador",
+    "billing": "Facturación y sucursales",
     "team": "Equipo",
     "myProfile": "Mi perfil"
   },
@@ -1208,6 +1209,49 @@
       "success": "Invitación aceptada correctamente",
       "error": "No se pudo aceptar la invitación",
       "backToLogin": "Volver al inicio de sesión"
+    }
+  },
+  "billing": {
+    "title": "Facturación y sucursales",
+    "description": "Gestioná tu plan de suscripción y las sucursales de tu organización.",
+    "planTitle": "Plan actual",
+    "plan": "Plan",
+    "status": "Estado",
+    "storesUsage": "Sucursales usadas",
+    "periodEnd": "Fin del período",
+    "extraStores": "{{count}} sucursal(es) adicional(es) contratada(s)",
+    "storeLimitReached": "Alcanzaste el límite de sucursales. Contratá un slot adicional para crear una nueva sucursal.",
+    "upgradeCta": "Agregar sucursal",
+    "upgrading": "Procesando...",
+    "upgradeError": "No se pudo iniciar el checkout",
+    "checkoutPending": "El checkout de pago estará disponible pronto.",
+    "mockCheckoutHint": "Modo desarrollo: podés simular la compra abajo.",
+    "mockCheckoutDescription": "Simular compra de 1 sucursal adicional ({{price}} / mes).",
+    "mockPurchaseCta": "Simular compra (dev)",
+    "mockPurchaseSuccess": "Sucursal adicional agregada correctamente",
+    "storesTitle": "Sucursales",
+    "storesDescription": "Cada sucursal representa una filial o punto de venta de tu organización.",
+    "noStores": "No hay sucursales registradas.",
+    "afipPuntoVenta": "Punto de venta AFIP: {{value}}",
+    "createStoreTitle": "Nueva sucursal",
+    "storeName": "Nombre de la sucursal",
+    "storeAddress": "Dirección",
+    "storeAfipPuntoVenta": "Punto de venta AFIP (opcional)",
+    "createStore": "Crear sucursal",
+    "creatingStore": "Creando...",
+    "createStoreSuccess": "Sucursal creada correctamente",
+    "createStoreError": "No se pudo crear la sucursal",
+    "subscriptionInactive": "Tu suscripción no está activa. Actualizá la facturación para agregar sucursales.",
+    "loadError": "No se pudo cargar la información de facturación",
+    "noAccess": "No tenés permisos para ver la facturación.",
+    "plans": {
+      "STARTER": "Starter"
+    },
+    "statuses": {
+      "TRIALING": "Prueba",
+      "ACTIVE": "Activa",
+      "PAST_DUE": "Vencida",
+      "CANCELED": "Cancelada"
     }
   }
 }

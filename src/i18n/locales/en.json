@@ -62,6 +62,7 @@
     "movementHistory": "Movement History",
     "auditLogs": "Audit Logs",
     "adminSettings": "Admin Settings",
+    "billing": "Billing & Stores",
     "team": "Team",
     "myProfile": "My Profile"
   },
@@ -1182,6 +1183,49 @@
       "success": "Invitation accepted successfully",
       "error": "Could not accept invitation",
       "backToLogin": "Back to login"
+    }
+  },
+  "billing": {
+    "title": "Billing & Stores",
+    "description": "Manage your subscription plan and organization stores.",
+    "planTitle": "Current plan",
+    "plan": "Plan",
+    "status": "Status",
+    "storesUsage": "Stores used",
+    "periodEnd": "Period ends",
+    "extraStores": "{{count}} additional store slot(s) purchased",
+    "storeLimitReached": "You reached your store limit. Purchase an additional slot to create a new store.",
+    "upgradeCta": "Add store slot",
+    "upgrading": "Processing...",
+    "upgradeError": "Could not start checkout",
+    "checkoutPending": "Payment checkout will be available soon.",
+    "mockCheckoutHint": "Development mode: you can simulate the purchase below.",
+    "mockCheckoutDescription": "Simulate purchase of 1 store slot ({{price}} / month).",
+    "mockPurchaseCta": "Simulate purchase (dev)",
+    "mockPurchaseSuccess": "Store slot added successfully",
+    "storesTitle": "Stores",
+    "storesDescription": "Each store represents a branch or point of sale in your organization.",
+    "noStores": "No stores found.",
+    "afipPuntoVenta": "AFIP point of sale: {{value}}",
+    "createStoreTitle": "New store",
+    "storeName": "Store name",
+    "storeAddress": "Address",
+    "storeAfipPuntoVenta": "AFIP point of sale (optional)",
+    "createStore": "Create store",
+    "creatingStore": "Creating...",
+    "createStoreSuccess": "Store created successfully",
+    "createStoreError": "Could not create store",
+    "subscriptionInactive": "Your subscription is not active. Update billing to add stores.",
+    "loadError": "Could not load billing information",
+    "noAccess": "You do not have permission to view billing.",
+    "plans": {
+      "STARTER": "Starter"
+    },
+    "statuses": {
+      "TRIALING": "Trial",
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past due",
+      "CANCELED": "Canceled"
     }
   }
 }

@@ -62,6 +62,7 @@
     "movementHistory": "Historique des mouvements",
     "auditLogs": "Journal d’audit",
     "adminSettings": "Paramètres administrateur",
+    "billing": "Facturation et magasins",
     "team": "Équipe",
     "myProfile": "Mon profil"
   },
@@ -1046,6 +1047,49 @@
       "success": "Invitation acceptée avec succès",
       "error": "Impossible d'accepter l'invitation",
       "backToLogin": "Retour à la connexion"
+    }
+  },
+  "billing": {
+    "title": "Facturation et magasins",
+    "description": "Gérez votre abonnement et les magasins de votre organisation.",
+    "planTitle": "Plan actuel",
+    "plan": "Plan",
+    "status": "Statut",
+    "storesUsage": "Magasins utilisés",
+    "periodEnd": "Fin de période",
+    "extraStores": "{{count}} magasin(s) supplémentaire(s) acheté(s)",
+    "storeLimitReached": "Vous avez atteint la limite de magasins. Achetez un emplacement supplémentaire pour en créer un nouveau.",
+    "upgradeCta": "Ajouter un magasin",
+    "upgrading": "Traitement...",
+    "upgradeError": "Impossible de démarrer le paiement",
+    "checkoutPending": "Le paiement sera bientôt disponible.",
+    "mockCheckoutHint": "Mode développement : vous pouvez simuler l'achat ci-dessous.",
+    "mockCheckoutDescription": "Simuler l'achat d'un magasin supplémentaire ({{price}} / mois).",
+    "mockPurchaseCta": "Simuler l'achat (dev)",
+    "mockPurchaseSuccess": "Emplacement de magasin ajouté avec succès",
+    "storesTitle": "Magasins",
+    "storesDescription": "Chaque magasin représente une succursale ou un point de vente.",
+    "noStores": "Aucun magasin enregistré.",
+    "afipPuntoVenta": "Point de vente AFIP : {{value}}",
+    "createStoreTitle": "Nouveau magasin",
+    "storeName": "Nom du magasin",
+    "storeAddress": "Adresse",
+    "storeAfipPuntoVenta": "Point de vente AFIP (optionnel)",
+    "createStore": "Créer le magasin",
+    "creatingStore": "Création...",
+    "createStoreSuccess": "Magasin créé avec succès",
+    "createStoreError": "Impossible de créer le magasin",
+    "subscriptionInactive": "Votre abonnement n'est pas actif. Mettez à jour la facturation pour ajouter des magasins.",
+    "loadError": "Impossible de charger les informations de facturation",
+    "noAccess": "Vous n'avez pas la permission de voir la facturation.",
+    "plans": {
+      "STARTER": "Starter"
+    },
+    "statuses": {
+      "TRIALING": "Essai",
+      "ACTIVE": "Actif",
+      "PAST_DUE": "En retard",
+      "CANCELED": "Annulé"
     }
   }
 }

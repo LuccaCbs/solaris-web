@@ -61,6 +61,7 @@
     "movementHistory": "Historial de moviments",
     "auditLogs": "Auditoria",
     "adminSettings": "Configuració d’administrador",
+    "billing": "Facturació i sucursals",
     "team": "Equip",
     "myProfile": "El meu perfil"
   },
@@ -1045,6 +1046,49 @@
       "success": "Invitació acceptada correctament",
       "error": "No s'ha pogut acceptar la invitació",
       "backToLogin": "Tornar a l'inici de sessió"
+    }
+  },
+  "billing": {
+    "title": "Facturació i sucursals",
+    "description": "Gestiona el teu pla de subscripció i les sucursals de l'organització.",
+    "planTitle": "Pla actual",
+    "plan": "Pla",
+    "status": "Estat",
+    "storesUsage": "Sucursals usades",
+    "periodEnd": "Fi del període",
+    "extraStores": "{{count}} sucursal(s) addicional(s) contractada(s)",
+    "storeLimitReached": "Has arribat al límit de sucursals. Contracta un slot addicional per crear-ne una de nova.",
+    "upgradeCta": "Afegir sucursal",
+    "upgrading": "Processant...",
+    "upgradeError": "No s'ha pogut iniciar el pagament",
+    "checkoutPending": "El pagament estarà disponible aviat.",
+    "mockCheckoutHint": "Mode desenvolupament: pots simular la compra a sota.",
+    "mockCheckoutDescription": "Simular compra d'1 sucursal addicional ({{price}} / mes).",
+    "mockPurchaseCta": "Simular compra (dev)",
+    "mockPurchaseSuccess": "Sucursal addicional afegida correctament",
+    "storesTitle": "Sucursals",
+    "storesDescription": "Cada sucursal representa una filial o punt de venda de l'organització.",
+    "noStores": "No hi ha sucursals registrades.",
+    "afipPuntoVenta": "Punt de venda AFIP: {{value}}",
+    "createStoreTitle": "Nova sucursal",
+    "storeName": "Nom de la sucursal",
+    "storeAddress": "Adreça",
+    "storeAfipPuntoVenta": "Punt de venda AFIP (opcional)",
+    "createStore": "Crear sucursal",
+    "creatingStore": "Creant...",
+    "createStoreSuccess": "Sucursal creada correctament",
+    "createStoreError": "No s'ha pogut crear la sucursal",
+    "subscriptionInactive": "La subscripció no està activa. Actualitza la facturació per afegir sucursals.",
+    "loadError": "No s'ha pogut carregar la informació de facturació",
+    "noAccess": "No tens permisos per veure la facturació.",
+    "plans": {
+      "STARTER": "Starter"
+    },
+    "statuses": {
+      "TRIALING": "Prova",
+      "ACTIVE": "Activa",
+      "PAST_DUE": "Vençuda",
+      "CANCELED": "Cancel·lada"
     }
   }
 }

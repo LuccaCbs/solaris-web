@@ -7,6 +7,7 @@ import {
     History,
     LogOut,
     Menu,
+    CreditCard,
     Moon,
     Settings,
     Sun,
@@ -240,6 +241,16 @@ function AppLayout() {
                                     <option value="ca">Català</option>
                                 </select>
                             </div>
+
+                            {canAccessAdminSettings && (
+                                <SidebarLink
+                                    label={t('nav.billing')}
+                                    to="/admin/billing"
+                                    icon={CreditCard}
+                                    active={location.pathname === '/admin/billing'}
+                                    onClick={closeSidebar}
+                                />
+                            )}
 
                             {canAccessAdminSettings && (
                                 <SidebarButton

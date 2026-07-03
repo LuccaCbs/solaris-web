@@ -21,6 +21,9 @@ export type OrganizationMember = {
 export type OrganizationStore = {
     id: number
     name: string
+    address?: string | null
+    afipPuntoVenta?: number | null
+    active?: boolean
 }
 
 export type OrganizationInviteRequest = {

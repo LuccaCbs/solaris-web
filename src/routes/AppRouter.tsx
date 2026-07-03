@@ -39,6 +39,7 @@ import TeamPage from '../pages/TeamPage'
 import AcceptInvitePage from '../pages/AcceptInvitePage'
 import FiscalDocumentsPage from '../pages/FiscalDocumentsPage'
 import FiscalDocumentDetailPage from '../pages/FiscalDocumentDetailPage'
+import BillingPage from '../pages/BillingPage'
 
 function AppRouter() {
     return (
@@ -88,6 +89,7 @@ function AppRouter() {
                             <Route path="/fiscal-documents/:id" element={<FiscalDocumentDetailPage />} />
 
                             <Route path="/admin/settings" element={<AdminSettingsPage />} />
+                            <Route path="/admin/billing" element={<BillingPage />} />
                             <Route path="/team" element={<TeamPage />} />
                             <Route path="/profile" element={<ProfilePage />} />
 
