@@ -97,3 +97,23 @@ export function buildFiscalConfigPayload(data: FiscalConfigRequest): FiscalConfi
 
     return payload
 }
+
+export function decodeHtmlEntities(value: string): string {
+    if (!value) {
+        return value
+    }
+
+    const textarea = document.createElement('textarea')
+    textarea.innerHTML = value
+    return textarea.value
+}
+
+export function formatRejectionReason(
+    reason: string | null | undefined
+): string | undefined {
+    if (!reason?.trim()) {
+        return undefined
+    }
+
+    return decodeHtmlEntities(reason.trim())
+}

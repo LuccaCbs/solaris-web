@@ -9,6 +9,7 @@ import type { PaymentMethod, Sale } from '../types/sales'
 import type { Customer } from '../types/customer'
 import LoadingScreen from '../components/LoadingScreen'
 import { useAuth } from '../context/AuthContext'
+import { formatRejectionReason } from '../utils/fiscalUtils'
 
 function getApiErrorMessage(error: unknown) {
     const apiError = error as {
@@ -81,9 +82,10 @@ function SaleDetailPage() {
             )
 
             if (document.status === 'REJECTED') {
+                const rejectionReason = formatRejectionReason(document.rejectionReason)
                 toast.error(
-                    document.rejectionReason
-                        ? `${t('fiscal.invoice.rejected')}: ${document.rejectionReason}`
+                    rejectionReason
+                        ? `${t('fiscal.invoice.rejected')}: ${rejectionReason}`
                         : t('fiscal.invoice.rejected')
                 )
             } else {

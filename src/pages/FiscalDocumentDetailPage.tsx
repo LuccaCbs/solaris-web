@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import { getFiscalDocumentById } from '../api/fiscalService'
 import type { FiscalDocument, TipoComprobante } from '../types/fiscal'
 import LoadingScreen from '../components/LoadingScreen'
+import { formatRejectionReason } from '../utils/fiscalUtils'
 
 function formatTipoComprobante(tipo: TipoComprobante, t: (key: string) => string) {
     const labels: Record<TipoComprobante, string> = {
@@ -122,7 +123,8 @@ function FiscalDocumentDetailPage() {
                         {t('fiscalDocument.rejectionReason')}
                     </p>
                     <p className="mt-2 text-sm text-red-700 dark:text-red-200">
-                        {document.rejectionReason || t('fiscalDocument.rejectionReasonUnknown')}
+                        {formatRejectionReason(document.rejectionReason)
+                            || t('fiscalDocument.rejectionReasonUnknown')}
                     </p>
                 </div>
             )}
