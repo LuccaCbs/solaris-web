@@ -116,6 +116,17 @@ function FiscalDocumentDetailPage() {
                 </div>
             </section>
 
+            {document.status === 'REJECTED' && (
+                <div className="mt-8 rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-4">
+                    <p className="text-sm font-medium text-red-600 dark:text-red-300">
+                        {t('fiscalDocument.rejectionReason')}
+                    </p>
+                    <p className="mt-2 text-sm text-red-700 dark:text-red-200">
+                        {document.rejectionReason || t('fiscalDocument.rejectionReasonUnknown')}
+                    </p>
+                </div>
+            )}
+
             <section className="mt-8 grid gap-4 md:grid-cols-3">
                 <div className="solaris-panel">
                     <p className="text-sm solaris-muted">{t('fiscal.importeNeto')}</p>

@@ -874,6 +874,8 @@
     "pdf": "Comprobante PDF",
     "downloadPdf": "Descargar PDF",
     "pdfPlaceholder": "El PDF estará disponible cuando el proveedor fiscal lo genere.",
+    "rejectionReason": "Motivo del rechazo",
+    "rejectionReasonUnknown": "No se recibió detalle del proveedor. Emití un comprobante nuevo tras actualizar la API para ver el mensaje exacto.",
     "status": {
       "PENDING": "Pendiente",
       "AUTHORIZED": "Autorizado",

@@ -81,7 +81,11 @@ function SaleDetailPage() {
             )
 
             if (document.status === 'REJECTED') {
-                toast.error(t('fiscal.invoice.rejected'))
+                toast.error(
+                    document.rejectionReason
+                        ? `${t('fiscal.invoice.rejected')}: ${document.rejectionReason}`
+                        : t('fiscal.invoice.rejected')
+                )
             } else {
                 toast.success(t('fiscal.invoice.success'))
             }

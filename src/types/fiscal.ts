@@ -45,6 +45,7 @@ export type FiscalDocument = {
     importeIva: number
     importeTotal: number
     status: FiscalDocumentStatus
+    rejectionReason?: string | null
     pdfUrl: string | null
     createdAt: string
 }

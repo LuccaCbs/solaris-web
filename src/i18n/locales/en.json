@@ -848,6 +848,8 @@
     "pdf": "Invoice PDF",
     "downloadPdf": "Download PDF",
     "pdfPlaceholder": "PDF will be available when the fiscal provider generates it.",
+    "rejectionReason": "Rejection reason",
+    "rejectionReasonUnknown": "No detail was returned by the provider. Issue a new invoice after updating the API to see the exact message.",
     "status": {
       "PENDING": "Pending",
       "AUTHORIZED": "Authorized",
