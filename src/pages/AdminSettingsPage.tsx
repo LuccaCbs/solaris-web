@@ -8,7 +8,11 @@ import type { FiscalProviderType, CondicionIva } from '../types/fiscal'
 import type { SystemSettings } from '../types/systemSettings'
 import PasswordInput from '../components/PasswordInput'
 import LoadingScreen from '../components/LoadingScreen'
-import { formatCuitForDisplay, normalizeCuit } from '../utils/fiscalUtils'
+import {
+    formatCuitForDisplay,
+    normalizeCuit,
+    parseTusFacturasCredentials,
+} from '../utils/fiscalUtils'
 
 function getApiErrorMessage(error: unknown) {
     const apiError = error as {
@@ -54,6 +58,7 @@ function AdminSettingsPage() {
     const [fiscalProvider, setFiscalProvider] = useState<FiscalProviderType>('MOCK')
     const [fiscalApiKey, setFiscalApiKey] = useState('')
     const [hasFiscalApiKey, setHasFiscalApiKey] = useState(false)
+    const [editingFiscalApiKey, setEditingFiscalApiKey] = useState(false)
     const [savingFiscal, setSavingFiscal] = useState(false)
 
     useEffect(() => {
@@ -76,6 +81,8 @@ function AdminSettingsPage() {
                     )
                     setFiscalProvider(fiscal.fiscalProvider ?? 'MOCK')
                     setHasFiscalApiKey(fiscal.hasFiscalApiKey)
+                    setEditingFiscalApiKey(!fiscal.hasFiscalApiKey)
+                    setFiscalApiKey('')
                 }
             } catch {
                 toast.error(t('adminSettings.loadError'))
@@ -107,6 +114,13 @@ function AdminSettingsPage() {
             return
         }
 
+        const trimmedApiKey = fiscalApiKey.trim()
+
+        if (trimmedApiKey && fiscalProvider === 'TUSFACTURAS' && !parseTusFacturasCredentials(trimmedApiKey)) {
+            toast.error(t('adminSettings.fiscal.credentialsInvalid'))
+            return
+        }
+
         setSavingFiscal(true)
 
         try {
@@ -116,7 +130,7 @@ function AdminSettingsPage() {
                 condicionIva: fiscalCondicionIva,
                 fiscalPuntoVenta: fiscalPuntoVenta ? Number(fiscalPuntoVenta) : null,
                 fiscalProvider,
-                fiscalApiKey: fiscalApiKey.trim() || undefined,
+                fiscalApiKey: trimmedApiKey || undefined,
             })
 
             setHasFiscalApiKey(updated.hasFiscalApiKey)
@@ -128,6 +142,7 @@ function AdminSettingsPage() {
             )
             setFiscalProvider(updated.fiscalProvider ?? 'MOCK')
             setFiscalApiKey('')
+            setEditingFiscalApiKey(!updated.hasFiscalApiKey)
             toast.success(t('adminSettings.fiscal.updateSuccess'))
         } catch (error) {
             toast.error(getApiErrorMessage(error) || t('adminSettings.fiscal.updateError'))
@@ -395,20 +410,68 @@ function AdminSettingsPage() {
                             </select>
                         </div>
 
-                        <div>
+                        <div className="md:col-span-2">
                             <label className="text-sm solaris-muted">
                                 {t('adminSettings.fiscal.apiKey')}
                             </label>
-                            <PasswordInput
-                                value={fiscalApiKey}
-                                onChange={setFiscalApiKey}
-                                placeholder={
-                                    hasFiscalApiKey
-                                        ? t('adminSettings.fiscal.keepApiKeyPlaceholder')
-                                        : t('adminSettings.fiscal.setApiKeyPlaceholder')
-                                }
-                                className="solaris-input mt-2 w-full"
-                            />
+
+                            {hasFiscalApiKey && !editingFiscalApiKey ? (
+                                <div className="mt-2 space-y-3">
+                                    <div className="flex flex-wrap items-center gap-3">
+                                        <span className="rounded-lg bg-green-500/10 px-3 py-1 text-sm font-medium text-green-500 dark:text-green-300">
+                                            {t('adminSettings.fiscal.credentialsConfigured')}
+                                        </span>
+                                        <span className="text-sm solaris-subtle">
+                                            {t('adminSettings.fiscal.credentialsSavedHint')}
+                                        </span>
+                                    </div>
+
+                                    <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 font-mono text-sm tracking-widest text-slate-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400">
+                                        ••••••••••
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setEditingFiscalApiKey(true)
+                                            setFiscalApiKey('')
+                                        }}
+                                        className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                                    >
+                                        {t('adminSettings.fiscal.replaceCredentials')}
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="mt-2 space-y-2">
+                                    <textarea
+                                        value={fiscalApiKey}
+                                        onChange={(event) => setFiscalApiKey(event.target.value)}
+                                        rows={4}
+                                        spellCheck={false}
+                                        placeholder={t('adminSettings.fiscal.setApiKeyPlaceholder')}
+                                        className="solaris-input w-full font-mono text-sm"
+                                    />
+
+                                    <p className="text-sm solaris-subtle">
+                                        {hasFiscalApiKey
+                                            ? t('adminSettings.fiscal.keepApiKeyPlaceholder')
+                                            : t('adminSettings.fiscal.apiKeyHelp')}
+                                    </p>
+
+                                    {hasFiscalApiKey && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setEditingFiscalApiKey(false)
+                                                setFiscalApiKey('')
+                                            }}
+                                            className="text-sm font-medium text-slate-500 hover:text-slate-300"
+                                        >
+                                            {t('adminSettings.fiscal.cancelReplaceCredentials')}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
 

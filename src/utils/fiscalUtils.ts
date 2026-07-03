@@ -49,11 +49,51 @@ export function buildCustomerPayload(data: CustomerRequest): CustomerRequest {
     }
 }
 
+export type TusFacturasCredentials = {
+    apikey: string
+    apitoken: string
+    usertoken: string
+}
+
+export function parseTusFacturasCredentials(
+    value: string
+): TusFacturasCredentials | null {
+    const trimmed = value.trim()
+
+    if (!trimmed.startsWith('{')) {
+        return null
+    }
+
+    try {
+        const parsed = JSON.parse(trimmed) as Record<string, unknown>
+        const apikey = typeof parsed.apikey === 'string' ? parsed.apikey.trim() : ''
+        const apitoken = typeof parsed.apitoken === 'string' ? parsed.apitoken.trim() : ''
+        const usertoken = typeof parsed.usertoken === 'string' ? parsed.usertoken.trim() : ''
+
+        if (!apikey || !apitoken || !usertoken) {
+            return null
+        }
+
+        return { apikey, apitoken, usertoken }
+    } catch {
+        return null
+    }
+}
+
 export function buildFiscalConfigPayload(data: FiscalConfigRequest): FiscalConfigRequest {
-    return {
+    const payload: FiscalConfigRequest = {
         ...data,
         cuit: data.cuit != null ? normalizeCuit(data.cuit) || undefined : undefined,
         razonSocial: data.razonSocial?.trim() || undefined,
-        fiscalApiKey: data.fiscalApiKey?.trim() || undefined,
     }
+
+    const trimmedApiKey = data.fiscalApiKey?.trim()
+
+    if (trimmedApiKey) {
+        payload.fiscalApiKey = trimmedApiKey
+    } else {
+        delete payload.fiscalApiKey
+    }
+
+    return payload
 }
