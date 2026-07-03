@@ -1070,6 +1070,7 @@
     "paymentFailure": "Le paiement n'a pas été finalisé.",
     "upgrading": "Traitement...",
     "upgradeError": "Impossible de démarrer le paiement",
+    "forbidden": "Permission refusée. Déconnectez-vous et reconnectez-vous.",
     "checkoutPending": "Le paiement sera bientôt disponible.",
     "mockCheckoutHint": "Mode développement : vous pouvez simuler l'achat ci-dessous.",
     "mockCheckoutDescription": "Simuler l'achat d'un magasin supplémentaire ({{price}} / mois).",

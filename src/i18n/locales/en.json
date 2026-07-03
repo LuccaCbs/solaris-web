@@ -1206,6 +1206,7 @@
     "paymentFailure": "Payment was not completed.",
     "upgrading": "Processing...",
     "upgradeError": "Could not start checkout",
+    "forbidden": "You do not have permission. Try signing out and signing in again.",
     "checkoutPending": "Payment checkout will be available soon.",
     "mockCheckoutHint": "Development mode: you can simulate the purchase below.",
     "mockCheckoutDescription": "Simulate purchase of 1 store slot ({{price}} / month).",

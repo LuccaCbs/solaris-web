@@ -1069,6 +1069,7 @@
     "paymentFailure": "El pagament no s'ha completat.",
     "upgrading": "Processant...",
     "upgradeError": "No s'ha pogut iniciar el pagament",
+    "forbidden": "No tens permisos. Prova de tancar sessió i tornar a entrar.",
     "checkoutPending": "El pagament estarà disponible aviat.",
     "mockCheckoutHint": "Mode desenvolupament: pots simular la compra a sota.",
     "mockCheckoutDescription": "Simular compra d'1 sucursal addicional ({{price}} / mes).",

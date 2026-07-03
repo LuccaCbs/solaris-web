@@ -173,8 +173,14 @@ function BillingPage() {
                 toast.error(checkoutData.message || t('billing.checkoutPending'))
             }
         } catch (error) {
+            const status = (error as { response?: { status?: number } }).response?.status
             const message = getApiErrorMessage(error)
-            toast.error(message || t('billing.upgradeError'))
+
+            if (status === 403) {
+                toast.error(message || t('billing.forbidden'))
+            } else {
+                toast.error(message || t('billing.upgradeError'))
+            }
         } finally {
             setPurchasingAddon(false)
         }

@@ -1232,6 +1232,7 @@
     "paymentFailure": "El pago no se completó.",
     "upgrading": "Procesando...",
     "upgradeError": "No se pudo iniciar el checkout",
+    "forbidden": "No tenés permisos. Probá cerrar sesión e iniciar sesión de nuevo.",
     "checkoutPending": "El checkout de pago estará disponible pronto.",
     "mockCheckoutHint": "Modo desarrollo: podés simular la compra abajo.",
     "mockCheckoutDescription": "Simular compra de 1 sucursal adicional ({{price}} / mes).",
