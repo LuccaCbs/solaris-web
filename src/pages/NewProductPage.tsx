@@ -85,9 +85,13 @@ function NewProductPage() {
 
             toast.success(t('productForm.createSuccess'))
             navigate('/products')
-        } catch {
-            setError(t('productForm.createError'))
-            toast.error(t('productForm.createError'))
+        } catch (error: unknown) {
+            const message =
+                (error as { response?: { data?: { message?: string } } }).response?.data
+                    ?.message ?? t('productForm.createError')
+
+            setError(message)
+            toast.error(message)
         } finally {
             setCreating(false)
         }
