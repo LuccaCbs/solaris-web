@@ -1,15 +1,29 @@
 import { useEffect, useState } from 'react'
 
-type Theme = 'dark' | 'light'
+export type Theme = 'dark' | 'light'
+
+const THEME_STORAGE_KEY = 'solaris_theme'
+
+export function getStoredTheme(): Theme {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY)
+
+    return stored === 'light' ? 'light' : 'dark'
+}
+
+export function applyTheme(theme: Theme) {
+    localStorage.setItem(THEME_STORAGE_KEY, theme)
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+}
+
+export function initTheme() {
+    applyTheme(getStoredTheme())
+}
 
 export function useTheme() {
-    const [theme, setTheme] = useState<Theme>(() => {
-        return (localStorage.getItem('solaris_theme') as Theme) || 'dark'
-    })
+    const [theme, setTheme] = useState<Theme>(() => getStoredTheme())
 
     useEffect(() => {
-        localStorage.setItem('solaris_theme', theme)
-        document.documentElement.classList.toggle('dark', theme === 'dark')
+        applyTheme(theme)
     }, [theme])
 
     function toggleTheme() {

@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { registerUser } from '../api/authService'
 import PasswordInput from '../components/PasswordInput'
+import AuthPageLayout, { AUTH_FORM_CLASS } from '../components/AuthPageLayout'
 import { useTranslation } from 'react-i18next'
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast'
 
 function RegisterPage() {
     const navigate = useNavigate()
@@ -45,21 +46,18 @@ function RegisterPage() {
     }
 
     return (
-        <main className="min-h-screen bg-black text-white flex items-center justify-center px-4">
-            <form
-                onSubmit={handleSubmit}
-                className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl"
-            >
+        <AuthPageLayout>
+            <form onSubmit={handleSubmit} className={`${AUTH_FORM_CLASS} p-8`}>
                 <h1 className="text-3xl font-bold">{t('auth.register.title')}</h1>
-                <p className="mt-2 text-sm text-slate-400">
+                <p className="mt-2 text-sm solaris-muted">
                     {t('auth.register.description')}
                 </p>
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                     <div>
-                        <label className="text-sm text-slate-400">{t('auth.register.firstname')}</label>
+                        <label className="text-sm solaris-muted">{t('auth.register.firstname')}</label>
                         <input
-                            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                            className="solaris-input mt-2 w-full"
                             value={firstname}
                             onChange={(e) => setFirstname(e.target.value)}
                             required
@@ -67,9 +65,9 @@ function RegisterPage() {
                     </div>
 
                     <div>
-                        <label className="text-sm text-slate-400">{t('auth.register.lastname')}</label>
+                        <label className="text-sm solaris-muted">{t('auth.register.lastname')}</label>
                         <input
-                            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                            className="solaris-input mt-2 w-full"
                             value={lastname}
                             onChange={(e) => setLastname(e.target.value)}
                             required
@@ -78,9 +76,9 @@ function RegisterPage() {
                 </div>
 
                 <div className="mt-4">
-                    <label className="text-sm text-slate-400">{t('auth.register.email')}</label>
+                    <label className="text-sm solaris-muted">{t('auth.register.email')}</label>
                     <input
-                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                        className="solaris-input mt-2 w-full"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="email"
@@ -89,46 +87,45 @@ function RegisterPage() {
                 </div>
 
                 <div className="mt-4">
-                    <label className="text-sm text-slate-400">{t('auth.register.password')}</label>
+                    <label className="text-sm solaris-muted">{t('auth.register.password')}</label>
                     <PasswordInput
                         required
                         value={password}
                         onChange={setPassword}
-                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                        className="solaris-input mt-2 w-full"
                     />
                 </div>
 
                 <div className="mt-4">
-                    <label className="text-sm text-slate-400">{t('auth.register.confirmPassword')}</label>
+                    <label className="text-sm solaris-muted">{t('auth.register.confirmPassword')}</label>
                     <PasswordInput
                         required
                         value={confirmPassword}
                         onChange={setConfirmPassword}
-                        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+                        className="solaris-input mt-2 w-full"
                     />
                 </div>
 
-                {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
+                {error && <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
                 <button
                     disabled={loading}
-                    className="mt-6 w-full rounded-xl bg-blue-600 py-3 font-semibold hover:bg-blue-500 disabled:opacity-60"
+                    className="mt-6 w-full rounded-xl bg-blue-600 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                 >
-                    {
-                        loading
-                            ? t('auth.register.creatingAccount')
-                            : t('auth.register.createAccount')
-                    }
+                    {loading ? t('auth.register.creatingAccount') : t('auth.register.createAccount')}
                 </button>
 
-                <p className="mt-6 text-center text-sm text-slate-400">
+                <p className="mt-6 text-center text-sm solaris-muted">
                     {t('auth.register.alreadyHaveAccount')}{' '}
-                    <Link to="/login" className="font-semibold text-blue-400 hover:text-blue-300">
+                    <Link
+                        to="/login"
+                        className="font-semibold text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
                         {t('auth.register.login')}
                     </Link>
                 </p>
             </form>
-        </main>
+        </AuthPageLayout>
     )
 }
 
