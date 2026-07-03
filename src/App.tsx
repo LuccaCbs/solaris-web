@@ -1,11 +1,14 @@
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext'
+import { EntitlementsProvider } from './context/EntitlementsContext'
 import AppRouter from './routes/AppRouter'
 
 function App() {
   return (
       <AuthProvider>
-        <AppRouter />
+        <EntitlementsProvider>
+          <AppRouter />
+        </EntitlementsProvider>
         <Toaster
             position="top-right"
             toastOptions={{

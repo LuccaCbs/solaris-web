@@ -1254,7 +1254,22 @@
     "loadError": "No se pudo cargar la información de facturación",
     "noAccess": "No tenés permisos para ver la facturación.",
     "plans": {
+      "POS": "POS",
+      "BUSINESS": "Business",
+      "SCALE": "Scale",
+      "INTERNAL": "Interno",
       "STARTER": "Starter"
+    },
+    "modulesTitle": "Módulos activos",
+    "modules": {
+      "CORE": "POS básico",
+      "INVENTORY": "Inventario",
+      "CUSTOMERS": "Clientes",
+      "FISCAL": "E-factura",
+      "TEAM": "Equipo",
+      "MULTI_STORE": "Multi-sucursal",
+      "AUDIT": "Auditoría",
+      "ANALYTICS": "Analítica"
     },
     "statuses": {
       "TRIALING": "Prueba",

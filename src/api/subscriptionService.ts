@@ -1,10 +1,28 @@
 import axiosClient from './axiosClient'
 import type {
     CreateStorePayload,
+    ModuleCode,
     OrganizationSubscription,
     StoreAddonCheckout,
 } from '../types/subscription'
 import type { OrganizationStore } from './organizationService'
+
+export type OrganizationEntitlements = {
+    activeModules: ModuleCode[]
+    planModules: ModuleCode[]
+    addonModules: ModuleCode[]
+    promoModules: ModuleCode[]
+}
+
+export async function getOrganizationEntitlements(
+    orgId: number
+): Promise<OrganizationEntitlements> {
+    const response = await axiosClient.get<OrganizationEntitlements>(
+        `/organizations/${orgId}/entitlements`
+    )
+
+    return response.data
+}
 
 export async function getOrganizationSubscription(
     orgId: number

@@ -242,7 +242,10 @@ function BillingPage() {
                             <div>
                                 <p className="text-xs uppercase tracking-wide text-slate-500">{t('billing.plan')}</p>
                                 <p className="mt-1 font-medium text-slate-950 dark:text-white">
-                                    {t(`billing.plans.${subscription.planCode}`)}
+                                    {subscription.planDisplayName
+                                        || t(`billing.plans.${subscription.planCode}`, {
+                                            defaultValue: subscription.planCode,
+                                        })}
                                 </p>
                             </div>
 
@@ -272,6 +275,24 @@ function BillingPage() {
                             <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">
                                 {t('billing.extraStores', { count: subscription.extraStoresPurchased })}
                             </p>
+                        )}
+
+                        {(subscription.activeModules?.length ?? 0) > 0 && (
+                            <div className="mt-6">
+                                <p className="text-xs uppercase tracking-wide text-slate-500">
+                                    {t('billing.modulesTitle')}
+                                </p>
+                                <div className="mt-2 flex flex-wrap gap-2">
+                                    {subscription.activeModules.map((moduleCode) => (
+                                        <span
+                                            key={moduleCode}
+                                            className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                                        >
+                                            {t(`billing.modules.${moduleCode}`, { defaultValue: moduleCode })}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
                         )}
 
                         {storeLimitReached && canManageBilling && (

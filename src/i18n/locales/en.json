@@ -1228,7 +1228,22 @@
     "loadError": "Could not load billing information",
     "noAccess": "You do not have permission to view billing.",
     "plans": {
+      "POS": "POS",
+      "BUSINESS": "Business",
+      "SCALE": "Scale",
+      "INTERNAL": "Internal",
       "STARTER": "Starter"
+    },
+    "modulesTitle": "Active modules",
+    "modules": {
+      "CORE": "Core POS",
+      "INVENTORY": "Inventory",
+      "CUSTOMERS": "Customers",
+      "FISCAL": "E-invoicing",
+      "TEAM": "Team",
+      "MULTI_STORE": "Multi-store",
+      "AUDIT": "Audit",
+      "ANALYTICS": "Analytics"
     },
     "statuses": {
       "TRIALING": "Trial",

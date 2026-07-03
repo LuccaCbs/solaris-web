@@ -1,4 +1,14 @@
-export type SubscriptionPlanCode = 'STARTER'
+export type SubscriptionPlanCode = 'POS' | 'BUSINESS' | 'SCALE' | 'INTERNAL' | 'STARTER'
+
+export type ModuleCode =
+    | 'CORE'
+    | 'INVENTORY'
+    | 'CUSTOMERS'
+    | 'FISCAL'
+    | 'TEAM'
+    | 'MULTI_STORE'
+    | 'AUDIT'
+    | 'ANALYTICS'
 
 export type SubscriptionStatus = 'TRIALING' | 'ACTIVE' | 'PAST_DUE' | 'CANCELED'
 
@@ -6,6 +16,7 @@ export type BillingProvider = 'NONE' | 'MERCADOPAGO' | 'STRIPE'
 
 export type OrganizationSubscription = {
     planCode: SubscriptionPlanCode
+    planDisplayName?: string
     status: SubscriptionStatus
     maxStores: number
     extraStoresPurchased: number
@@ -16,6 +27,10 @@ export type OrganizationSubscription = {
     trialEndsAt?: string | null
     currentPeriodStart?: string | null
     currentPeriodEnd?: string | null
+    activeModules: ModuleCode[]
+    planModules: ModuleCode[]
+    addonModules: ModuleCode[]
+    promoModules: ModuleCode[]
 }
 
 export type StoreAddonCheckout = {

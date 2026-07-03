@@ -24,7 +24,9 @@ import {
 } from 'lucide-react'
 import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useAuth } from '../context/AuthContext'
+import { useEntitlements } from '../hooks/useEntitlements'
 import { useTheme } from '../utils/useTheme'
+import type { ModuleCode } from '../types/subscription'
 import { getSystemSettings } from '../api/systemSettingsService'
 import { getOrganization } from '../api/organizationService'
 import { useTranslation } from 'react-i18next'
@@ -34,6 +36,14 @@ import type { OrganizationRole } from '../types/auth'
 
 import logoSilver from '../assets/logo/solaris-white-full-logo.png'
 import logoGold from '../assets/logo/solaris-black-full-logo.png'
+
+type NavItem = {
+    label: string
+    to: string
+    icon: React.ElementType
+    minimumRole: OrganizationRole
+    requiredModule?: ModuleCode | null
+}
 
 function AppLayout() {
     const navigate = useNavigate()
@@ -54,15 +64,9 @@ function AppLayout() {
         user,
         setOrgName,
     } = useAuth()
+    const { hasModule } = useEntitlements()
 
     const logoImage = theme === 'dark' ? logoSilver : logoGold
-
-    type NavItem = {
-        label: string
-        to: string
-        icon: React.ElementType
-        minimumRole: OrganizationRole
-    }
 
     const allNavItems: NavItem[] = [
         { label: t('nav.dashboard'), to: '/', icon: BarChart3, minimumRole: 'CASHIER' },
@@ -72,38 +76,71 @@ function AppLayout() {
             to: '/supplier-orders',
             icon: ClipboardList,
             minimumRole: 'MANAGER',
+            requiredModule: 'INVENTORY',
         },
-        { label: t('nav.products'), to: '/products', icon: Boxes, minimumRole: 'MANAGER' },
+        {
+            label: t('nav.products'),
+            to: '/products',
+            icon: Boxes,
+            minimumRole: 'MANAGER',
+            requiredModule: 'INVENTORY',
+        },
         {
             label: t('nav.merchandiseIntake'),
             to: '/stock/restock',
             icon: PackagePlus,
             minimumRole: 'MANAGER',
+            requiredModule: 'INVENTORY',
         },
-        { label: t('nav.categories'), to: '/categories', icon: FolderTree, minimumRole: 'MANAGER' },
-        { label: t('nav.suppliers'), to: '/suppliers', icon: Truck, minimumRole: 'MANAGER' },
-        { label: t('nav.customers'), to: '/customers', icon: Users, minimumRole: 'MANAGER' },
+        {
+            label: t('nav.categories'),
+            to: '/categories',
+            icon: FolderTree,
+            minimumRole: 'MANAGER',
+            requiredModule: 'INVENTORY',
+        },
+        {
+            label: t('nav.suppliers'),
+            to: '/suppliers',
+            icon: Truck,
+            minimumRole: 'MANAGER',
+            requiredModule: 'INVENTORY',
+        },
+        {
+            label: t('nav.customers'),
+            to: '/customers',
+            icon: Users,
+            minimumRole: 'MANAGER',
+            requiredModule: 'CUSTOMERS',
+        },
         {
             label: t('nav.movementHistory'),
             to: '/stock-movements',
             icon: History,
             minimumRole: 'MANAGER',
+            requiredModule: 'INVENTORY',
         },
         {
             label: t('nav.auditLogs'),
             to: '/audit-logs',
             icon: ScrollText,
             minimumRole: 'ADMIN',
+            requiredModule: 'AUDIT',
         },
         {
             label: t('nav.team'),
             to: '/team',
             icon: UsersRound,
             minimumRole: 'ADMIN',
+            requiredModule: 'TEAM',
         },
     ]
 
-    const navItems = allNavItems.filter((item) => hasMinimumRole(item.minimumRole))
+    const navItems = allNavItems.filter(
+        (item) =>
+            hasMinimumRole(item.minimumRole)
+            && (item.requiredModule == null || hasModule(item.requiredModule))
+    )
     const canAccessAdminSettings = hasMinimumRole('ADMIN')
     const organizationLabel = orgName ?? (orgId ? t('auth.organization.fallbackName', { id: orgId }) : null)
 
