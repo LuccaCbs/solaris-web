@@ -60,7 +60,7 @@ function QuickRestockPage() {
         setSaving(true)
 
         try {
-            const movement = await createStockMovement({
+            await createStockMovement({
                 productId: selectedProduct.id,
                 type: 'IN',
                 quantity: parsedQuantity,
