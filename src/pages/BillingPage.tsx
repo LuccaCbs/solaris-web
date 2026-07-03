@@ -65,7 +65,7 @@ function BillingPage() {
     const [storeAddress, setStoreAddress] = useState('')
     const [storeAfipPuntoVenta, setStoreAfipPuntoVenta] = useState('')
 
-    const canManageBilling = hasMinimumRole('OWNER')
+    const canManageBilling = hasMinimumRole('ADMIN')
     const canViewBilling = hasMinimumRole('ADMIN')
 
     async function loadBilling() {
@@ -172,8 +172,9 @@ function BillingPage() {
             } else {
                 toast.error(checkoutData.message || t('billing.checkoutPending'))
             }
-        } catch {
-            toast.error(t('billing.upgradeError'))
+        } catch (error) {
+            const message = getApiErrorMessage(error)
+            toast.error(message || t('billing.upgradeError'))
         } finally {
             setPurchasingAddon(false)
         }

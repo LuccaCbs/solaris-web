@@ -12,7 +12,7 @@ export function hasMinimumRole(
     minimumRole: OrganizationRole
 ): boolean {
     if (!userRole) {
-        return true
+        return false
     }
 
     return ROLE_LEVEL[userRole] >= ROLE_LEVEL[minimumRole]
