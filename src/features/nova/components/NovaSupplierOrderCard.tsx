@@ -4,7 +4,7 @@ type SupplierOrderItem = {
     id: number
     productId: number
     productName: string
-    productSku: string
+    productBarcode: string
     quantity: number
 }
 
@@ -57,7 +57,7 @@ export function NovaSupplierOrderCard({ order }: NovaSupplierOrderCardProps) {
                             </p>
 
                             <p className="text-xs text-slate-500 dark:text-slate-400">
-                                {item.productSku}
+                                {item.productBarcode}
                             </p>
                         </div>
 

@@ -228,7 +228,7 @@ function ImportProductsPage() {
                             <tr>
                                 {[
                                     t('productImport.columns.name'),
-                                    t('productImport.columns.sku'),
+                                    t('productImport.columns.barcode'),
                                     t('productImport.columns.price'),
                                     t('productImport.columns.stockQuantity'),
                                     t('productImport.columns.category'),
@@ -262,9 +262,9 @@ function ImportProductsPage() {
 
                                     <td className="px-4 py-3">
                                         <input
-                                            value={item.sku}
+                                            value={item.barcode}
                                             onChange={(event) =>
-                                                updatePreviewItem(index, 'sku', event.target.value)
+                                                updatePreviewItem(index, 'barcode', event.target.value)
                                             }
                                             className="solaris-input w-full"
                                         />

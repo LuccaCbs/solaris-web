@@ -4,7 +4,7 @@ export type SupplierOrderItem = {
     id: number
     productId: number
     productName: string
-    productSku: string
+    productBarcode: string
     quantity: number
 }
 

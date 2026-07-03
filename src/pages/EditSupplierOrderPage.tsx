@@ -61,7 +61,7 @@ function EditSupplierOrderPage() {
                 setItems(
                     order.items.map((item) => ({
                         productId: String(item.productId),
-                        productSearch: `${item.productName} · ${item.productSku}`,
+                        productSearch: `${item.productName} · ${item.productBarcode}`,
                         quantity: String(item.quantity),
                     })),
                 )
@@ -151,7 +151,7 @@ function EditSupplierOrderPage() {
                     ? {
                         ...item,
                         productId: String(product.id),
-                        productSearch: `${product.name} · ${product.sku}`,
+                        productSearch: `${product.name} · ${product.barcode}`,
                     }
                     : item,
             ),

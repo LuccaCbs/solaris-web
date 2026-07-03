@@ -198,7 +198,7 @@
     "description": "Gestiona productos de inventario y stock.",
     "importProducts": "Importar productos",
     "newProduct": "Nuevo producto",
-    "searchPlaceholder": "Buscar por nombre o SKU...",
+    "searchPlaceholder": "Buscar por nombre o código de barras...",
     "allCategories": "Todas las categorías",
     "allStockStatus": "Todos los estados",
     "lowStockOnly": "Solo bajo stock",
@@ -221,7 +221,7 @@
     },
     "table": {
       "product": "Producto",
-      "sku": "SKU",
+      "barcode": "Código de barras",
       "category": "Categoría",
       "price": "Precio",
       "ivaRate": "IVA",
@@ -242,7 +242,31 @@
       "restock": "Reponer",
       "edit": "Editar",
       "deactivate": "Dar de baja",
-      "activate": "Activar"
+      "activate": "Activar",
+      "printLabel": "Imprimir etiqueta"
+    }
+  },
+  "barcode": {
+    "scan": {
+      "ready": "Lector de código de barras activo. Escaneá un producto para buscarlo.",
+      "readySale": "Lector activo. Escaneá productos para agregarlos a la venta.",
+      "found": "Producto encontrado: {{name}}",
+      "addedToSale": "{{name}} agregado a la venta",
+      "notFound": "No se encontró un producto con ese código de barras",
+      "inactiveProduct": "El producto escaneado está inactivo"
+    },
+    "print": {
+      "title": "Imprimir etiquetas",
+      "subtitle": "{{count}} producto(s) seleccionado(s)",
+      "copies": "Copias por producto",
+      "labelSize": "Tamaño de etiqueta",
+      "showPrice": "Mostrar precio",
+      "action": "Imprimir",
+      "sizes": {
+        "thermal58": "Térmica 58 mm",
+        "thermal80": "Térmica 80 mm",
+        "sheet": "Hoja A4 / adhesivas"
+      }
     }
   },
   "categories": {
@@ -276,8 +300,15 @@
     "newTitle": "Nuevo producto",
     "newDescription": "Crea un nuevo producto de inventario.",
     "nameRequired": "Nombre *",
-    "sku": "SKU",
-    "skuPlaceholder": "Dejar vacío para generar automáticamente",
+    "barcode": "Código de barras",
+    "barcodePlaceholder": "Dejar vacío para generar EAN-13 interno automáticamente",
+    "barcodeFormat": "Formato de código",
+    "barcodeFormats": {
+      "EAN_13": "EAN-13",
+      "UPC_A": "UPC-A",
+      "CODE_128": "Code 128",
+      "CODE_39": "Code 39"
+    },
     "priceRequired": "Precio *",
     "stockQuantityRequired": "Cantidad en stock *",
     "category": "Categoría",
@@ -298,7 +329,6 @@
     "editTitle": "Editar producto",
     "editDescription": "Actualiza la información del producto.",
     "loadProductError": "No se pudo cargar el producto",
-    "emptySkuHelp": "Déjalo vacío para generar automáticamente un nuevo SKU del sistema.",
     "lowStockHelp": "Déjalo vacío para usar el umbral global de bajo stock.",
     "ivaRate": "Alícuota IVA",
     "ivaRates": {
@@ -463,7 +493,7 @@
     "error": "No se pudieron importar los productos",
     "columns": {
       "name": "Nombre",
-      "sku": "SKU",
+      "barcode": "Código de barras",
       "price": "Precio",
       "stockQuantity": "Cantidad en stock",
       "category": "Categoría",

@@ -63,6 +63,81 @@
     background: rgb(51 65 85); /* slate-700 */
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-    background: rgb(71 85 105); /* slate-600 */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .barcode-print-root,
+  .barcode-print-root * {
+    visibility: visible;
+  }
+
+  .barcode-print-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.barcode-print-root {
+  display: grid;
+  gap: 8px;
+}
+
+.barcode-label {
+  border: 1px dashed #cbd5e1;
+  padding: 8px;
+  text-align: center;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.barcode-label-name {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.barcode-label-price {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.barcode-label-code {
+  font-size: 11px;
+  margin: 4px 0 0;
+}
+
+.barcode-label-svg {
+  width: 100%;
+  height: auto;
+}
+
+.barcode-label-58 {
+  grid-template-columns: 1fr;
+}
+
+.barcode-label-58 .barcode-label {
+  width: 58mm;
+}
+
+.barcode-label-80 {
+  grid-template-columns: 1fr;
+}
+
+.barcode-label-80 .barcode-label {
+  width: 80mm;
+}
+
+.barcode-label-sheet {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media print {
+  @page {
+    margin: 8mm;
+  }
 }

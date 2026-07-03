@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
-import { getProducts } from '../api/productService'
+import { getProducts, getProductByBarcode } from '../api/productService'
 import { createSale } from '../api/salesService'
 import type { Product } from '../types/product'
 import type { PaymentMethod, SaleItemType } from '../types/sales'
 import { getCurrentCashRegister } from '../api/cashRegisterService'
+import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
 
 type SaleFormItem = {
     type: SaleItemType
@@ -157,6 +158,73 @@ function NewSalePage() {
         )
     }
 
+    function addScannedProduct(product: Product) {
+        setItems((current) => {
+            const existingIndex = current.findIndex(
+                (item) =>
+                    item.type === 'PRODUCT' &&
+                    item.productId === String(product.id),
+            )
+
+            if (existingIndex >= 0) {
+                return current.map((item, index) =>
+                    index === existingIndex
+                        ? {
+                            ...item,
+                            quantity: String(Number(item.quantity) + 1),
+                        }
+                        : item,
+                )
+            }
+
+            const emptyIndex = current.findIndex(
+                (item) => item.type === 'PRODUCT' && !item.productId,
+            )
+
+            if (emptyIndex >= 0) {
+                return current.map((item, index) =>
+                    index === emptyIndex
+                        ? {
+                            ...item,
+                            productId: String(product.id),
+                            productSearch: product.name,
+                            quantity: '1',
+                        }
+                        : item,
+                )
+            }
+
+            return [
+                ...current,
+                {
+                    ...emptyProductItem,
+                    productId: String(product.id),
+                    productSearch: product.name,
+                },
+            ]
+        })
+    }
+
+    async function handleBarcodeScan(code: string) {
+        try {
+            const product =
+                products.find((item) => item.barcode === code) ??
+                (await getProductByBarcode(code))
+
+            if (product.active === false) {
+                toast.error(t('barcode.scan.inactiveProduct'))
+                return
+            }
+
+            addScannedProduct(product)
+            toast.success(t('barcode.scan.addedToSale', { name: product.name }))
+        } catch {
+            toast.error(t('barcode.scan.notFound'))
+        }
+    }
+
+    useBarcodeScanner({ onScan: handleBarcodeScan })
+
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
 
@@ -250,6 +318,10 @@ function NewSalePage() {
                 {t('saleForm.description')}
             </p>
 
+            <div className="mt-4 rounded-xl border border-dashed border-blue-500/40 bg-blue-500/5 px-4 py-3 text-sm text-blue-700 dark:text-blue-200">
+                {t('barcode.scan.readySale')}
+            </div>
+
             <form
                 onSubmit={handleSubmit}
                 className="mt-8 max-w-5xl space-y-6"
@@ -331,7 +403,7 @@ function NewSalePage() {
 
                                 return [
                                     product.name,
-                                    product.sku,
+                                    product.barcode,
                                     product.categoryName,
                                 ]
                                     .join(' ')
@@ -398,7 +470,7 @@ function NewSalePage() {
                                                                     </p>
 
                                                                     <p className="text-sm solaris-muted">
-                                                                        {product.sku} · {product.categoryName}
+                                                                        {product.barcode} · {product.categoryName}
                                                                     </p>
                                                                 </div>
 

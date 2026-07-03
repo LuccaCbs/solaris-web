@@ -4,14 +4,15 @@ import { useTranslation } from 'react-i18next'
 import { getCategories } from '../api/categoryService'
 import { getProductById, updateProduct } from '../api/productService'
 import type { Category } from '../types/category'
-import { PRODUCT_IVA_RATES, type ProductIvaRate } from '../types/product'
+import { PRODUCT_IVA_RATES, BARCODE_FORMATS, type BarcodeFormat, type ProductIvaRate } from '../types/product'
 import toast from 'react-hot-toast'
 import LoadingScreen from '../components/LoadingScreen'
 
 type ProductFormState = {
     name: string
     description: string
-    sku: string
+    barcode: string
+    barcodeFormat: BarcodeFormat
     price: string
     categoryId: string
     lowStockThreshold: string
@@ -30,7 +31,8 @@ function EditProductPage() {
     const [form, setForm] = useState<ProductFormState>({
         name: '',
         description: '',
-        sku: '',
+        barcode: '',
+        barcodeFormat: 'EAN_13',
         price: '',
         categoryId: '',
         lowStockThreshold: '',
@@ -50,7 +52,8 @@ function EditProductPage() {
                 setForm({
                     name: product.name,
                     description: product.description,
-                    sku: product.sku,
+                    barcode: product.barcode,
+                    barcodeFormat: product.barcodeFormat,
                     price: String(product.price),
                     categoryId: String(product.categoryId),
                     lowStockThreshold: product.lowStockThreshold !== null
@@ -89,7 +92,8 @@ function EditProductPage() {
             await updateProduct(Number(id), {
                 name: form.name,
                 description: form.description,
-                sku: form.sku.trim(),
+                barcode: form.barcode.trim(),
+                barcodeFormat: form.barcodeFormat,
                 price: Number(form.price),
                 categoryId: form.categoryId ? Number(form.categoryId) : null,
                 lowStockThreshold: form.lowStockThreshold
@@ -135,22 +139,36 @@ function EditProductPage() {
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            {t('productForm.sku')}{' '}
-                            <span className="solaris-subtle">
-                                {t('common.optional')}
-                            </span>
+                            {t('productForm.barcode')} *
                         </label>
 
                         <input
-                            value={form.sku}
-                            onChange={(event) => updateForm('sku', event.target.value)}
+                            required
+                            value={form.barcode}
+                            onChange={(event) => updateForm('barcode', event.target.value)}
                             className="solaris-input mt-2 w-full"
-                            placeholder={t('productForm.skuPlaceholder')}
+                            placeholder={t('productForm.barcodePlaceholder')}
                         />
+                    </div>
 
-                        <p className="mt-2 text-sm solaris-subtle">
-                            {t('productForm.emptySkuHelp')}
-                        </p>
+                    <div>
+                        <label className="text-sm solaris-muted">
+                            {t('productForm.barcodeFormat')}
+                        </label>
+
+                        <select
+                            value={form.barcodeFormat}
+                            onChange={(event) =>
+                                updateForm('barcodeFormat', event.target.value)
+                            }
+                            className="solaris-input mt-2 w-full"
+                        >
+                            {BARCODE_FORMATS.map((format) => (
+                                <option key={format} value={format}>
+                                    {t(`productForm.barcodeFormats.${format}`)}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <Input

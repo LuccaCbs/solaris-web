@@ -88,7 +88,7 @@ export function SupplierOrderForm({
             .filter((product) => {
                 return (
                     product.name.toLowerCase().includes(normalizedSearch) ||
-                    product.sku.toLowerCase().includes(normalizedSearch)
+                    product.barcode.toLowerCase().includes(normalizedSearch)
                 )
             })
             .slice(0, 6)
@@ -266,7 +266,7 @@ export function SupplierOrderForm({
                                                                             {t(
                                                                                 'supplierOrderForm.productMeta',
                                                                                 {
-                                                                                    sku: product.sku,
+                                                                                    barcode: product.barcode,
                                                                                     stock: product.stockQuantity,
                                                                                 },
                                                                             )}

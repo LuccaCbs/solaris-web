@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export type OCRProductItem = {
     name: string
-    sku: string
+    barcode: string
     price: number
     stockQuantity: number
     category: string

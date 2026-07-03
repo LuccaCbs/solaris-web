@@ -117,7 +117,7 @@ function NewSupplierOrderPage() {
                     ? {
                         ...item,
                         productId: String(product.id),
-                        productSearch: `${product.name} · ${product.sku}`,
+                        productSearch: `${product.name} · ${product.barcode}`,
                     }
                     : item,
             ),

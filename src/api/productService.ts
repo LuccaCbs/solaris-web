@@ -1,10 +1,11 @@
 import axiosClient from './axiosClient'
-import type { Product, ProductIvaRate } from '../types/product'
+import type { BarcodeFormat, Product, ProductIvaRate } from '../types/product'
 
 export type CreateProductRequest = {
     name: string
     description: string
-    sku: string
+    barcode: string
+    barcodeFormat?: BarcodeFormat
     price: number
     stockQuantity: number
     categoryId: number
@@ -15,7 +16,8 @@ export type CreateProductRequest = {
 export type UpdateProductRequest = {
     name: string
     description: string
-    sku: string
+    barcode: string
+    barcodeFormat?: BarcodeFormat
     price: number
     categoryId: number
     lowStockThreshold: number | null
@@ -42,7 +44,8 @@ export async function getProducts(active?: boolean): Promise<Product[]> {
 export async function createProduct(data: {
     name: string;
     description: string;
-    sku: string | null;
+    barcode: string | null;
+    barcodeFormat?: BarcodeFormat;
     price: number;
     stockQuantity: number;
     categoryId: number | null;
@@ -88,12 +91,21 @@ export async function getProductById(id: number): Promise<Product> {
     return response.data
 }
 
+export async function getProductByBarcode(barcode: string): Promise<Product> {
+    const response = await axiosClient.get<Product>(`/products/by-barcode/${encodeURIComponent(barcode)}`, {
+        headers: getAuthHeaders(),
+    })
+
+    return response.data
+}
+
 export async function updateProduct(
     id: number,
     data: {
         name: string;
         description: string;
-        sku: string;
+        barcode: string;
+        barcodeFormat?: BarcodeFormat;
         price: number;
         categoryId: number | null;
         lowStockThreshold: number | null;

@@ -198,7 +198,7 @@
     "description": "Manage inventory products and stock.",
     "importProducts": "Import Products",
     "newProduct": "New Product",
-    "searchPlaceholder": "Search by name or SKU...",
+    "searchPlaceholder": "Search by name or barcode...",
     "allCategories": "All categories",
     "allStockStatus": "All stock status",
     "lowStockOnly": "Low stock only",
@@ -221,7 +221,7 @@
     },
     "table": {
       "product": "Product",
-      "sku": "SKU",
+      "barcode": "Barcode",
       "category": "Category",
       "price": "Price",
       "ivaRate": "VAT",
@@ -242,7 +242,31 @@
       "restock": "Restock",
       "edit": "Edit",
       "deactivate": "Deactivate",
-      "activate": "Activate"
+      "activate": "Activate",
+      "printLabel": "Print label"
+    }
+  },
+  "barcode": {
+    "scan": {
+      "ready": "Barcode scanner active. Scan a product to search.",
+      "readySale": "Scanner active. Scan products to add them to the sale.",
+      "found": "Product found: {{name}}",
+      "addedToSale": "{{name}} added to sale",
+      "notFound": "No product found with that barcode",
+      "inactiveProduct": "The scanned product is inactive"
+    },
+    "print": {
+      "title": "Print labels",
+      "subtitle": "{{count}} product(s) selected",
+      "copies": "Copies per product",
+      "labelSize": "Label size",
+      "showPrice": "Show price",
+      "action": "Print",
+      "sizes": {
+        "thermal58": "Thermal 58 mm",
+        "thermal80": "Thermal 80 mm",
+        "sheet": "A4 / adhesive sheet"
+      }
     }
   },
   "categories": {
@@ -276,8 +300,15 @@
     "newTitle": "New Product",
     "newDescription": "Create a new inventory product.",
     "nameRequired": "Name *",
-    "sku": "SKU",
-    "skuPlaceholder": "Leave empty to generate automatically",
+    "barcode": "Barcode",
+    "barcodePlaceholder": "Leave empty to auto-generate internal EAN-13",
+    "barcodeFormat": "Barcode format",
+    "barcodeFormats": {
+      "EAN_13": "EAN-13",
+      "UPC_A": "UPC-A",
+      "CODE_128": "Code 128",
+      "CODE_39": "Code 39"
+    },
     "priceRequired": "Price *",
     "stockQuantityRequired": "Stock Quantity *",
     "category": "Category",
@@ -298,7 +329,6 @@
     "editTitle": "Edit Product",
     "editDescription": "Update product information.",
     "loadProductError": "Could not load product",
-    "emptySkuHelp": "Leave empty to generate a new system SKU automatically.",
     "lowStockHelp": "Leave empty to use the global low stock threshold.",
     "ivaRate": "VAT rate",
     "ivaRates": {

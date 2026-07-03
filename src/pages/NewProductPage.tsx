@@ -4,13 +4,14 @@ import { useTranslation } from 'react-i18next'
 import { createProduct } from '../api/productService'
 import { getCategories } from '../api/categoryService'
 import type { Category } from '../types/category'
-import { PRODUCT_IVA_RATES, type ProductIvaRate } from '../types/product'
+import { PRODUCT_IVA_RATES, BARCODE_FORMATS, type ProductIvaRate } from '../types/product'
 import toast from 'react-hot-toast'
 
 type ProductFormState = {
     name: string
     description: string
-    sku: string
+    barcode: string
+    barcodeFormat: string
     price: string
     stockQuantity: string
     categoryId: string
@@ -21,7 +22,8 @@ type ProductFormState = {
 const initialFormState: ProductFormState = {
     name: '',
     description: '',
-    sku: '',
+    barcode: '',
+    barcodeFormat: 'EAN_13',
     price: '',
     stockQuantity: '',
     categoryId: '',
@@ -68,7 +70,10 @@ function NewProductPage() {
             await createProduct({
                 name: form.name,
                 description: form.description,
-                sku: form.sku.trim(),
+                barcode: form.barcode.trim() || null,
+                barcodeFormat: form.barcode.trim()
+                    ? (form.barcodeFormat as import('../types/product').BarcodeFormat)
+                    : undefined,
                 price: Number(form.price),
                 stockQuantity: Number(form.stockQuantity),
                 categoryId: form.categoryId ? Number(form.categoryId) : null,
@@ -110,18 +115,36 @@ function NewProductPage() {
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            {t('productForm.sku')}{' '}
+                            {t('productForm.barcode')}{' '}
                             <span className="solaris-subtle">
                                 {t('common.optional')}
                             </span>
                         </label>
 
                         <input
-                            value={form.sku}
-                            onChange={(event) => updateForm('sku', event.target.value)}
+                            value={form.barcode}
+                            onChange={(event) => updateForm('barcode', event.target.value)}
                             className="solaris-input mt-2 w-full"
-                            placeholder={t('productForm.skuPlaceholder')}
+                            placeholder={t('productForm.barcodePlaceholder')}
                         />
+                    </div>
+
+                    <div>
+                        <label className="text-sm solaris-muted">
+                            {t('productForm.barcodeFormat')}
+                        </label>
+
+                        <select
+                            value={form.barcodeFormat}
+                            onChange={(event) => updateForm('barcodeFormat', event.target.value)}
+                            className="solaris-input mt-2 w-full"
+                        >
+                            {BARCODE_FORMATS.map((format) => (
+                                <option key={format} value={format}>
+                                    {t(`productForm.barcodeFormats.${format}`)}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <Input

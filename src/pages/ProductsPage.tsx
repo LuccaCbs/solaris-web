@@ -7,6 +7,7 @@ import {
     Ban,
     Menu,
     PackagePlus,
+    Printer,
     SquarePen,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -16,11 +17,14 @@ import type { Category } from '../types/category'
 import {
     activateProduct,
     deactivateProduct,
+    getProductByBarcode,
     getProducts,
 } from '../api/productService'
 import { getCategories } from '../api/categoryService'
+import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
+import { PrintProductLabelsModal } from '../components/barcode/PrintProductLabelsModal'
 
-type SortField = 'name' | 'sku' | 'categoryName' | 'price' | 'stockQuantity'
+type SortField = 'name' | 'barcode' | 'categoryName' | 'price' | 'stockQuantity'
 type SortDirection = 'asc' | 'desc'
 type StockStatusFilter = 'all' | 'low' | 'normal'
 type ActiveStatusFilter = 'active' | 'inactive' | 'all'
@@ -48,8 +52,31 @@ function ProductsPage() {
     const [openActionsProductId, setOpenActionsProductId] = useState<
         number | null
     >(null)
+    const [printProducts, setPrintProducts] = useState<Product[] | null>(null)
 
     const pageSize = 10
+
+    async function handleBarcodeScan(code: string) {
+        try {
+            const product = await getProductByBarcode(code)
+            setSearch(product.barcode)
+            setCurrentPage(1)
+            toast.success(t('barcode.scan.found', { name: product.name }))
+        } catch {
+            const localMatch = products.find((product) => product.barcode === code)
+
+            if (localMatch) {
+                setSearch(localMatch.barcode)
+                setCurrentPage(1)
+                toast.success(t('barcode.scan.found', { name: localMatch.name }))
+                return
+            }
+
+            toast.error(t('barcode.scan.notFound'))
+        }
+    }
+
+    useBarcodeScanner({ onScan: handleBarcodeScan })
 
     async function loadData() {
         try {
@@ -157,7 +184,7 @@ function ProductsPage() {
             const matchesSearch =
                 !normalizedSearch ||
                 product.name.toLowerCase().includes(normalizedSearch) ||
-                product.sku.toLowerCase().includes(normalizedSearch)
+                product.barcode.toLowerCase().includes(normalizedSearch)
 
             const matchesCategory =
                 categoryFilter === 'all' ||
@@ -275,6 +302,10 @@ function ProductsPage() {
                 </div>
             </div>
 
+            <div className="mt-4 rounded-xl border border-dashed border-blue-500/40 bg-blue-500/5 px-4 py-3 text-sm text-blue-700 dark:text-blue-200">
+                {t('barcode.scan.ready')}
+            </div>
+
             <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="grid gap-3 md:grid-cols-5">
                     <input
@@ -367,7 +398,7 @@ function ProductsPage() {
                                 </h2>
 
                                 <p className="mt-1 text-sm solaris-muted">
-                                    {product.sku}
+                                    {product.barcode}
                                 </p>
 
                                 <p className="mt-1 text-sm solaris-subtle">
@@ -394,6 +425,7 @@ function ProductsPage() {
                                     )
                                 }
                                 onEdit={(id) => navigate(`/products/${id}/edit`)}
+                                onPrintLabels={(selected) => setPrintProducts([selected])}
                                 onActivate={handleActivateProduct}
                                 onDeactivate={handleDeactivateProduct}
                                 isOpen={openActionsProductId === product.id}
@@ -421,8 +453,8 @@ function ProductsPage() {
 
                         <th className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
                             <SortButton
-                                label={t('products.table.sku')}
-                                field="sku"
+                                label={t('products.table.barcode')}
+                                field="barcode"
                                 currentField={sortField}
                                 direction={sortDirection}
                                 onSort={handleSort}
@@ -491,7 +523,7 @@ function ProductsPage() {
                             </td>
 
                             <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
-                                {product.sku}
+                                {product.barcode}
                             </td>
 
                             <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
@@ -529,6 +561,7 @@ function ProductsPage() {
                                     }
                                     onActivate={handleActivateProduct}
                                     onDeactivate={handleDeactivateProduct}
+                                    onPrintLabels={(selected) => setPrintProducts([selected])}
                                     isOpen={
                                         openActionsProductId === product.id
                                     }
@@ -607,6 +640,12 @@ function ProductsPage() {
                     </div>
                 </div>
             )}
+            {printProducts && (
+                <PrintProductLabelsModal
+                    products={printProducts}
+                    onClose={() => setPrintProducts(null)}
+                />
+            )}
         </div>
     )
 }
@@ -615,6 +654,7 @@ type ProductActionsProps = {
     product: Product
     onRestock: (id: number) => void
     onEdit: (id: number) => void
+    onPrintLabels: (product: Product) => void
     onActivate: (id: number) => void
     onDeactivate: (id: number) => void
     isOpen: boolean
@@ -658,6 +698,7 @@ function ProductActions({
                             product,
                             onRestock,
                             onEdit,
+                            onPrintLabels,
                             onActivate,
                             onDeactivate,
                             isOpen,
@@ -713,6 +754,14 @@ function ProductActions({
                             label={t('products.actions.edit')}
                             onClick={() =>
                                 handleAction(() => onEdit(product.id))
+                            }
+                        />
+
+                        <ActionMenuItem
+                            icon={Printer}
+                            label={t('products.actions.printLabel')}
+                            onClick={() =>
+                                handleAction(() => onPrintLabels(product))
                             }
                         />
 

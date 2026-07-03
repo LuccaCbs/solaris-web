@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
+
 interface NovaProduct {
     id: number
     name: string
-    sku?: string
+    barcode?: string
     price?: number
     stockQuantity?: number
     categoryName?: string
@@ -13,6 +15,8 @@ interface NovaProductsResultProps {
 }
 
 export function NovaProductsResult({ products }: NovaProductsResultProps) {
+    const { t } = useTranslation()
+
     if (products.length === 0) {
         return null
     }
@@ -30,9 +34,9 @@ export function NovaProductsResult({ products }: NovaProductsResultProps) {
                                 {product.name}
                             </p>
 
-                            {product.sku && (
+                            {product.barcode && (
                                 <p className="text-xs solaris-muted">
-                                    SKU: {product.sku}
+                                    {t('products.table.barcode')}: {product.barcode}
                                 </p>
                             )}
                         </div>
@@ -45,9 +49,12 @@ export function NovaProductsResult({ products }: NovaProductsResultProps) {
                     </div>
 
                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs solaris-muted">
-                        <span>Precio: ${product.price ?? '-'}</span>
-                        <span>Stock: {product.stockQuantity ?? '-'}</span>
-                        <span>Categoría: {product.categoryName ?? '-'}</span>
+                        <span>
+                            {product.categoryName ?? '—'}
+                        </span>
+                        <span className="text-right font-semibold text-slate-700 dark:text-slate-200">
+                            ${product.price?.toFixed(2) ?? '0.00'}
+                        </span>
                     </div>
                 </div>
             ))}
