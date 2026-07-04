@@ -35,7 +35,7 @@ export async function initiateStoreAddonCheckout(
     quantity = 1
 ): Promise<StoreAddonCheckout> {
     const response = await axiosClient.post<StoreAddonCheckout>(
-        `/organizations/${orgId}/subscription/store-addon/checkout`,
+        '/me/billing/store-addon/checkout',
         { quantity }
     )
 
@@ -59,7 +59,7 @@ export async function redeemOrganizationPromoCode(
     code: string
 ): Promise<RedeemPromoCodeResponse> {
     const response = await axiosClient.post<RedeemPromoCodeResponse>(
-        `/organizations/${orgId}/promo-codes/redeem`,
+        '/me/billing/promo-codes/redeem',
         { code: code.trim() }
     )
 
