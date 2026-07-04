@@ -10,6 +10,11 @@ import type { OrganizationStore } from './organizationService'
 
 export type { OrganizationEntitlements } from '../types/subscription'
 
+export type BillingSessionToken = {
+    billingToken: string
+    expiresAt: string
+}
+
 export async function getOrganizationEntitlements(
     orgId: number
 ): Promise<OrganizationEntitlements> {
@@ -30,10 +35,21 @@ export async function getOrganizationSubscription(
     return response.data
 }
 
-export async function initiateStoreAddonCheckout(quantity = 1): Promise<StoreAddonCheckout> {
+export async function getBillingSessionToken(orgId: number): Promise<BillingSessionToken> {
+    const response = await axiosClient.get<BillingSessionToken>(
+        `/organizations/${orgId}/billing/session-token`
+    )
+
+    return response.data
+}
+
+export async function initiateStoreAddonCheckout(
+    billingToken: string,
+    quantity = 1
+): Promise<StoreAddonCheckout> {
     const response = await axiosClient.post<StoreAddonCheckout>(
-        '/me/billing/store-addon/checkout',
-        { quantity }
+        '/billing/store-addon/checkout',
+        { billingToken, quantity }
     )
 
     return response.data
@@ -51,10 +67,13 @@ export async function purchaseStoreAddonMock(
     return response.data
 }
 
-export async function redeemOrganizationPromoCode(code: string): Promise<RedeemPromoCodeResponse> {
+export async function redeemOrganizationPromoCode(
+    billingToken: string,
+    code: string
+): Promise<RedeemPromoCodeResponse> {
     const response = await axiosClient.post<RedeemPromoCodeResponse>(
-        '/me/billing/promo-codes/redeem',
-        { code: code.trim() }
+        '/billing/promo-codes/redeem',
+        { billingToken, code: code.trim() }
     )
 
     return response.data

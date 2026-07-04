@@ -7,6 +7,7 @@ import { Building2, CreditCard, Gift, Plus, Store } from 'lucide-react'
 import { getOrganizationStores } from '../api/organizationService'
 import {
     createOrganizationStore,
+    getBillingSessionToken,
     getOrganizationSubscription,
     initiateStoreAddonCheckout,
     purchaseStoreAddonMock,
@@ -80,6 +81,7 @@ function BillingPage() {
 
     const [subscription, setSubscription] = useState<OrganizationSubscription | null>(null)
     const [stores, setStores] = useState<OrganizationStore[]>([])
+    const [billingToken, setBillingToken] = useState<string | null>(null)
     const [checkout, setCheckout] = useState<StoreAddonCheckout | null>(null)
     const [loading, setLoading] = useState(true)
     const [creatingStore, setCreatingStore] = useState(false)
@@ -102,13 +104,15 @@ function BillingPage() {
         }
 
         try {
-            const [subscriptionData, storesData] = await Promise.all([
+            const [subscriptionData, storesData, billingSession] = await Promise.all([
                 getOrganizationSubscription(orgId),
                 getOrganizationStores(orgId),
+                getBillingSessionToken(orgId),
             ])
 
             setSubscription(subscriptionData)
             setStores(storesData)
+            setBillingToken(billingSession.billingToken)
         } catch {
             toast.error(t('billing.loadError'))
         } finally {
@@ -177,6 +181,20 @@ function BillingPage() {
         }
     }
 
+    async function resolveBillingToken() {
+        if (!orgId) {
+            return null
+        }
+
+        if (billingToken) {
+            return billingToken
+        }
+
+        const billingSession = await getBillingSessionToken(orgId)
+        setBillingToken(billingSession.billingToken)
+        return billingSession.billingToken
+    }
+
     async function handleUpgrade() {
         if (!orgId) {
             return
@@ -185,7 +203,14 @@ function BillingPage() {
         setPurchasingAddon(true)
 
         try {
-            const checkoutData = await initiateStoreAddonCheckout(1)
+            const token = await resolveBillingToken()
+
+            if (!token) {
+                toast.error(t('billing.forbidden'))
+                return
+            }
+
+            const checkoutData = await initiateStoreAddonCheckout(token, 1)
 
             if (checkoutData.checkoutUrl) {
                 window.location.href = checkoutData.checkoutUrl
@@ -203,7 +228,7 @@ function BillingPage() {
             const status = (error as { response?: { status?: number } }).response?.status
             const message = getApiErrorMessage(error)
 
-            if (status === 403) {
+            if (status === 403 || status === 401) {
                 toast.error(message || t('billing.forbidden'))
             } else {
                 toast.error(message || t('billing.upgradeError'))
@@ -243,7 +268,14 @@ function BillingPage() {
         setRedeemingPromoCode(true)
 
         try {
-            const response = await redeemOrganizationPromoCode(promoCode)
+            const token = await resolveBillingToken()
+
+            if (!token) {
+                toast.error(t('billing.forbidden'))
+                return
+            }
+
+            const response = await redeemOrganizationPromoCode(token, promoCode)
             setLastPromoRedemption(response.redemption)
             setPromoCode('')
             toast.success(response.message || t('billing.promoCodeSuccess'))
