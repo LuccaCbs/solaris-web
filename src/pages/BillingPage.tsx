@@ -185,7 +185,7 @@ function BillingPage() {
         setPurchasingAddon(true)
 
         try {
-            const checkoutData = await initiateStoreAddonCheckout(orgId, 1)
+            const checkoutData = await initiateStoreAddonCheckout(1)
 
             if (checkoutData.checkoutUrl) {
                 window.location.href = checkoutData.checkoutUrl
@@ -243,7 +243,7 @@ function BillingPage() {
         setRedeemingPromoCode(true)
 
         try {
-            const response = await redeemOrganizationPromoCode(orgId, promoCode)
+            const response = await redeemOrganizationPromoCode(promoCode)
             setLastPromoRedemption(response.redemption)
             setPromoCode('')
             toast.success(response.message || t('billing.promoCodeSuccess'))

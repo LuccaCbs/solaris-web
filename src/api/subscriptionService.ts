@@ -30,10 +30,7 @@ export async function getOrganizationSubscription(
     return response.data
 }
 
-export async function initiateStoreAddonCheckout(
-    orgId: number,
-    quantity = 1
-): Promise<StoreAddonCheckout> {
+export async function initiateStoreAddonCheckout(quantity = 1): Promise<StoreAddonCheckout> {
     const response = await axiosClient.post<StoreAddonCheckout>(
         '/me/billing/store-addon/checkout',
         { quantity }
@@ -54,10 +51,7 @@ export async function purchaseStoreAddonMock(
     return response.data
 }
 
-export async function redeemOrganizationPromoCode(
-    orgId: number,
-    code: string
-): Promise<RedeemPromoCodeResponse> {
+export async function redeemOrganizationPromoCode(code: string): Promise<RedeemPromoCodeResponse> {
     const response = await axiosClient.post<RedeemPromoCodeResponse>(
         '/me/billing/promo-codes/redeem',
         { code: code.trim() }
