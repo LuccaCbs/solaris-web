@@ -7,6 +7,9 @@ import ProductsPage from '../pages/ProductsPage'
 import CategoriesPage from '../pages/CategoriesPage'
 import StockMovementsPage from '../pages/StockMovementsPage'
 import ProtectedRoute from './ProtectedRoute'
+import OnboardingGate from './OnboardingGate'
+import OnboardingSetupPage from '../pages/OnboardingSetupPage'
+import OnboardingPlanPage from '../pages/OnboardingPlanPage'
 import RoleProtectedRoute from './RoleProtectedRoute'
 import NewProductPage from '../pages/NewProductPage'
 import EditProductPage from '../pages/EditProductPage'
@@ -54,8 +57,12 @@ function AppRouter() {
                 <Route path="/accept-invite" element={<AcceptInvitePage />} />
 
                 <Route element={<ProtectedRoute />}>
-                    <Route element={<AppLayout />}>
-                        <Route element={<RoleProtectedRoute />}>
+                    <Route element={<OnboardingGate />}>
+                        <Route path="/onboarding/setup" element={<OnboardingSetupPage />} />
+                        <Route path="/onboarding/plan" element={<OnboardingPlanPage />} />
+
+                        <Route element={<AppLayout />}>
+                            <Route element={<RoleProtectedRoute />}>
                             <Route path="/" element={<DashboardPage />} />
                             <Route path="/products" element={<ProductsPage />} />
                             <Route path="/products/new" element={<NewProductPage />} />
@@ -96,6 +103,7 @@ function AppRouter() {
                             <Route path="/profile" element={<ProfilePage />} />
 
                             <Route path="/products/:id/restock" element={<RestockProductPage />} />
+                            </Route>
                         </Route>
                     </Route>
                 </Route>

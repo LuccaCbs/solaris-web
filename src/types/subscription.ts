@@ -18,7 +18,7 @@ export type ModuleCode =
     | 'AUDIT'
     | 'ANALYTICS'
 
-export type SubscriptionStatus = 'TRIALING' | 'ACTIVE' | 'PAST_DUE' | 'CANCELED'
+export type SubscriptionStatus = 'PENDING_PLAN' | 'TRIALING' | 'ACTIVE' | 'PAST_DUE' | 'CANCELED'
 
 export type BillingProvider = 'NONE' | 'MERCADOPAGO' | 'STRIPE'
 

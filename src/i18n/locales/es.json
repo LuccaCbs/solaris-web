@@ -1318,10 +1318,41 @@
       "ANALYTICS": "Analítica"
     },
     "statuses": {
+      "PENDING_PLAN": "Pendiente de plan",
       "TRIALING": "Prueba",
       "ACTIVE": "Activa",
       "PAST_DUE": "Vencida",
       "CANCELED": "Cancelada"
+    }
+  },
+  "onboarding": {
+    "setup": {
+      "title": "Configurá tu negocio",
+      "description": "Elegí el país de operación y creá tu organización para continuar.",
+      "countryLabel": "País de operación",
+      "countryHint": "Moneda: {{currency}} · facturación y pagos adaptados al país",
+      "organizationLabel": "Nombre de la organización",
+      "organizationPlaceholder": "Mi comercio",
+      "storeLabel": "Nombre de la sucursal principal (opcional)",
+      "storePlaceholder": "Sucursal principal",
+      "organizationRequired": "Ingresá el nombre de la organización",
+      "submit": "Continuar",
+      "submitting": "Creando organización...",
+      "error": "No se pudo crear la organización"
+    },
+    "plan": {
+      "title": "Elegí tu plan",
+      "description": "Para empezar a usar Solaris necesitás activar un plan en el portal de facturación.",
+      "organization": "Organización: {{name}}",
+      "step1": "Abrí el portal de facturación con tu email.",
+      "step2": "Elegí Freemium con código, Business, Scale o comprá sucursales.",
+      "step3": "Volvé acá y confirmá la activación.",
+      "openPortal": "Abrir portal de facturación",
+      "refresh": "Ya activé mi plan",
+      "refreshing": "Verificando...",
+      "stillPending": "Todavía no detectamos un plan activo. Completá el proceso en el portal.",
+      "loadError": "No se pudo cargar el portal de facturación",
+      "logout": "Cerrar sesión"
     }
   },
   "organization": {

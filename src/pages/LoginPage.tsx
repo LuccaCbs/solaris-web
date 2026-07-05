@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { loginUser } from '../api/authService'
+import { resolvePostLoginPath } from '../utils/onboardingNavigation'
 import { useAuth } from '../context/AuthContext'
 import PasswordInput from '../components/PasswordInput'
 import AuthPageLayout, { AUTH_FORM_CLASS } from '../components/AuthPageLayout'
@@ -22,7 +23,7 @@ function LoginPage() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const { t } = useTranslation()
-    const { login, getDefaultPath } = useAuth()
+    const { login } = useAuth()
     const { theme } = useTheme()
 
     const logo = theme === 'dark' ? logoLight : logoDark
@@ -35,7 +36,7 @@ function LoginPage() {
         try {
             const data = await loginUser({ email, password })
             login(data.token)
-            navigate(getDefaultPath())
+            navigate(await resolvePostLoginPath(data.token))
         } catch {
             setError(t('auth.login.invalidCredentials'))
         } finally {

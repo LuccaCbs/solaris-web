@@ -1292,10 +1292,41 @@
       "ANALYTICS": "Analytics"
     },
     "statuses": {
+      "PENDING_PLAN": "Plan pending",
       "TRIALING": "Trial",
       "ACTIVE": "Active",
       "PAST_DUE": "Past due",
       "CANCELED": "Canceled"
+    }
+  },
+  "onboarding": {
+    "setup": {
+      "title": "Set up your business",
+      "description": "Choose your operating country and create your organization to continue.",
+      "countryLabel": "Operating country",
+      "countryHint": "Currency: {{currency}} · billing and payments tailored to your country",
+      "organizationLabel": "Organization name",
+      "organizationPlaceholder": "My store",
+      "storeLabel": "Main store name (optional)",
+      "storePlaceholder": "Main store",
+      "organizationRequired": "Enter your organization name",
+      "submit": "Continue",
+      "submitting": "Creating organization...",
+      "error": "Could not create the organization"
+    },
+    "plan": {
+      "title": "Choose your plan",
+      "description": "To start using Solaris you need to activate a plan in the billing portal.",
+      "organization": "Organization: {{name}}",
+      "step1": "Open the billing portal with your email.",
+      "step2": "Pick Freemium with a code, Business, Scale, or buy extra stores.",
+      "step3": "Come back here and confirm activation.",
+      "openPortal": "Open billing portal",
+      "refresh": "I already activated my plan",
+      "refreshing": "Checking...",
+      "stillPending": "We still do not detect an active plan. Complete the process in the portal.",
+      "loadError": "Could not load the billing portal",
+      "logout": "Log out"
     }
   },
   "organization": {
