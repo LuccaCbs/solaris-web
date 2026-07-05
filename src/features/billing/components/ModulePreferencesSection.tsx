@@ -4,9 +4,9 @@ import toast from 'react-hot-toast'
 import {
     getOrganizationModulePreferences,
     updateOrganizationModulePreferences,
-} from '../api/subscriptionService'
-import { useEntitlements } from '../hooks/useEntitlements'
-import type { ModuleCode, OrganizationModuleOption } from '../types/subscription'
+} from '../../../api/subscriptionService'
+import { useEntitlements } from '../../../hooks/useEntitlements'
+import type { ModuleCode, OrganizationModuleOption } from '../../../types/subscription'
 
 type ModulePreferencesSectionProps = {
     orgId: number
@@ -28,12 +28,12 @@ export function ModulePreferencesSection({
     const [saving, setSaving] = useState(false)
 
     const optionalModules = useMemo(
-        () => modules.filter((module) => module.requiresOptIn),
+        () => modules.filter((module: OrganizationModuleOption) => module.requiresOptIn),
         [modules]
     )
 
     const includedModules = useMemo(
-        () => modules.filter((module) => !module.requiresOptIn),
+        () => modules.filter((module: OrganizationModuleOption) => !module.requiresOptIn),
         [modules]
     )
 
@@ -46,8 +46,8 @@ export function ModulePreferencesSection({
                 setModules(response.modules)
                 setSelectedModules(
                     response.modules
-                        .filter((module) => module.enabled)
-                        .map((module) => module.code)
+                        .filter((module: OrganizationModuleOption) => module.enabled)
+                        .map((module: OrganizationModuleOption) => module.code)
                 )
             } catch {
                 setModules([])
@@ -80,8 +80,8 @@ export function ModulePreferencesSection({
             setModules(response.modules)
             setSelectedModules(
                 response.modules
-                    .filter((module) => module.enabled)
-                    .map((module) => module.code)
+                    .filter((module: OrganizationModuleOption) => module.enabled)
+                    .map((module: OrganizationModuleOption) => module.code)
             )
             await refreshEntitlements()
             await onUpdated?.()
@@ -112,7 +112,7 @@ export function ModulePreferencesSection({
                         {t('billing.modulePreferences.includedTitle')}
                     </p>
                     <ul className="mt-3 space-y-2">
-                        {includedModules.map((module) => (
+                        {includedModules.map((module: OrganizationModuleOption) => (
                             <li
                                 key={module.code}
                                 className="rounded-xl border border-slate-200 px-4 py-3 dark:border-slate-800"
@@ -145,7 +145,7 @@ export function ModulePreferencesSection({
                     </div>
 
                     <div className="space-y-3">
-                        {optionalModules.map((module) => (
+                        {optionalModules.map((module: OrganizationModuleOption) => (
                             <label
                                 key={module.code}
                                 className="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 px-4 py-3 dark:border-slate-800"
