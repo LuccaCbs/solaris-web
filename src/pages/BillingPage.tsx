@@ -1,23 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
+import { Building2, CreditCard, ExternalLink, Plus, Store } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { Building2, CreditCard, Gift, Plus, Store } from 'lucide-react'
 
 import { getOrganizationStores } from '../api/organizationService'
-import {
-    createOrganizationStore,
-    getBillingSessionToken,
-    getOrganizationSubscription,
-    initiateStoreAddonCheckout,
-    purchaseStoreAddonMock,
-    redeemOrganizationPromoCode,
-} from '../api/subscriptionService'
+import { createOrganizationStore, getOrganizationSubscription } from '../api/subscriptionService'
 import LoadingScreen from '../components/LoadingScreen'
+import { BILLING_PORTAL_URL } from '../config/billing'
 import { useAuth } from '../context/AuthContext'
-import { useEntitlements } from '../hooks/useEntitlements'
 import type { OrganizationStore } from '../api/organizationService'
-import type { OrganizationSubscription, PromoCodeRedemption, StoreAddonCheckout } from '../types/subscription'
+import type { OrganizationSubscription } from '../types/subscription'
 
 function getApiErrorMessage(error: unknown) {
     const apiError = error as {
@@ -25,7 +17,6 @@ function getApiErrorMessage(error: unknown) {
             data?: {
                 message?: string
             }
-            status?: number
         }
     }
 
@@ -40,55 +31,25 @@ function formatDate(value?: string | null) {
     return new Date(value).toLocaleDateString()
 }
 
-function formatMoney(value?: number | null, currency = 'ARS') {
-    if (value == null) {
-        return '—'
-    }
-
-    const locale = currency === 'EUR' ? 'es-ES' : 'es-AR'
-
-    return new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency,
-        maximumFractionDigits: currency === 'EUR' ? 2 : 0,
-    }).format(value)
-}
-
-function resolveCheckoutPrice(checkout: StoreAddonCheckout | null, subscription: OrganizationSubscription | null) {
-    const currency = checkout?.currency || subscription?.defaultCurrency || 'ARS'
-    const amount = checkout?.unitPrice ?? checkout?.unitPriceArs ?? null
-
-    return { currency, amount }
-}
-
 function resolvePaymentProviderLabel(
-    checkout: StoreAddonCheckout | null,
     subscription: OrganizationSubscription,
     t: (key: string, options?: Record<string, unknown>) => string
 ) {
-    const provider = checkout?.provider || subscription.preferredBillingProvider || subscription.billingProvider
+    const provider = subscription.preferredBillingProvider || subscription.billingProvider
 
     return t(`billing.paymentProviders.${provider}`, {
-        defaultValue: checkout?.providerDisplayName || subscription.paymentProviderDisplayName || provider,
+        defaultValue: subscription.paymentProviderDisplayName || provider,
     })
 }
 
 function BillingPage() {
     const { t } = useTranslation()
     const { orgId, hasMinimumRole } = useAuth()
-    const { refreshEntitlements } = useEntitlements()
-    const [searchParams, setSearchParams] = useSearchParams()
 
     const [subscription, setSubscription] = useState<OrganizationSubscription | null>(null)
     const [stores, setStores] = useState<OrganizationStore[]>([])
-    const [billingToken, setBillingToken] = useState<string | null>(null)
-    const [checkout, setCheckout] = useState<StoreAddonCheckout | null>(null)
     const [loading, setLoading] = useState(true)
     const [creatingStore, setCreatingStore] = useState(false)
-    const [purchasingAddon, setPurchasingAddon] = useState(false)
-    const [redeemingPromoCode, setRedeemingPromoCode] = useState(false)
-    const [promoCode, setPromoCode] = useState('')
-    const [lastPromoRedemption, setLastPromoRedemption] = useState<PromoCodeRedemption | null>(null)
 
     const [storeName, setStoreName] = useState('')
     const [storeAddress, setStoreAddress] = useState('')
@@ -104,15 +65,13 @@ function BillingPage() {
         }
 
         try {
-            const [subscriptionData, storesData, billingSession] = await Promise.all([
+            const [subscriptionData, storesData] = await Promise.all([
                 getOrganizationSubscription(orgId),
                 getOrganizationStores(orgId),
-                getBillingSessionToken(orgId),
             ])
 
             setSubscription(subscriptionData)
             setStores(storesData)
-            setBillingToken(billingSession.billingToken)
         } catch {
             toast.error(t('billing.loadError'))
         } finally {
@@ -123,34 +82,6 @@ function BillingPage() {
     useEffect(() => {
         void loadBilling()
     }, [orgId])
-
-    useEffect(() => {
-        const paymentStatus = searchParams.get('status')
-
-        if (!paymentStatus) {
-            return
-        }
-
-        if (paymentStatus === 'success') {
-            toast.success(t('billing.paymentSuccess'))
-            void loadBilling()
-        } else if (paymentStatus === 'pending') {
-            toast(t('billing.paymentPending'))
-            void loadBilling()
-        } else if (paymentStatus === 'failure') {
-            toast.error(t('billing.paymentFailure'))
-        }
-
-        const nextParams = new URLSearchParams(searchParams)
-        nextParams.delete('status')
-        nextParams.delete('payment_id')
-        nextParams.delete('preference_id')
-        nextParams.delete('external_reference')
-        nextParams.delete('collection_id')
-        nextParams.delete('collection_status')
-        setSearchParams(nextParams, { replace: true })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     async function handleCreateStore(event: React.FormEvent) {
         event.preventDefault()
@@ -181,113 +112,6 @@ function BillingPage() {
         }
     }
 
-    async function resolveBillingToken() {
-        if (!orgId) {
-            return null
-        }
-
-        if (billingToken) {
-            return billingToken
-        }
-
-        const billingSession = await getBillingSessionToken(orgId)
-        setBillingToken(billingSession.billingToken)
-        return billingSession.billingToken
-    }
-
-    async function handleUpgrade() {
-        if (!orgId) {
-            return
-        }
-
-        setPurchasingAddon(true)
-
-        try {
-            const token = await resolveBillingToken()
-
-            if (!token) {
-                toast.error(t('billing.forbidden'))
-                return
-            }
-
-            const checkoutData = await initiateStoreAddonCheckout(token, 1)
-
-            if (checkoutData.checkoutUrl) {
-                window.location.href = checkoutData.checkoutUrl
-                return
-            }
-
-            setCheckout(checkoutData)
-
-            if (checkoutData.mockPurchaseAvailable) {
-                toast(t('billing.mockCheckoutHint'))
-            } else {
-                toast.error(checkoutData.message || t('billing.checkoutPending'))
-            }
-        } catch (error) {
-            const status = (error as { response?: { status?: number } }).response?.status
-            const message = getApiErrorMessage(error)
-
-            if (status === 403 || status === 401) {
-                toast.error(message || t('billing.forbidden'))
-            } else {
-                toast.error(message || t('billing.upgradeError'))
-            }
-        } finally {
-            setPurchasingAddon(false)
-        }
-    }
-
-    async function handleMockPurchase() {
-        if (!orgId) {
-            return
-        }
-
-        setPurchasingAddon(true)
-
-        try {
-            const updatedSubscription = await purchaseStoreAddonMock(orgId, 1)
-            setSubscription(updatedSubscription)
-            setCheckout(null)
-            toast.success(t('billing.mockPurchaseSuccess'))
-            await loadBilling()
-        } catch {
-            toast.error(t('billing.upgradeError'))
-        } finally {
-            setPurchasingAddon(false)
-        }
-    }
-
-    async function handleRedeemPromoCode(event: React.FormEvent) {
-        event.preventDefault()
-
-        if (!orgId || !promoCode.trim()) {
-            return
-        }
-
-        setRedeemingPromoCode(true)
-
-        try {
-            const token = await resolveBillingToken()
-
-            if (!token) {
-                toast.error(t('billing.forbidden'))
-                return
-            }
-
-            const response = await redeemOrganizationPromoCode(token, promoCode)
-            setLastPromoRedemption(response.redemption)
-            setPromoCode('')
-            toast.success(response.message || t('billing.promoCodeSuccess'))
-            await Promise.all([loadBilling(), refreshEntitlements()])
-        } catch (error) {
-            const message = getApiErrorMessage(error)
-            toast.error(message || t('billing.promoCodeError'))
-        } finally {
-            setRedeemingPromoCode(false)
-        }
-    }
-
     if (!canViewBilling) {
         return (
             <div className="mx-auto max-w-4xl">
@@ -302,13 +126,11 @@ function BillingPage() {
 
     const storeLimitReached = subscription.activeStoreCount >= subscription.allowedStores
     const promoModuleSet = new Set(subscription.promoModules ?? [])
-    const checkoutPrice = resolveCheckoutPrice(checkout, subscription)
-    const paymentProviderLabel = resolvePaymentProviderLabel(checkout, subscription, t)
+    const paymentProviderLabel = resolvePaymentProviderLabel(subscription, t)
     const walletMethods = (
-        checkout?.supportedPaymentMethods
-        ?? (subscription.preferredBillingProvider === 'STRIPE'
+        subscription.preferredBillingProvider === 'STRIPE'
             ? (['GOOGLE_PAY', 'APPLE_PAY'] as const)
-            : [])
+            : []
     ).filter((method) => method === 'GOOGLE_PAY' || method === 'APPLE_PAY')
 
     return (
@@ -429,114 +251,33 @@ function BillingPage() {
                         )}
 
                         {canManageBilling && (
-                            <form
-                                onSubmit={handleRedeemPromoCode}
-                                className="mt-6 rounded-xl border border-slate-200 p-4 dark:border-slate-800"
-                            >
-                                <div className="flex items-start gap-3">
-                                    <div className="rounded-lg bg-slate-100 p-2 dark:bg-slate-800">
-                                        <Gift className="text-slate-700 dark:text-slate-200" size={18} />
-                                    </div>
-
-                                    <div className="flex-1">
-                                        <h3 className="font-medium text-slate-950 dark:text-white">
-                                            {t('billing.promoCodeTitle')}
-                                        </h3>
-                                        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                                            {t('billing.promoCodeDescription')}
-                                        </p>
-
-                                        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
-                                            <label className="block flex-1">
-                                                <span className="text-sm text-slate-600 dark:text-slate-300">
-                                                    {t('billing.promoCodeLabel')}
-                                                </span>
-                                                <input
-                                                    type="text"
-                                                    value={promoCode}
-                                                    onChange={(event) => setPromoCode(event.target.value.toUpperCase())}
-                                                    placeholder={t('billing.promoCodePlaceholder')}
-                                                    className="solaris-input mt-1 w-full uppercase"
-                                                    autoComplete="off"
-                                                    spellCheck={false}
-                                                    disabled={redeemingPromoCode}
-                                                />
-                                            </label>
-
-                                            <button
-                                                type="submit"
-                                                disabled={redeemingPromoCode || !promoCode.trim()}
-                                                className="solaris-button-primary sm:mb-0.5"
-                                            >
-                                                {redeemingPromoCode
-                                                    ? t('billing.promoCodeRedeeming')
-                                                    : t('billing.promoCodeRedeem')}
-                                            </button>
-                                        </div>
-
-                                        {lastPromoRedemption && (
-                                            <p className="mt-3 text-sm text-emerald-700 dark:text-emerald-300">
-                                                {lastPromoRedemption.accessValidUntil
-                                                    ? t('billing.promoCodeValidUntil', {
-                                                          date: formatDate(lastPromoRedemption.accessValidUntil),
-                                                      })
-                                                    : t('billing.promoCodePermanent')}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            </form>
+                            <div className="mt-6 rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+                                <h3 className="font-medium text-slate-950 dark:text-white">
+                                    {t('billing.portalTitle')}
+                                </h3>
+                                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                                    {t('billing.portalDescription')}
+                                </p>
+                                <a
+                                    href={BILLING_PORTAL_URL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="solaris-button-primary mt-4 inline-flex items-center gap-2"
+                                >
+                                    <ExternalLink size={16} />
+                                    {t('billing.portalCta')}
+                                </a>
+                            </div>
                         )}
 
                         {storeLimitReached && canManageBilling && (
-                            <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30">
+                            <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30">
                                 <p className="text-sm text-amber-900 dark:text-amber-100">
                                     {t('billing.storeLimitReached')}
                                 </p>
-
-                                <button
-                                    type="button"
-                                    onClick={() => void handleUpgrade()}
-                                    disabled={purchasingAddon}
-                                    className="solaris-button-primary mt-4"
-                                >
-                                    {purchasingAddon
-                                        ? t('billing.upgrading')
-                                        : t('billing.upgradeCtaProvider', { provider: paymentProviderLabel })}
-                                </button>
-
-                                {checkout?.checkoutUrl && (
-                                    <a
-                                        href={checkout.checkoutUrl}
-                                        className="solaris-button-primary mt-4 inline-flex"
-                                    >
-                                        {t('billing.payWithProvider', { provider: paymentProviderLabel })}
-                                    </a>
-                                )}
-
-                                {checkout?.mockPurchaseAvailable && (
-                                    <div className="mt-4 space-y-2">
-                                        <p className="text-sm text-slate-700 dark:text-slate-300">
-                                            {t('billing.mockCheckoutDescription', {
-                                                price: formatMoney(
-                                                    checkoutPrice.amount,
-                                                    checkoutPrice.currency
-                                                ),
-                                            })}
-                                        </p>
-
-                                        <button
-                                            type="button"
-                                            onClick={() => void handleMockPurchase()}
-                                            disabled={purchasingAddon}
-                                            className="solaris-button-secondary"
-                                        >
-                                            {purchasingAddon
-                                                ? t('billing.upgrading')
-                                                : t('billing.mockPurchaseCta')}
-                                        </button>
-                                    </div>
-                                )}
+                                <p className="mt-2 text-sm text-amber-900/90 dark:text-amber-100/90">
+                                    {t('billing.storeLimitPortalHint')}
+                                </p>
                             </div>
                         )}
                     </div>
