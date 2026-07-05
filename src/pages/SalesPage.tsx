@@ -198,13 +198,13 @@ function SalesPage() {
             if (action === 'OPEN') {
                 await openCashRegister({ adminPassword: password })
                 sessionStorage.setItem('solaris_cash_register_opened', 'true')
-                toast.success('Cash register opened successfully')
+                toast.success(t('sales.cashRegister.openedSuccessfully'))
             }
 
             if (action === 'CLOSE') {
                 await closeCashRegister({ adminPassword: password })
                 sessionStorage.removeItem('solaris_cash_register_opened')
-                toast.success('Cash register closed successfully')
+                toast.success(t('sales.cashRegister.closedSuccessfully'))
             }
 
             if (action === 'REOPEN' && cashRegister) {
@@ -213,7 +213,7 @@ function SalesPage() {
                 })
 
                 sessionStorage.setItem('solaris_cash_register_opened', 'true')
-                toast.success('Cash register reopened successfully')
+                toast.success(t('sales.cashRegister.reopenedSuccessfully'))
             }
 
             closeAuthorizationModal()
@@ -224,17 +224,23 @@ function SalesPage() {
             const message = getApiErrorMessage(error)
 
             if (message.toLowerCase().includes('password')) {
-                toast.error('Invalid admin password')
+                toast.error(t('sales.cashRegister.invalidPassword'))
                 return
             }
 
-            if (message.toLowerCase().includes('already')) {
-                toast.error('There is already a cash register session for today')
+            if (message.toLowerCase().includes('already an open cash register')) {
+                toast.error(t('sales.cashRegister.staleOpenClosed'))
                 await loadData()
                 return
             }
 
-            toast.error(message || 'Cash register action failed')
+            if (message.toLowerCase().includes('already')) {
+                toast.error(t('sales.cashRegister.alreadyExistsToday'))
+                await loadData()
+                return
+            }
+
+            toast.error(message || t('sales.cashRegister.actionFailed'))
         } finally {
             setProcessingCashRegister(false)
         }
@@ -253,7 +259,7 @@ function SalesPage() {
         const password = adminPassword.trim()
 
         if (hasAdminAccessPassword && !password) {
-            toast.error('Enter the admin password')
+            toast.error(t('sales.cashRegister.enterPasswordError'))
             return
         }
 

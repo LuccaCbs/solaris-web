@@ -620,6 +620,7 @@
       "reopenedSuccessfully": "Cash register reopened successfully",
       "invalidPassword": "Invalid admin password",
       "alreadyExistsToday": "There is already a cash register session for today",
+      "staleOpenClosed": "A cash register left open from a previous day was closed. Try opening again.",
       "actionFailed": "Cash register action failed",
       "enterPasswordError": "Enter the admin password",
       "enterAdminPassword": "Enter the admin password to continue.",

@@ -620,6 +620,7 @@
       "reopenedSuccessfully": "Caja reabierta correctamente",
       "invalidPassword": "Contraseña de administrador inválida",
       "alreadyExistsToday": "Ya existe una sesión de caja para hoy",
+      "staleOpenClosed": "Se cerró una caja abierta de un día anterior. Intentá abrirla nuevamente.",
       "actionFailed": "Falló la acción de caja",
       "enterPasswordError": "Ingresa la contraseña de administrador",
       "enterAdminPassword": "Ingresa la contraseña de administrador para continuar.",
