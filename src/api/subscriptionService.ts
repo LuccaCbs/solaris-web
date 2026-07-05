@@ -2,9 +2,11 @@ import axiosClient from './axiosClient'
 import type {
     CreateStorePayload,
     OrganizationEntitlements,
+    OrganizationModulePreferences,
     OrganizationSubscription,
     RedeemPromoCodeResponse,
     StoreAddonCheckout,
+    UpdateOrganizationModulePreferencesPayload,
 } from '../types/subscription'
 import type { OrganizationStore } from './organizationService'
 
@@ -20,6 +22,28 @@ export async function getOrganizationEntitlements(
 ): Promise<OrganizationEntitlements> {
     const response = await axiosClient.get<OrganizationEntitlements>(
         `/organizations/${orgId}/entitlements`
+    )
+
+    return response.data
+}
+
+export async function getOrganizationModulePreferences(
+    orgId: number
+): Promise<OrganizationModulePreferences> {
+    const response = await axiosClient.get<OrganizationModulePreferences>(
+        `/organizations/${orgId}/module-preferences`
+    )
+
+    return response.data
+}
+
+export async function updateOrganizationModulePreferences(
+    orgId: number,
+    data: UpdateOrganizationModulePreferencesPayload
+): Promise<OrganizationModulePreferences> {
+    const response = await axiosClient.put<OrganizationModulePreferences>(
+        `/organizations/${orgId}/module-preferences`,
+        data
     )
 
     return response.data

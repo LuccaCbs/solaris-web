@@ -46,10 +46,11 @@ const timezones =
 function AdminSettingsPage() {
     const { t } = useTranslation()
     const { orgId } = useAuth()
-    const { hasModule } = useEntitlements()
+    const { hasModule, isLoading: entitlementsLoading } = useEntitlements()
     const hasFiscalModule = hasModule('FISCAL')
 
     const [settings, setSettings] = useState<SystemSettings | null>(null)
+    const [settingsLoadError, setSettingsLoadError] = useState('')
     const [globalLowStockThreshold, setGlobalLowStockThreshold] = useState('')
     const [adminAccessPassword, setAdminAccessPassword] = useState('')
     const [loading, setLoading] = useState(true)
@@ -69,16 +70,33 @@ function AdminSettingsPage() {
     const [fiscalJurisdiction, setFiscalJurisdiction] = useState<FiscalJurisdiction | null>(null)
 
     useEffect(() => {
+        if (entitlementsLoading) {
+            return
+        }
+
         async function loadSettings() {
+            setSettingsLoadError('')
+
             try {
                 const data = await getSystemSettings()
 
                 setSettings(data)
                 setGlobalLowStockThreshold(String(data.globalLowStockThreshold))
                 setBusinessTimezone(data.businessTimezone)
-                setCashRegisterAutoCloseTime(data.cashRegisterAutoCloseTime.slice(0, 5))
+                setCashRegisterAutoCloseTime(
+                    data.cashRegisterAutoCloseTime
+                        ? data.cashRegisterAutoCloseTime.slice(0, 5)
+                        : '00:00'
+                )
+            } catch {
+                setSettingsLoadError(t('adminSettings.loadError'))
+                setGlobalLowStockThreshold('5')
+                setBusinessTimezone('America/Argentina/Buenos_Aires')
+                setCashRegisterAutoCloseTime('00:00')
+            }
 
-                if (orgId && hasFiscalModule) {
+            if (orgId && hasFiscalModule) {
+                try {
                     const fiscal = await getFiscalConfig(orgId)
                     setFiscalJurisdiction(fiscal.fiscalJurisdiction ?? 'AR_AFIP')
                     setFiscalCuit(
@@ -95,16 +113,17 @@ function AdminSettingsPage() {
                     setHasFiscalApiKey(fiscal.hasFiscalApiKey)
                     setEditingFiscalApiKey(!fiscal.hasFiscalApiKey)
                     setFiscalApiKey('')
+                } catch {
+                    toast.error(t('adminSettings.fiscal.loadError'))
                 }
-            } catch {
-                toast.error(t('adminSettings.loadError'))
-            } finally {
-                setLoading(false)
             }
+
+            setLoading(false)
         }
 
-        loadSettings()
-    }, [t, orgId, hasFiscalModule])
+        setLoading(true)
+        void loadSettings()
+    }, [t, orgId, hasFiscalModule, entitlementsLoading])
 
     const isSpainFiscal = isSpainFiscalJurisdiction(fiscalJurisdiction)
 
@@ -229,7 +248,7 @@ function AdminSettingsPage() {
         }
     }
 
-    if (loading) {
+    if (loading || entitlementsLoading) {
         return <LoadingScreen />
     }
 
@@ -242,6 +261,12 @@ function AdminSettingsPage() {
             <p className="mt-2 solaris-muted">
                 {t('adminSettings.description')}
             </p>
+
+            {settingsLoadError && (
+                <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
+                    {settingsLoadError}
+                </p>
+            )}
 
             <form onSubmit={handleSubmit} className="solaris-panel mt-8 max-w-2xl">
                 <h2 className="text-xl font-semibold">

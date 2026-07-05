@@ -367,6 +367,8 @@
     "priceRequired": "Price *",
     "stockQuantityRequired": "Stock Quantity *",
     "category": "Category",
+    "categoryRequired": "Category *",
+    "categoryRequiredError": "You must select a category",
     "selectCategory": "Select category",
     "customLowStockThreshold": "Custom Low Stock Threshold",
     "globalSettingPlaceholder": "Use global setting",
@@ -895,6 +897,7 @@
       "save": "Save fiscal settings",
       "updateSuccess": "Fiscal settings updated",
       "updateError": "Could not update fiscal settings",
+      "loadError": "Could not load fiscal settings",
       "noOrganization": "Select an organization to configure invoicing",
       "condicion": {
         "responsableInscripto": "Registered taxpayer",
@@ -1290,6 +1293,27 @@
       "MULTI_STORE": "Multi-store",
       "AUDIT": "Audit",
       "ANALYTICS": "Analytics"
+    },
+    "moduleDescriptions": {
+      "CORE": "Dashboard, sales and cash register.",
+      "INVENTORY": "Products, categories, stock, suppliers, orders and movement history.",
+      "CUSTOMERS": "Customer directory for sales and invoicing.",
+      "FISCAL": "AFIP / Verifactu electronic invoicing.",
+      "TEAM": "Invites, roles and member management.",
+      "MULTI_STORE": "More than one branch per organization.",
+      "AUDIT": "Audit log and compliance trail.",
+      "ANALYTICS": "Advanced dashboard metrics."
+    },
+    "modulePreferences": {
+      "title": "System modules",
+      "description": "Enable modules included in your plan. There is no extra charge while they stay within your subscription.",
+      "includedTitle": "Included in your plan",
+      "optionalTitle": "Optional modules",
+      "optionalHint": "Choose which features to enable. For example, enable Customers only if you need it.",
+      "save": "Save modules",
+      "saving": "Saving...",
+      "saveSuccess": "Modules updated successfully",
+      "saveError": "Could not update modules"
     },
     "statuses": {
       "PENDING_PLAN": "Plan pending",

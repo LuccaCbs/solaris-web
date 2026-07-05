@@ -94,6 +94,22 @@ export type OrganizationEntitlements = {
     promoModules: ModuleCode[]
 }
 
+export type OrganizationModuleOption = {
+    code: ModuleCode
+    displayName: string
+    includedInPlan: boolean
+    requiresOptIn: boolean
+    enabled: boolean
+}
+
+export type OrganizationModulePreferences = {
+    modules: OrganizationModuleOption[]
+}
+
+export type UpdateOrganizationModulePreferencesPayload = {
+    enabledModules: ModuleCode[]
+}
+
 export type RedeemPromoCodeResponse = {
     message: string
     redemption: PromoCodeRedemption

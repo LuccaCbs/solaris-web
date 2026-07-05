@@ -29,7 +29,7 @@ export function hasModuleAccess(
         return true
     }
 
-    return activeModules.includes(moduleCode) || activeModules.includes('CORE')
+    return activeModules.includes(moduleCode)
 }
 
 export function canAccessRouteByModule(

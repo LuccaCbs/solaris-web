@@ -9,6 +9,13 @@ import toast from 'react-hot-toast'
 import LoadingScreen from '../components/LoadingScreen'
 import { BarcodePreviewField } from '../components/barcode/BarcodePreviewField'
 
+function resolveDefaultCategoryId(categories: Category[]): string {
+    const defaultCategory = categories.find((category) => category.systemCategory)
+        ?? categories.find((category) => category.name.toLowerCase() === 'general')
+
+    return defaultCategory ? String(defaultCategory.id) : ''
+}
+
 type ProductFormState = {
     name: string
     description: string
@@ -56,7 +63,9 @@ function EditProductPage() {
                     barcode: product.barcode,
                     barcodeFormat: product.barcodeFormat,
                     price: String(product.price),
-                    categoryId: String(product.categoryId),
+                    categoryId: product.categoryId
+                        ? String(product.categoryId)
+                        : resolveDefaultCategoryId(categoriesData),
                     lowStockThreshold: product.lowStockThreshold !== null
                         ? String(product.lowStockThreshold)
                         : '',
@@ -89,6 +98,14 @@ function EditProductPage() {
         setSaving(true)
         setError('')
 
+        if (!form.categoryId) {
+            const message = t('productForm.categoryRequiredError')
+            setError(message)
+            toast.error(message)
+            setSaving(false)
+            return
+        }
+
         try {
             await updateProduct(Number(id), {
                 name: form.name,
@@ -96,7 +113,7 @@ function EditProductPage() {
                 barcode: form.barcode.trim(),
                 barcodeFormat: form.barcodeFormat,
                 price: Number(form.price),
-                categoryId: form.categoryId ? Number(form.categoryId) : null,
+                categoryId: Number(form.categoryId),
                 lowStockThreshold: form.lowStockThreshold
                     ? Number(form.lowStockThreshold)
                     : null,
@@ -190,10 +207,11 @@ function EditProductPage() {
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            {t('productForm.category')}
+                            {t('productForm.categoryRequired')}
                         </label>
 
                         <select
+                            required
                             value={form.categoryId}
                             onChange={(event) => updateForm('categoryId', event.target.value)}
                             className="solaris-input mt-2 w-full"

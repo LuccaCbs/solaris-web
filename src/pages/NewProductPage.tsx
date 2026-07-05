@@ -8,6 +8,13 @@ import { PRODUCT_IVA_RATES, BARCODE_FORMATS, type ProductIvaRate, type BarcodeFo
 import toast from 'react-hot-toast'
 import { BarcodePreviewField } from '../components/barcode/BarcodePreviewField'
 
+function resolveDefaultCategoryId(categories: Category[]): string {
+    const defaultCategory = categories.find((category) => category.systemCategory)
+        ?? categories.find((category) => category.name.toLowerCase() === 'general')
+
+    return defaultCategory ? String(defaultCategory.id) : ''
+}
+
 type ProductFormState = {
     name: string
     description: string
@@ -46,6 +53,10 @@ function NewProductPage() {
             try {
                 const data = await getCategories()
                 setCategories(data)
+                setForm((current) => ({
+                    ...current,
+                    categoryId: current.categoryId || resolveDefaultCategoryId(data),
+                }))
             } catch {
                 toast.error(t('productForm.loadCategoriesError'))
             }
@@ -67,6 +78,14 @@ function NewProductPage() {
         setError('')
         setCreating(true)
 
+        if (!form.categoryId) {
+            const message = t('productForm.categoryRequiredError')
+            setError(message)
+            toast.error(message)
+            setCreating(false)
+            return
+        }
+
         try {
             await createProduct({
                 name: form.name,
@@ -77,7 +96,7 @@ function NewProductPage() {
                     : undefined,
                 price: Number(form.price),
                 stockQuantity: Number(form.stockQuantity),
-                categoryId: form.categoryId ? Number(form.categoryId) : null,
+                categoryId: Number(form.categoryId),
                 lowStockThreshold: form.lowStockThreshold
                     ? Number(form.lowStockThreshold)
                     : null,
@@ -177,13 +196,11 @@ function NewProductPage() {
 
                     <div>
                         <label className="text-sm solaris-muted">
-                            {t('productForm.category')}{' '}
-                            <span className="solaris-subtle">
-                                {t('common.optional')}
-                            </span>
+                            {t('productForm.categoryRequired')}
                         </label>
 
                         <select
+                            required
                             value={form.categoryId}
                             onChange={(event) => updateForm('categoryId', event.target.value)}
                             className="solaris-input mt-2 w-full"

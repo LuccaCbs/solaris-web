@@ -367,6 +367,8 @@
     "priceRequired": "Precio *",
     "stockQuantityRequired": "Cantidad en stock *",
     "category": "Categoría",
+    "categoryRequired": "Categoría *",
+    "categoryRequiredError": "Debés seleccionar una categoría",
     "selectCategory": "Seleccionar categoría",
     "customLowStockThreshold": "Umbral personalizado de bajo stock",
     "globalSettingPlaceholder": "Usar configuración global",
@@ -895,6 +897,7 @@
       "save": "Guardar configuración fiscal",
       "updateSuccess": "Configuración fiscal actualizada",
       "updateError": "No se pudo actualizar la configuración fiscal",
+      "loadError": "No se pudo cargar la configuración fiscal",
       "noOrganization": "Seleccioná una organización para configurar facturación",
       "condicion": {
         "responsableInscripto": "Responsable Inscripto",
@@ -1316,6 +1319,27 @@
       "MULTI_STORE": "Multi-sucursal",
       "AUDIT": "Auditoría",
       "ANALYTICS": "Analítica"
+    },
+    "moduleDescriptions": {
+      "CORE": "Panel, ventas y caja registradora.",
+      "INVENTORY": "Productos, categorías, stock, proveedores, órdenes e historial de movimientos.",
+      "CUSTOMERS": "Directorio de clientes para ventas y facturación.",
+      "FISCAL": "Facturación electrónica AFIP / Verifactu.",
+      "TEAM": "Invitaciones, roles y gestión de miembros.",
+      "MULTI_STORE": "Más de una sucursal por organización.",
+      "AUDIT": "Registro de auditoría y trazabilidad.",
+      "ANALYTICS": "Métricas avanzadas del panel."
+    },
+    "modulePreferences": {
+      "title": "Módulos del sistema",
+      "description": "Activá los módulos incluidos en tu plan. No tiene costo extra mientras estén dentro de tu suscripción.",
+      "includedTitle": "Incluidos en tu plan",
+      "optionalTitle": "Módulos opcionales",
+      "optionalHint": "Elegí qué funcionalidades querés habilitar. Por ejemplo, Clientes solo si lo necesitás.",
+      "save": "Guardar módulos",
+      "saving": "Guardando...",
+      "saveSuccess": "Módulos actualizados correctamente",
+      "saveError": "No se pudieron actualizar los módulos"
     },
     "statuses": {
       "PENDING_PLAN": "Pendiente de plan",

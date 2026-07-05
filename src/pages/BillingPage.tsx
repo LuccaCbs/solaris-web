@@ -7,6 +7,7 @@ import { getOrganizationStores } from '../api/organizationService'
 import { createOrganizationStore, getBillingSessionToken, getOrganizationSubscription } from '../api/subscriptionService'
 import LoadingScreen from '../components/LoadingScreen'
 import { BILLING_PORTAL_URL, buildBillingPortalUrl } from '../config/billing'
+import { ModulePreferencesSection } from '../features/billing/components/ModulePreferencesSection'
 import { useAuth } from '../context/AuthContext'
 import type { OrganizationStore } from '../api/organizationService'
 import type { OrganizationSubscription } from '../types/subscription'
@@ -247,7 +248,9 @@ function BillingPage() {
                                             title={
                                                 promoModuleSet.has(moduleCode)
                                                     ? t('billing.promoModulesHint')
-                                                    : undefined
+                                                    : t(`billing.moduleDescriptions.${moduleCode}`, {
+                                                          defaultValue: moduleCode,
+                                                      })
                                             }
                                         >
                                             {t(`billing.modules.${moduleCode}`, { defaultValue: moduleCode })}
@@ -295,6 +298,14 @@ function BillingPage() {
                     </div>
                 </div>
             </section>
+
+            {canManageBilling && orgId && (
+                <ModulePreferencesSection
+                    orgId={orgId}
+                    canManage={canManageBilling}
+                    onUpdated={loadBilling}
+                />
+            )}
 
             <section className="solaris-card p-6">
                 <div className="flex items-start gap-4">
