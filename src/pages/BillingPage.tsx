@@ -4,9 +4,9 @@ import { Building2, CreditCard, ExternalLink, Plus, Store } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 import { getOrganizationStores } from '../api/organizationService'
-import { createOrganizationStore, getOrganizationSubscription } from '../api/subscriptionService'
+import { createOrganizationStore, getBillingSessionToken, getOrganizationSubscription } from '../api/subscriptionService'
 import LoadingScreen from '../components/LoadingScreen'
-import { BILLING_PORTAL_URL } from '../config/billing'
+import { BILLING_PORTAL_URL, buildBillingPortalUrl } from '../config/billing'
 import { useAuth } from '../context/AuthContext'
 import type { OrganizationStore } from '../api/organizationService'
 import type { OrganizationSubscription } from '../types/subscription'
@@ -50,6 +50,7 @@ function BillingPage() {
     const [stores, setStores] = useState<OrganizationStore[]>([])
     const [loading, setLoading] = useState(true)
     const [creatingStore, setCreatingStore] = useState(false)
+    const [portalUrl, setPortalUrl] = useState(BILLING_PORTAL_URL)
 
     const [storeName, setStoreName] = useState('')
     const [storeAddress, setStoreAddress] = useState('')
@@ -82,6 +83,17 @@ function BillingPage() {
     useEffect(() => {
         void loadBilling()
     }, [orgId])
+
+    useEffect(() => {
+        if (!orgId || !canManageBilling) {
+            setPortalUrl(BILLING_PORTAL_URL)
+            return
+        }
+
+        getBillingSessionToken(orgId)
+            .then(({ billingToken }) => setPortalUrl(buildBillingPortalUrl(billingToken)))
+            .catch(() => setPortalUrl(BILLING_PORTAL_URL))
+    }, [orgId, canManageBilling])
 
     async function handleCreateStore(event: React.FormEvent) {
         event.preventDefault()
@@ -259,7 +271,7 @@ function BillingPage() {
                                     {t('billing.portalDescription')}
                                 </p>
                                 <a
-                                    href={BILLING_PORTAL_URL}
+                                    href={portalUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="solaris-button-primary mt-4 inline-flex items-center gap-2"
