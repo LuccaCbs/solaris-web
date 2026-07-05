@@ -5,7 +5,6 @@ import AuthPageLayout, { AUTH_FORM_CLASS } from '../components/AuthPageLayout'
 import { setupOrganization } from '../api/onboardingService'
 import { useAuth } from '../context/AuthContext'
 import type { CountryCode } from '../types/subscription'
-import { resolvePostLoginPath } from '../utils/onboardingNavigation'
 import { useNavigate } from 'react-router-dom'
 
 const COUNTRY_OPTIONS: Array<{
@@ -45,8 +44,7 @@ function OnboardingSetupPage() {
             })
 
             login(response.token, organizationName.trim())
-            const nextPath = await resolvePostLoginPath(response.token)
-            navigate(nextPath, { replace: true })
+            navigate('/onboarding/plan', { replace: true })
         } catch (error) {
             const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message
             toast.error(message || t('onboarding.setup.error'))

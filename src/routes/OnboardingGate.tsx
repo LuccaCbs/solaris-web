@@ -13,21 +13,25 @@ function OnboardingGate() {
     const location = useLocation()
     const [status, setStatus] = useState<OnboardingStatus | null>(null)
     const [loading, setLoading] = useState(true)
+    const [loadedForPath, setLoadedForPath] = useState<string | null>(null)
 
     useEffect(() => {
         let active = true
+        setLoading(true)
+        setLoadedForPath(null)
 
         async function loadStatus() {
-            setLoading(true)
-
             try {
                 const nextStatus = await getOnboardingStatus()
-                if (active) {
-                    setStatus(nextStatus)
+                if (!active) {
+                    return
                 }
+                setStatus(nextStatus)
+                setLoadedForPath(location.pathname)
             } catch {
                 if (active) {
                     setStatus(null)
+                    setLoadedForPath(location.pathname)
                 }
             } finally {
                 if (active) {
@@ -43,7 +47,9 @@ function OnboardingGate() {
         }
     }, [location.pathname])
 
-    if (loading) {
+    const isReady = !loading && loadedForPath === location.pathname
+
+    if (!isReady) {
         return <LoadingScreen />
     }
 
@@ -53,7 +59,7 @@ function OnboardingGate() {
         return <Navigate to="/onboarding/setup" replace />
     }
 
-    if (status?.needsPlanSelection && !onOnboardingRoute) {
+    if (status?.needsPlanSelection && location.pathname !== '/onboarding/plan') {
         return <Navigate to="/onboarding/plan" replace />
     }
 

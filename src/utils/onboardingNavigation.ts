@@ -1,5 +1,5 @@
 import { getOnboardingStatus } from '../api/onboardingService'
-import { buildAuthSession } from './jwtUtils'
+import { persistAuthSession, buildAuthSession } from './jwtUtils'
 import { getDefaultRouteForRole } from './roleAccess'
 
 export async function resolvePostLoginPath(token: string): Promise<string> {
@@ -8,6 +8,8 @@ export async function resolvePostLoginPath(token: string): Promise<string> {
     if (!session) {
         return '/login'
     }
+
+    persistAuthSession(session)
 
     try {
         const status = await getOnboardingStatus()
