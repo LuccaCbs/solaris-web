@@ -4,6 +4,8 @@ export type CountryCode = 'AR' | 'ES'
 
 export type BillingJurisdiction = 'AR' | 'EU'
 
+export type FiscalJurisdiction = 'AR_AFIP' | 'ES_VERIFACTU'
+
 export type PaymentMethodType = 'CARD' | 'GOOGLE_PAY' | 'APPLE_PAY'
 
 export type ModuleCode =
@@ -34,6 +36,7 @@ export type OrganizationSubscription = {
     paymentProviderDisplayName?: string
     countryCode?: CountryCode
     billingJurisdiction?: BillingJurisdiction
+    fiscalJurisdiction?: FiscalJurisdiction
     defaultCurrency?: string
     trialEndsAt?: string | null
     currentPeriodStart?: string | null

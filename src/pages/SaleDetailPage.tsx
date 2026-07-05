@@ -9,6 +9,7 @@ import type { PaymentMethod, Sale } from '../types/sales'
 import type { Customer } from '../types/customer'
 import LoadingScreen from '../components/LoadingScreen'
 import { useAuth } from '../context/AuthContext'
+import { useEntitlements } from '../hooks/useEntitlements'
 import { formatRejectionReason } from '../utils/fiscalUtils'
 
 function getApiErrorMessage(error: unknown) {
@@ -28,6 +29,7 @@ function SaleDetailPage() {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const { hasMinimumRole } = useAuth()
+    const { hasModule } = useEntitlements()
 
     const [sale, setSale] = useState<Sale | null>(null)
     const [loading, setLoading] = useState(true)
@@ -36,7 +38,7 @@ function SaleDetailPage() {
     const [customers, setCustomers] = useState<Customer[]>([])
     const [loadingCustomers, setLoadingCustomers] = useState(false)
 
-    const canInvoice = hasMinimumRole('CASHIER')
+    const canInvoice = hasMinimumRole('CASHIER') && hasModule('FISCAL')
 
     useEffect(() => {
         async function loadSale() {

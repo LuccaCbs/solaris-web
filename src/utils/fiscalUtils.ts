@@ -1,6 +1,15 @@
 import type { CustomerRequest, DocumentType } from '../types/customer'
 import type { FiscalConfigRequest } from '../types/fiscal'
 
+export function normalizeSpanishTaxId(taxId: string): string {
+    return taxId.trim().toUpperCase().replace(/[\s-]/g, '')
+}
+
+export function isValidSpanishTaxId(taxId: string): boolean {
+    const normalized = normalizeSpanishTaxId(taxId)
+    return /^[0-9A-Z]{8,9}$/.test(normalized)
+}
+
 export function normalizeCuit(cuit: string): string {
     return cuit.replace(/\D/g, '')
 }

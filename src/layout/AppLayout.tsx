@@ -21,6 +21,7 @@ import {
     User,
     ScrollText,
     UsersRound,
+    FileText,
 } from 'lucide-react'
 import AdminPasswordModal from '../components/AdminPasswordModal'
 import { useAuth } from '../context/AuthContext'
@@ -126,6 +127,13 @@ function AppLayout() {
             icon: ScrollText,
             minimumRole: 'ADMIN',
             requiredModule: 'AUDIT',
+        },
+        {
+            label: t('nav.fiscalDocuments'),
+            to: '/fiscal-documents',
+            icon: FileText,
+            minimumRole: 'MANAGER',
+            requiredModule: 'FISCAL',
         },
         {
             label: t('nav.team'),

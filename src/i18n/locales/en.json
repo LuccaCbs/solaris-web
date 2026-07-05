@@ -65,7 +65,8 @@
     "billing": "Billing & Stores",
     "organization": "Organization",
     "team": "Team",
-    "myProfile": "My Profile"
+    "myProfile": "My Profile",
+    "fiscalDocuments": "Fiscal invoicing"
   },
   "auth": {
     "organization": {
@@ -898,6 +899,16 @@
         "responsableInscripto": "Registered taxpayer",
         "monotributo": "Monotributo",
         "exento": "Exempt"
+      },
+      "es": {
+        "title": "Electronic invoicing (Verifactu)",
+        "description": "Configure the organization NIF/CIF and business name to issue invoices in Spain.",
+        "nif": "NIF / CIF",
+        "nifRequired": "NIF/CIF is required for invoicing",
+        "nifInvalid": "NIF/CIF must contain 8 to 9 alphanumeric characters",
+        "series": "Series (optional)",
+        "seriesHelp": "If no series is set, series 1 will be used by default.",
+        "providerMockOnly": "Only the mock provider is available for now. Verifactu integration will come in a future release."
       }
     }
   },

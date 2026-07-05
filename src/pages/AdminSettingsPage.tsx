@@ -4,15 +4,19 @@ import toast from 'react-hot-toast'
 import { getSystemSettings, updateSystemSettings } from '../api/systemSettingsService'
 import { getFiscalConfig, updateFiscalConfig } from '../api/fiscalService'
 import { useAuth } from '../context/AuthContext'
-import type { FiscalProviderType, CondicionIva } from '../types/fiscal'
+import { useEntitlements } from '../hooks/useEntitlements'
+import type { FiscalJurisdiction, FiscalProviderType, CondicionIva } from '../types/fiscal'
 import type { SystemSettings } from '../types/systemSettings'
 import PasswordInput from '../components/PasswordInput'
 import LoadingScreen from '../components/LoadingScreen'
 import {
     formatCuitForDisplay,
+    isValidSpanishTaxId,
     normalizeCuit,
+    normalizeSpanishTaxId,
     parseTusFacturasCredentials,
 } from '../utils/fiscalUtils'
+import { isSpainFiscalJurisdiction } from '../utils/fiscalJurisdiction'
 
 function getApiErrorMessage(error: unknown) {
     const apiError = error as {
@@ -42,6 +46,8 @@ const timezones =
 function AdminSettingsPage() {
     const { t } = useTranslation()
     const { orgId } = useAuth()
+    const { hasModule } = useEntitlements()
+    const hasFiscalModule = hasModule('FISCAL')
 
     const [settings, setSettings] = useState<SystemSettings | null>(null)
     const [globalLowStockThreshold, setGlobalLowStockThreshold] = useState('')
@@ -60,6 +66,7 @@ function AdminSettingsPage() {
     const [hasFiscalApiKey, setHasFiscalApiKey] = useState(false)
     const [editingFiscalApiKey, setEditingFiscalApiKey] = useState(false)
     const [savingFiscal, setSavingFiscal] = useState(false)
+    const [fiscalJurisdiction, setFiscalJurisdiction] = useState<FiscalJurisdiction | null>(null)
 
     useEffect(() => {
         async function loadSettings() {
@@ -71,9 +78,14 @@ function AdminSettingsPage() {
                 setBusinessTimezone(data.businessTimezone)
                 setCashRegisterAutoCloseTime(data.cashRegisterAutoCloseTime.slice(0, 5))
 
-                if (orgId) {
+                if (orgId && hasFiscalModule) {
                     const fiscal = await getFiscalConfig(orgId)
-                    setFiscalCuit(formatCuitForDisplay(fiscal.cuit))
+                    setFiscalJurisdiction(fiscal.fiscalJurisdiction ?? 'AR_AFIP')
+                    setFiscalCuit(
+                        isSpainFiscalJurisdiction(fiscal.fiscalJurisdiction)
+                            ? (fiscal.cuit ?? '')
+                            : formatCuitForDisplay(fiscal.cuit)
+                    )
                     setFiscalRazonSocial(fiscal.razonSocial ?? '')
                     setFiscalCondicionIva(fiscal.condicionIva)
                     setFiscalPuntoVenta(
@@ -92,13 +104,54 @@ function AdminSettingsPage() {
         }
 
         loadSettings()
-    }, [t, orgId])
+    }, [t, orgId, hasFiscalModule])
+
+    const isSpainFiscal = isSpainFiscalJurisdiction(fiscalJurisdiction)
 
     async function handleFiscalSubmit(event: React.FormEvent) {
         event.preventDefault()
 
         if (!orgId) {
             toast.error(t('adminSettings.fiscal.noOrganization'))
+            return
+        }
+
+        if (isSpainFiscal) {
+            if (!fiscalCuit.trim()) {
+                toast.error(t('adminSettings.fiscal.es.nifRequired'))
+                return
+            }
+
+            const normalizedNif = normalizeSpanishTaxId(fiscalCuit)
+
+            if (!isValidSpanishTaxId(normalizedNif)) {
+                toast.error(t('adminSettings.fiscal.es.nifInvalid'))
+                return
+            }
+
+            setSavingFiscal(true)
+
+            try {
+                const updated = await updateFiscalConfig(orgId, {
+                    cuit: normalizedNif,
+                    razonSocial: fiscalRazonSocial.trim() || undefined,
+                    fiscalPuntoVenta: fiscalPuntoVenta ? Number(fiscalPuntoVenta) : null,
+                    fiscalProvider: 'MOCK',
+                })
+
+                setFiscalJurisdiction(updated.fiscalJurisdiction ?? 'ES_VERIFACTU')
+                setFiscalCuit(updated.cuit ?? '')
+                setFiscalRazonSocial(updated.razonSocial ?? '')
+                setFiscalPuntoVenta(
+                    updated.fiscalPuntoVenta != null ? String(updated.fiscalPuntoVenta) : ''
+                )
+                toast.success(t('adminSettings.fiscal.updateSuccess'))
+            } catch (error) {
+                toast.error(getApiErrorMessage(error) || t('adminSettings.fiscal.updateError'))
+            } finally {
+                setSavingFiscal(false)
+            }
+
             return
         }
 
@@ -318,16 +371,68 @@ function AdminSettingsPage() {
                 </button>
             </form>
 
-            {orgId && (
+            {orgId && hasFiscalModule && (
                 <form onSubmit={handleFiscalSubmit} className="solaris-panel mt-8 max-w-2xl">
                     <h2 className="text-xl font-semibold">
-                        {t('adminSettings.fiscal.title')}
+                        {isSpainFiscal
+                            ? t('adminSettings.fiscal.es.title')
+                            : t('adminSettings.fiscal.title')}
                     </h2>
 
                     <p className="mt-2 text-sm solaris-subtle">
-                        {t('adminSettings.fiscal.description')}
+                        {isSpainFiscal
+                            ? t('adminSettings.fiscal.es.description')
+                            : t('adminSettings.fiscal.description')}
                     </p>
 
+                    {isSpainFiscal ? (
+                        <div className="mt-6 grid gap-4 md:grid-cols-2">
+                            <div>
+                                <label className="text-sm solaris-muted">
+                                    {t('adminSettings.fiscal.es.nif')}
+                                </label>
+                                <input
+                                    required
+                                    value={fiscalCuit}
+                                    onChange={(event) => setFiscalCuit(event.target.value.toUpperCase())}
+                                    placeholder="B12345678"
+                                    className="solaris-input mt-2 w-full"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="text-sm solaris-muted">
+                                    {t('adminSettings.fiscal.razonSocial')}
+                                </label>
+                                <input
+                                    required
+                                    value={fiscalRazonSocial}
+                                    onChange={(event) => setFiscalRazonSocial(event.target.value)}
+                                    className="solaris-input mt-2 w-full"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="text-sm solaris-muted">
+                                    {t('adminSettings.fiscal.es.series')}
+                                </label>
+                                <input
+                                    type="number"
+                                    min={1}
+                                    value={fiscalPuntoVenta}
+                                    onChange={(event) => setFiscalPuntoVenta(event.target.value)}
+                                    className="solaris-input mt-2 w-full"
+                                />
+                                <p className="mt-2 text-sm solaris-subtle">
+                                    {t('adminSettings.fiscal.es.seriesHelp')}
+                                </p>
+                            </div>
+
+                            <div className="md:col-span-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm solaris-subtle dark:border-slate-800 dark:bg-slate-900/60">
+                                {t('adminSettings.fiscal.es.providerMockOnly')}
+                            </div>
+                        </div>
+                    ) : (
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                         <div>
                             <label className="text-sm solaris-muted">
@@ -474,6 +579,7 @@ function AdminSettingsPage() {
                             )}
                         </div>
                     </div>
+                    )}
 
                     <button
                         type="submit"

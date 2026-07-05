@@ -65,7 +65,8 @@
     "billing": "Facturación y sucursales",
     "organization": "Organización",
     "team": "Equipo",
-    "myProfile": "Mi perfil"
+    "myProfile": "Mi perfil",
+    "fiscalDocuments": "Facturación fiscal"
   },
   "auth": {
     "organization": {
@@ -898,6 +899,16 @@
         "responsableInscripto": "Responsable Inscripto",
         "monotributo": "Monotributo",
         "exento": "Exento"
+      },
+      "es": {
+        "title": "Facturación electrónica (Verifactu)",
+        "description": "Configurá el NIF/CIF y la razón social de la organización para emitir facturas en España.",
+        "nif": "NIF / CIF",
+        "nifRequired": "El NIF/CIF es obligatorio para facturar",
+        "nifInvalid": "El NIF/CIF debe tener entre 8 y 9 caracteres alfanuméricos",
+        "series": "Serie (opcional)",
+        "seriesHelp": "Si no indicás una serie, se usará la serie 1 por defecto.",
+        "providerMockOnly": "Por ahora solo está disponible el proveedor mock. La integración con Verifactu llegará en una próxima versión."
       }
     }
   },

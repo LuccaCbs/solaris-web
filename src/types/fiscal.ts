@@ -1,5 +1,9 @@
 export type FiscalProviderType = 'MOCK' | 'TUSFACTURAS'
 
+export type FiscalJurisdiction = 'AR_AFIP' | 'ES_VERIFACTU'
+
+export type CountryCode = 'AR' | 'ES'
+
 export type TipoComprobante = 'FACTURA_B' | 'FACTURA_C'
 
 export type FiscalDocumentStatus = 'PENDING' | 'AUTHORIZED' | 'REJECTED'
@@ -18,6 +22,8 @@ export type FiscalConfig = {
     fiscalPuntoVenta: number | null
     fiscalProvider: FiscalProviderType
     hasFiscalApiKey: boolean
+    countryCode?: CountryCode
+    fiscalJurisdiction?: FiscalJurisdiction
 }
 
 export type FiscalConfigRequest = {
