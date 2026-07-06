@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import type { DailySalesSummary } from '../../../types/sales'
 
 type NovaDailySalesSummaryCardProps = {
@@ -53,6 +54,13 @@ export function NovaDailySalesSummaryCard({
                     </div>
                 ))}
             </div>
+
+            <Link
+                to={`/sales?from=${summary.date}&to=${summary.date}`}
+                className="mt-4 block text-center text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+            >
+                {t('nova.salesSummaryCard.viewDetails')}
+            </Link>
         </div>
     )
 }
