@@ -77,6 +77,7 @@
       "OWNER": "Propietari",
       "ADMIN": "Administrador",
       "MANAGER": "Gerent",
+      "REPOSITOR": "Repositor",
       "CASHIER": "Caixer"
     },
     "login": {
@@ -101,6 +102,7 @@
       "OWNER": "Propietari",
       "ADMIN": "Administrador",
       "MANAGER": "Gerent",
+      "REPOSITOR": "Repositor",
       "CASHIER": "Caixer"
     },
     "register": {
@@ -1127,6 +1129,7 @@
         "gettingStarted": "Per començar",
         "products": "Productes",
         "suppliers": "Proveïdors",
+        "supplierOrders": "Comandes a proveïdor",
         "dashboard": "Tauler",
         "sales": "Vendes",
         "customersFiscal": "Clients i fiscal"
@@ -1144,11 +1147,15 @@
       "deactivateProduct": "Donar de baixa producte",
       "deactivateProductHelp": "Pots donar de baixa un producte al xat o anar a la pantalla de Productes.",
       "updateStock": "Actualitzar estoc",
+      "exportProducts": "Exportar productes",
+      "exportSales": "Exportar vendes",
       "dashboard": "Veure panell",
       "lowStock": "Productes amb baix estoc",
       "searchProductHelp": "Pots cercar productes al xat o anar a la pantalla de Productes.",
       "createProductHelp": "Pots crear un producte al xat o anar a la pantalla de nou producte.",
       "updateStockHelp": "Pots actualitzar l'estoc al xat o utilitzar la pantalla d'ingrés de mercaderia.",
+      "exportProductsHelp": "Pots exportar el catàleg de productes a Excel al xat o anar al llistat de Productes.",
+      "exportSalesHelp": "Pots exportar vendes a Excel al xat o anar al llistat de Vendes.",
       "dashboardHelp": "Pots demanar un resum del panell o anar al tauler principal.",
       "lowStockHelp": "Pots consultar productes amb baix estoc al xat o anar al llistat filtrat.",
       "createSupplierHelp": "Pots crear un proveïdor al xat o anar a la pantalla de nou proveïdor.",
@@ -1194,8 +1201,22 @@
       "showSale": "Veure venda",
       "dailySalesSummary": "Resum de vendes del dia",
       "execute": {
+        "dashboardSummary": "Resum del panell",
         "listSales": "Veure vendes",
-        "dailySalesSummary": "Resum de vendes d'avui"
+        "dailySalesSummary": "Resum de vendes d'avui",
+        "listFiscalDocuments": "Veure comprovants fiscals",
+        "lowStock": "Productes amb baix estoc",
+        "exportProducts": "Exportar productes",
+        "exportSales": "Exportar vendes"
+      },
+      "executeAction": {
+        "dashboard": "Veure panell",
+        "listSales": "Veure vendes",
+        "dailySalesSummary": "Veure resum del dia",
+        "listFiscalDocuments": "Veure comprovants fiscals",
+        "lowStock": "Veure baix estoc",
+        "exportProducts": "Exportar productes",
+        "exportSales": "Exportar vendes"
       },
       "searchCustomer": "Cercar client",
       "showCustomer": "Veure client",
@@ -1218,7 +1239,16 @@
         "update_supplier": "Proveïdor actualitzat",
         "delete_supplier": "Proveïdor eliminat",
         "create_supplier_order": "Comanda al proveïdor creada",
-        "update_supplier_order": "Comanda al proveïdor actualitzada"
+        "mark_supplier_order_sent": "Comanda marcada com a enviada",
+        "complete_supplier_order": "Comanda al proveïdor completada",
+        "cancel_supplier_order": "Comanda al proveïdor cancel·lada",
+        "delete_supplier_order": "Comanda al proveïdor eliminada",
+        "show_supplier_order": "Comanda al proveïdor consultada",
+        "create_customer": "Client creat",
+        "update_customer": "Client actualitzat",
+        "deactivate_customer": "Client donat de baixa",
+        "create_sale": "Venda registrada",
+        "emit_invoice": "Comprovant fiscal emès"
       }
     },
     "confirmation": {

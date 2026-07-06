@@ -317,6 +317,31 @@ export function NovaResponseRenderer({
 
     if (
         message.type === 'tool_result' &&
+        (message.intent === 'create_customer' || message.intent === 'update_customer') &&
+        isCustomer(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaCustomerCard customer={message.data} />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'deactivate_customer'
+    ) {
+        return (
+            <NovaActionResultCard
+                title="Acción completada"
+                description={message.content}
+            />
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
         (message.intent === 'search_customer' || message.intent === 'show_customer') &&
         message.data
     ) {

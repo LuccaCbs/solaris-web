@@ -78,6 +78,7 @@
       "OWNER": "Propriétaire",
       "ADMIN": "Administrateur",
       "MANAGER": "Responsable",
+      "REPOSITOR": "Magasinier",
       "CASHIER": "Caissier"
     },
     "login": {
@@ -102,6 +103,7 @@
       "OWNER": "Propriétaire",
       "ADMIN": "Administrateur",
       "MANAGER": "Responsable",
+      "REPOSITOR": "Magasinier",
       "CASHIER": "Caissier"
     },
     "register": {
@@ -1128,6 +1130,7 @@
         "gettingStarted": "Pour commencer",
         "products": "Produits",
         "suppliers": "Fournisseurs",
+        "supplierOrders": "Commandes fournisseur",
         "dashboard": "Tableau de bord",
         "sales": "Ventes",
         "customersFiscal": "Clients et fiscal"
@@ -1145,11 +1148,15 @@
       "deactivateProduct": "Désactiver un produit",
       "deactivateProductHelp": "Vous pouvez désactiver un produit dans le chat ou aller à l'écran Produits.",
       "updateStock": "Mettre à jour le stock",
+      "exportProducts": "Exporter les produits",
+      "exportSales": "Exporter les ventes",
       "dashboard": "Voir le tableau de bord",
       "lowStock": "Produits en stock faible",
       "searchProductHelp": "Vous pouvez rechercher des produits dans le chat ou aller à l'écran Produits.",
       "createProductHelp": "Vous pouvez créer un produit dans le chat ou aller à l'écran nouveau produit.",
       "updateStockHelp": "Vous pouvez mettre à jour le stock dans le chat ou utiliser l'écran de réception.",
+      "exportProductsHelp": "Vous pouvez exporter le catalogue produits en Excel dans le chat ou aller à la liste Produits.",
+      "exportSalesHelp": "Vous pouvez exporter les ventes en Excel dans le chat ou aller à la liste Ventes.",
       "dashboardHelp": "Vous pouvez demander un résumé du tableau de bord ou aller au panneau principal.",
       "lowStockHelp": "Vous pouvez consulter les produits en stock faible dans le chat ou aller à la liste filtrée.",
       "createSupplierHelp": "Vous pouvez créer un fournisseur dans le chat ou aller à l'écran nouveau fournisseur.",
@@ -1195,8 +1202,22 @@
       "showSale": "Voir la vente",
       "dailySalesSummary": "Résumé des ventes du jour",
       "execute": {
+        "dashboardSummary": "Résumé du tableau de bord",
         "listSales": "Voir les ventes",
-        "dailySalesSummary": "Résumé des ventes d'aujourd'hui"
+        "dailySalesSummary": "Résumé des ventes d'aujourd'hui",
+        "listFiscalDocuments": "Voir les documents fiscaux",
+        "lowStock": "Produits en stock faible",
+        "exportProducts": "Exporter les produits",
+        "exportSales": "Exporter les ventes"
+      },
+      "executeAction": {
+        "dashboard": "Voir le tableau de bord",
+        "listSales": "Voir les ventes",
+        "dailySalesSummary": "Voir le résumé du jour",
+        "listFiscalDocuments": "Voir les documents fiscaux",
+        "lowStock": "Voir stock faible",
+        "exportProducts": "Exporter les produits",
+        "exportSales": "Exporter les ventes"
       },
       "searchCustomer": "Rechercher un client",
       "showCustomer": "Voir le client",
@@ -1219,7 +1240,16 @@
         "update_supplier": "Fournisseur mis à jour",
         "delete_supplier": "Fournisseur supprimé",
         "create_supplier_order": "Commande fournisseur créée",
-        "update_supplier_order": "Commande fournisseur mise à jour"
+        "mark_supplier_order_sent": "Commande marquée comme envoyée",
+        "complete_supplier_order": "Commande fournisseur terminée",
+        "cancel_supplier_order": "Commande fournisseur annulée",
+        "delete_supplier_order": "Commande fournisseur supprimée",
+        "show_supplier_order": "Commande fournisseur consultée",
+        "create_customer": "Client créé",
+        "update_customer": "Client mis à jour",
+        "deactivate_customer": "Client désactivé",
+        "create_sale": "Vente enregistrée",
+        "emit_invoice": "Document fiscal émis"
       }
     },
     "confirmation": {

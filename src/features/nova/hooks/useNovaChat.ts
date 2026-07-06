@@ -26,7 +26,12 @@ const MUTATING_ACTION_INTENTS: NovaActionEventType[] = [
     'update_supplier_order',
     'create_sale',
     'emit_invoice',
+    'create_customer',
+    'update_customer',
+    'deactivate_customer',
 ]
+
+const READ_ONLY_ACTION_INTENTS: NovaActionEventType[] = ['show_supplier_order']
 
 function isSuccessfulMutatingAction(message: string): boolean {
     const normalized = message.toLowerCase()
@@ -64,8 +69,14 @@ export function useNovaChat() {
             if (
                 response.type === 'tool_result'
                 && response.intent
-                && MUTATING_ACTION_INTENTS.includes(response.intent as NovaActionEventType)
-                && isSuccessfulMutatingAction(response.message)
+                && (
+                    MUTATING_ACTION_INTENTS.includes(response.intent as NovaActionEventType)
+                    || READ_ONLY_ACTION_INTENTS.includes(response.intent as NovaActionEventType)
+                )
+                && (
+                    READ_ONLY_ACTION_INTENTS.includes(response.intent as NovaActionEventType)
+                    || isSuccessfulMutatingAction(response.message)
+                )
             ) {
                 const eventType = response.intent as NovaActionEventType
 
