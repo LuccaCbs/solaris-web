@@ -643,6 +643,24 @@
       "items": "Ítems",
       "total": "Total",
       "date": "Fecha"
+    },
+    "daily": {
+      "title": "Ventas del día",
+      "description": "Analítica y detalle de ventas para {{date}}.",
+      "dateLabel": "Fecha",
+      "backToSales": "Volver a ventas",
+      "salesCount": "Cantidad de ventas",
+      "totalSales": "Total vendido",
+      "paymentBreakdown": "Desglose por medio de pago",
+      "vsPreviousDay": "vs día anterior",
+      "viewSalesList": "Ver listado completo del día",
+      "recentSalesTitle": "Ventas del día",
+      "recentSalesDescription": "{{count}} venta(s) registrada(s).",
+      "openFullList": "Abrir listado completo",
+      "empty": "No hay ventas registradas para esta fecha.",
+      "items": "{{count}} ítems",
+      "moreSales": "Y {{count}} venta(s) más en el listado completo.",
+      "loadError": "No se pudo cargar el resumen diario."
     }
   },
   "saleForm": {
@@ -1170,7 +1188,7 @@
         "lowStock": "Para consultar productos con bajo stock necesito que indiques:\n\n• Acción: \"Productos con bajo stock\" o \"Bajo stock\"\n\nEjemplo:\n\"Productos con bajo stock\"\n\nTambién podés ir al listado de Productos filtrado por bajo stock o reponer desde Ingreso de mercadería.",
         "listSales": "Para listar ventas individuales necesito que indiques:\n\n• Acción: \"Ver ventas\" o \"Últimas ventas\"\n• Filtro opcional: \"Ventas de hoy\" o \"Ventas de ayer\"\n\nEjemplos:\n\"Ver ventas\"\n\"Ventas de hoy\"\n\nPara totales del día (sin listado), usá \"Resumen de ventas de hoy\" o \"Ventas del día\".\n\nTambién podés ir al listado de Ventas y filtrar por fecha.",
         "showSale": "Para ver una venta necesito que indiques:\n\n• Acción: \"Ver venta\"\n• Número de venta: ID de la venta\n\nEjemplo:\n\"Ver venta #13\"\n\nTambién podés ir al listado de Ventas y abrir el detalle.",
-        "dailySalesSummary": "Para el resumen de ventas del día necesito que indiques:\n\n• Acción: \"Resumen de ventas de hoy\", \"Ventas del día\" o \"Totales del día\"\n• Fecha opcional: si querés otro día\n\nEjemplo:\n\"Resumen de ventas de hoy\"\n\nEsto muestra totales y desglose por medio de pago, no el listado de cada venta.\n\nTambién podés revisar métricas en el Panel principal.",
+        "dailySalesSummary": "Para el resumen de ventas del día necesito que indiques:\n\n• Acción: \"Resumen de ventas de hoy\", \"Ventas del día\" o \"Totales del día\"\n• Fecha opcional: si querés otro día\n\nEjemplo:\n\"Resumen de ventas de hoy\"\n\nEsto muestra totales y desglose por medio de pago, no el listado de cada venta.\n\nTambién podés ir a Ventas del día para ver la analítica completa.",
         "createSale": "Para registrar una venta necesito que indiques:\n\n• Acción: \"Crear venta\"\n• Medio de pago: efectivo, tarjeta, transferencia, etc.\n• Productos: nombre y cantidad de cada ítem\n\nEjemplo:\n\"Crear venta en efectivo con 2 Producto prueba\"\n\nTambién podés ir a Nueva venta y cargar la venta desde la pantalla de caja.",
         "emitInvoice": "Para facturar una venta necesito que indiques:\n\n• Acción: \"Facturar venta\"\n• Número de venta: ID de la venta\n• Cliente: opcional (si no indicás, se usa Consumidor Final)\n\nEjemplos:\n\"Facturar venta #13\"\n\"Facturar venta #13 para cliente Cliente Demo\"\n\nTambién podés facturar desde el detalle de la venta en el listado de Ventas.",
         "searchCustomer": "Para buscar un cliente necesito que indiques:\n\n• Acción: \"Buscar cliente\"\n• Término de búsqueda: razón social, nombre o documento\n\nEjemplo:\n\"Buscar cliente Cliente Demo\"\n\nTambién podés ir a la pantalla de Clientes y usar el buscador.",

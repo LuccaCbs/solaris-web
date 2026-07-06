@@ -185,7 +185,7 @@ export const NOVA_QUICK_ACTIONS_CATALOG: NovaQuickActionDefinition[] = [
         helpKey: 'nova.quickActions.dailySalesSummaryHelp',
         guideKey: 'nova.quickActions.guides.dailySalesSummary',
         executeMessageKey: 'nova.quickActions.execute.dailySalesSummary',
-        navigateTo: '/sales',
+        navigateTo: '/sales/daily',
         mode: 'hybrid',
         minimumRole: 'CASHIER',
     },

@@ -632,6 +632,24 @@
       "items": "Articles",
       "total": "Total",
       "date": "Date"
+    },
+    "daily": {
+      "title": "Ventes du jour",
+      "description": "Analytique et détail des ventes pour {{date}}.",
+      "dateLabel": "Date",
+      "backToSales": "Retour aux ventes",
+      "salesCount": "Nombre de ventes",
+      "totalSales": "Total vendu",
+      "paymentBreakdown": "Répartition par mode de paiement",
+      "vsPreviousDay": "vs jour précédent",
+      "viewSalesList": "Voir la liste complète du jour",
+      "recentSalesTitle": "Ventes du jour",
+      "recentSalesDescription": "{{count}} vente(s) enregistrée(s).",
+      "openFullList": "Ouvrir la liste complète",
+      "empty": "Aucune vente enregistrée pour cette date.",
+      "items": "{{count}} articles",
+      "moreSales": "Et {{count}} vente(s) de plus dans la liste complète.",
+      "loadError": "Impossible de charger le résumé quotidien."
     }
   },
   "saleForm": {
@@ -1158,7 +1176,7 @@
         "lowStock": "Pour consulter les produits en stock faible, j'ai besoin que vous indiquiez :\n\n• Action : \"Produits en stock faible\" ou \"Stock faible\"\n\nExemple :\n\"Produits en stock faible\"\n\nVous pouvez aussi aller à la liste Produits filtrée par stock faible.",
         "listSales": "Pour lister les ventes, j'ai besoin que vous indiquiez :\n\n• Action : \"Voir les ventes\" ou \"Ventes d'aujourd'hui\"\n• Filtre optionnel : date ou période\n\nExemples :\n\"Voir les ventes\"\n\"Ventes d'aujourd'hui\"\n\nVous pouvez aussi aller à la liste des Ventes.",
         "showSale": "Pour voir une vente, j'ai besoin que vous indiquiez :\n\n• Action : \"Voir la vente\"\n• Numéro de vente : ID de la vente\n\nExemple :\n\"Voir vente #13\"\n\nVous pouvez aussi aller à la liste des Ventes.",
-        "dailySalesSummary": "Pour le résumé des ventes du jour, j'ai besoin que vous indiquiez :\n\n• Action : \"Résumé des ventes d'aujourd'hui\"\n• Date optionnelle\n\nExemple :\n\"Résumé des ventes d'aujourd'hui\"\n\nVous pouvez aussi consulter les ventes récentes sur le Panneau ou la liste Ventes.",
+        "dailySalesSummary": "Pour le résumé des ventes du jour, j'ai besoin que vous indiquiez :\n\n• Action : \"Résumé des ventes d'aujourd'hui\"\n• Date optionnelle\n\nExemple :\n\"Résumé des ventes d'aujourd'hui\"\n\nCela affiche les totaux et la répartition par paiement, pas chaque vente.\n\nVous pouvez aussi aller à Ventes du jour pour l'analytique complète.",
         "createSale": "Pour enregistrer une vente, j'ai besoin que vous indiquiez :\n\n• Action : \"Créer une vente\"\n• Mode de paiement : espèces, carte, virement, etc.\n• Produits : nom et quantité de chaque article\n\nExemple :\n\"Créer vente en espèces avec 2 Produit démo\"\n\nVous pouvez aussi aller à Nouvelle vente.",
         "emitInvoice": "Pour facturer une vente, j'ai besoin que vous indiquiez :\n\n• Action : \"Facturer la vente\"\n• Numéro de vente : ID de la vente\n• Client : optionnel\n\nExemples :\n\"Facturer vente #13\"\n\"Facturer vente #13 pour client Client démo\"\n\nVous pouvez aussi facturer depuis le détail de la vente.",
         "searchCustomer": "Pour rechercher un client, j'ai besoin que vous indiquiez :\n\n• Action : \"Rechercher un client\"\n• Terme de recherche : raison sociale ou document\n\nExemple :\n\"Rechercher client Client démo\"\n\nVous pouvez aussi aller à l'écran Clients.",

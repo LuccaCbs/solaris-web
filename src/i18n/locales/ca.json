@@ -631,6 +631,24 @@
       "items": "Ítems",
       "total": "Total",
       "date": "Data"
+    },
+    "daily": {
+      "title": "Vendes del dia",
+      "description": "Analítica i detall de vendes per a {{date}}.",
+      "dateLabel": "Data",
+      "backToSales": "Tornar a vendes",
+      "salesCount": "Quantitat de vendes",
+      "totalSales": "Total venut",
+      "paymentBreakdown": "Desglossament per mètode de pagament",
+      "vsPreviousDay": "vs dia anterior",
+      "viewSalesList": "Veure llistat complet del dia",
+      "recentSalesTitle": "Vendes del dia",
+      "recentSalesDescription": "{{count}} venda(es) registrada(es).",
+      "openFullList": "Obrir llistat complet",
+      "empty": "No hi ha vendes registrades per a aquesta data.",
+      "items": "{{count}} ítems",
+      "moreSales": "I {{count}} venda(es) més a l'llistat complet.",
+      "loadError": "No s'ha pogut carregar el resum diari."
     }
   },
   "saleForm": {
@@ -1157,7 +1175,7 @@
         "lowStock": "Per consultar productes amb baix estoc necessito que indiquis:\n\n• Acció: \"Productes amb baix estoc\" o \"Baix estoc\"\n\nExemple:\n\"Productes amb baix estoc\"\n\nTambé pots anar al llistat de Productes filtrat per baix estoc.",
         "listSales": "Per llistar vendes necessito que indiquis:\n\n• Acció: \"Veure vendes\" o \"Vendes d'avui\"\n• Filtre opcional: data o període\n\nExemples:\n\"Veure vendes\"\n\"Vendes d'avui\"\n\nTambé pots anar al llistat de Vendes.",
         "showSale": "Per veure una venda necessito que indiquis:\n\n• Acció: \"Veure venda\"\n• Número de venda: ID de la venda\n\nExemple:\n\"Veure venda #13\"\n\nTambé pots anar al llistat de Vendes.",
-        "dailySalesSummary": "Per al resum de vendes del dia necessito que indiquis:\n\n• Acció: \"Resum de vendes d'avui\"\n• Data opcional\n\nExemple:\n\"Resum de vendes d'avui\"\n\nTambé pots revisar vendes recents al Tauler o al llistat de Vendes.",
+        "dailySalesSummary": "Per al resum de vendes del dia necessito que indiquis:\n\n• Acció: \"Resum de vendes d'avui\"\n• Data opcional\n\nExemple:\n\"Resum de vendes d'avui\"\n\nAixò mostra totals i desglossament per pagament, no cada venda.\n\nTambé pots anar a Vendes del dia per veure l'analítica completa.",
         "createSale": "Per registrar una venda necessito que indiquis:\n\n• Acció: \"Crear venda\"\n• Mitjà de pagament: efectiu, targeta, transferència, etc.\n• Productes: nom i quantitat de cada article\n\nExemple:\n\"Crear venda en efectiu amb 2 Producte prova\"\n\nTambé pots anar a Nova venda.",
         "emitInvoice": "Per facturar una venda necessito que indiquis:\n\n• Acció: \"Facturar venda\"\n• Número de venda: ID de la venda\n• Client: opcional\n\nExemples:\n\"Facturar venda #13\"\n\"Facturar venda #13 per al client Client demo\"\n\nTambé pots facturar des del detall de la venda.",
         "searchCustomer": "Per cercar un client necessito que indiquis:\n\n• Acció: \"Cercar client\"\n• Terme de cerca: raó social o document\n\nExemple:\n\"Cercar client Client demo\"\n\nTambé pots anar a la pantalla de Clients.",

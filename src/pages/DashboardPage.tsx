@@ -243,7 +243,7 @@ function DashboardPage() {
             <section className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
                 <button
                     type="button"
-                    onClick={() => navigate('/sales')}
+                    onClick={() => navigate('/sales/daily')}
                     className="solaris-panel text-left transition hover:-translate-y-0.5 hover:shadow-xl"
                 >
                     <p className="text-sm solaris-muted">{t('dashboard.cards.todaySales')}</p>

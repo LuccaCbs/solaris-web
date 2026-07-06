@@ -56,7 +56,7 @@ export function NovaDailySalesSummaryCard({
             </div>
 
             <Link
-                to={`/sales?from=${summary.date}&to=${summary.date}`}
+                to={`/sales/daily?date=${summary.date}`}
                 className="mt-4 block text-center text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
             >
                 {t('nova.salesSummaryCard.viewDetails')}

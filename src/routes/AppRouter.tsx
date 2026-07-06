@@ -18,6 +18,7 @@ import NewCategoryPage from '../pages/NewCategoryPage'
 import EditCategoryPage from '../pages/EditCategoryPage'
 import AdminSettingsPage from '../pages/AdminSettingsPage'
 import SalesPage from '../pages/SalesPage'
+import DailySalesPage from '../pages/DailySalesPage'
 import NewSalePage from '../pages/NewSalePage'
 import SaleDetailPage from '../pages/SaleDetailPage'
 import SuppliersPage from '../pages/SuppliersPage'
@@ -91,6 +92,7 @@ function AppRouter() {
                             <Route path="/audit-logs" element={<AuditLogsPage />} />
 
                             <Route path="/sales" element={<SalesPage />} />
+                            <Route path="/sales/daily" element={<DailySalesPage />} />
                             <Route path="/sales/new" element={<NewSalePage />} />
                             <Route path="/sales/:id" element={<SaleDetailPage />} />
                             <Route path="/fiscal-documents" element={<FiscalDocumentsPage />} />

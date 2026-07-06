@@ -643,6 +643,24 @@
       "items": "Items",
       "total": "Total",
       "date": "Date"
+    },
+    "daily": {
+      "title": "Daily sales",
+      "description": "Analytics and sales detail for {{date}}.",
+      "dateLabel": "Date",
+      "backToSales": "Back to sales",
+      "salesCount": "Sales count",
+      "totalSales": "Total sold",
+      "paymentBreakdown": "Payment method breakdown",
+      "vsPreviousDay": "vs previous day",
+      "viewSalesList": "View full day list",
+      "recentSalesTitle": "Day sales",
+      "recentSalesDescription": "{{count}} sale(s) recorded.",
+      "openFullList": "Open full list",
+      "empty": "No sales recorded for this date.",
+      "items": "{{count}} items",
+      "moreSales": "And {{count}} more sale(s) in the full list.",
+      "loadError": "Could not load the daily summary."
     }
   },
   "saleForm": {
@@ -1170,7 +1188,7 @@
         "lowStock": "To check low-stock products I need you to specify:\n\n• Action: \"Low stock products\" or \"Low stock\"\n\nExample:\n\"Low stock products\"\n\nYou can also go to the Products list filtered by low stock or restock from Merchandise intake.",
         "listSales": "To list individual sales I need you to specify:\n\n• Action: \"Show sales\" or \"Recent sales\"\n• Optional filter: \"Sales today\" or \"Sales yesterday\"\n\nExamples:\n\"Show sales\"\n\"Sales today\"\n\nFor daily totals (not a list), use \"Sales summary for today\" or \"Sales of the day\".\n\nYou can also go to the Sales list and filter by date.",
         "showSale": "To view a sale I need you to specify:\n\n• Action: \"Show sale\"\n• Sale number: sale ID\n\nExample:\n\"Show sale #13\"\n\nYou can also go to the Sales list and open the detail.",
-        "dailySalesSummary": "For the daily sales summary I need you to specify:\n\n• Action: \"Sales summary for today\", \"Sales of the day\", or \"Daily totals\"\n• Optional date: if you want another day\n\nExample:\n\"Sales summary for today\"\n\nThis shows totals and payment breakdown, not each sale.\n\nYou can also review metrics on the main Dashboard.",
+        "dailySalesSummary": "For the daily sales summary I need you to specify:\n\n• Action: \"Sales summary for today\", \"Sales of the day\", or \"Daily totals\"\n• Optional date: if you want another day\n\nExample:\n\"Sales summary for today\"\n\nThis shows totals and payment breakdown, not each sale.\n\nYou can also go to Daily sales for the full analytics screen.",
         "createSale": "To register a sale I need you to specify:\n\n• Action: \"Create sale\"\n• Payment method: cash, card, transfer, etc.\n• Products: name and quantity for each item\n\nExample:\n\"Create cash sale with 2 Sample Product\"\n\nYou can also go to New sale and register from the POS screen.",
         "emitInvoice": "To invoice a sale I need you to specify:\n\n• Action: \"Invoice sale\"\n• Sale number: sale ID\n• Customer: optional (Consumer Final if omitted)\n\nExamples:\n\"Invoice sale #13\"\n\"Invoice sale #13 for customer Demo Customer\"\n\nYou can also invoice from the sale detail in the Sales list.",
         "searchCustomer": "To search for a customer I need you to specify:\n\n• Action: \"Search customer\"\n• Search term: business name or document number\n\nExample:\n\"Search customer Demo Customer\"\n\nYou can also go to the Customers screen and use the search bar.",
