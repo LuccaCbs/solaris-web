@@ -83,6 +83,7 @@ export function NovaCopilotPanel({ isOpen, onClose }: NovaCopilotPanelProps) {
                     messages={messages}
                     isLoading={isLoading}
                     onSendMessage={sendMessage}
+                    onShowGuide={(content) => addAssistantMessage(content)}
                     onClosePanel={onClose}
                     onSelectQuickAction={handleQuickAction}
                 />

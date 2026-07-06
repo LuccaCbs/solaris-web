@@ -4,12 +4,14 @@ import type { NovaUiAction } from '../types/nova.types'
 interface NovaActionButtonsProps {
     actions: NovaUiAction[]
     onSendMessage?: (message: string) => void
+    onShowGuide?: (message: string) => void
     onClosePanel?: () => void
 }
 
 export function NovaActionButtons({
     actions,
     onSendMessage,
+    onShowGuide,
     onClosePanel,
 }: NovaActionButtonsProps) {
     const navigate = useNavigate()
@@ -33,6 +35,11 @@ export function NovaActionButtons({
 
                         if (action.type === 'send_message' && action.message) {
                             onSendMessage?.(action.message)
+                            return
+                        }
+
+                        if (action.type === 'show_guide' && action.message) {
+                            onShowGuide?.(action.message)
                         }
                     }}
                     className={

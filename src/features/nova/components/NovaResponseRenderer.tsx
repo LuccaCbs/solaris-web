@@ -23,6 +23,7 @@ import type { FiscalDocument } from '../../../types/fiscal'
 interface NovaResponseRendererProps {
     message: NovaMessage
     onSendMessage?: (message: string, options?: { silent?: boolean }) => void
+    onShowGuide?: (message: string) => void
     onClosePanel?: () => void
 }
 
@@ -84,6 +85,7 @@ function isFiscalDocument(value: unknown): value is FiscalDocument {
 export function NovaResponseRenderer({
                                          message,
                                          onSendMessage,
+                                         onShowGuide,
                                          onClosePanel,
                                      }: NovaResponseRendererProps) {
     if (message.role === 'user') {
@@ -340,6 +342,7 @@ export function NovaResponseRenderer({
                 <NovaActionButtons
                     actions={message.actions}
                     onSendMessage={(text) => onSendMessage?.(text)}
+                    onShowGuide={onShowGuide}
                     onClosePanel={onClosePanel}
                 />
             )}

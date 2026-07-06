@@ -16,7 +16,14 @@ export function buildNovaUiActionsForQuickAction(
         })
     }
 
-    if (action.executeMessageKey) {
+    if (action.guideKey) {
+        actions.push({
+            id: `${action.id}-guide`,
+            label: t('nova.actions.askNova'),
+            type: 'show_guide',
+            message: t(action.guideKey),
+        })
+    } else if (action.executeMessageKey) {
         actions.push({
             id: `${action.id}-execute`,
             label: t('nova.actions.askNova'),

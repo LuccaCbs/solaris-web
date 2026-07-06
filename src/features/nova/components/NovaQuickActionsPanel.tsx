@@ -20,7 +20,7 @@ function QuickActionModeHint({ mode }: { mode: NovaQuickActionDefinition['mode']
         )
     }
 
-    if (mode === 'execute') {
+    if (mode === 'execute' || mode === 'guide' || mode === 'hybrid') {
         return (
             <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-emerald-500">
                 <MessageSquare size={12} />

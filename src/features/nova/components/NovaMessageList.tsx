@@ -8,6 +8,7 @@ interface NovaMessageListProps {
     messages: NovaMessage[]
     isLoading: boolean
     onSendMessage: (message: string) => void
+    onShowGuide: (message: string) => void
     onClosePanel?: () => void
     onSelectQuickAction: (action: NovaQuickActionDefinition) => void
 }
@@ -16,6 +17,7 @@ export function NovaMessageList({
     messages,
     isLoading,
     onSendMessage,
+    onShowGuide,
     onClosePanel,
     onSelectQuickAction,
 }: NovaMessageListProps) {
@@ -46,6 +48,7 @@ export function NovaMessageList({
                     <NovaResponseRenderer
                         message={message}
                         onSendMessage={onSendMessage}
+                        onShowGuide={onShowGuide}
                         onClosePanel={onClosePanel}
                     />
                 </div>

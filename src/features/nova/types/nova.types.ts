@@ -7,7 +7,7 @@ export type NovaResponseType =
     | 'tool_result'
     | 'error';
 
-export type NovaUiActionType = 'navigate' | 'send_message'
+export type NovaUiActionType = 'navigate' | 'send_message' | 'show_guide'
 
 export interface NovaUiAction {
     id: string
@@ -26,6 +26,7 @@ export interface NovaQuickActionDefinition {
     groupKey: string
     labelKey: string
     helpKey?: string
+    guideKey?: string
     executeMessageKey?: string
     navigateTo?: string
     mode: NovaQuickActionMode
