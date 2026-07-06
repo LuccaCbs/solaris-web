@@ -181,7 +181,7 @@ function QuickRestockPage() {
                 {t('barcode.scan.readyRestock')}
             </div>
 
-            <div className="mt-4 grid max-w-3xl gap-4 md:grid-cols-2">
+            <div className="mt-4 max-w-md space-y-4">
                 <BarcodeScanInput onScan={handleBarcodeScan} />
 
                 <div className="relative">
