@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { NovaMessage, NovaQuickActionDefinition } from '../types/nova.types'
 import { NovaResponseRenderer } from './NovaResponseRenderer'
-import { useNovaQuickActions } from '../hooks/useNovaQuickActions'
+import { NovaEmptyState } from './NovaEmptyState'
 
 interface NovaMessageListProps {
     messages: NovaMessage[]
@@ -20,7 +20,6 @@ export function NovaMessageList({
     onSelectQuickAction,
 }: NovaMessageListProps) {
     const { t } = useTranslation()
-    const { onboardingActions } = useNovaQuickActions()
     const bottomRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
@@ -32,36 +31,7 @@ export function NovaMessageList({
     return (
         <div className="flex-1 space-y-3 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
             {messages.length === 0 && (
-                <div className="space-y-4">
-                    <p className="text-sm solaris-muted">
-                        {t('nova.emptyState')}
-                    </p>
-
-                    <p className="text-xs solaris-muted">
-                        {t('nova.emptyStateHint')}
-                    </p>
-
-                    {onboardingActions.length > 0 && (
-                        <div className="space-y-2">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                                {t('nova.quickActions.groups.gettingStarted')}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2">
-                                {onboardingActions.map((action) => (
-                                    <button
-                                        key={action.id}
-                                        type="button"
-                                        onClick={() => onSelectQuickAction(action)}
-                                        className="rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-500/20 dark:text-blue-300"
-                                    >
-                                        {t(action.labelKey)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
+                <NovaEmptyState onSelectQuickAction={onSelectQuickAction} />
             )}
 
             {messages.map((message) => (

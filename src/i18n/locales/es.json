@@ -1078,6 +1078,38 @@
       "goToPage": "Ir a la pantalla",
       "askNova": "Hacerlo con Nova"
     },
+    "onboarding": {
+      "checklistTitle": "Primeros pasos en Solaris",
+      "start": "Empezar",
+      "welcomeCoreOnly": "Hola, soy Nova. Te ayudo a registrar ventas, entender el panel y orientarte en Solaris.",
+      "welcomeWithModules": "Hola, soy Nova. Con tu plan podés usar {{modules}} además de ventas y panel. Te guío paso a paso.",
+      "modules": {
+        "core": "ventas y panel",
+        "inventory": "inventario",
+        "customers": "clientes",
+        "fiscal": "facturación fiscal",
+        "team": "equipo",
+        "audit": "auditoría"
+      },
+      "steps": {
+        "create_product": {
+          "title": "Crear tu primer producto",
+          "description": "Cargá al menos un producto para empezar a vender."
+        },
+        "first_sale": {
+          "title": "Registrar tu primera venta",
+          "description": "Probá el flujo de caja con una venta de prueba."
+        },
+        "view_dashboard": {
+          "title": "Revisar el panel",
+          "description": "Mirá ventas, alertas y el estado general del negocio."
+        },
+        "restock_low_stock": {
+          "title": "Reponer productos con bajo stock",
+          "description": "Tenés productos por debajo del umbral mínimo."
+        }
+      }
+    },
     "input": {
       "placeholder": "Escribile a Nova...",
       "send": "Enviar"

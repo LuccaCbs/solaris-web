@@ -1078,6 +1078,38 @@
       "goToPage": "Go to screen",
       "askNova": "Do it with Nova"
     },
+    "onboarding": {
+      "checklistTitle": "First steps in Solaris",
+      "start": "Start",
+      "welcomeCoreOnly": "Hi, I am Nova. I can help you record sales, understand the dashboard, and get oriented in Solaris.",
+      "welcomeWithModules": "Hi, I am Nova. Your plan includes {{modules}} in addition to sales and the dashboard. I will guide you step by step.",
+      "modules": {
+        "core": "sales and dashboard",
+        "inventory": "inventory",
+        "customers": "customers",
+        "fiscal": "fiscal billing",
+        "team": "team",
+        "audit": "audit"
+      },
+      "steps": {
+        "create_product": {
+          "title": "Create your first product",
+          "description": "Add at least one product before you start selling."
+        },
+        "first_sale": {
+          "title": "Record your first sale",
+          "description": "Try the POS flow with a test sale."
+        },
+        "view_dashboard": {
+          "title": "Review the dashboard",
+          "description": "See sales, alerts, and the overall business status."
+        },
+        "restock_low_stock": {
+          "title": "Restock low-stock products",
+          "description": "Some products are below the minimum threshold."
+        }
+      }
+    },
     "input": {
       "placeholder": "Message Nova...",
       "send": "Send"

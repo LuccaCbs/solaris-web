@@ -1065,6 +1065,38 @@
       "goToPage": "Anar a la pantalla",
       "askNova": "Fer-ho amb Nova"
     },
+    "onboarding": {
+      "checklistTitle": "Primers passos a Solaris",
+      "start": "Començar",
+      "welcomeCoreOnly": "Hola, sóc Nova. T'ajudo a registrar vendes, entendre el tauler i orientar-te a Solaris.",
+      "welcomeWithModules": "Hola, sóc Nova. El teu pla inclou {{modules}} a més de vendes i tauler. Et guio pas a pas.",
+      "modules": {
+        "core": "vendes i tauler",
+        "inventory": "inventari",
+        "customers": "clients",
+        "fiscal": "facturació fiscal",
+        "team": "equip",
+        "audit": "auditoria"
+      },
+      "steps": {
+        "create_product": {
+          "title": "Crear el teu primer producte",
+          "description": "Carrega almenys un producte abans de començar a vendre."
+        },
+        "first_sale": {
+          "title": "Registrar la teva primera venda",
+          "description": "Prova el flux de caixa amb una venda de prova."
+        },
+        "view_dashboard": {
+          "title": "Revisar el tauler",
+          "description": "Consulta vendes, alertes i l'estat general del negoci."
+        },
+        "restock_low_stock": {
+          "title": "Repondre productes amb baix estoc",
+          "description": "Tens productes per sota del llindar mínim."
+        }
+      }
+    },
     "input": {
       "placeholder": "Escriu a Nova...",
       "send": "Enviar"
