@@ -91,6 +91,33 @@ export async function getProductById(id: number): Promise<Product> {
     return response.data
 }
 
+export type ProductPreview = {
+    product: Product
+    salesQuantityThisMonth: number
+    salesRevenueThisMonth: number
+    supplierOrderAppearances: number
+    restockCount: number
+    recentStockMovements: Array<{
+        id: number
+        productId: number
+        productName: string
+        type: 'IN' | 'OUT' | 'ADJUSTMENT'
+        quantity: number
+        previousStock: number
+        currentStock: number
+        reason: string | null
+        createdAt: string
+    }>
+}
+
+export async function getProductPreview(id: number): Promise<ProductPreview> {
+    const response = await axiosClient.get<ProductPreview>(`/products/${id}/preview`, {
+        headers: getAuthHeaders(),
+    })
+
+    return response.data
+}
+
 export async function getProductByBarcode(barcode: string): Promise<Product> {
     const response = await axiosClient.get<Product>(`/products/by-barcode/${encodeURIComponent(barcode)}`, {
         headers: getAuthHeaders(),

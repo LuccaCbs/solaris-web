@@ -2,11 +2,17 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
-import { deleteCustomer, getCustomers } from '../api/customerService'
+import {
+    activateCustomer,
+    deactivateCustomer,
+    getCustomers,
+} from '../api/customerService'
 import { useAuth } from '../context/AuthContext'
 import type { Customer } from '../types/customer'
 import { canDeleteCustomers } from '../utils/roleAccess'
 import LoadingScreen from '../components/LoadingScreen'
+
+type StatusFilter = 'all' | 'active' | 'inactive'
 
 function CustomersPage() {
     const { t } = useTranslation()
@@ -16,6 +22,7 @@ function CustomersPage() {
     const [customers, setCustomers] = useState<Customer[]>([])
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState('')
+    const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
     const [currentPage, setCurrentPage] = useState(1)
     const pageSize = 10
 
@@ -23,7 +30,20 @@ function CustomersPage() {
         try {
             setLoading(true)
 
-            const data = await getCustomers()
+            let data: Customer[]
+
+            if (statusFilter === 'all') {
+                const [active, inactive] = await Promise.all([
+                    getCustomers(true),
+                    getCustomers(false),
+                ])
+                data = [...active, ...inactive]
+            } else if (statusFilter === 'inactive') {
+                data = await getCustomers(false)
+            } else {
+                data = await getCustomers(true)
+            }
+
             setCustomers(data)
         } catch {
             toast.error(t('customers.loadError'))
@@ -33,25 +53,40 @@ function CustomersPage() {
     }
 
     useEffect(() => {
-        loadCustomers()
-    }, [t])
+        void loadCustomers()
+    }, [statusFilter, t])
 
-    async function handleDeleteCustomer(id: number) {
-        const confirmed = window.confirm(t('customers.deleteConfirm'))
+    async function handleDeactivateCustomer(id: number) {
+        const confirmed = window.confirm(t('customers.deactivateConfirm'))
 
         if (!confirmed) return
 
         try {
-            await deleteCustomer(id)
-            toast.success(t('customers.deleteSuccess'))
+            await deactivateCustomer(id)
+            toast.success(t('customers.deactivateSuccess'))
             await loadCustomers()
         } catch {
-            toast.error(t('customers.deleteError'))
+            toast.error(t('customers.deactivateError'))
+        }
+    }
+
+    async function handleActivateCustomer(id: number) {
+        const confirmed = window.confirm(t('customers.activateConfirm'))
+
+        if (!confirmed) return
+
+        try {
+            await activateCustomer(id)
+            toast.success(t('customers.activateSuccess'))
+            await loadCustomers()
+        } catch {
+            toast.error(t('customers.activateError'))
         }
     }
 
     function clearFilters() {
         setSearch('')
+        setStatusFilter('all')
         setCurrentPage(1)
     }
 
@@ -105,7 +140,7 @@ function CustomersPage() {
             </div>
 
             <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div className="grid gap-3 md:grid-cols-2">
+                <div className="grid gap-3 md:grid-cols-3">
                     <input
                         value={search}
                         onChange={(event) => {
@@ -115,6 +150,19 @@ function CustomersPage() {
                         placeholder={t('customers.searchPlaceholder')}
                         className="solaris-input w-full"
                     />
+
+                    <select
+                        value={statusFilter}
+                        onChange={(event) => {
+                            setStatusFilter(event.target.value as StatusFilter)
+                            setCurrentPage(1)
+                        }}
+                        className="solaris-input w-full"
+                    >
+                        <option value="all">{t('customers.filters.allStatuses')}</option>
+                        <option value="active">{t('customers.filters.activeOnly')}</option>
+                        <option value="inactive">{t('customers.filters.inactiveOnly')}</option>
+                    </select>
 
                     <button
                         type="button"
@@ -145,6 +193,12 @@ function CustomersPage() {
                             <p className="mt-1 text-sm solaris-subtle">
                                 {t(`customers.condicionesIva.${customer.condicionIva}`)}
                             </p>
+
+                            {customer.active === false && (
+                                <p className="mt-2 text-xs font-semibold text-red-400">
+                                    {t('customers.status.inactive')}
+                                </p>
+                            )}
                         </div>
 
                         <div className="mt-4 flex flex-wrap gap-2">
@@ -155,12 +209,21 @@ function CustomersPage() {
                                 {t('common.edit')}
                             </Link>
 
-                            {canDelete && (
+                            {canDelete && customer.active !== false && (
                                 <button
-                                    onClick={() => handleDeleteCustomer(customer.id)}
+                                    onClick={() => handleDeactivateCustomer(customer.id)}
                                     className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                                 >
-                                    {t('common.delete')}
+                                    {t('customers.deactivate')}
+                                </button>
+                            )}
+
+                            {canDelete && customer.active === false && (
+                                <button
+                                    onClick={() => handleActivateCustomer(customer.id)}
+                                    className="rounded-lg border border-emerald-500/30 px-3 py-2 text-sm text-emerald-500 hover:bg-emerald-500/10"
+                                >
+                                    {t('customers.reactivate')}
                                 </button>
                             )}
                         </div>
@@ -207,6 +270,11 @@ function CustomersPage() {
                         >
                             <td className="px-6 py-4 font-medium text-slate-950 dark:text-white">
                                 {customer.razonSocial}
+                                {customer.active === false && (
+                                    <span className="ml-2 text-xs font-semibold text-red-400">
+                                        {t('customers.status.inactive')}
+                                    </span>
+                                )}
                             </td>
 
                             <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
@@ -234,12 +302,21 @@ function CustomersPage() {
                                         {t('common.edit')}
                                     </Link>
 
-                                    {canDelete && (
+                                    {canDelete && customer.active !== false && (
                                         <button
-                                            onClick={() => handleDeleteCustomer(customer.id)}
+                                            onClick={() => handleDeactivateCustomer(customer.id)}
                                             className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                                         >
-                                            {t('common.delete')}
+                                            {t('customers.deactivate')}
+                                        </button>
+                                    )}
+
+                                    {canDelete && customer.active === false && (
+                                        <button
+                                            onClick={() => handleActivateCustomer(customer.id)}
+                                            className="rounded-lg border border-emerald-500/30 px-3 py-2 text-sm text-emerald-500 hover:bg-emerald-500/10"
+                                        >
+                                            {t('customers.reactivate')}
                                         </button>
                                     )}
                                 </div>

@@ -16,6 +16,7 @@ export type Customer = {
     phone: string | null
     address: string | null
     condicionIva: CondicionIva
+    active?: boolean
     createdAt: string
     updatedAt: string
 }

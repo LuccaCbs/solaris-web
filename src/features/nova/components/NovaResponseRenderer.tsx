@@ -114,6 +114,17 @@ function isFiscalDocument(value: unknown): value is FiscalDocument {
     )
 }
 
+function isFiscalDocumentsListResult(
+    value: unknown,
+): value is { items: FiscalDocument[]; totalCount: number } {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'items' in value &&
+        Array.isArray((value as { items: unknown }).items)
+    )
+}
+
 export function NovaResponseRenderer({
                                          message,
                                          onSendMessage,
@@ -150,7 +161,10 @@ export function NovaResponseRenderer({
         return (
             <div className="space-y-3">
                 <p className="whitespace-pre-line">{message.content}</p>
-                <NovaProductsResult products={message.data} />
+                <NovaProductsResult
+                    products={message.data}
+                    intent={message.intent as 'search_product' | 'list_low_stock'}
+                />
             </div>
         )
     }
@@ -296,12 +310,22 @@ export function NovaResponseRenderer({
     if (
         message.type === 'tool_result' &&
         message.intent === 'list_fiscal_documents' &&
-        Array.isArray(message.data)
+        (Array.isArray(message.data) || isFiscalDocumentsListResult(message.data))
     ) {
+        const documents = Array.isArray(message.data)
+            ? (message.data as FiscalDocument[])
+            : message.data.items
+        const totalCount = isFiscalDocumentsListResult(message.data)
+            ? message.data.totalCount
+            : documents.length
+
         return (
             <div className="space-y-3">
                 <p className="whitespace-pre-line">{message.content}</p>
-                <NovaFiscalDocumentsListCard documents={message.data as FiscalDocument[]} />
+                <NovaFiscalDocumentsListCard
+                    documents={documents}
+                    totalCount={totalCount}
+                />
             </div>
         )
     }

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 interface NovaProduct {
@@ -12,14 +13,21 @@ interface NovaProduct {
 
 interface NovaProductsResultProps {
     products: NovaProduct[]
+    intent?: 'search_product' | 'list_low_stock'
 }
 
-export function NovaProductsResult({ products }: NovaProductsResultProps) {
+export function NovaProductsResult({ products, intent }: NovaProductsResultProps) {
     const { t } = useTranslation()
 
     if (products.length === 0) {
         return null
     }
+
+    const showRestock = intent === 'list_low_stock' || products.some((product) => product.lowStock)
+    const restockLink =
+        products.length === 1
+            ? `/stock/restock?productId=${products[0].id}`
+            : '/products?stock=low'
 
     return (
         <div className="space-y-2">
@@ -43,7 +51,7 @@ export function NovaProductsResult({ products }: NovaProductsResultProps) {
 
                         {product.lowStock && (
                             <span className="rounded-full bg-red-500/10 px-2 py-1 text-xs font-semibold text-red-400">
-                                Bajo stock
+                                {t('nova.productsResult.lowStockBadge')}
                             </span>
                         )}
                     </div>
@@ -56,8 +64,33 @@ export function NovaProductsResult({ products }: NovaProductsResultProps) {
                             ${product.price?.toFixed(2) ?? '0.00'}
                         </span>
                     </div>
+
+                    <div className="mt-3 flex flex-wrap gap-3">
+                        <Link
+                            to={`/products/${product.id}/view`}
+                            className="text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                        >
+                            {t('nova.productsResult.viewProduct')}
+                        </Link>
+
+                        <Link
+                            to={`/products/${product.id}/edit`}
+                            className="text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                        >
+                            {t('nova.productsResult.editProduct')}
+                        </Link>
+                    </div>
                 </div>
             ))}
+
+            {showRestock && (
+                <Link
+                    to={restockLink}
+                    className="inline-flex rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-emerald-500"
+                >
+                    {t('nova.productsResult.restock')}
+                </Link>
+            )}
         </div>
     )
 }

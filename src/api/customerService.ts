@@ -14,9 +14,21 @@ function getAuthHeaders() {
     }
 }
 
-export async function getCustomers(): Promise<Customer[]> {
+export async function getCustomers(active?: boolean): Promise<Customer[]> {
+    const params = active !== undefined ? { active } : undefined
+
     const response = await axiosClient.get<Customer[]>('/customers', {
         headers: getAuthHeaders(),
+        params,
+    })
+
+    return response.data
+}
+
+export async function searchCustomers(query: string): Promise<Customer[]> {
+    const response = await axiosClient.get<Customer[]>('/customers/search', {
+        headers: getAuthHeaders(),
+        params: { q: query },
     })
 
     return response.data
@@ -49,6 +61,30 @@ export async function updateCustomer(
     const response = await axiosClient.put<Customer>(
         `/customers/${id}`,
         buildCustomerPayload(data),
+        {
+            headers: getAuthHeaders(),
+        }
+    )
+
+    return response.data
+}
+
+export async function deactivateCustomer(id: number): Promise<Customer> {
+    const response = await axiosClient.patch<Customer>(
+        `/customers/${id}/deactivate`,
+        {},
+        {
+            headers: getAuthHeaders(),
+        }
+    )
+
+    return response.data
+}
+
+export async function activateCustomer(id: number): Promise<Customer> {
+    const response = await axiosClient.patch<Customer>(
+        `/customers/${id}/activate`,
+        {},
         {
             headers: getAuthHeaders(),
         }

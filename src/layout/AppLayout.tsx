@@ -76,35 +76,35 @@ function AppLayout() {
             label: t('nav.merchandiseIntake'),
             to: '/stock/restock',
             icon: PackagePlus,
-            minimumRole: 'MANAGER',
+            minimumRole: 'REPOSITOR',
             requiredModule: 'INVENTORY',
         },
         {
             label: t('nav.supplierOrders'),
             to: '/supplier-orders',
             icon: ClipboardList,
-            minimumRole: 'MANAGER',
+            minimumRole: 'REPOSITOR',
             requiredModule: 'INVENTORY',
         },
         {
             label: t('nav.products'),
             to: '/products',
             icon: Boxes,
-            minimumRole: 'MANAGER',
+            minimumRole: 'REPOSITOR',
             requiredModule: 'INVENTORY',
         },
         {
             label: t('nav.categories'),
             to: '/categories',
             icon: FolderTree,
-            minimumRole: 'MANAGER',
+            minimumRole: 'REPOSITOR',
             requiredModule: 'INVENTORY',
         },
         {
             label: t('nav.suppliers'),
             to: '/suppliers',
             icon: Truck,
-            minimumRole: 'MANAGER',
+            minimumRole: 'REPOSITOR',
             requiredModule: 'INVENTORY',
         },
         {
@@ -125,7 +125,7 @@ function AppLayout() {
             label: t('nav.movementHistory'),
             to: '/stock-movements',
             icon: History,
-            minimumRole: 'MANAGER',
+            minimumRole: 'REPOSITOR',
             requiredModule: 'INVENTORY',
         },
         {
@@ -144,11 +144,26 @@ function AppLayout() {
         },
     ]
 
-    const navItems = allNavItems.filter(
-        (item) =>
+    const navItems = allNavItems.filter((item) => {
+        if (role === 'REPOSITOR') {
+            const hiddenForRepositor =
+                item.to.startsWith('/sales')
+                || item.to.startsWith('/customers')
+                || item.to.startsWith('/fiscal-documents')
+                || item.to.startsWith('/audit-logs')
+                || item.to.startsWith('/team')
+                || item.to.startsWith('/admin')
+
+            if (hiddenForRepositor) {
+                return false
+            }
+        }
+
+        return (
             hasMinimumRole(item.minimumRole)
             && (item.requiredModule == null || hasModule(item.requiredModule))
-    )
+        )
+    })
     const canAccessAdminSettings = hasMinimumRole('ADMIN')
     const organizationLabel = orgName ?? (orgId ? t('auth.organization.fallbackName', { id: orgId }) : null)
 

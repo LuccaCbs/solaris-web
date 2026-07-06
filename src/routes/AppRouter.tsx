@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import AppLayout from '../layout/AppLayout'
 import DashboardPage from '../pages/DashboardPage'
 import LoginPage from '../pages/LoginPage'
@@ -13,6 +13,7 @@ import OnboardingPlanPage from '../pages/OnboardingPlanPage'
 import RoleProtectedRoute from './RoleProtectedRoute'
 import NewProductPage from '../pages/NewProductPage'
 import EditProductPage from '../pages/EditProductPage'
+import ProductViewPage from '../pages/ProductViewPage'
 import ImportProductsPage from '../pages/ImportProductsPage'
 import NewCategoryPage from '../pages/NewCategoryPage'
 import EditCategoryPage from '../pages/EditCategoryPage'
@@ -67,6 +68,7 @@ function AppRouter() {
                             <Route path="/" element={<DashboardPage />} />
                             <Route path="/products" element={<ProductsPage />} />
                             <Route path="/products/new" element={<NewProductPage />} />
+                            <Route path="/products/:id/view" element={<ProductViewPage />} />
                             <Route path="/products/:id/edit" element={<EditProductPage />} />
                             <Route path="/products/import" element={<ImportProductsPage />} />
 

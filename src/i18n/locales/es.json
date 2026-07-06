@@ -78,6 +78,7 @@
       "OWNER": "Propietario",
       "ADMIN": "Administrador",
       "MANAGER": "Gerente",
+      "REPOSITOR": "Repositor",
       "CASHIER": "Cajero"
     },
     "login": {
@@ -102,6 +103,7 @@
       "OWNER": "Propietario",
       "ADMIN": "Administrador",
       "MANAGER": "Gerente",
+      "REPOSITOR": "Repositor",
       "CASHIER": "Cajero"
     },
     "register": {
@@ -282,6 +284,7 @@
     "activateSuccess": "Producto activado correctamente.",
     "activateError": "No se pudo activar el producto.",
     "actions": {
+      "view": "Ver producto",
       "restock": "Reponer",
       "edit": "Editar",
       "deactivate": "Dar de baja",
@@ -420,6 +423,14 @@
     "deleteConfirm": "¿Seguro que quieres eliminar este proveedor?",
     "deleteSuccess": "Proveedor eliminado correctamente",
     "deleteError": "No se pudo eliminar el proveedor",
+    "deactivate": "Dar de baja",
+    "reactivate": "Reactivar",
+    "deactivateConfirm": "¿Seguro que querés dar de baja este proveedor?",
+    "deactivateSuccess": "Proveedor dado de baja correctamente.",
+    "deactivateError": "No se pudo dar de baja el proveedor.",
+    "activateConfirm": "¿Seguro que querés reactivar este proveedor?",
+    "activateSuccess": "Proveedor reactivado correctamente.",
+    "activateError": "No se pudo reactivar el proveedor.",
     "noContactName": "Sin nombre de contacto",
     "noEmail": "Sin email",
     "empty": "No se encontraron proveedores para los filtros seleccionados.",
@@ -473,6 +484,14 @@
     "deleteConfirm": "¿Seguro que quieres eliminar este cliente?",
     "deleteSuccess": "Cliente eliminado correctamente",
     "deleteError": "No se pudo eliminar el cliente",
+    "deactivate": "Dar de baja",
+    "reactivate": "Reactivar",
+    "deactivateConfirm": "¿Seguro que querés dar de baja este cliente?",
+    "deactivateSuccess": "Cliente dado de baja correctamente.",
+    "deactivateError": "No se pudo dar de baja el cliente.",
+    "activateConfirm": "¿Seguro que querés reactivar este cliente?",
+    "activateSuccess": "Cliente reactivado correctamente.",
+    "activateError": "No se pudo reactivar el cliente.",
     "noEmail": "Sin email",
     "empty": "No se encontraron clientes para los filtros seleccionados.",
     "results_one": "{{count}} resultado",
@@ -1085,6 +1104,25 @@
       "quantity": "Cantidad a agregar"
     }
   },
+  "productView": {
+    "loadError": "No se pudo cargar el producto",
+    "notFound": "Producto no encontrado",
+    "backToProducts": "← Volver a productos",
+    "description": "Vista general del producto con estadísticas recientes.",
+    "editProduct": "Editar producto",
+    "detailsTitle": "Detalles",
+    "statsTitle": "Estadísticas del mes",
+    "iva": "IVA",
+    "salesThisMonth": "Ventas este mes",
+    "revenue": "${{amount}}",
+    "supplierOrders": "Apariciones en pedidos",
+    "restockCount": "Reposiciones",
+    "recentMovements": "Movimientos de stock recientes",
+    "noMovements": "Sin movimientos recientes.",
+    "movementDate": "Fecha",
+    "movementType": "Tipo",
+    "movementQuantity": "Cantidad"
+  },
   "nova": {
     "title": "Nova Copilot",
     "subtitle": "Asistente operacional Solaris",
@@ -1207,8 +1245,18 @@
       "showSale": "Ver venta",
       "dailySalesSummary": "Resumen de ventas del día",
       "execute": {
+        "dashboardSummary": "Resumen del dashboard",
         "listSales": "Ver ventas",
-        "dailySalesSummary": "Resumen de ventas de hoy"
+        "dailySalesSummary": "Resumen de ventas de hoy",
+        "listFiscalDocuments": "Ver comprobantes fiscales",
+        "lowStock": "Productos con bajo stock"
+      },
+      "executeAction": {
+        "dashboard": "Ver dashboard",
+        "listSales": "Ver ventas",
+        "dailySalesSummary": "Ver resumen del día",
+        "listFiscalDocuments": "Ver comprobantes fiscales",
+        "lowStock": "Ver bajo stock"
       },
       "searchCustomer": "Buscar cliente",
       "showCustomer": "Ver cliente",
@@ -1229,9 +1277,14 @@
         "create_category": "Categoría creada",
         "create_supplier": "Proveedor creado",
         "update_supplier": "Proveedor actualizado",
-        "delete_supplier": "Proveedor eliminado",
+        "delete_supplier": "Proveedor dado de baja",
         "create_supplier_order": "Pedido a proveedor creado",
+        "mark_supplier_order_sent": "Pedido marcado como enviado",
+        "complete_supplier_order": "Pedido a proveedor completado",
+        "cancel_supplier_order": "Pedido a proveedor cancelado",
+        "delete_supplier_order": "Pedido a proveedor eliminado",
         "update_supplier_order": "Pedido a proveedor actualizado",
+        "show_supplier_order": "Pedido a proveedor consultado",
         "create_sale": "Venta registrada",
         "emit_invoice": "Comprobante fiscal emitido"
       }
@@ -1281,7 +1334,14 @@
       "edit": "Editar cliente"
     },
     "fiscalDocumentsListCard": {
-      "number": "PV {{puntoVenta}} · N° {{numero}}"
+      "number": "PV {{puntoVenta}} · N° {{numero}}",
+      "viewAll": "Ver todos en Facturación fiscal ({{count}})"
+    },
+    "productsResult": {
+      "viewProduct": "Ver producto",
+      "editProduct": "Editar producto",
+      "restock": "Restock",
+      "lowStockBadge": "Bajo stock"
     },
     "fiscalDocumentCard": {
       "viewInApp": "Ver comprobante"

@@ -1,4 +1,4 @@
-export const ORGANIZATION_ROLES = ['OWNER', 'ADMIN', 'MANAGER', 'CASHIER'] as const
+export const ORGANIZATION_ROLES = ['OWNER', 'ADMIN', 'MANAGER', 'REPOSITOR', 'CASHIER'] as const
 
 export type OrganizationRole = (typeof ORGANIZATION_ROLES)[number]
 

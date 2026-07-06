@@ -19,7 +19,7 @@ export function buildNovaUiActionsForQuickAction(
     if (action.executeMessageKey) {
         actions.push({
             id: `${action.id}-execute`,
-            label: t('nova.actions.askNova'),
+            label: t(action.executeActionLabelKey ?? 'nova.actions.askNova'),
             type: 'send_message',
             message: t(action.executeMessageKey),
         })

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
-import { deleteSupplier, getSuppliers } from '../api/supplierService'
+import { deactivateSupplier, activateSupplier, getSuppliers } from '../api/supplierService'
 import { useAuth } from '../context/AuthContext'
 import type { Supplier } from '../types/supplier'
 import { canDeleteSuppliers } from '../utils/roleAccess'
@@ -26,7 +26,20 @@ function SuppliersPage() {
         try {
             setLoading(true)
 
-            const data = await getSuppliers()
+            let data: typeof suppliers
+
+            if (statusFilter === 'all') {
+                const [active, inactive] = await Promise.all([
+                    getSuppliers(true),
+                    getSuppliers(false),
+                ])
+                data = [...active, ...inactive]
+            } else if (statusFilter === 'inactive') {
+                data = await getSuppliers(false)
+            } else {
+                data = await getSuppliers(true)
+            }
+
             setSuppliers(data)
         } catch {
             toast.error(t('suppliers.loadError'))
@@ -36,20 +49,34 @@ function SuppliersPage() {
     }
 
     useEffect(() => {
-        loadSuppliers()
-    }, [t])
+        void loadSuppliers()
+    }, [statusFilter, t])
 
-    async function handleDeleteSupplier(id: number) {
-        const confirmed = window.confirm(t('suppliers.deleteConfirm'))
+    async function handleDeactivateSupplier(id: number) {
+        const confirmed = window.confirm(t('suppliers.deactivateConfirm'))
 
         if (!confirmed) return
 
         try {
-            await deleteSupplier(id)
-            toast.success(t('suppliers.deleteSuccess'))
+            await deactivateSupplier(id)
+            toast.success(t('suppliers.deactivateSuccess'))
             await loadSuppliers()
         } catch {
-            toast.error(t('suppliers.deleteError'))
+            toast.error(t('suppliers.deactivateError'))
+        }
+    }
+
+    async function handleActivateSupplier(id: number) {
+        const confirmed = window.confirm(t('suppliers.activateConfirm'))
+
+        if (!confirmed) return
+
+        try {
+            await activateSupplier(id)
+            toast.success(t('suppliers.activateSuccess'))
+            await loadSuppliers()
+        } catch {
+            toast.error(t('suppliers.activateError'))
         }
     }
 
@@ -181,12 +208,21 @@ function SuppliersPage() {
                                 {t('common.edit')}
                             </Link>
 
-                            {canDelete && (
+                            {canDelete && supplier.active && (
                                 <button
-                                    onClick={() => handleDeleteSupplier(supplier.id)}
+                                    onClick={() => handleDeactivateSupplier(supplier.id)}
                                     className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                                 >
-                                    {t('common.delete')}
+                                    {t('suppliers.deactivate')}
+                                </button>
+                            )}
+
+                            {canDelete && !supplier.active && (
+                                <button
+                                    onClick={() => handleActivateSupplier(supplier.id)}
+                                    className="rounded-lg border border-emerald-500/30 px-3 py-2 text-sm text-emerald-500 hover:bg-emerald-500/10"
+                                >
+                                    {t('suppliers.reactivate')}
                                 </button>
                             )}
                         </div>
@@ -260,12 +296,21 @@ function SuppliersPage() {
                                         {t('common.edit')}
                                     </Link>
 
-                                    {canDelete && (
+                                    {canDelete && supplier.active && (
                                         <button
-                                            onClick={() => handleDeleteSupplier(supplier.id)}
+                                            onClick={() => handleDeactivateSupplier(supplier.id)}
                                             className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
                                         >
-                                            {t('common.delete')}
+                                            {t('suppliers.deactivate')}
+                                        </button>
+                                    )}
+
+                                    {canDelete && !supplier.active && (
+                                        <button
+                                            onClick={() => handleActivateSupplier(supplier.id)}
+                                            className="rounded-lg border border-emerald-500/30 px-3 py-2 text-sm text-emerald-500 hover:bg-emerald-500/10"
+                                        >
+                                            {t('suppliers.reactivate')}
                                         </button>
                                     )}
                                 </div>

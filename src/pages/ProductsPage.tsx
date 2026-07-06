@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import {
     ArchiveRestore,
     Ban,
+    Eye,
     Menu,
     PackagePlus,
     Printer,
@@ -509,6 +510,7 @@ function ProductsPage() {
 
                             <ProductActions
                                 product={product}
+                                onView={(id) => navigate(`/products/${id}/view`)}
                                 onRestock={(id) =>
                                     navigate(`/stock/restock?productId=${id}`)
                                 }
@@ -661,6 +663,7 @@ function ProductsPage() {
                             <td className="relative overflow-visible px-6 py-4 text-right">
                                 <ProductActions
                                     product={product}
+                                    onView={(id) => navigate(`/products/${id}/view`)}
                                     onRestock={(id) =>
                                         navigate(`/stock/restock?productId=${id}`)
                                     }
@@ -760,6 +763,7 @@ function ProductsPage() {
 
 type ProductActionsProps = {
     product: Product
+    onView: (id: number) => void
     onRestock: (id: number) => void
     onEdit: (id: number) => void
     onPrintLabels: (product: Product) => void
@@ -804,6 +808,7 @@ function ActionMenuItem({
 
 function ProductActions({
                             product,
+                            onView,
                             onRestock,
                             onEdit,
                             onPrintLabels,
@@ -846,6 +851,14 @@ function ProductActions({
                         <div className="border-b border-slate-200 px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:border-slate-800 dark:text-slate-200">
                             {t('common.actions')}
                         </div>
+
+                        <ActionMenuItem
+                            icon={Eye}
+                            label={t('products.actions.view')}
+                            onClick={() =>
+                                handleAction(() => onView(product.id))
+                            }
+                        />
 
                         {!isInactive && (
                             <ActionMenuItem

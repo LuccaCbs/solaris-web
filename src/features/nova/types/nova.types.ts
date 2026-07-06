@@ -28,6 +28,8 @@ export interface NovaQuickActionDefinition {
     helpKey?: string
     guideKey?: string
     executeMessageKey?: string
+    executeActionLabelKey?: string
+    showsNovaBadge?: boolean
     navigateTo?: string
     mode: NovaQuickActionMode
     requiredModule?: ModuleCode
@@ -98,6 +100,8 @@ export type NovaActionEventType =
     | 'update_stock'
     | 'create_category'
     | 'create_supplier'
+    | 'update_supplier'
+    | 'delete_supplier'
     | 'create_supplier_order'
     | 'mark_supplier_order_sent'
     | 'complete_supplier_order'

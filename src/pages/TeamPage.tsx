@@ -16,7 +16,7 @@ import {
 import type { OrganizationRole } from '../types/auth'
 import LoadingScreen from '../components/LoadingScreen'
 
-const INVITE_ROLES: OrganizationRole[] = ['ADMIN', 'MANAGER', 'CASHIER']
+const INVITE_ROLES: OrganizationRole[] = ['ADMIN', 'MANAGER', 'REPOSITOR', 'CASHIER']
 
 function TeamPage() {
     const { t } = useTranslation()
@@ -113,7 +113,7 @@ function TeamPage() {
         }
 
         if (currentRole === 'OWNER') {
-            return ['ADMIN', 'MANAGER', 'CASHIER']
+            return ['ADMIN', 'MANAGER', 'REPOSITOR', 'CASHIER']
         }
 
         if (currentRole === 'ADMIN') {
@@ -121,7 +121,7 @@ function TeamPage() {
                 return []
             }
 
-            return ['MANAGER', 'CASHIER']
+            return ['MANAGER', 'REPOSITOR', 'CASHIER']
         }
 
         return []

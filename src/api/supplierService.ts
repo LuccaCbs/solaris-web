@@ -9,9 +9,12 @@ function getAuthHeaders() {
     }
 }
 
-export async function getSuppliers(): Promise<Supplier[]> {
+export async function getSuppliers(active?: boolean): Promise<Supplier[]> {
+    const params = active !== undefined ? { active } : undefined
+
     const response = await axiosClient.get<Supplier[]>('/suppliers', {
         headers: getAuthHeaders(),
+        params,
     })
 
     return response.data
@@ -40,6 +43,30 @@ export async function updateSupplier(
     const response = await axiosClient.put<Supplier>(`/suppliers/${id}`, data, {
         headers: getAuthHeaders(),
     })
+
+    return response.data
+}
+
+export async function deactivateSupplier(id: number): Promise<Supplier> {
+    const response = await axiosClient.patch<Supplier>(
+        `/suppliers/${id}/deactivate`,
+        {},
+        {
+            headers: getAuthHeaders(),
+        }
+    )
+
+    return response.data
+}
+
+export async function activateSupplier(id: number): Promise<Supplier> {
+    const response = await axiosClient.patch<Supplier>(
+        `/suppliers/${id}/activate`,
+        {},
+        {
+            headers: getAuthHeaders(),
+        }
+    )
 
     return response.data
 }

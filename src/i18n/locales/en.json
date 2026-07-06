@@ -78,6 +78,7 @@
       "OWNER": "Owner",
       "ADMIN": "Administrator",
       "MANAGER": "Manager",
+      "REPOSITOR": "Stock clerk",
       "CASHIER": "Cashier"
     },
     "login": {
@@ -102,6 +103,7 @@
       "OWNER": "Owner",
       "ADMIN": "Administrator",
       "MANAGER": "Manager",
+      "REPOSITOR": "Stock clerk",
       "CASHIER": "Cashier"
     },
     "register": {
@@ -282,6 +284,7 @@
     "activateSuccess": "Product activated successfully.",
     "activateError": "Could not activate product.",
     "actions": {
+      "view": "View product",
       "restock": "Restock",
       "edit": "Edit",
       "deactivate": "Deactivate",
@@ -420,6 +423,14 @@
     "deleteConfirm": "Are you sure you want to delete this supplier?",
     "deleteSuccess": "Supplier deleted successfully",
     "deleteError": "Could not delete supplier",
+    "deactivate": "Deactivate",
+    "reactivate": "Reactivate",
+    "deactivateConfirm": "Are you sure you want to deactivate this supplier?",
+    "deactivateSuccess": "Supplier deactivated successfully.",
+    "deactivateError": "Could not deactivate supplier.",
+    "activateConfirm": "Are you sure you want to reactivate this supplier?",
+    "activateSuccess": "Supplier reactivated successfully.",
+    "activateError": "Could not reactivate supplier.",
     "noContactName": "No contact name",
     "noEmail": "No email",
     "empty": "No suppliers found for the selected filters.",
@@ -473,6 +484,14 @@
     "deleteConfirm": "Are you sure you want to delete this customer?",
     "deleteSuccess": "Customer deleted successfully",
     "deleteError": "Could not delete customer",
+    "deactivate": "Deactivate",
+    "reactivate": "Reactivate",
+    "deactivateConfirm": "Are you sure you want to deactivate this customer?",
+    "deactivateSuccess": "Customer deactivated successfully.",
+    "deactivateError": "Could not deactivate customer.",
+    "activateConfirm": "Are you sure you want to reactivate this customer?",
+    "activateSuccess": "Customer reactivated successfully.",
+    "activateError": "Could not reactivate customer.",
     "noEmail": "No email",
     "empty": "No customers found for the selected filters.",
     "results_one": "{{count}} result",
@@ -1085,6 +1104,25 @@
       "quantity": "Quantity to add"
     }
   },
+  "productView": {
+    "loadError": "Could not load product",
+    "notFound": "Product not found",
+    "backToProducts": "← Back to products",
+    "description": "Product overview with recent statistics.",
+    "editProduct": "Edit product",
+    "detailsTitle": "Details",
+    "statsTitle": "This month stats",
+    "iva": "VAT",
+    "salesThisMonth": "Sales this month",
+    "revenue": "${{amount}}",
+    "supplierOrders": "Supplier order appearances",
+    "restockCount": "Restocks",
+    "recentMovements": "Recent stock movements",
+    "noMovements": "No recent movements.",
+    "movementDate": "Date",
+    "movementType": "Type",
+    "movementQuantity": "Quantity"
+  },
   "nova": {
     "title": "Nova Copilot",
     "subtitle": "Solaris operational assistant",
@@ -1207,8 +1245,18 @@
       "showSale": "View sale",
       "dailySalesSummary": "Daily sales summary",
       "execute": {
+        "dashboardSummary": "Dashboard summary",
         "listSales": "Show sales",
-        "dailySalesSummary": "Sales summary for today"
+        "dailySalesSummary": "Sales summary for today",
+        "listFiscalDocuments": "Show fiscal documents",
+        "lowStock": "Low stock products"
+      },
+      "executeAction": {
+        "dashboard": "View dashboard",
+        "listSales": "View sales",
+        "dailySalesSummary": "View daily summary",
+        "listFiscalDocuments": "View fiscal documents",
+        "lowStock": "View low stock"
       },
       "searchCustomer": "Search customer",
       "showCustomer": "View customer",
@@ -1229,9 +1277,14 @@
         "create_category": "Category created",
         "create_supplier": "Supplier created",
         "update_supplier": "Supplier updated",
-        "delete_supplier": "Supplier deleted",
+        "delete_supplier": "Supplier deactivated",
         "create_supplier_order": "Supplier order created",
+        "mark_supplier_order_sent": "Supplier order marked as sent",
+        "complete_supplier_order": "Supplier order completed",
+        "cancel_supplier_order": "Supplier order cancelled",
+        "delete_supplier_order": "Supplier order deleted",
         "update_supplier_order": "Supplier order updated",
+        "show_supplier_order": "Supplier order viewed",
         "create_sale": "Sale registered",
         "emit_invoice": "Fiscal document issued"
       }
@@ -1281,7 +1334,14 @@
       "edit": "Edit customer"
     },
     "fiscalDocumentsListCard": {
-      "number": "POS {{puntoVenta}} · No. {{numero}}"
+      "number": "POS {{puntoVenta}} · No. {{numero}}",
+      "viewAll": "View all in Fiscal documents ({{count}})"
+    },
+    "productsResult": {
+      "viewProduct": "View product",
+      "editProduct": "Edit product",
+      "restock": "Restock",
+      "lowStockBadge": "Low stock"
     },
     "fiscalDocumentCard": {
       "viewInApp": "View document"

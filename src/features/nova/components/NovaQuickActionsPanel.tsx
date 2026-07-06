@@ -1,4 +1,4 @@
-import { ArrowUpRight, MessageSquare, X } from 'lucide-react'
+import { MessageSquare, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNovaQuickActions } from '../hooks/useNovaQuickActions'
 import type { NovaQuickActionDefinition } from '../types/nova.types'
@@ -8,28 +8,19 @@ interface NovaQuickActionsPanelProps {
     onClose: () => void
 }
 
-function QuickActionModeHint({ mode }: { mode: NovaQuickActionDefinition['mode'] }) {
+function QuickActionModeHint({ showsNovaBadge }: { showsNovaBadge?: boolean }) {
     const { t } = useTranslation()
 
-    if (mode === 'navigate') {
-        return (
-            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-blue-500">
-                <ArrowUpRight size={12} />
-                {t('nova.quickActions.modeNavigate')}
-            </span>
-        )
+    if (!showsNovaBadge) {
+        return null
     }
 
-    if (mode === 'execute' || mode === 'guide' || mode === 'hybrid') {
-        return (
-            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-emerald-500">
-                <MessageSquare size={12} />
-                {t('nova.quickActions.modeExecute')}
-            </span>
-        )
-    }
-
-    return null
+    return (
+        <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-emerald-500">
+            <MessageSquare size={12} />
+            {t('nova.quickActions.modeExecute')}
+        </span>
+    )
 }
 
 export function NovaQuickActionsPanel({
@@ -74,7 +65,7 @@ export function NovaQuickActionsPanel({
                                     className="flex w-full items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
                                 >
                                     <span>{t(action.labelKey)}</span>
-                                    <QuickActionModeHint mode={action.mode} />
+                                    <QuickActionModeHint showsNovaBadge={action.showsNovaBadge} />
                                 </button>
                             ))}
                         </div>
