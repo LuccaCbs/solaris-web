@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { createCustomer } from '../api/customerService'
-import type { CondicionIva, DocumentType } from '../types/customer'
-
-const DOCUMENT_TYPES: DocumentType[] = ['CUIT', 'CUIL', 'DNI']
+import { CustomerDocumentsEditor } from '../components/CustomerDocumentsEditor'
+import type { CondicionIva } from '../types/customer'
+import { createEmptyCustomerDocument } from '../utils/fiscalUtils'
 
 const CONDICIONES_IVA: CondicionIva[] = [
     'RESPONSABLE_INSCRIPTO',
@@ -19,8 +19,7 @@ function NewCustomerPage() {
     const navigate = useNavigate()
     const { t } = useTranslation()
 
-    const [documentType, setDocumentType] = useState<DocumentType>('CUIT')
-    const [documentNumber, setDocumentNumber] = useState('')
+    const [documents, setDocuments] = useState([createEmptyCustomerDocument(true)])
     const [razonSocial, setRazonSocial] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
@@ -34,8 +33,7 @@ function NewCustomerPage() {
 
         try {
             await createCustomer({
-                documentType,
-                documentNumber,
+                documents,
                 razonSocial,
                 email: email || undefined,
                 phone: phone || undefined,
@@ -64,22 +62,9 @@ function NewCustomerPage() {
 
             <form onSubmit={handleSubmit} className="solaris-panel mt-8 max-w-3xl">
                 <div className="grid gap-5 md:grid-cols-2">
-                    <Select
-                        required
-                        label={t('customerForm.documentTypeRequired')}
-                        value={documentType}
-                        onChange={(value) => setDocumentType(value as DocumentType)}
-                        options={DOCUMENT_TYPES.map((type) => ({
-                            value: type,
-                            label: type,
-                        }))}
-                    />
-
-                    <Input
-                        required
-                        label={t('customerForm.documentNumberRequired')}
-                        value={documentNumber}
-                        onChange={setDocumentNumber}
+                    <CustomerDocumentsEditor
+                        documents={documents}
+                        onChange={setDocuments}
                     />
 
                     <div className="md:col-span-2">

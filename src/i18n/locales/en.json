@@ -543,6 +543,15 @@
   "customerForm": {
     "newTitle": "New Customer",
     "newDescription": "Create a customer for sales and billing.",
+    "documentsTitle": "Documents",
+    "addDocument": "Add document",
+    "removeDocument": "Remove document",
+    "primaryDocument": "Primary document",
+    "documentTypes": {
+      "CUIT": "CUIT",
+      "CUIL": "CUIL",
+      "DNI": "DNI"
+    },
     "documentTypeRequired": "Document type *",
     "documentNumberRequired": "Document number *",
     "razonSocialRequired": "Business name / Name *",

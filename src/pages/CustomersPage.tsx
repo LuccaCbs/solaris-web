@@ -17,6 +17,7 @@ import {
 } from '../api/customerService'
 import { useAuth } from '../context/AuthContext'
 import type { Customer } from '../types/customer'
+import { formatCustomerDocumentsCompact } from '../types/customer'
 import { canDeleteCustomers } from '../utils/roleAccess'
 import LoadingScreen from '../components/LoadingScreen'
 
@@ -116,6 +117,10 @@ function CustomersPage() {
                 return (
                     customer.razonSocial.toLowerCase().includes(normalizedSearch) ||
                     customer.documentNumber.toLowerCase().includes(normalizedSearch) ||
+                    customer.documents?.some((document) =>
+                        document.documentNumber.toLowerCase().includes(normalizedSearch)
+                        || document.documentType.toLowerCase().includes(normalizedSearch)
+                    ) ||
                     customer.email?.toLowerCase().includes(normalizedSearch) ||
                     customer.phone?.toLowerCase().includes(normalizedSearch)
                 )
@@ -203,7 +208,7 @@ function CustomersPage() {
                             </h2>
 
                             <p className="mt-1 text-sm solaris-muted">
-                                {customer.documentType}: {customer.documentNumber}
+                                {formatCustomerDocumentsCompact(customer)}
                             </p>
 
                             <p className="mt-1 text-sm solaris-subtle">
@@ -281,7 +286,7 @@ function CustomersPage() {
                             </td>
 
                             <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
-                                {customer.documentType} {customer.documentNumber}
+                                {formatCustomerDocumentsCompact(customer)}
                             </td>
 
                             <td className="px-6 py-4 text-slate-700 dark:text-slate-300">

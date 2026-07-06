@@ -1,4 +1,4 @@
-import type { CustomerRequest, DocumentType } from '../types/customer'
+import type { CustomerDocument, CustomerRequest, DocumentType } from '../types/customer'
 import type { FiscalConfigRequest } from '../types/fiscal'
 
 export function normalizeSpanishTaxId(taxId: string): string {
@@ -47,14 +47,27 @@ export function normalizePhone(value: string): string | undefined {
 }
 
 export function buildCustomerPayload(data: CustomerRequest): CustomerRequest {
+    const documents = data.documents.map((document) => ({
+        documentType: document.documentType,
+        documentNumber: normalizeDocumentNumber(document.documentType, document.documentNumber),
+        primary: document.primary,
+    }))
+
     return {
-        documentType: data.documentType,
-        documentNumber: normalizeDocumentNumber(data.documentType, data.documentNumber),
+        documents,
         razonSocial: data.razonSocial.trim(),
         email: data.email?.trim() || undefined,
         phone: data.phone ? normalizePhone(data.phone) : undefined,
         address: data.address?.trim() || undefined,
         condicionIva: data.condicionIva,
+    }
+}
+
+export function createEmptyCustomerDocument(primary = false): CustomerDocument {
+    return {
+        documentType: 'CUIT',
+        documentNumber: '',
+        primary,
     }
 }
 

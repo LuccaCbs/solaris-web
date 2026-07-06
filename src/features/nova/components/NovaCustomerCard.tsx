@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Customer } from '../../../types/customer'
+import { formatCustomerDocumentsCompact } from '../../../types/customer'
 
 type NovaCustomerCardProps = {
     customer: Customer
@@ -18,7 +19,7 @@ export function NovaCustomerCard({ customer }: NovaCustomerCardProps) {
                     </h3>
 
                     <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                        {customer.documentType}: {customer.documentNumber}
+                        {formatCustomerDocumentsCompact(customer)}
                     </p>
                 </div>
 

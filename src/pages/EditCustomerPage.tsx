@@ -3,10 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { getCustomerById, updateCustomer } from '../api/customerService'
+import { CustomerDocumentsEditor } from '../components/CustomerDocumentsEditor'
 import LoadingScreen from '../components/LoadingScreen'
-import type { CondicionIva, DocumentType } from '../types/customer'
-
-const DOCUMENT_TYPES: DocumentType[] = ['CUIT', 'CUIL', 'DNI']
+import type { CondicionIva, CustomerDocument } from '../types/customer'
+import { createEmptyCustomerDocument } from '../utils/fiscalUtils'
 
 const CONDICIONES_IVA: CondicionIva[] = [
     'RESPONSABLE_INSCRIPTO',
@@ -21,8 +21,9 @@ function EditCustomerPage() {
     const { id } = useParams()
     const { t } = useTranslation()
 
-    const [documentType, setDocumentType] = useState<DocumentType>('CUIT')
-    const [documentNumber, setDocumentNumber] = useState('')
+    const [documents, setDocuments] = useState<CustomerDocument[]>([
+        createEmptyCustomerDocument(true),
+    ])
     const [razonSocial, setRazonSocial] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
@@ -40,8 +41,15 @@ function EditCustomerPage() {
 
                 const customer = await getCustomerById(Number(id))
 
-                setDocumentType(customer.documentType)
-                setDocumentNumber(customer.documentNumber)
+                setDocuments(
+                    customer.documents.length > 0
+                        ? customer.documents
+                        : [{
+                            documentType: customer.documentType,
+                            documentNumber: customer.documentNumber,
+                            primary: true,
+                        }]
+                )
                 setRazonSocial(customer.razonSocial)
                 setEmail(customer.email ?? '')
                 setPhone(customer.phone ?? '')
@@ -66,8 +74,7 @@ function EditCustomerPage() {
 
         try {
             await updateCustomer(Number(id), {
-                documentType,
-                documentNumber,
+                documents,
                 razonSocial,
                 email: email || undefined,
                 phone: phone || undefined,
@@ -100,22 +107,9 @@ function EditCustomerPage() {
 
             <form onSubmit={handleSubmit} className="solaris-panel mt-8 max-w-3xl">
                 <div className="grid gap-5 md:grid-cols-2">
-                    <Select
-                        required
-                        label={t('customerForm.documentTypeRequired')}
-                        value={documentType}
-                        onChange={(value) => setDocumentType(value as DocumentType)}
-                        options={DOCUMENT_TYPES.map((type) => ({
-                            value: type,
-                            label: type,
-                        }))}
-                    />
-
-                    <Input
-                        required
-                        label={t('customerForm.documentNumberRequired')}
-                        value={documentNumber}
-                        onChange={setDocumentNumber}
+                    <CustomerDocumentsEditor
+                        documents={documents}
+                        onChange={setDocuments}
                     />
 
                     <div className="md:col-span-2">

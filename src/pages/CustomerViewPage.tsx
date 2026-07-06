@@ -80,10 +80,31 @@ function CustomerViewPage() {
                     </h2>
 
                     <dl className="grid gap-3 text-sm">
-                        <div className="flex justify-between gap-4">
-                            <dt className="solaris-muted">{t('customers.table.document')}</dt>
-                            <dd className="text-slate-950 dark:text-white">
-                                {customer.documentType} {customer.documentNumber}
+                        <div>
+                            <dt className="solaris-muted">{t('customerForm.documentsTitle')}</dt>
+                            <dd className="mt-2 space-y-2 text-slate-950 dark:text-white">
+                                {(customer.documents?.length
+                                    ? customer.documents
+                                    : [{
+                                        documentType: customer.documentType,
+                                        documentNumber: customer.documentNumber,
+                                        primary: true,
+                                    }]
+                                ).map((document, index) => (
+                                    <div
+                                        key={`${document.documentType}-${document.documentNumber}-${index}`}
+                                        className="flex items-center justify-between gap-4"
+                                    >
+                                        <span>
+                                            {document.documentType} {document.documentNumber}
+                                        </span>
+                                        {document.primary && (
+                                            <span className="rounded-md bg-blue-500/10 px-2 py-0.5 text-xs font-semibold text-blue-600 dark:text-blue-300">
+                                                {t('customerForm.primaryDocument')}
+                                            </span>
+                                        )}
+                                    </div>
+                                ))}
                             </dd>
                         </div>
                         <div className="flex justify-between gap-4">
