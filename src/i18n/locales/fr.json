@@ -1228,7 +1228,8 @@
       "cancel": "Annuler"
     },
     "exportReportCard": {
-      "title": "Rapport de ventes",
+      "salesTitle": "Rapport de ventes",
+      "productsTitle": "Rapport de produits",
       "singleDate": "Date : {{date}}",
       "dateRange": "Du {{from}} au {{to}}",
       "records": "{{count}} enregistrement(s)",

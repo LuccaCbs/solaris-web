@@ -1238,11 +1238,13 @@
       "deactivateProduct": "Deactivate product",
       "deactivateProductHelp": "You can deactivate a product in chat or go to the Products screen.",
       "updateStock": "Update stock",
+      "exportProducts": "Export products",
       "dashboard": "View dashboard",
       "lowStock": "Low-stock products",
       "searchProductHelp": "You can search products in chat or go to the Products screen.",
       "createProductHelp": "You can create a product in chat or go to the new product screen.",
       "updateStockHelp": "You can update stock in chat or use the merchandise intake screen.",
+      "exportProductsHelp": "You can export the product catalog to Excel in chat or go to the Products list.",
       "dashboardHelp": "You can ask for a dashboard summary or go to the main dashboard.",
       "lowStockHelp": "You can check low-stock products in chat or go to the filtered product list.",
       "createSupplierHelp": "You can create a supplier in chat or go to the new supplier screen.",
@@ -1292,14 +1294,16 @@
         "listSales": "Show sales",
         "dailySalesSummary": "Sales summary for today",
         "listFiscalDocuments": "Show fiscal documents",
-        "lowStock": "Low stock products"
+        "lowStock": "Low stock products",
+        "exportProducts": "Export products"
       },
       "executeAction": {
         "dashboard": "View dashboard",
         "listSales": "View sales",
         "dailySalesSummary": "View daily summary",
         "listFiscalDocuments": "View fiscal documents",
-        "lowStock": "View low stock"
+        "lowStock": "View low stock",
+        "exportProducts": "Export products"
       },
       "searchCustomer": "Search customer",
       "showCustomer": "View customer",
@@ -1363,7 +1367,8 @@
       "viewDetails": "View sales for the day"
     },
     "exportReportCard": {
-      "title": "Sales report",
+      "salesTitle": "Sales report",
+      "productsTitle": "Products report",
       "singleDate": "Date: {{date}}",
       "dateRange": "From {{from}} to {{to}}",
       "records": "{{count}} record(s)",

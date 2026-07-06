@@ -1227,7 +1227,8 @@
       "cancel": "Cancel·lar"
     },
     "exportReportCard": {
-      "title": "Informe de vendes",
+      "salesTitle": "Informe de vendes",
+      "productsTitle": "Informe de productes",
       "singleDate": "Data: {{date}}",
       "dateRange": "Des de {{from}} fins a {{to}}",
       "records": "{{count}} registre(s)",

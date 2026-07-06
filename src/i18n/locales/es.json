@@ -1238,11 +1238,13 @@
       "deactivateProduct": "Dar de baja producto",
       "deactivateProductHelp": "Podés dar de baja un producto por chat o ir a la pantalla de Productos.",
       "updateStock": "Actualizar stock",
+      "exportProducts": "Exportar productos",
       "dashboard": "Ver dashboard",
       "lowStock": "Productos bajo stock",
       "searchProductHelp": "Podés buscar productos por chat o ir a la pantalla de Productos.",
       "createProductHelp": "Podés crear un producto por chat o ir directo a la pantalla de nuevo producto.",
       "updateStockHelp": "Podés actualizar stock por chat o usar la pantalla de ingreso de mercadería.",
+      "exportProductsHelp": "Podés exportar el catálogo de productos a Excel por chat o ir al listado de Productos.",
       "dashboardHelp": "Podés pedir un resumen del dashboard o ir al panel principal.",
       "lowStockHelp": "Podés consultar productos con bajo stock por chat o ir al listado filtrado.",
       "createSupplierHelp": "Podés crear un proveedor por chat o ir a la pantalla de nuevo proveedor.",
@@ -1292,14 +1294,16 @@
         "listSales": "Ver ventas",
         "dailySalesSummary": "Resumen de ventas de hoy",
         "listFiscalDocuments": "Ver comprobantes fiscales",
-        "lowStock": "Productos con bajo stock"
+        "lowStock": "Productos con bajo stock",
+        "exportProducts": "Exportar productos"
       },
       "executeAction": {
         "dashboard": "Ver dashboard",
         "listSales": "Ver ventas",
         "dailySalesSummary": "Ver resumen del día",
         "listFiscalDocuments": "Ver comprobantes fiscales",
-        "lowStock": "Ver bajo stock"
+        "lowStock": "Ver bajo stock",
+        "exportProducts": "Exportar productos"
       },
       "searchCustomer": "Buscar cliente",
       "showCustomer": "Ver cliente",
@@ -1363,7 +1367,8 @@
       "viewDetails": "Ver ventas del día"
     },
     "exportReportCard": {
-      "title": "Informe de ventas",
+      "salesTitle": "Informe de ventas",
+      "productsTitle": "Informe de productos",
       "singleDate": "Fecha: {{date}}",
       "dateRange": "Desde {{from}} hasta {{to}}",
       "records": "{{count}} registro(s)",

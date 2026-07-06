@@ -18,6 +18,7 @@ import { NovaFiscalDocumentsListCard } from './NovaFiscalDocumentsListCard'
 import { NovaFiscalDocumentDetailCard } from './NovaFiscalDocumentDetailCard'
 import { NovaActionButtons } from './NovaActionButtons'
 import type { DailySalesSummary, Sale } from '../../../types/sales'
+import type { Product } from '../../../types/product'
 import type { Customer } from '../../../types/customer'
 import type { FiscalDocument } from '../../../types/fiscal'
 
@@ -79,6 +80,22 @@ function isSalesExportReport(
         'to' in value &&
         'sales' in value &&
         Array.isArray((value as { sales: unknown }).sales)
+    )
+}
+
+function isProductsExportReport(
+    value: unknown,
+): value is {
+    module: 'products'
+    products: Product[]
+    totalCount: number
+} {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        (value as { module?: string }).module === 'products' &&
+        'products' in value &&
+        Array.isArray((value as { products: unknown }).products)
     )
 }
 
@@ -247,9 +264,26 @@ export function NovaResponseRenderer({
             <div className="space-y-3">
                 <p className="whitespace-pre-line">{message.content}</p>
                 <NovaExportReportCard
+                    module="sales"
                     from={message.data.from}
                     to={message.data.to}
                     sales={message.data.sales}
+                />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'export_report' &&
+        isProductsExportReport(message.data)
+    ) {
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaExportReportCard
+                    module="products"
+                    products={message.data.products}
                 />
             </div>
         )
