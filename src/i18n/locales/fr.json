@@ -585,6 +585,7 @@
     "saleNumber": "Vente #{{id}}",
     "viewDetail": "Voir le détail",
     "empty": "Aucune vente trouvée pour les filtres sélectionnés.",
+    "viewDailyAnalytics": "Voir l'analytique du jour",
     "pagination": "Page {{currentPage}} sur {{totalPages}} · {{count}} ventes",
     "payment": {
       "cash": "Espèces",

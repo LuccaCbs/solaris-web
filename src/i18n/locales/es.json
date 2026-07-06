@@ -595,6 +595,7 @@
     "saleNumber": "Venta #{{id}}",
     "viewDetail": "Ver detalle",
     "empty": "No se encontraron ventas para los filtros seleccionados.",
+    "viewDailyAnalytics": "Ver analítica del día",
     "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} ventas",
     "payment": {
       "cash": "Efectivo",

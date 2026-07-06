@@ -595,6 +595,7 @@
     "saleNumber": "Sale #{{id}}",
     "viewDetail": "View Detail",
     "empty": "No sales found for the selected filters.",
+    "viewDailyAnalytics": "View daily analytics",
     "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} sales",
     "payment": {
       "cash": "Cash",

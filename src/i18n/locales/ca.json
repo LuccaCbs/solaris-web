@@ -584,6 +584,7 @@
     "saleNumber": "Venda #{{id}}",
     "viewDetail": "Veure detall",
     "empty": "No s’han trobat vendes amb els filtres seleccionats.",
+    "viewDailyAnalytics": "Veure analítica del dia",
     "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} vendes",
     "payment": {
       "cash": "Efectiu",

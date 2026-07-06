@@ -505,6 +505,15 @@ function SalesPage() {
                         />
                     </div>
                 </div>
+
+                {(!dateTo || dateTo === dateFrom) && (
+                    <Link
+                        to={`/sales/daily?date=${dateFrom}`}
+                        className="mt-4 inline-flex text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                    >
+                        {t('sales.viewDailyAnalytics')}
+                    </Link>
+                )}
             </div>
 
             <div className="mt-8 space-y-4 lg:hidden">
