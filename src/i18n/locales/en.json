@@ -843,6 +843,10 @@
       "in": "IN",
       "out": "OUT",
       "adjustment": "ADJUSTMENT"
+    },
+    "reasons": {
+      "saleTransaction": "Sale transaction",
+      "productCreation": "Product creation"
     }
   },
   "adminSettings": {
@@ -932,12 +936,34 @@
       "processing": "Issuing...",
       "success": "Invoice issued successfully",
       "error": "Could not issue invoice",
+      "rejected": "The invoice was rejected by the fiscal provider",
       "viewDocument": "View invoice",
+      "withCustomer": "Issue invoice with customer",
+      "consumidorFinal": "Issue invoice (Consumer Final)",
       "customerModalTitle": "Customer details",
       "customerModalDescription": "Select a customer or leave Consumer Final for Invoice B.",
       "selectCustomer": "Customer",
-      "consumidorFinal": "Consumer Final",
-      "loadCustomersError": "Could not load customers"
+      "loadCustomersError": "Could not load customers",
+      "noCustomers": "No customers registered"
+    },
+    "listTitle": "Fiscal documents",
+    "listDescription": "Electronic invoices issued to AFIP.",
+    "loadError": "Could not load fiscal documents",
+    "notFound": "Document not found",
+    "empty": "No documents issued yet.",
+    "importeTotal": "Total amount",
+    "customer": "Customer",
+    "status": "Status",
+    "backToList": "Back to list",
+    "comprobanteNumber": "POS {{puntoVenta}} · No. {{numero}}",
+    "table": {
+      "date": "Date",
+      "type": "Type"
+    },
+    "statusValues": {
+      "PENDING": "Pending",
+      "AUTHORIZED": "Authorized",
+      "REJECTED": "Rejected"
     }
   },
   "fiscalDocument": {
@@ -945,6 +971,10 @@
     "notFound": "Fiscal document not found",
     "viewSale": "View sale",
     "backToSales": "Back to sales",
+    "backToList": "Back to list",
+    "importeTotal": "Total amount",
+    "customer": "Customer",
+    "comprobanteNumber": "POS {{puntoVenta}} · No. {{numero}}",
     "pdf": "Invoice PDF",
     "downloadPdf": "Download PDF",
     "pdfPlaceholder": "PDF will be available when the fiscal provider generates it.",

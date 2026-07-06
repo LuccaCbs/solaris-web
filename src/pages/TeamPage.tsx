@@ -14,6 +14,7 @@ import {
     type OrganizationStore,
 } from '../api/organizationService'
 import type { OrganizationRole } from '../types/auth'
+import LoadingScreen from '../components/LoadingScreen'
 
 const INVITE_ROLES: OrganizationRole[] = ['ADMIN', 'MANAGER', 'CASHIER']
 
@@ -162,11 +163,7 @@ function TeamPage() {
     }
 
     if (loading) {
-        return (
-            <div className="solaris-panel">
-                <p className="solaris-muted">{t('common.loading')}</p>
-            </div>
-        )
+        return <LoadingScreen />
     }
 
     return (

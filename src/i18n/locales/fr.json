@@ -65,7 +65,8 @@
     "billing": "Facturation et magasins",
     "organization": "Organisation",
     "team": "Équipe",
-    "myProfile": "Mon profil"
+    "myProfile": "Mon profil",
+    "fiscalDocuments": "Facturation fiscale"
   },
   "auth": {
     "organization": {
@@ -830,6 +831,10 @@
       "in": "ENTRÉE",
       "out": "SORTIE",
       "adjustment": "AJUSTEMENT"
+    },
+    "reasons": {
+      "saleTransaction": "Transaction de vente",
+      "productCreation": "Création de produit"
     }
   },
   "adminSettings": {
@@ -860,6 +865,113 @@
       "timezonePlaceholder": "Sélectionner un fuseau horaire",
       "autoCloseTime": "Heure de fermeture automatique",
       "autoCloseTimeHelp": "Les caisses encore ouvertes à cette heure seront fermées automatiquement."
+    },
+    "fiscal": {
+      "title": "Facturation électronique (AFIP)",
+      "description": "Configurez les données fiscales de l'organisation pour émettre des factures.",
+      "cuit": "CUIT",
+      "cuitRequired": "Le CUIT est obligatoire pour facturer",
+      "cuitInvalid": "Le CUIT doit contenir 11 chiffres",
+      "razonSocial": "Raison sociale",
+      "condicionIva": "Condition IVA",
+      "provider": "Fournisseur fiscal",
+      "providerMock": "Mock (développement / sandbox)",
+      "providerTusFacturas": "TusFacturas (REST)",
+      "apiKey": "Clé API du fournisseur",
+      "keepApiKeyPlaceholder": "Laisser vide pour conserver les identifiants actuels",
+      "setApiKeyPlaceholder": "{\"apikey\":\"...\",\"apitoken\":\"...\",\"usertoken\":\"...\"}",
+      "apiKeyHelp": "Collez le JSON TusFacturas avec apikey, apitoken et usertoken.",
+      "credentialsConfigured": "Identifiants configurés ✓",
+      "credentialsSavedHint": "Les identifiants sont stockés de manière sécurisée.",
+      "replaceCredentials": "Remplacer les identifiants",
+      "cancelReplaceCredentials": "Annuler le remplacement",
+      "credentialsInvalid": "Le JSON doit inclure apikey, apitoken et usertoken",
+      "save": "Enregistrer la configuration fiscale",
+      "updateSuccess": "Configuration fiscale mise à jour",
+      "updateError": "Impossible de mettre à jour la configuration fiscale",
+      "loadError": "Impossible de charger la configuration fiscale",
+      "noOrganization": "Sélectionnez une organisation pour configurer la facturation",
+      "condicion": {
+        "responsableInscripto": "Responsable inscrit",
+        "monotributo": "Monotributo",
+        "exento": "Exempt"
+      },
+      "es": {
+        "title": "Facturation électronique (Verifactu)",
+        "description": "Configurez le NIF/CIF et la raison sociale de l'organisation pour émettre des factures en Espagne.",
+        "nif": "NIF / CIF",
+        "nifRequired": "Le NIF/CIF est obligatoire pour facturer",
+        "nifInvalid": "Le NIF/CIF doit contenir entre 8 et 9 caractères alphanumériques",
+        "series": "Série (optionnelle)",
+        "seriesHelp": "Si aucune série n'est indiquée, la série 1 sera utilisée par défaut.",
+        "providerMockOnly": "Seul le fournisseur mock est disponible pour l'instant. L'intégration Verifactu arrivera dans une prochaine version."
+      }
+    }
+  },
+  "fiscal": {
+    "cae": "CAE",
+    "caeVencimiento": "Expiration CAE",
+    "puntoVenta": "Point de vente",
+    "importeNeto": "Montant net",
+    "importeIva": "Montant IVA",
+    "tipoComprobante": {
+      "facturaB": "Facture B",
+      "facturaC": "Facture C"
+    },
+    "invoice": {
+      "button": "Facturer",
+      "confirm": "Émettre la facture",
+      "processing": "Facturation...",
+      "success": "Document émis avec succès",
+      "error": "Impossible d'émettre le document",
+      "rejected": "Le document a été rejeté par le fournisseur fiscal",
+      "viewDocument": "Voir le document",
+      "withCustomer": "Facturer avec client",
+      "consumidorFinal": "Facturer (Consommateur final)",
+      "customerModalTitle": "Données du client",
+      "customerModalDescription": "Sélectionnez un client ou laissez Consommateur final pour la Facture B.",
+      "selectCustomer": "Client",
+      "loadCustomersError": "Impossible de charger les clients",
+      "noCustomers": "Aucun client enregistré"
+    },
+    "listTitle": "Documents fiscaux",
+    "listDescription": "Factures électroniques émises auprès de l'AFIP.",
+    "loadError": "Impossible de charger les documents fiscaux",
+    "notFound": "Document introuvable",
+    "empty": "Aucun document émis pour l'instant.",
+    "importeTotal": "Montant total",
+    "customer": "Client",
+    "status": "Statut",
+    "backToList": "Retour à la liste",
+    "comprobanteNumber": "PV {{puntoVenta}} · N° {{numero}}",
+    "table": {
+      "date": "Date",
+      "type": "Type"
+    },
+    "statusValues": {
+      "PENDING": "En attente",
+      "AUTHORIZED": "Autorisé",
+      "REJECTED": "Rejeté"
+    }
+  },
+  "fiscalDocument": {
+    "loadError": "Impossible de charger le document fiscal",
+    "notFound": "Document fiscal introuvable",
+    "viewSale": "Voir la vente",
+    "backToSales": "Retour aux ventes",
+    "backToList": "Retour à la liste",
+    "importeTotal": "Montant total",
+    "customer": "Client",
+    "comprobanteNumber": "PV {{puntoVenta}} · N° {{numero}}",
+    "pdf": "Document PDF",
+    "downloadPdf": "Télécharger le PDF",
+    "pdfPlaceholder": "Le PDF sera disponible lorsque le fournisseur fiscal l'aura généré.",
+    "rejectionReason": "Motif du rejet",
+    "rejectionReasonUnknown": "Aucun détail n'a été renvoyé par le fournisseur. Émettez un nouveau document après la mise à jour de l'API pour voir le message exact.",
+    "status": {
+      "PENDING": "En attente",
+      "AUTHORIZED": "Autorisé",
+      "REJECTED": "Rejeté"
     }
   },
   "auditLogs": {

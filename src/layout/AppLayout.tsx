@@ -73,6 +73,13 @@ function AppLayout() {
         { label: t('nav.dashboard'), to: '/', icon: BarChart3, minimumRole: 'CASHIER' },
         { label: t('nav.sales'), to: '/sales', icon: ShoppingCart, minimumRole: 'CASHIER' },
         {
+            label: t('nav.merchandiseIntake'),
+            to: '/stock/restock',
+            icon: PackagePlus,
+            minimumRole: 'MANAGER',
+            requiredModule: 'INVENTORY',
+        },
+        {
             label: t('nav.supplierOrders'),
             to: '/supplier-orders',
             icon: ClipboardList,
@@ -83,13 +90,6 @@ function AppLayout() {
             label: t('nav.products'),
             to: '/products',
             icon: Boxes,
-            minimumRole: 'MANAGER',
-            requiredModule: 'INVENTORY',
-        },
-        {
-            label: t('nav.merchandiseIntake'),
-            to: '/stock/restock',
-            icon: PackagePlus,
             minimumRole: 'MANAGER',
             requiredModule: 'INVENTORY',
         },
@@ -115,6 +115,13 @@ function AppLayout() {
             requiredModule: 'CUSTOMERS',
         },
         {
+            label: t('nav.fiscalDocuments'),
+            to: '/fiscal-documents',
+            icon: FileText,
+            minimumRole: 'MANAGER',
+            requiredModule: 'FISCAL',
+        },
+        {
             label: t('nav.movementHistory'),
             to: '/stock-movements',
             icon: History,
@@ -127,13 +134,6 @@ function AppLayout() {
             icon: ScrollText,
             minimumRole: 'ADMIN',
             requiredModule: 'AUDIT',
-        },
-        {
-            label: t('nav.fiscalDocuments'),
-            to: '/fiscal-documents',
-            icon: FileText,
-            minimumRole: 'MANAGER',
-            requiredModule: 'FISCAL',
         },
         {
             label: t('nav.team'),
@@ -297,6 +297,7 @@ function AppLayout() {
                                     <option value="es">Español</option>
                                     <option value="fr">Français</option>
                                     <option value="ca">Català</option>
+                                    <option value="mq">Mallorquí</option>
                                 </select>
                             </div>
 

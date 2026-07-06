@@ -24,6 +24,7 @@ import { getCategories } from '../api/categoryService'
 import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
 import { PrintProductLabelsModal } from '../components/barcode/PrintProductLabelsModal'
 import { BarcodeScanInput } from '../components/barcode/BarcodeScanInput'
+import LoadingScreen from '../components/LoadingScreen'
 
 type SortField = 'name' | 'barcode' | 'categoryName' | 'price' | 'stockQuantity'
 type SortDirection = 'asc' | 'desc'
@@ -309,7 +310,7 @@ function ProductsPage() {
     }
 
     if (loading) {
-        return <ProductsSkeleton />
+        return <LoadingScreen />
     }
 
     return (
@@ -929,57 +930,6 @@ function SortButton({
                 {isActive ? (direction === 'asc' ? '↑' : '↓') : '↕'}
             </span>
         </button>
-    )
-}
-
-function ProductsSkeleton() {
-    return (
-        <div>
-            <div className="flex items-center justify-between">
-                <div>
-                    <div className="h-10 w-48 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                    <div className="mt-3 h-5 w-72 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                </div>
-
-                <div className="h-12 w-32 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
-
-            <div className="mt-8 grid gap-3 md:grid-cols-4">
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-                <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-            </div>
-
-            <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-                <div className="grid grid-cols-7 gap-4 bg-slate-100 px-6 py-4 dark:bg-slate-800/50">
-                    {Array.from({ length: 7 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className="h-4 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-700"
-                        />
-                    ))}
-                </div>
-
-                <div className="divide-y divide-slate-200 dark:divide-slate-800">
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className="grid grid-cols-7 gap-4 px-6 py-5"
-                        >
-                            {Array.from({ length: 7 }).map(
-                                (_, columnIndex) => (
-                                    <div
-                                        key={columnIndex}
-                                        className="h-5 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800"
-                                    />
-                                ),
-                            )}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
     )
 }
 

@@ -1,0 +1,141 @@
+{
+  "common": {
+    "loadingWorkspace": "Carregant espai de treball...",
+    "save": "Guardar",
+    "saving": "Guardant...",
+    "cancel": "Cancel·lar",
+    "create": "Crear",
+    "creating": "Creant...",
+    "edit": "Editar",
+    "update": "Actualitzar",
+    "updating": "Actualitzant...",
+    "delete": "Esborrar",
+    "search": "Cercar",
+    "active": "Actiu",
+    "inactive": "Inactiu",
+    "status": "Estat",
+    "next": "Següent",
+    "clearFilters": "Netejar filtres",
+    "loading": "Carregant...",
+    "noData": "No n'hi ha dades disponibles",
+    "actions": "Accions",
+    "logout": "Tancar sessió",
+    "settings": "Configuració",
+    "clear": "Netejar",
+    "description": "Descripció",
+    "product": "Producte",
+    "supplier": "Proveïdor",
+    "category": "Categoria",
+    "stock": "Estoc",
+    "price": "Preu",
+    "saveChanges": "Guardar canvis"
+  },
+  "nav": {
+    "dashboard": "Panell",
+    "sales": "Vendes",
+    "supplierOrders": "Comandes de proveïdor",
+    "products": "Productes",
+    "merchandiseIntake": "Ingrés de mercaderia",
+    "categories": "Categories",
+    "suppliers": "Proveïdors",
+    "customers": "Clients",
+    "movementHistory": "Historial de moviments",
+    "auditLogs": "Auditoria",
+    "adminSettings": "Configuració d'administrador",
+    "billing": "Facturació i sucursals",
+    "organization": "Organització",
+    "team": "Equip",
+    "myProfile": "El meu perfil",
+    "fiscalDocuments": "Facturació fiscal"
+  },
+  "dashboard": {
+    "title": "Panell de Solaris",
+    "description": "Resum operatiu del dia: vendes, caixa, alertes i accions ràpides.",
+    "quickActions": {
+      "title": "Accions ràpides",
+      "newSale": "Nova venda",
+      "merchandiseIntake": "Ingrés de mercaderia",
+      "products": "Productes",
+      "nova": "Obrir Nova"
+    },
+    "cashRegister": {
+      "open": "Caixa oberta",
+      "closed": "Caixa tancada",
+      "goToSales": "Anar a vendes"
+    },
+    "recentSales": {
+      "title": "Darreres vendes",
+      "description": "Activitat recent de la caixa.",
+      "empty": "Encara no hi ha vendes registrades."
+    },
+    "cards": {
+      "monthlySales": "Vendes del mes",
+      "todaySales": "Vendes d'avui",
+      "lowStockProducts": "Productes amb estoc baix",
+      "pendingOrders": "Comandes pendents",
+      "supplierOrders": "Comandes de proveïdor"
+    }
+  },
+  "products": {
+    "title": "Productes",
+    "description": "Gestiona productes d'inventari i estoc.",
+    "searchPlaceholder": "Cerca per nom o codi de barres...",
+    "newProduct": "Nou producte",
+    "empty": "No s'han trobat productes per als filtres seleccionats."
+  },
+  "sales": {
+    "title": "Vendes",
+    "description": "Controla les vendes diàries i l'activitat de caixa.",
+    "newSale": "Nova venda",
+    "empty": "No s'han trobat vendes per als filtres seleccionats."
+  },
+  "stockMovements": {
+    "title": "Moviments d'estoc",
+    "description": "Controla els moviments d'inventari i els ajustos d'estoc.",
+    "quickRestock": "Ingrés de mercaderia",
+    "empty": "No s'han trobat moviments d'estoc.",
+    "table": {
+      "previous": "Estoc anterior",
+      "current": "Estoc actual",
+      "reason": "Motiu"
+    },
+    "reasons": {
+      "saleTransaction": "Transacció de venda",
+      "productCreation": "Creació de producte"
+    }
+  },
+  "quickRestock": {
+    "title": "Ingrés de mercaderia",
+    "description": "Escaneja productes per crear un lot d'ingrés, ajusta quantitats i confirma-ho tot junts.",
+    "emptyList": "Escaneja productes per començar el llistat d'ingrés.",
+    "confirmAll": "Confirmar ingrés",
+    "clearAll": "Netejar llistat",
+    "remove": "Treure",
+    "table": {
+      "currentStock": "Estoc actual",
+      "quantity": "Quantitat a afegir"
+    }
+  },
+  "barcode": {
+    "scan": {
+      "readyRestock": "Lector actiu. Escaneja un producte per reaprovisionar-lo.",
+      "addedToRestock": "{{name}} afegit al llistat d'ingrés",
+      "notFound": "No s'ha trobat cap producte amb aquest codi de barres"
+    }
+  },
+  "saleForm": {
+    "searchProductPlaceholder": "Cerca producte per nom, SKU o categoria...",
+    "noProductsFound": "No s'han trobat productes",
+    "stock": "Estoc"
+  },
+  "team": {
+    "title": "Equip",
+    "description": "Convida usuaris i gestiona els membres de la teva organització.",
+    "noAccess": "No tens permisos per gestionar l'equip."
+  },
+  "notFound": {
+    "title": "Pàgina no trobada",
+    "description": "La pàgina que cerques no existeix o s'ha mogut.",
+    "dashboard": "Panell"
+  }
+}

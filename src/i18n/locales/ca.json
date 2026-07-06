@@ -64,7 +64,8 @@
     "billing": "Facturació i sucursals",
     "organization": "Organització",
     "team": "Equip",
-    "myProfile": "El meu perfil"
+    "myProfile": "El meu perfil",
+    "fiscalDocuments": "Facturació fiscal"
   },
   "auth": {
     "organization": {
@@ -829,6 +830,10 @@
       "in": "ENTRADA",
       "out": "SORTIDA",
       "adjustment": "AJUSTAMENT"
+    },
+    "reasons": {
+      "saleTransaction": "Transacció de venda",
+      "productCreation": "Creació de producte"
     }
   },
   "adminSettings": {
@@ -859,6 +864,113 @@
       "timezonePlaceholder": "Seleccionar zona horària",
       "autoCloseTime": "Hora de tancament automàtic",
       "autoCloseTimeHelp": "Les caixes que continuïn obertes a aquesta hora es tancaran automàticament."
+    },
+    "fiscal": {
+      "title": "Facturació electrònica (AFIP)",
+      "description": "Configura les dades fiscals de l'organització per emetre comprovants.",
+      "cuit": "CUIT",
+      "cuitRequired": "El CUIT és obligatori per facturar",
+      "cuitInvalid": "El CUIT ha de tenir 11 dígits",
+      "razonSocial": "Raó social",
+      "condicionIva": "Condició IVA",
+      "provider": "Proveïdor fiscal",
+      "providerMock": "Mock (desenvolupament / sandbox)",
+      "providerTusFacturas": "TusFacturas (REST)",
+      "apiKey": "Clau API del proveïdor",
+      "keepApiKeyPlaceholder": "Deixa-ho buit per mantenir les credencials actuals",
+      "setApiKeyPlaceholder": "{\"apikey\":\"...\",\"apitoken\":\"...\",\"usertoken\":\"...\"}",
+      "apiKeyHelp": "Enganxa el JSON de TusFacturas amb apikey, apitoken i usertoken.",
+      "credentialsConfigured": "Credencials configurades ✓",
+      "credentialsSavedHint": "Les credencials s'emmagatzemen de forma segura.",
+      "replaceCredentials": "Reemplaçar credencials",
+      "cancelReplaceCredentials": "Cancel·lar reemplaçament",
+      "credentialsInvalid": "El JSON ha d'incloure apikey, apitoken i usertoken",
+      "save": "Desar configuració fiscal",
+      "updateSuccess": "Configuració fiscal actualitzada",
+      "updateError": "No s'ha pogut actualitzar la configuració fiscal",
+      "loadError": "No s'ha pogut carregar la configuració fiscal",
+      "noOrganization": "Selecciona una organització per configurar la facturació",
+      "condicion": {
+        "responsableInscripto": "Responsable inscrit",
+        "monotributo": "Monotributo",
+        "exento": "Exempt"
+      },
+      "es": {
+        "title": "Facturació electrònica (Verifactu)",
+        "description": "Configura el NIF/CIF i la raó social de l'organització per emetre factures a Espanya.",
+        "nif": "NIF / CIF",
+        "nifRequired": "El NIF/CIF és obligatori per facturar",
+        "nifInvalid": "El NIF/CIF ha de tenir entre 8 i 9 caràcters alfanumèrics",
+        "series": "Sèrie (opcional)",
+        "seriesHelp": "Si no indiques una sèrie, s'utilitzarà la sèrie 1 per defecte.",
+        "providerMockOnly": "De moment només està disponible el proveïdor mock. La integració amb Verifactu arribarà en una propera versió."
+      }
+    }
+  },
+  "fiscal": {
+    "cae": "CAE",
+    "caeVencimiento": "Venciment CAE",
+    "puntoVenta": "Punt de venda",
+    "importeNeto": "Import net",
+    "importeIva": "Import IVA",
+    "tipoComprobante": {
+      "facturaB": "Factura B",
+      "facturaC": "Factura C"
+    },
+    "invoice": {
+      "button": "Facturar",
+      "confirm": "Emetre factura",
+      "processing": "Facturant...",
+      "success": "Comprovant emès correctament",
+      "error": "No s'ha pogut emetre el comprovant",
+      "rejected": "El comprovant ha estat rebutjat pel proveïdor fiscal",
+      "viewDocument": "Veure comprovant",
+      "withCustomer": "Facturar amb client",
+      "consumidorFinal": "Facturar (Consumidor final)",
+      "customerModalTitle": "Dades del client",
+      "customerModalDescription": "Selecciona un client o deixa Consumidor final per a la Factura B.",
+      "selectCustomer": "Client",
+      "loadCustomersError": "No s'han pogut carregar els clients",
+      "noCustomers": "No hi ha clients registrats"
+    },
+    "listTitle": "Comprovants fiscals",
+    "listDescription": "Factures electròniques emeses contra l'AFIP.",
+    "loadError": "No s'han pogut carregar els comprovants fiscals",
+    "notFound": "Comprovant no trobat",
+    "empty": "Encara no hi ha comprovants emesos.",
+    "importeTotal": "Import total",
+    "customer": "Client",
+    "status": "Estat",
+    "backToList": "Tornar al llistat",
+    "comprobanteNumber": "PV {{puntoVenta}} · N° {{numero}}",
+    "table": {
+      "date": "Data",
+      "type": "Tipus"
+    },
+    "statusValues": {
+      "PENDING": "Pendent",
+      "AUTHORIZED": "Autoritzat",
+      "REJECTED": "Rebutjat"
+    }
+  },
+  "fiscalDocument": {
+    "loadError": "No s'ha pogut carregar el comprovant fiscal",
+    "notFound": "Comprovant no trobat",
+    "viewSale": "Veure venda",
+    "backToSales": "Tornar a vendes",
+    "backToList": "Tornar al llistat",
+    "importeTotal": "Import total",
+    "customer": "Client",
+    "comprobanteNumber": "PV {{puntoVenta}} · N° {{numero}}",
+    "pdf": "Comprovant PDF",
+    "downloadPdf": "Descarregar PDF",
+    "pdfPlaceholder": "El PDF estarà disponible quan el proveïdor fiscal el generi.",
+    "rejectionReason": "Motiu del rebuig",
+    "rejectionReasonUnknown": "No s'ha rebut cap detall del proveïdor. Emet un comprovant nou després d'actualitzar l'API per veure el missatge exacte.",
+    "status": {
+      "PENDING": "Pendent",
+      "AUTHORIZED": "Autoritzat",
+      "REJECTED": "Rebutjat"
     }
   },
   "auditLogs": {

@@ -843,6 +843,10 @@
       "in": "ENTRADA",
       "out": "SALIDA",
       "adjustment": "AJUSTE"
+    },
+    "reasons": {
+      "saleTransaction": "Transacción de venta",
+      "productCreation": "Creación de producto"
     }
   },
   "adminSettings": {

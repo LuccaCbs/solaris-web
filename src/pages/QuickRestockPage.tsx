@@ -3,10 +3,11 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { Trash2 } from 'lucide-react'
-import { getProductByBarcode, getProductById } from '../api/productService'
+import { getProductByBarcode, getProductById, getProducts } from '../api/productService'
 import { createBulkStockMovements } from '../api/stockMovementService'
 import { useBarcodeScanner } from '../hooks/useBarcodeScanner'
 import { BarcodeScanInput } from '../components/barcode/BarcodeScanInput'
+import type { Product } from '../types/product'
 import {
     addProductToRestockList,
     type RestockLineItem,
@@ -17,6 +18,8 @@ function QuickRestockPage() {
     const [searchParams, setSearchParams] = useSearchParams()
     const preloadedRef = useRef(false)
 
+    const [products, setProducts] = useState<Product[]>([])
+    const [productSearch, setProductSearch] = useState('')
     const [items, setItems] = useState<RestockLineItem[]>([])
     const [reason, setReason] = useState('')
     const [saving, setSaving] = useState(false)
@@ -47,6 +50,19 @@ function QuickRestockPage() {
     useBarcodeScanner({ onScan: handleBarcodeScan })
 
     useEffect(() => {
+        async function loadProducts() {
+            try {
+                const data = await getProducts()
+                setProducts(data.filter((product) => product.active !== false))
+            } catch {
+                toast.error(t('supplierOrderForm.loadError'))
+            }
+        }
+
+        void loadProducts()
+    }, [t])
+
+    useEffect(() => {
         const productId = searchParams.get('productId')
 
         if (!productId || preloadedRef.current) {
@@ -75,6 +91,26 @@ function QuickRestockPage() {
 
         void preloadProduct()
     }, [addProduct, searchParams, setSearchParams, t])
+
+    const filteredProducts = products.filter((product) => {
+        const search = productSearch.toLowerCase()
+
+        return [product.name, product.barcode, product.categoryName]
+            .join(' ')
+            .toLowerCase()
+            .includes(search)
+    })
+
+    function selectProduct(product: Product) {
+        if (product.active === false) {
+            toast.error(t('barcode.scan.inactiveProduct'))
+            return
+        }
+
+        addProduct(product)
+        setProductSearch('')
+        toast.success(t('barcode.scan.addedToRestock', { name: product.name }))
+    }
 
     function updateItemQuantity(productId: number, quantity: string) {
         setItems((current) =>
@@ -145,8 +181,54 @@ function QuickRestockPage() {
                 {t('barcode.scan.readyRestock')}
             </div>
 
-            <div className="mt-4 max-w-md">
+            <div className="mt-4 grid max-w-3xl gap-4 md:grid-cols-2">
                 <BarcodeScanInput onScan={handleBarcodeScan} />
+
+                <div className="relative">
+                    <label className="text-sm solaris-muted">
+                        {t('saleForm.product')}
+                    </label>
+
+                    <input
+                        value={productSearch}
+                        onChange={(event) => setProductSearch(event.target.value)}
+                        placeholder={t('saleForm.searchProductPlaceholder')}
+                        className="solaris-input mt-2 w-full"
+                    />
+
+                    {productSearch && (
+                        <div className="absolute z-20 mt-2 max-h-64 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-950">
+                            {filteredProducts.slice(0, 8).map((product) => (
+                                <button
+                                    key={product.id}
+                                    type="button"
+                                    onClick={() => selectProduct(product)}
+                                    className="flex w-full items-center justify-between gap-4 border-b border-slate-100 px-4 py-3 text-left hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
+                                >
+                                    <div>
+                                        <p className="font-medium text-slate-950 dark:text-white">
+                                            {product.name}
+                                        </p>
+
+                                        <p className="text-sm solaris-muted">
+                                            {product.barcode} · {product.categoryName}
+                                        </p>
+                                    </div>
+
+                                    <p className="text-xs solaris-subtle">
+                                        {t('saleForm.stock')}: {product.stockQuantity}
+                                    </p>
+                                </button>
+                            ))}
+
+                            {filteredProducts.length === 0 && (
+                                <div className="px-4 py-3 text-sm solaris-muted">
+                                    {t('saleForm.noProductsFound')}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-6">

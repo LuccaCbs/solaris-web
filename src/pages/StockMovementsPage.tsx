@@ -13,6 +13,18 @@ function StockMovementsPage() {
     const [movements, setMovements] = useState<StockMovement[]>([])
     const [loading, setLoading] = useState(true)
 
+    function translateReason(reason: string) {
+        if (reason === 'Sale transaction') {
+            return t('stockMovements.reasons.saleTransaction')
+        }
+
+        if (reason === 'Product creation') {
+            return t('stockMovements.reasons.productCreation')
+        }
+
+        return reason
+    }
+
     useEffect(() => {
         async function loadMovements() {
             try {
@@ -75,7 +87,7 @@ function StockMovementsPage() {
                                 </h2>
 
                                 <p className="mt-2 text-sm solaris-muted">
-                                    {movement.reason}
+                                    {translateReason(movement.reason)}
                                 </p>
                             </div>
 
@@ -173,7 +185,7 @@ function StockMovementsPage() {
                             </td>
 
                             <td className="px-6 py-4 text-slate-700 dark:text-slate-300">
-                                {movement.reason}
+                                {translateReason(movement.reason)}
                             </td>
 
                             <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
