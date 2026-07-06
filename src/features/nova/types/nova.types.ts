@@ -59,6 +59,7 @@ export type NovaIntent =
     | 'list_sales'
     | 'show_sale'
     | 'get_daily_sales_summary'
+    | 'export_report'
     | 'search_customer'
     | 'show_customer'
     | 'list_fiscal_documents'

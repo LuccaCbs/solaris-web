@@ -596,6 +596,7 @@
     "viewDetail": "View Detail",
     "empty": "No sales found for the selected filters.",
     "viewDailyAnalytics": "View daily analytics",
+    "volumeWarning": "There are {{count}} sales in the selected period (more than {{threshold}}). For large volumes we recommend exporting Excel with the from/to dates you need.",
     "pagination": "Page {{currentPage}} of {{totalPages}} · {{count}} sales",
     "payment": {
       "cash": "Cash",
@@ -1264,6 +1265,13 @@
       "salesCount": "Sales count",
       "totalSales": "Total sold",
       "viewDetails": "View sales for the day"
+    },
+    "exportReportCard": {
+      "title": "Sales report",
+      "singleDate": "Date: {{date}}",
+      "dateRange": "From {{from}} to {{to}}",
+      "records": "{{count}} record(s)",
+      "download": "Download Excel"
     },
     "customerCard": {
       "email": "Email",

@@ -10,6 +10,7 @@ import {
     type SupplierOrder,
 } from './NovaSupplierOrderCard'
 import { NovaSalesListCard } from './NovaSalesListCard'
+import { NovaExportReportCard } from './NovaExportReportCard'
 import { NovaSaleDetailCard } from './NovaSaleDetailCard'
 import { NovaDailySalesSummaryCard } from './NovaDailySalesSummaryCard'
 import { NovaCustomerCard } from './NovaCustomerCard'
@@ -47,6 +48,37 @@ function isSale(value: unknown): value is Sale {
         'totalAmount' in value &&
         'items' in value &&
         Array.isArray((value as Sale).items)
+    )
+}
+
+function isSalesListResult(
+    value: unknown,
+): value is { items: Sale[]; totalCount: number; volumeThreshold: number } {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'items' in value &&
+        Array.isArray((value as { items: unknown }).items)
+    )
+}
+
+function isSalesExportReport(
+    value: unknown,
+): value is {
+    module: 'sales'
+    from: string
+    to: string
+    sales: Sale[]
+    totalCount: number
+} {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        (value as { module?: string }).module === 'sales' &&
+        'from' in value &&
+        'to' in value &&
+        'sales' in value &&
+        Array.isArray((value as { sales: unknown }).sales)
     )
 }
 
@@ -175,12 +207,36 @@ export function NovaResponseRenderer({
     if (
         message.type === 'tool_result' &&
         message.intent === 'list_sales' &&
-        Array.isArray(message.data)
+        (Array.isArray(message.data) || isSalesListResult(message.data))
+    ) {
+        const sales = Array.isArray(message.data)
+            ? (message.data as Sale[])
+            : message.data.items
+        const totalCount = isSalesListResult(message.data)
+            ? message.data.totalCount
+            : sales.length
+
+        return (
+            <div className="space-y-3">
+                <p className="whitespace-pre-line">{message.content}</p>
+                <NovaSalesListCard sales={sales} totalCount={totalCount} />
+            </div>
+        )
+    }
+
+    if (
+        message.type === 'tool_result' &&
+        message.intent === 'export_report' &&
+        isSalesExportReport(message.data)
     ) {
         return (
             <div className="space-y-3">
                 <p className="whitespace-pre-line">{message.content}</p>
-                <NovaSalesListCard sales={message.data as Sale[]} />
+                <NovaExportReportCard
+                    from={message.data.from}
+                    to={message.data.to}
+                    sales={message.data.sales}
+                />
             </div>
         )
     }

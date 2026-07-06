@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { getSales } from '../api/salesService'
 import type { PaymentMethod, Sale } from '../types/sales'
-import { exportSales } from '../utils/exportSales'
+import { exportSales, SALES_VOLUME_WARNING_THRESHOLD } from '../utils/exportSales'
 import {
     closeCashRegister,
     getTodayCashRegister,
@@ -283,7 +283,13 @@ function SalesPage() {
 
                 <div className="flex flex-col gap-3 sm:flex-row">
                     <button
-                        onClick={() => exportSales(visibleSales)}
+                        onClick={() =>
+                            exportSales(
+                                visibleSales,
+                                dateFrom,
+                                dateTo || dateFrom,
+                            )
+                        }
                         className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-500 hover:bg-emerald-500/20 dark:text-emerald-300"
                     >
                         {t('sales.exportExcel')}
@@ -515,6 +521,17 @@ function SalesPage() {
                     </Link>
                 )}
             </div>
+
+            {filteredSales.length > SALES_VOLUME_WARNING_THRESHOLD && (
+                <div className="mt-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-5 py-4">
+                    <p className="text-sm text-amber-800 dark:text-amber-200">
+                        {t('sales.volumeWarning', {
+                            count: filteredSales.length,
+                            threshold: SALES_VOLUME_WARNING_THRESHOLD,
+                        })}
+                    </p>
+                </div>
+            )}
 
             <div className="mt-8 space-y-4 lg:hidden">
                 {paginatedSales.map((sale) => (

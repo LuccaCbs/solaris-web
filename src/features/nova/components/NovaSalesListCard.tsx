@@ -4,6 +4,7 @@ import type { PaymentMethod, Sale } from '../../../types/sales'
 
 type NovaSalesListCardProps = {
     sales: Sale[]
+    totalCount?: number
 }
 
 const COMPACT_THRESHOLD = 5
@@ -30,9 +31,10 @@ function formatSaleTime(createdAt: string) {
     })
 }
 
-export function NovaSalesListCard({ sales }: NovaSalesListCardProps) {
+export function NovaSalesListCard({ sales, totalCount }: NovaSalesListCardProps) {
     const { t } = useTranslation()
     const isCompact = sales.length > COMPACT_THRESHOLD
+    const listTotal = totalCount ?? sales.length
 
     if (sales.length === 0) {
         return null
@@ -79,7 +81,7 @@ export function NovaSalesListCard({ sales }: NovaSalesListCardProps) {
                     to="/sales"
                     className="block text-center text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
                 >
-                    {t('nova.salesListCard.viewAll', { count: sales.length })}
+                    {t('nova.salesListCard.viewAll', { count: listTotal })}
                 </Link>
             </div>
         )

@@ -596,6 +596,7 @@
     "viewDetail": "Ver detalle",
     "empty": "No se encontraron ventas para los filtros seleccionados.",
     "viewDailyAnalytics": "Ver analítica del día",
+    "volumeWarning": "Hay {{count}} ventas en el período seleccionado (más de {{threshold}}). Para volúmenes grandes te recomendamos exportar Excel con las fechas desde/hasta que necesites.",
     "pagination": "Página {{currentPage}} de {{totalPages}} · {{count}} ventas",
     "payment": {
       "cash": "Efectivo",
@@ -1187,7 +1188,7 @@
         "updateSupplier": "Para actualizar un proveedor necesito que indiques:\n\n• Acción: \"Actualizar proveedor\"\n• Proveedor: nombre del proveedor\n• Dato a modificar: email, teléfono, contacto, etc.\n• Valor nuevo: el dato actualizado\n\nEjemplo:\n\"Actualizar proveedor Proveedor Demo email compras@demo.com\"\n\nTambién podés ir a Proveedores y editar desde la pantalla.",
         "dashboardSummary": "Para ver un resumen del dashboard necesito que indiques:\n\n• Acción: \"Resumen del dashboard\" o \"Ver dashboard\"\n\nEjemplo:\n\"Resumen del dashboard\"\n\nTambién podés ir al Panel principal para ver ventas, alertas y métricas del negocio.",
         "lowStock": "Para consultar productos con bajo stock necesito que indiques:\n\n• Acción: \"Productos con bajo stock\" o \"Bajo stock\"\n\nEjemplo:\n\"Productos con bajo stock\"\n\nTambién podés ir al listado de Productos filtrado por bajo stock o reponer desde Ingreso de mercadería.",
-        "listSales": "Para listar ventas individuales necesito que indiques:\n\n• Acción: \"Ver ventas\" o \"Últimas ventas\"\n• Filtro opcional: \"Ventas de hoy\" o \"Ventas de ayer\"\n\nEjemplos:\n\"Ver ventas\"\n\"Ventas de hoy\"\n\nPara totales del día (sin listado), usá \"Resumen de ventas de hoy\" o \"Ventas del día\".\n\nTambién podés ir al listado de Ventas y filtrar por fecha.",
+        "listSales": "Para listar ventas individuales necesito que indiques:\n\n• Acción: \"Ver ventas\" o \"Últimas ventas\"\n• Filtro opcional: \"Ventas de hoy\" o \"Ventas de ayer\"\n\nEjemplos:\n\"Ver ventas\" (muestra ventas del mes en curso)\n\"Ventas de hoy\"\n\nPara totales del día (sin listado), usá \"Resumen de ventas de hoy\".\nPara exportar Excel: \"Ver informe de ventas del día\" o \"Ver informe de ventas desde 01/07/2026 hasta 06/07/2026\".\n\nTambién podés ir al listado de Ventas y filtrar por fecha.",
         "showSale": "Para ver una venta necesito que indiques:\n\n• Acción: \"Ver venta\"\n• Número de venta: ID de la venta\n\nEjemplo:\n\"Ver venta #13\"\n\nTambién podés ir al listado de Ventas y abrir el detalle.",
         "dailySalesSummary": "Para el resumen de ventas del día necesito que indiques:\n\n• Acción: \"Resumen de ventas de hoy\", \"Ventas del día\" o \"Totales del día\"\n• Fecha opcional: si querés otro día\n\nEjemplo:\n\"Resumen de ventas de hoy\"\n\nEsto muestra totales y desglose por medio de pago, no el listado de cada venta.\n\nTambién podés ir a Ventas del día para ver la analítica completa.",
         "createSale": "Para registrar una venta necesito que indiques:\n\n• Acción: \"Crear venta\"\n• Medio de pago: efectivo, tarjeta, transferencia, etc.\n• Productos: nombre y cantidad de cada ítem\n\nEjemplo:\n\"Crear venta en efectivo con 2 Producto prueba\"\n\nTambién podés ir a Nueva venta y cargar la venta desde la pantalla de caja.",
@@ -1264,6 +1265,13 @@
       "salesCount": "Cantidad de ventas",
       "totalSales": "Total vendido",
       "viewDetails": "Ver ventas del día"
+    },
+    "exportReportCard": {
+      "title": "Informe de ventas",
+      "singleDate": "Fecha: {{date}}",
+      "dateRange": "Desde {{from}} hasta {{to}}",
+      "records": "{{count}} registro(s)",
+      "download": "Descargar Excel"
     },
     "customerCard": {
       "email": "Email",
