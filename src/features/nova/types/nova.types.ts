@@ -15,6 +15,7 @@ export interface NovaUiAction {
     type: NovaUiActionType
     to?: string
     message?: string
+    silent?: boolean
     requiredModule?: ModuleCode
     minimumRole?: OrganizationRole
 }

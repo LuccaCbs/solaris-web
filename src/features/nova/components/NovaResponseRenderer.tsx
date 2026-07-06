@@ -421,7 +421,7 @@ export function NovaResponseRenderer({
             {message.actions && message.actions.length > 0 && (
                 <NovaActionButtons
                     actions={message.actions}
-                    onSendMessage={(text) => onSendMessage?.(text)}
+                    onSendMessage={(text, options) => onSendMessage?.(text, options)}
                     onShowGuide={onShowGuide}
                     onClosePanel={onClosePanel}
                 />

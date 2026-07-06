@@ -453,6 +453,12 @@
       "phone": "Phone",
       "status": "Status",
       "actions": "Actions"
+    },
+    "actions": {
+      "view": "View supplier",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "activate": "Reactivate"
     }
   },
   "supplierForm": {
@@ -526,6 +532,12 @@
       "phone": "Phone",
       "status": "Status",
       "actions": "Actions"
+    },
+    "actions": {
+      "view": "View customer",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "activate": "Reactivate"
     }
   },
   "customerForm": {
@@ -1104,6 +1116,21 @@
       "quantity": "Quantity to add"
     }
   },
+  "supplierView": {
+    "loadError": "Could not load supplier",
+    "notFound": "Supplier not found",
+    "backToSuppliers": "← Back to suppliers",
+    "description": "Supplier overview with recent orders.",
+    "editSupplier": "Edit supplier",
+    "detailsTitle": "Details",
+    "statsTitle": "Summary",
+    "totalOrders": "Registered orders",
+    "recentOrders": "Recent orders",
+    "noOrders": "No orders registered for this supplier.",
+    "orderDate": "Order",
+    "orderStatus": "Status",
+    "orderItems": "Items"
+  },
   "productView": {
     "loadError": "Could not load product",
     "notFound": "Product not found",
@@ -1122,6 +1149,22 @@
     "movementDate": "Date",
     "movementType": "Type",
     "movementQuantity": "Quantity"
+  },
+  "customerView": {
+    "loadError": "Could not load customer",
+    "notFound": "Customer not found",
+    "backToCustomers": "← Back to customers",
+    "description": "Customer overview with invoiced sales.",
+    "editCustomer": "Edit customer",
+    "detailsTitle": "Details",
+    "statsTitle": "Billing summary",
+    "invoicedSales": "Invoiced sales",
+    "invoicedDocumentsTitle": "Issued fiscal documents",
+    "noInvoicedDocuments": "No invoiced sales for this customer.",
+    "documentDate": "Date",
+    "documentNumber": "Document",
+    "documentStatus": "Status",
+    "documentTotal": "Total"
   },
   "nova": {
     "title": "Nova Copilot",

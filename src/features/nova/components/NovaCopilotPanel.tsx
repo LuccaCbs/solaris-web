@@ -36,7 +36,7 @@ export function NovaCopilotPanel({ isOpen, onClose }: NovaCopilotPanelProps) {
         }
 
         if (action.mode === 'execute' && action.executeMessageKey) {
-            void sendMessage(t(action.executeMessageKey))
+            void sendMessage(t(action.executeMessageKey), { silent: true })
             return
         }
 

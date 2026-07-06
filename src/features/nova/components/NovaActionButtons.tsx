@@ -3,7 +3,7 @@ import type { NovaUiAction } from '../types/nova.types'
 
 interface NovaActionButtonsProps {
     actions: NovaUiAction[]
-    onSendMessage?: (message: string) => void
+    onSendMessage?: (message: string, options?: { silent?: boolean }) => void
     onShowGuide?: (message: string) => void
     onClosePanel?: () => void
 }
@@ -34,7 +34,9 @@ export function NovaActionButtons({
                         }
 
                         if (action.type === 'send_message' && action.message) {
-                            onSendMessage?.(action.message)
+                            onSendMessage?.(action.message, {
+                                silent: action.silent ?? false,
+                            })
                             return
                         }
 

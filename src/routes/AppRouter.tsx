@@ -25,9 +25,11 @@ import SaleDetailPage from '../pages/SaleDetailPage'
 import SuppliersPage from '../pages/SuppliersPage'
 import NewSupplierPage from '../pages/NewSupplierPage'
 import EditSupplierPage from '../pages/EditSupplierPage'
+import SupplierViewPage from '../pages/SupplierViewPage'
 import CustomersPage from '../pages/CustomersPage'
 import NewCustomerPage from '../pages/NewCustomerPage'
 import EditCustomerPage from '../pages/EditCustomerPage'
+import CustomerViewPage from '../pages/CustomerViewPage'
 import SupplierOrdersPage from '../pages/SupplierOrdersPage'
 import NewSupplierOrderPage from '../pages/NewSupplierOrderPage'
 import EditSupplierOrderPage from '../pages/EditSupplierOrderPage'
@@ -74,10 +76,12 @@ function AppRouter() {
 
                             <Route path="/suppliers" element={<SuppliersPage />} />
                             <Route path="/suppliers/new" element={<NewSupplierPage />} />
+                            <Route path="/suppliers/:id/view" element={<SupplierViewPage />} />
                             <Route path="/suppliers/:id/edit" element={<EditSupplierPage />} />
 
                             <Route path="/customers" element={<CustomersPage />} />
                             <Route path="/customers/new" element={<NewCustomerPage />} />
+                            <Route path="/customers/:id/view" element={<CustomerViewPage />} />
                             <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
 
                             <Route path="/supplier-orders" element={<SupplierOrdersPage />} />

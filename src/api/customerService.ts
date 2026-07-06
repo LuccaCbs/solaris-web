@@ -1,5 +1,6 @@
 import axiosClient from './axiosClient'
 import type { Customer, CustomerRequest } from '../types/customer'
+import type { FiscalDocument } from '../types/fiscal'
 import { buildCustomerPayload } from '../utils/fiscalUtils'
 
 function getAuthHeaders() {
@@ -36,6 +37,20 @@ export async function searchCustomers(query: string): Promise<Customer[]> {
 
 export async function getCustomerById(id: number): Promise<Customer> {
     const response = await axiosClient.get<Customer>(`/customers/${id}`, {
+        headers: getAuthHeaders(),
+    })
+
+    return response.data
+}
+
+export type CustomerPreview = {
+    customer: Customer
+    totalInvoicedDocuments: number
+    invoicedDocuments: FiscalDocument[]
+}
+
+export async function getCustomerPreview(id: number): Promise<CustomerPreview> {
+    const response = await axiosClient.get<CustomerPreview>(`/customers/${id}/preview`, {
         headers: getAuthHeaders(),
     })
 

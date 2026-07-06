@@ -28,6 +28,36 @@ export async function getSupplierById(id: number): Promise<Supplier> {
     return response.data
 }
 
+export type SupplierPreview = {
+    supplier: Supplier
+    totalOrders: number
+    recentOrders: Array<{
+        id: number
+        supplierId: number
+        supplierName: string
+        supplierPhone?: string | null
+        status: 'DRAFT' | 'SENT' | 'COMPLETED' | 'CANCELLED'
+        messagePreview: string
+        items: Array<{
+            id: number
+            productId: number
+            productName: string
+            productBarcode: string
+            quantity: number
+        }>
+        createdAt: string
+        updatedAt: string
+    }>
+}
+
+export async function getSupplierPreview(id: number): Promise<SupplierPreview> {
+    const response = await axiosClient.get<SupplierPreview>(`/suppliers/${id}/preview`, {
+        headers: getAuthHeaders(),
+    })
+
+    return response.data
+}
+
 export async function createSupplier(data: SupplierRequest): Promise<Supplier> {
     const response = await axiosClient.post<Supplier>('/suppliers', data, {
         headers: getAuthHeaders(),

@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
+import {
+    ArchiveRestore,
+    Ban,
+    Eye,
+    Menu,
+    SquarePen,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { deactivateSupplier, activateSupplier, getSuppliers } from '../api/supplierService'
 import { useAuth } from '../context/AuthContext'
 import type { Supplier } from '../types/supplier'
@@ -11,6 +19,7 @@ import LoadingScreen from '../components/LoadingScreen'
 type StatusFilter = 'all' | 'active' | 'inactive'
 
 function SuppliersPage() {
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const { role } = useAuth()
     const canDelete = canDeleteSuppliers(role)
@@ -20,6 +29,7 @@ function SuppliersPage() {
     const [search, setSearch] = useState('')
     const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
     const [currentPage, setCurrentPage] = useState(1)
+    const [openActionsSupplierId, setOpenActionsSupplierId] = useState<number | null>(null)
     const pageSize = 10
 
     async function loadSuppliers() {
@@ -78,6 +88,12 @@ function SuppliersPage() {
         } catch {
             toast.error(t('suppliers.activateError'))
         }
+    }
+
+    function toggleActions(supplierId: number) {
+        setOpenActionsSupplierId((currentId) =>
+            currentId === supplierId ? null : supplierId,
+        )
     }
 
     function clearFilters() {
@@ -200,31 +216,18 @@ function SuppliersPage() {
                             <StatusBadge active={supplier.active} />
                         </div>
 
-                        <div className="mt-4 flex flex-wrap gap-2">
-                            <Link
-                                to={`/suppliers/${supplier.id}/edit`}
-                                className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                            >
-                                {t('common.edit')}
-                            </Link>
-
-                            {canDelete && supplier.active && (
-                                <button
-                                    onClick={() => handleDeactivateSupplier(supplier.id)}
-                                    className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
-                                >
-                                    {t('suppliers.deactivate')}
-                                </button>
-                            )}
-
-                            {canDelete && !supplier.active && (
-                                <button
-                                    onClick={() => handleActivateSupplier(supplier.id)}
-                                    className="rounded-lg border border-emerald-500/30 px-3 py-2 text-sm text-emerald-500 hover:bg-emerald-500/10"
-                                >
-                                    {t('suppliers.reactivate')}
-                                </button>
-                            )}
+                        <div className="mt-4 flex items-center justify-end">
+                            <SupplierActions
+                                supplier={supplier}
+                                canDelete={canDelete}
+                                onView={(supplierId) => navigate(`/suppliers/${supplierId}/view`)}
+                                onEdit={(supplierId) => navigate(`/suppliers/${supplierId}/edit`)}
+                                onActivate={handleActivateSupplier}
+                                onDeactivate={handleDeactivateSupplier}
+                                isOpen={openActionsSupplierId === supplier.id}
+                                onToggle={() => toggleActions(supplier.id)}
+                                onClose={() => setOpenActionsSupplierId(null)}
+                            />
                         </div>
                     </div>
                 ))}
@@ -236,7 +239,7 @@ function SuppliersPage() {
                 )}
             </div>
 
-            <div className="solaris-card mt-8 hidden overflow-hidden lg:block">
+            <div className="solaris-card mt-8 hidden overflow-visible lg:block">
                 <table className="w-full">
                     <thead className="bg-slate-100 dark:bg-slate-800/50">
                     <tr>
@@ -287,33 +290,18 @@ function SuppliersPage() {
                                 <StatusBadge active={supplier.active} />
                             </td>
 
-                            <td className="px-6 py-4 text-right">
-                                <div className="flex justify-end gap-2">
-                                    <Link
-                                        to={`/suppliers/${supplier.id}/edit`}
-                                        className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                                    >
-                                        {t('common.edit')}
-                                    </Link>
-
-                                    {canDelete && supplier.active && (
-                                        <button
-                                            onClick={() => handleDeactivateSupplier(supplier.id)}
-                                            className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400 hover:bg-red-500/20"
-                                        >
-                                            {t('suppliers.deactivate')}
-                                        </button>
-                                    )}
-
-                                    {canDelete && !supplier.active && (
-                                        <button
-                                            onClick={() => handleActivateSupplier(supplier.id)}
-                                            className="rounded-lg border border-emerald-500/30 px-3 py-2 text-sm text-emerald-500 hover:bg-emerald-500/10"
-                                        >
-                                            {t('suppliers.reactivate')}
-                                        </button>
-                                    )}
-                                </div>
+                            <td className="relative overflow-visible px-6 py-4 text-right">
+                                <SupplierActions
+                                    supplier={supplier}
+                                    canDelete={canDelete}
+                                    onView={(supplierId) => navigate(`/suppliers/${supplierId}/view`)}
+                                    onEdit={(supplierId) => navigate(`/suppliers/${supplierId}/edit`)}
+                                    onActivate={handleActivateSupplier}
+                                    onDeactivate={handleDeactivateSupplier}
+                                    isOpen={openActionsSupplierId === supplier.id}
+                                    onToggle={() => toggleActions(supplier.id)}
+                                    onClose={() => setOpenActionsSupplierId(null)}
+                                />
                             </td>
                         </tr>
                     ))}
@@ -405,6 +393,136 @@ function StatusBadge({ active }: StatusBadgeProps) {
         <span className="rounded-lg bg-slate-500/10 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-300 lg:text-sm">
             {t('suppliers.status.inactive')}
         </span>
+    )
+}
+
+type ActionMenuItemProps = {
+    icon: LucideIcon
+    label: string
+    onClick: () => void
+    danger?: boolean
+    disabled?: boolean
+}
+
+function ActionMenuItem({
+    icon: Icon,
+    label,
+    onClick,
+    danger = false,
+    disabled = false,
+}: ActionMenuItemProps) {
+    return (
+        <button
+            type="button"
+            disabled={disabled}
+            onClick={onClick}
+            className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                danger
+                    ? 'text-red-400 hover:bg-red-500/10'
+                    : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'
+            }`}
+        >
+            <Icon className="h-4 w-4 flex-shrink-0" />
+            <span>{label}</span>
+        </button>
+    )
+}
+
+type SupplierActionsProps = {
+    supplier: Supplier
+    canDelete: boolean
+    onView: (id: number) => void
+    onEdit: (id: number) => void
+    onActivate: (id: number) => void
+    onDeactivate: (id: number) => void
+    isOpen: boolean
+    onToggle: () => void
+    onClose: () => void
+}
+
+function SupplierActions({
+    supplier,
+    canDelete,
+    onView,
+    onEdit,
+    onActivate,
+    onDeactivate,
+    isOpen,
+    onToggle,
+    onClose,
+}: SupplierActionsProps) {
+    const { t } = useTranslation()
+
+    function handleAction(action: () => void) {
+        action()
+        onClose()
+    }
+
+    return (
+        <div className="relative flex justify-end lg:overflow-visible">
+            <button
+                type="button"
+                onClick={onToggle}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                aria-label={t('common.actions')}
+            >
+                <Menu className="h-5 w-5" />
+            </button>
+
+            {isOpen && (
+                <>
+                    <button
+                        type="button"
+                        aria-label={t('common.close')}
+                        onClick={onClose}
+                        className="fixed inset-0 z-40 cursor-default bg-black/20 lg:hidden"
+                    />
+
+                    <div className="fixed inset-x-4 bottom-24 z-50 max-h-[60vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900 lg:absolute lg:inset-auto lg:right-0 lg:top-11 lg:w-64">
+                        <div className="border-b border-slate-200 px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:border-slate-800 dark:text-slate-200">
+                            {t('common.actions')}
+                        </div>
+
+                        <ActionMenuItem
+                            icon={Eye}
+                            label={t('suppliers.actions.view')}
+                            onClick={() => handleAction(() => onView(supplier.id))}
+                        />
+
+                        <ActionMenuItem
+                            icon={SquarePen}
+                            label={t('suppliers.actions.edit')}
+                            onClick={() => handleAction(() => onEdit(supplier.id))}
+                        />
+
+                        {canDelete && (
+                            <>
+                                <div className="my-1 border-t border-slate-200 dark:border-slate-800" />
+
+                                {supplier.active ? (
+                                    <ActionMenuItem
+                                        icon={Ban}
+                                        label={t('suppliers.actions.deactivate')}
+                                        danger
+                                        onClick={() =>
+                                            handleAction(() => onDeactivate(supplier.id))
+                                        }
+                                    />
+                                ) : (
+                                    <ActionMenuItem
+                                        icon={ArchiveRestore}
+                                        label={t('suppliers.actions.activate')}
+                                        onClick={() =>
+                                            handleAction(() => onActivate(supplier.id))
+                                        }
+                                    />
+                                )}
+                            </>
+                        )}
+                    </div>
+                </>
+            )}
+        </div>
     )
 }
 

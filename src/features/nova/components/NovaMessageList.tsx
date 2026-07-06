@@ -7,7 +7,7 @@ import { NovaEmptyState } from './NovaEmptyState'
 interface NovaMessageListProps {
     messages: NovaMessage[]
     isLoading: boolean
-    onSendMessage: (message: string) => void
+    onSendMessage: (message: string, options?: { silent?: boolean }) => void
     onShowGuide: (message: string) => void
     onClosePanel?: () => void
     onSelectQuickAction: (action: NovaQuickActionDefinition) => void

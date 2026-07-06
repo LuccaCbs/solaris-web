@@ -22,6 +22,7 @@ export function buildNovaUiActionsForQuickAction(
             label: t(action.executeActionLabelKey ?? 'nova.actions.askNova'),
             type: 'send_message',
             message: t(action.executeMessageKey),
+            silent: true,
         })
     } else if (action.guideKey) {
         actions.push({

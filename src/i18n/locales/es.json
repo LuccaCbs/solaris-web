@@ -453,6 +453,12 @@
       "phone": "Teléfono",
       "status": "Estado",
       "actions": "Acciones"
+    },
+    "actions": {
+      "view": "Ver proveedor",
+      "edit": "Editar",
+      "deactivate": "Dar de baja",
+      "activate": "Reactivar"
     }
   },
   "supplierForm": {
@@ -526,6 +532,12 @@
       "phone": "Teléfono",
       "status": "Estado",
       "actions": "Acciones"
+    },
+    "actions": {
+      "view": "Ver cliente",
+      "edit": "Editar",
+      "deactivate": "Dar de baja",
+      "activate": "Reactivar"
     }
   },
   "customerForm": {
@@ -1104,6 +1116,21 @@
       "quantity": "Cantidad a agregar"
     }
   },
+  "supplierView": {
+    "loadError": "No se pudo cargar el proveedor",
+    "notFound": "Proveedor no encontrado",
+    "backToSuppliers": "← Volver a proveedores",
+    "description": "Vista general del proveedor con pedidos recientes.",
+    "editSupplier": "Editar proveedor",
+    "detailsTitle": "Detalles",
+    "statsTitle": "Resumen",
+    "totalOrders": "Pedidos registrados",
+    "recentOrders": "Pedidos recientes",
+    "noOrders": "Sin pedidos registrados para este proveedor.",
+    "orderDate": "Pedido",
+    "orderStatus": "Estado",
+    "orderItems": "Ítems"
+  },
   "productView": {
     "loadError": "No se pudo cargar el producto",
     "notFound": "Producto no encontrado",
@@ -1122,6 +1149,22 @@
     "movementDate": "Fecha",
     "movementType": "Tipo",
     "movementQuantity": "Cantidad"
+  },
+  "customerView": {
+    "loadError": "No se pudo cargar el cliente",
+    "notFound": "Cliente no encontrado",
+    "backToCustomers": "← Volver a clientes",
+    "description": "Vista general del cliente con ventas facturadas.",
+    "editCustomer": "Editar cliente",
+    "detailsTitle": "Detalles",
+    "statsTitle": "Resumen fiscal",
+    "invoicedSales": "Ventas facturadas",
+    "invoicedDocumentsTitle": "Comprobantes fiscales emitidos",
+    "noInvoicedDocuments": "Sin ventas facturadas para este cliente.",
+    "documentDate": "Fecha",
+    "documentNumber": "Comprobante",
+    "documentStatus": "Estado",
+    "documentTotal": "Total"
   },
   "nova": {
     "title": "Nova Copilot",
