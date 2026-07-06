@@ -586,6 +586,7 @@
     "viewDetail": "Voir le détail",
     "empty": "Aucune vente trouvée pour les filtres sélectionnés.",
     "viewDailyAnalytics": "Voir l'analytique du jour",
+    "volumeWarning": "Il y a {{count}} ventes dans la période sélectionnée (plus de {{threshold}}). Pour les gros volumes, nous recommandons d'exporter Excel avec les dates de début et de fin souhaitées.",
     "pagination": "Page {{currentPage}} sur {{totalPages}} · {{count}} ventes",
     "payment": {
       "cash": "Espèces",
@@ -1225,6 +1226,13 @@
       "title": "Confirmation requise",
       "confirm": "Confirmer",
       "cancel": "Annuler"
+    },
+    "exportReportCard": {
+      "title": "Rapport de ventes",
+      "singleDate": "Date : {{date}}",
+      "dateRange": "Du {{from}} au {{to}}",
+      "records": "{{count}} enregistrement(s)",
+      "download": "Télécharger Excel"
     }
   },
   "team": {

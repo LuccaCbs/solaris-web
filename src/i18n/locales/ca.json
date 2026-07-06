@@ -585,6 +585,7 @@
     "viewDetail": "Veure detall",
     "empty": "No s’han trobat vendes amb els filtres seleccionats.",
     "viewDailyAnalytics": "Veure analítica del dia",
+    "volumeWarning": "Hi ha {{count}} vendes en el període seleccionat (més de {{threshold}}). Per a volums grans recomanem exportar Excel amb les dates des de/fins a que necessitis.",
     "pagination": "Pàgina {{currentPage}} de {{totalPages}} · {{count}} vendes",
     "payment": {
       "cash": "Efectiu",
@@ -1224,6 +1225,13 @@
       "title": "Confirmació requerida",
       "confirm": "Confirmar",
       "cancel": "Cancel·lar"
+    },
+    "exportReportCard": {
+      "title": "Informe de vendes",
+      "singleDate": "Data: {{date}}",
+      "dateRange": "Des de {{from}} fins a {{to}}",
+      "records": "{{count}} registre(s)",
+      "download": "Descarregar Excel"
     }
   },
   "team": {
