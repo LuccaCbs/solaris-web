@@ -1058,8 +1058,13 @@
     "open": "Obrir Nova",
     "close": "Tancar Nova",
     "emptyState": "Hola, sóc Nova. Puc ajudar-te a cercar productes, crear productes, actualitzar l'estoc o consultar productes amb baix estoc.",
+    "emptyStateHint": "Tria una acció ràpida o escriu la teva consulta.",
     "loading": "Nova està pensant...",
     "newChat": "Nou xat",
+    "actions": {
+      "goToPage": "Anar a la pantalla",
+      "askNova": "Fer-ho amb Nova"
+    },
     "input": {
       "placeholder": "Escriu a Nova...",
       "send": "Enviar"
@@ -1067,10 +1072,19 @@
     "quickActions": {
       "title": "Accions ràpides",
       "groups": {
+        "gettingStarted": "Per començar",
         "products": "Productes",
         "suppliers": "Proveïdors",
-        "dashboard": "Tauler"
+        "dashboard": "Tauler",
+        "sales": "Vendes",
+        "customersFiscal": "Clients i fiscal"
       },
+      "modeNavigate": "Anar",
+      "modeExecute": "Nova",
+      "newSale": "Nova venda",
+      "newSaleHelp": "Registra una venda des de la pantalla de caixa o demana-m'ho al xat.",
+      "restock": "Ingrés de mercaderia",
+      "restockHelp": "Afegeix estoc escanejant productes a la pantalla d'ingrés de mercaderia.",
       "searchProduct": "Cercar producte",
       "searchProductMessage": "Cercar producte Coca Cola",
       "createProduct": "Crear producte",

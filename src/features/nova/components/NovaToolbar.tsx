@@ -3,12 +3,12 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NovaActionTimeline } from './NovaActionTimeline'
 import { NovaQuickActionsPanel } from './NovaQuickActionsPanel'
-import type { NovaActionEvent } from '../types/nova.types'
+import type { NovaActionEvent, NovaQuickActionDefinition } from '../types/nova.types'
 
 interface NovaToolbarProps {
     actionEvents: NovaActionEvent[]
     onNewChat: () => void
-    onSelectQuickAction: (message: string) => void
+    onSelectQuickAction: (action: NovaQuickActionDefinition) => void
 }
 
 export function NovaToolbar({

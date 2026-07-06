@@ -1,120 +1,43 @@
-import { X } from 'lucide-react'
+import { ArrowUpRight, MessageSquare, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useNovaQuickActions } from '../hooks/useNovaQuickActions'
+import type { NovaQuickActionDefinition } from '../types/nova.types'
 
 interface NovaQuickActionsPanelProps {
-    onSelectAction: (message: string) => void
+    onSelectAction: (action: NovaQuickActionDefinition) => void
     onClose: () => void
 }
 
-export function NovaQuickActionsPanel({
-                                          onSelectAction,
-                                          onClose,
-                                      }: NovaQuickActionsPanelProps) {
+function QuickActionModeHint({ mode }: { mode: NovaQuickActionDefinition['mode'] }) {
     const { t } = useTranslation()
 
-    const groups = [
-        {
-            title: t('nova.quickActions.groups.products'),
-            actions: [
-                {
-                    label: t('nova.quickActions.searchProduct'),
-                    message: t('nova.quickActions.searchProductHelp'),
-                },
-                {
-                    label: t('nova.quickActions.createProduct'),
-                    message: t('nova.quickActions.createProductHelp'),
-                },
-                {
-                    label: t('nova.quickActions.updateProduct'),
-                    message: t('nova.quickActions.updateProductHelp'),
-                },
-                {
-                    label: t('nova.quickActions.deactivateProduct'),
-                    message: t('nova.quickActions.deactivateProductHelp'),
-                },
-                {
-                    label: t('nova.quickActions.updateStock'),
-                    message: t('nova.quickActions.updateStockHelp'),
-                },
-            ],
-        },
-        {
-            title: t('nova.quickActions.groups.suppliers'),
-            actions: [
-                {
-                    label: t('nova.quickActions.searchSupplier'),
-                    message: t('nova.quickActions.searchSupplierHelp'),
-                },
-                {
-                    label: t('nova.quickActions.createSupplier'),
-                    message: t('nova.quickActions.createSupplierHelp'),
-                },
-                {
-                    label: t('nova.quickActions.updateSupplier'),
-                    message: t('nova.quickActions.updateSupplierHelp'),
-                },
-            ],
-        },
-        {
-            title: t('nova.quickActions.groups.dashboard'),
-            actions: [
-                {
-                    label: t('nova.quickActions.dashboard'),
-                    message: t('nova.quickActions.dashboardHelp'),
-                },
-                {
-                    label: t('nova.quickActions.lowStock'),
-                    message: t('nova.quickActions.lowStockHelp'),
-                },
-            ],
-        },
-        {
-            title: t('nova.quickActions.groups.sales'),
-            actions: [
-                {
-                    label: t('nova.quickActions.listSales'),
-                    message: t('nova.quickActions.listSalesHelp'),
-                },
-                {
-                    label: t('nova.quickActions.showSale'),
-                    message: t('nova.quickActions.showSaleHelp'),
-                },
-                {
-                    label: t('nova.quickActions.dailySalesSummary'),
-                    message: t('nova.quickActions.dailySalesSummaryHelp'),
-                },
-                {
-                    label: t('nova.quickActions.createSale'),
-                    message: t('nova.quickActions.createSaleHelp'),
-                },
-                {
-                    label: t('nova.quickActions.emitInvoice'),
-                    message: t('nova.quickActions.emitInvoiceHelp'),
-                },
-            ],
-        },
-        {
-            title: t('nova.quickActions.groups.customersFiscal'),
-            actions: [
-                {
-                    label: t('nova.quickActions.searchCustomer'),
-                    message: t('nova.quickActions.searchCustomerHelp'),
-                },
-                {
-                    label: t('nova.quickActions.showCustomer'),
-                    message: t('nova.quickActions.showCustomerHelp'),
-                },
-                {
-                    label: t('nova.quickActions.listFiscalDocuments'),
-                    message: t('nova.quickActions.listFiscalDocumentsHelp'),
-                },
-                {
-                    label: t('nova.quickActions.showFiscalDocument'),
-                    message: t('nova.quickActions.showFiscalDocumentHelp'),
-                },
-            ],
-        },
-    ]
+    if (mode === 'navigate') {
+        return (
+            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-blue-500">
+                <ArrowUpRight size={12} />
+                {t('nova.quickActions.modeNavigate')}
+            </span>
+        )
+    }
+
+    if (mode === 'execute') {
+        return (
+            <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-emerald-500">
+                <MessageSquare size={12} />
+                {t('nova.quickActions.modeExecute')}
+            </span>
+        )
+    }
+
+    return null
+}
+
+export function NovaQuickActionsPanel({
+    onSelectAction,
+    onClose,
+}: NovaQuickActionsPanelProps) {
+    const { t } = useTranslation()
+    const { groups } = useNovaQuickActions()
 
     return (
         <div className="absolute right-full top-0 mr-3 flex h-full w-80 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-950">
@@ -134,7 +57,7 @@ export function NovaQuickActionsPanel({
 
             <div className="flex-1 space-y-5 overflow-y-auto p-3 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                 {groups.map((group) => (
-                    <section key={group.title}>
+                    <section key={group.key}>
                         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                             {group.title}
                         </p>
@@ -142,15 +65,16 @@ export function NovaQuickActionsPanel({
                         <div className="space-y-2">
                             {group.actions.map((action) => (
                                 <button
-                                    key={action.label}
+                                    key={action.id}
                                     type="button"
                                     onClick={() => {
-                                        onSelectAction(action.message)
+                                        onSelectAction(action)
                                         onClose()
                                     }}
-                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
+                                    className="flex w-full items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
                                 >
-                                    {action.label}
+                                    <span>{t(action.labelKey)}</span>
+                                    <QuickActionModeHint mode={action.mode} />
                                 </button>
                             ))}
                         </div>

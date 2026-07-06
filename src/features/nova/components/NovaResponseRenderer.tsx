@@ -15,6 +15,7 @@ import { NovaDailySalesSummaryCard } from './NovaDailySalesSummaryCard'
 import { NovaCustomerCard } from './NovaCustomerCard'
 import { NovaFiscalDocumentsListCard } from './NovaFiscalDocumentsListCard'
 import { NovaFiscalDocumentDetailCard } from './NovaFiscalDocumentDetailCard'
+import { NovaActionButtons } from './NovaActionButtons'
 import type { DailySalesSummary, Sale } from '../../../types/sales'
 import type { Customer } from '../../../types/customer'
 import type { FiscalDocument } from '../../../types/fiscal'
@@ -22,6 +23,7 @@ import type { FiscalDocument } from '../../../types/fiscal'
 interface NovaResponseRendererProps {
     message: NovaMessage
     onSendMessage?: (message: string, options?: { silent?: boolean }) => void
+    onClosePanel?: () => void
 }
 
 function isSupplierOrder(value: unknown): value is SupplierOrder {
@@ -82,6 +84,7 @@ function isFiscalDocument(value: unknown): value is FiscalDocument {
 export function NovaResponseRenderer({
                                          message,
                                          onSendMessage,
+                                         onClosePanel,
                                      }: NovaResponseRendererProps) {
     if (message.role === 'user') {
         return <p className="whitespace-pre-line">{message.content}</p>
@@ -330,5 +333,16 @@ export function NovaResponseRenderer({
         return <NovaSupplierCard data={message.data} />
     }
 
-    return <p className="whitespace-pre-line">{message.content}</p>
+    return (
+        <div className="space-y-1">
+            <p className="whitespace-pre-line">{message.content}</p>
+            {message.actions && message.actions.length > 0 && (
+                <NovaActionButtons
+                    actions={message.actions}
+                    onSendMessage={(text) => onSendMessage?.(text)}
+                    onClosePanel={onClosePanel}
+                />
+            )}
+        </div>
+    )
 }

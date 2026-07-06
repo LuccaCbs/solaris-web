@@ -1,8 +1,38 @@
+import type { OrganizationRole } from '../../../types/auth'
+import type { ModuleCode } from '../../../types/subscription'
+
 export type NovaResponseType =
     | 'message'
     | 'confirmation'
     | 'tool_result'
     | 'error';
+
+export type NovaUiActionType = 'navigate' | 'send_message'
+
+export interface NovaUiAction {
+    id: string
+    label: string
+    type: NovaUiActionType
+    to?: string
+    message?: string
+    requiredModule?: ModuleCode
+    minimumRole?: OrganizationRole
+}
+
+export type NovaQuickActionMode = 'navigate' | 'execute' | 'guide' | 'hybrid'
+
+export interface NovaQuickActionDefinition {
+    id: string
+    groupKey: string
+    labelKey: string
+    helpKey?: string
+    executeMessageKey?: string
+    navigateTo?: string
+    mode: NovaQuickActionMode
+    requiredModule?: ModuleCode
+    minimumRole?: OrganizationRole
+    onboarding?: boolean
+}
 
 export type NovaIntent =
     | 'search_product'
@@ -43,6 +73,7 @@ export interface NovaMessage {
     type?: NovaResponseType;
     data?: unknown;
     intent?: NovaIntent;
+    actions?: NovaUiAction[];
 }
 
 export interface NovaChatRequest {
@@ -54,6 +85,7 @@ export interface NovaChatResponse {
     message: string;
     intent?: NovaIntent;
     data?: unknown;
+    actions?: NovaUiAction[];
 }
 
 export type NovaActionEventType =

@@ -1,8 +1,11 @@
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { NovaInput } from './NovaInput'
 import { NovaMessageList } from './NovaMessageList'
 import { useNovaChat } from '../hooks/useNovaChat'
 import { NovaToolbar } from './NovaToolbar'
+import { buildNovaUiActionsForQuickAction } from '../utils/buildNovaUiActions'
+import type { NovaQuickActionDefinition } from '../types/nova.types'
 
 interface NovaCopilotPanelProps {
     isOpen: boolean
@@ -11,6 +14,7 @@ interface NovaCopilotPanelProps {
 
 export function NovaCopilotPanel({ isOpen, onClose }: NovaCopilotPanelProps) {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const {
         messages,
         actionEvents,
@@ -24,6 +28,27 @@ export function NovaCopilotPanel({ isOpen, onClose }: NovaCopilotPanelProps) {
         void resetChat()
     }
 
+    function handleQuickAction(action: NovaQuickActionDefinition) {
+        if (action.mode === 'navigate' && action.navigateTo) {
+            onClose()
+            navigate(action.navigateTo)
+            return
+        }
+
+        if (action.mode === 'execute' && action.executeMessageKey) {
+            void sendMessage(t(action.executeMessageKey))
+            return
+        }
+
+        const helpText = action.helpKey ? t(action.helpKey) : t(action.labelKey)
+        const uiActions =
+            action.mode === 'hybrid' || action.mode === 'guide'
+                ? buildNovaUiActionsForQuickAction(action, t)
+                : undefined
+
+        addAssistantMessage(helpText, uiActions)
+    }
+
     if (!isOpen) return null
 
     return (
@@ -31,7 +56,7 @@ export function NovaCopilotPanel({ isOpen, onClose }: NovaCopilotPanelProps) {
             <NovaToolbar
                 actionEvents={actionEvents}
                 onNewChat={handleNewChat}
-                onSelectQuickAction={addAssistantMessage}
+                onSelectQuickAction={handleQuickAction}
             />
 
             <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
@@ -58,7 +83,8 @@ export function NovaCopilotPanel({ isOpen, onClose }: NovaCopilotPanelProps) {
                     messages={messages}
                     isLoading={isLoading}
                     onSendMessage={sendMessage}
-                    onAddAssistantMessage={addAssistantMessage}
+                    onClosePanel={onClose}
+                    onSelectQuickAction={handleQuickAction}
                 />
 
                 <NovaInput isLoading={isLoading} onSendMessage={sendMessage} />

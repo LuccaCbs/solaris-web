@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { sendNovaMessage } from '../services/novaApi';
-import type { NovaActionEvent, NovaMessage } from '../types/nova.types'
+import type {
+    NovaActionEvent,
+    NovaMessage,
+    NovaUiAction,
+} from '../types/nova.types'
 import { resetNovaChat } from '../services/novaApi'
 export function useNovaChat() {
     const [messages, setMessages] = useState<NovaMessage[]>([]);
@@ -71,6 +75,7 @@ export function useNovaChat() {
                 type: response.type,
                 intent: response.intent,
                 data: response.data,
+                actions: response.actions,
             };
 
             setMessages((current) => [...current, assistantMessage]);
@@ -89,12 +94,13 @@ export function useNovaChat() {
         }
     }
 
-    function addAssistantMessage(content: string) {
+    function addAssistantMessage(content: string, actions?: NovaUiAction[]) {
         const assistantMessage: NovaMessage = {
             id: crypto.randomUUID(),
             role: 'assistant',
             content,
             type: 'message',
+            actions,
         }
 
         setMessages((current) => [...current, assistantMessage])

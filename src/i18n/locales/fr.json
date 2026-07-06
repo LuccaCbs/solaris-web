@@ -1059,8 +1059,13 @@
     "open": "Ouvrir Nova",
     "close": "Fermer Nova",
     "emptyState": "Bonjour, je suis Nova. Je peux vous aider à rechercher des produits, créer des produits, mettre à jour le stock ou consulter les produits en rupture de stock.",
+    "emptyStateHint": "Choisissez une action rapide ou écrivez votre question.",
     "loading": "Nova réfléchit...",
     "newChat": "Nouvelle conversation",
+    "actions": {
+      "goToPage": "Aller à l'écran",
+      "askNova": "Faire avec Nova"
+    },
     "input": {
       "placeholder": "Écrivez à Nova...",
       "send": "Envoyer"
@@ -1068,10 +1073,19 @@
     "quickActions": {
       "title": "Actions rapides",
       "groups": {
+        "gettingStarted": "Pour commencer",
         "products": "Produits",
         "suppliers": "Fournisseurs",
-        "dashboard": "Tableau de bord"
+        "dashboard": "Tableau de bord",
+        "sales": "Ventes",
+        "customersFiscal": "Clients et fiscal"
       },
+      "modeNavigate": "Aller",
+      "modeExecute": "Nova",
+      "newSale": "Nouvelle vente",
+      "newSaleHelp": "Enregistrez une vente depuis l'écran de caisse ou demandez-moi de l'enregistrer dans le chat.",
+      "restock": "Réception de marchandises",
+      "restockHelp": "Ajoutez du stock en scannant des produits sur l'écran de réception.",
       "searchProduct": "Rechercher un produit",
       "searchProductMessage": "Rechercher le produit Coca Cola",
       "createProduct": "Créer un produit",
