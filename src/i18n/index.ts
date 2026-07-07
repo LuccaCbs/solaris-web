@@ -35,7 +35,7 @@ function deepMerge<T extends Record<string, unknown>>(
     return result as T
 }
 
-const mq = deepMerge(es, mqOverrides)
+const mq = deepMerge(ca, mqOverrides)
 
 i18n
     .use(LanguageDetector)

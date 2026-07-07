@@ -137,5 +137,64 @@
     "title": "Pàgina no trobada",
     "description": "La pàgina que cerques no existeix o s'ha mogut.",
     "dashboard": "Panell"
+  },
+  "nova": {
+    "title": "Nova Copilot",
+    "subtitle": "Assistent operacional de Solaris",
+    "open": "Obrir Nova",
+    "close": "Tancar Nova",
+    "emptyState": "Hola, sóc Nova. Puc ajudar-te a cercar productes, crear productes, actualitzar l'estoc o consultar productes amb poc estoc.",
+    "emptyStateHint": "Tria una acció ràpida o escriu la teva consulta.",
+    "loading": "Nova està pensant...",
+    "newChat": "Nou xat",
+    "actions": {
+      "goToPage": "Anar a la pantalla",
+      "askNova": "Fer-ho amb Nova"
+    },
+    "input": {
+      "placeholder": "Escriu a Nova...",
+      "send": "Enviar"
+    },
+    "quickActions": {
+      "title": "Accions ràpides",
+      "groups": {
+        "supplierOrders": "Comandes de proveïdor"
+      },
+      "createSupplierOrder": "Crear comanda de proveïdor",
+      "createSupplierOrderHelp": "Pots crear una comanda al xat o anar a la pantalla de nova comanda.",
+      "showSupplierOrder": "Veure comanda de proveïdor",
+      "showSupplierOrderHelp": "Pots consultar una comanda al xat o anar al llistat de comandes.",
+      "markSupplierOrderSent": "Marcar comanda com enviada",
+      "markSupplierOrderSentHelp": "Pots marcar una comanda com enviada al xat o des del llistat.",
+      "completeSupplierOrder": "Completar comanda de proveïdor",
+      "completeSupplierOrderHelp": "Pots completar una comanda enviada al xat o des del llistat.",
+      "cancelSupplierOrder": "Cancel·lar comanda de proveïdor",
+      "cancelSupplierOrderHelp": "Pots cancel·lar una comanda al xat o des del llistat.",
+      "createCustomer": "Crear client",
+      "createCustomerHelp": "Pots crear un client al xat o anar a la pantalla de nou client.",
+      "updateCustomer": "Actualitzar client",
+      "updateCustomerHelp": "Pots actualitzar un client al xat o anar a la pantalla de Clients.",
+      "deactivateCustomer": "Donar de baixa client",
+      "deactivateCustomerHelp": "Pots donar de baixa un client al xat o anar a la pantalla de Clients.",
+      "guides": {
+        "createSupplierOrder": "Per crear una comanda de proveïdor necessito que indiquis:\n\n• Acció: \"Crear comanda de proveïdor\"\n• Proveïdor: nom del proveïdor\n• Productes: nom i quantitat de cada article\n\nExemple:\n\"Crear comanda de proveïdor Proveïdor demo amb 10 Producte prova\"\n\nTambé pots anar a Nova comanda de proveïdor.",
+        "showSupplierOrder": "Per veure una comanda de proveïdor necessito que indiquis:\n\n• Acció: \"Veure comanda\"\n• Número de comanda: ID de la comanda\n\nExemple:\n\"Veure comanda #5\"\n\nTambé pots anar al llistat de Comandes de proveïdor.",
+        "markSupplierOrderSent": "Per marcar una comanda com enviada necessito que indiquis:\n\n• Acció: \"Marcar comanda com enviada\"\n• Número de comanda: ID de la comanda\n\nExemple:\n\"Marcar comanda #5 com enviada\"",
+        "completeSupplierOrder": "Per completar una comanda necessito que indiquis:\n\n• Acció: \"Completar comanda\"\n• Número de comanda: ID de la comanda (ha d'estar enviada)\n\nExemple:\n\"Completar comanda #5\"",
+        "cancelSupplierOrder": "Per cancel·lar una comanda necessito que indiquis:\n\n• Acció: \"Cancel·lar comanda\"\n• Número de comanda: ID de la comanda\n\nExemple:\n\"Cancel·lar comanda #5\"",
+        "createCustomer": "Per crear un client necessito que indiquis:\n\n• Acció: \"Crear client\"\n• Raó social: Client demo\n• Document: CUIT/CUIL/DNI i número\n\nExemple:\n\"Crear client Client demo DNI 12345678 consumidor final\"",
+        "updateCustomer": "Per actualitzar un client necessito que indiquis:\n\n• Acció: \"Actualitzar client\"\n• Client: nom o identificador\n• Dada a modificar: correu, telèfon, adreça, etc.\n\nExemple:\n\"Actualitzar client Client demo correu demo@test.com\"",
+        "deactivateCustomer": "Per donar de baixa un client necessito que indiquis:\n\n• Acció: \"Donar de baixa client\"\n• Client: raó social o identificador\n\nExemple:\n\"Donar de baixa client Client demo\""
+      }
+    },
+    "timeline": {
+      "events": {
+        "create_supplier_order": "Comanda de proveïdor creada",
+        "show_supplier_order": "Comanda de proveïdor consultada",
+        "create_customer": "Client creat",
+        "update_customer": "Client actualitzat",
+        "deactivate_customer": "Client donat de baixa"
+      }
+    }
   }
 }
