@@ -92,7 +92,10 @@
       "invalidCredentials": "Credenciales inválidas o email no verificado",
       "registeredMessage": "Cuenta creada. Revisa tu email para verificarla antes de iniciar sesión.",
       "verifiedMessage": "Email verificado correctamente. Ya puedes iniciar sesión.",
-      "passwordResetMessage": "Contraseña actualizada correctamente. Ya puedes iniciar sesión."
+      "passwordResetMessage": "Contraseña actualizada correctamente. Ya puedes iniciar sesión.",
+      "continueWithGoogle": "Continuar con Google",
+      "googleError": "No se pudo iniciar sesión con Google",
+      "or": "o"
     },
     "organization": {
       "label": "Organización",

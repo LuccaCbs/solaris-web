@@ -28,6 +28,12 @@ export async function loginUser(data: LoginRequest): Promise<AuthResponse> {
     return response.data
 }
 
+/** Requires VITE_GOOGLE_CLIENT_ID in the frontend environment. */
+export async function loginWithGoogle(idToken: string): Promise<AuthResponse> {
+    const response = await axiosClient.post<AuthResponse>('/auth/google', { idToken })
+    return response.data
+}
+
 export async function selectOrganization(
     data: SelectOrganizationRequest
 ): Promise<AuthResponse> {

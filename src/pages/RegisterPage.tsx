@@ -1,9 +1,13 @@
 import { useState } from 'react'
+import { GoogleLogin } from '@react-oauth/google'
 import { Link, useNavigate } from 'react-router-dom'
-import { registerUser } from '../api/authService'
+import { loginWithGoogle, registerUser } from '../api/authService'
+import { resolvePostLoginPath } from '../utils/onboardingNavigation'
+import { useAuth } from '../context/AuthContext'
 import PasswordInput from '../components/PasswordInput'
 import AuthPageLayout, { AUTH_FORM_CLASS } from '../components/AuthPageLayout'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '../utils/useTheme'
 import toast from 'react-hot-toast'
 
 function RegisterPage() {
@@ -16,7 +20,32 @@ function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [googleLoading, setGoogleLoading] = useState(false)
     const { t } = useTranslation()
+    const { login } = useAuth()
+    const { theme } = useTheme()
+
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+
+    async function handleGoogleSuccess(credential?: string) {
+        if (!credential) {
+            setError(t('auth.login.googleError'))
+            return
+        }
+
+        setError('')
+        setGoogleLoading(true)
+
+        try {
+            const data = await loginWithGoogle(credential)
+            login(data.token)
+            navigate(await resolvePostLoginPath(data.token))
+        } catch {
+            setError(t('auth.login.googleError'))
+        } finally {
+            setGoogleLoading(false)
+        }
+    }
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -45,6 +74,8 @@ function RegisterPage() {
         }
     }
 
+    const isBusy = loading || googleLoading
+
     return (
         <AuthPageLayout>
             <form onSubmit={handleSubmit} className={`${AUTH_FORM_CLASS} p-8`}>
@@ -52,6 +83,28 @@ function RegisterPage() {
                 <p className="mt-2 text-sm solaris-muted">
                     {t('auth.register.description')}
                 </p>
+
+                {googleClientId && (
+                    <>
+                        <div className="mt-6 flex justify-center">
+                            <GoogleLogin
+                                onSuccess={(response) => {
+                                    void handleGoogleSuccess(response.credential)
+                                }}
+                                onError={() => setError(t('auth.login.googleError'))}
+                                theme={theme === 'dark' ? 'filled_black' : 'outline'}
+                                text="continue_with"
+                                width="384"
+                            />
+                        </div>
+
+                        <div className="mt-6 flex items-center gap-3">
+                            <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+                            <span className="text-sm solaris-muted">{t('auth.login.or')}</span>
+                            <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+                        </div>
+                    </>
+                )}
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                     <div>
@@ -109,7 +162,7 @@ function RegisterPage() {
                 {error && <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
                 <button
-                    disabled={loading}
+                    disabled={isBusy}
                     className="mt-6 w-full rounded-xl bg-blue-600 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                 >
                     {loading ? t('auth.register.creatingAccount') : t('auth.register.createAccount')}

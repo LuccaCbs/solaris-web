@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { GoogleLogin } from '@react-oauth/google'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { loginUser } from '../api/authService'
+import { loginUser, loginWithGoogle } from '../api/authService'
 import { resolvePostLoginPath } from '../utils/onboardingNavigation'
 import { useAuth } from '../context/AuthContext'
 import PasswordInput from '../components/PasswordInput'
@@ -22,11 +23,37 @@ function LoginPage() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [googleLoading, setGoogleLoading] = useState(false)
     const { t } = useTranslation()
     const { login } = useAuth()
     const { theme } = useTheme()
 
     const logo = theme === 'dark' ? logoLight : logoDark
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+
+    async function completeLogin(token: string) {
+        login(token)
+        navigate(await resolvePostLoginPath(token))
+    }
+
+    async function handleGoogleSuccess(credential?: string) {
+        if (!credential) {
+            setError(t('auth.login.googleError'))
+            return
+        }
+
+        setError('')
+        setGoogleLoading(true)
+
+        try {
+            const data = await loginWithGoogle(credential)
+            await completeLogin(data.token)
+        } catch {
+            setError(t('auth.login.googleError'))
+        } finally {
+            setGoogleLoading(false)
+        }
+    }
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -35,14 +62,15 @@ function LoginPage() {
 
         try {
             const data = await loginUser({ email, password })
-            login(data.token)
-            navigate(await resolvePostLoginPath(data.token))
+            await completeLogin(data.token)
         } catch {
             setError(t('auth.login.invalidCredentials'))
         } finally {
             setLoading(false)
         }
     }
+
+    const isBusy = loading || googleLoading
 
     return (
         <AuthPageLayout>
@@ -78,6 +106,28 @@ function LoginPage() {
                     <div className="mt-5 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700 dark:border-green-500/20 dark:bg-green-500/10 dark:text-green-300">
                         {t('auth.login.passwordResetMessage')}
                     </div>
+                )}
+
+                {googleClientId && (
+                    <>
+                        <div className="mt-6 flex justify-center">
+                            <GoogleLogin
+                                onSuccess={(response) => {
+                                    void handleGoogleSuccess(response.credential)
+                                }}
+                                onError={() => setError(t('auth.login.googleError'))}
+                                theme={theme === 'dark' ? 'filled_black' : 'outline'}
+                                text="continue_with"
+                                width="384"
+                            />
+                        </div>
+
+                        <div className="mt-6 flex items-center gap-3">
+                            <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+                            <span className="text-sm solaris-muted">{t('auth.login.or')}</span>
+                            <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+                        </div>
+                    </>
                 )}
 
                 <div className="mt-6">
@@ -116,7 +166,7 @@ function LoginPage() {
                 )}
 
                 <button
-                    disabled={loading}
+                    disabled={isBusy}
                     className="mt-5 w-full rounded-xl bg-blue-600 py-3 font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
                 >
                     {loading ? t('auth.login.signingIn') : t('auth.login.signIn')}

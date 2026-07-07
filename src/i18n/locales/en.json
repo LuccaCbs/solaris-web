@@ -92,7 +92,10 @@
       "invalidCredentials": "Invalid credentials or email not verified",
       "registeredMessage": "Account created. Check your email to verify your account before signing in.",
       "verifiedMessage": "Email verified successfully. You can now sign in.",
-      "passwordResetMessage": "Password updated successfully. You can now sign in."
+      "passwordResetMessage": "Password updated successfully. You can now sign in.",
+      "continueWithGoogle": "Continue with Google",
+      "googleError": "Could not sign in with Google",
+      "or": "or"
     },
     "organization": {
       "label": "Organization",
