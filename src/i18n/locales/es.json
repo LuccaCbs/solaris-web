@@ -973,13 +973,27 @@
       },
       "es": {
         "title": "Facturación electrónica (Verifactu)",
-        "description": "Configurá el NIF/CIF y la razón social de la organización para emitir facturas en España.",
+        "description": "Configurá el NIF/CIF, la razón social y el certificado AEAT para emitir facturas en España.",
         "nif": "NIF / CIF",
         "nifRequired": "El NIF/CIF es obligatorio para facturar",
         "nifInvalid": "El NIF/CIF debe tener entre 8 y 9 caracteres alfanuméricos",
+        "razonSocialRequired": "La razón social es obligatoria para facturar",
         "series": "Serie (opcional)",
         "seriesHelp": "Si no indicás una serie, se usará la serie 1 por defecto.",
-        "providerMockOnly": "Por ahora solo está disponible el proveedor mock. La integración con Verifactu llegará en una próxima versión."
+        "providerVerifactu": "Verifactu nativo (AEAT)",
+        "providerVerifactuHelp": "Requiere certificado PKCS12 emitido por un CA reconocido (p. ej. FNMT) y contraseña del certificado.",
+        "providerMockHelp": "Modo de prueba local sin envío a AEAT.",
+        "certFile": "Certificado PKCS12 (.p12 / .pfx)",
+        "certHelp": "Subí el certificado del obligado tributario. Debe coincidir con el NIF/CIF configurado.",
+        "certRequired": "Seleccioná el archivo del certificado Verifactu",
+        "certPassword": "Contraseña del certificado",
+        "certPasswordRequired": "Ingresá la contraseña del certificado",
+        "certSavedHint": "El certificado está guardado de forma segura.",
+        "previewButton": "Vista previa representación fiscal",
+        "previewLoading": "Generando vista previa...",
+        "previewError": "No se pudo generar la vista previa fiscal",
+        "declarationTitle": "Declaración responsable del SIF",
+        "declarationDocument": "Ver documento de declaración responsable"
       }
     }
   },

@@ -973,13 +973,27 @@
       },
       "es": {
         "title": "Electronic invoicing (Verifactu)",
-        "description": "Configure the organization NIF/CIF and business name to issue invoices in Spain.",
+        "description": "Configure the organization NIF/CIF, business name, and AEAT certificate to issue invoices in Spain.",
         "nif": "NIF / CIF",
         "nifRequired": "NIF/CIF is required for invoicing",
         "nifInvalid": "NIF/CIF must contain 8 to 9 alphanumeric characters",
+        "razonSocialRequired": "Business name is required for invoicing",
         "series": "Series (optional)",
         "seriesHelp": "If no series is set, series 1 will be used by default.",
-        "providerMockOnly": "Only the mock provider is available for now. Verifactu integration will come in a future release."
+        "providerVerifactu": "Verifactu native (AEAT)",
+        "providerVerifactuHelp": "Requires a PKCS12 certificate from a recognized CA (e.g. FNMT) and the certificate password.",
+        "providerMockHelp": "Local test mode without sending records to AEAT.",
+        "certFile": "PKCS12 certificate (.p12 / .pfx)",
+        "certHelp": "Upload the taxpayer certificate. It must match the configured NIF/CIF.",
+        "certRequired": "Select the Verifactu certificate file",
+        "certPassword": "Certificate password",
+        "certPasswordRequired": "Enter the certificate password",
+        "certSavedHint": "The certificate is stored securely.",
+        "previewButton": "Preview fiscal representation",
+        "previewLoading": "Generating preview...",
+        "previewError": "Could not generate the fiscal preview",
+        "declarationTitle": "SIF responsible declaration",
+        "declarationDocument": "View responsible declaration document"
       }
     }
   },

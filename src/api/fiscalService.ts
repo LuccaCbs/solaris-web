@@ -13,11 +13,21 @@ export async function getFiscalConfig(orgId: number): Promise<FiscalConfig> {
 
 export async function updateFiscalConfig(
     orgId: number,
-    data: FiscalConfigRequest
+    data: FiscalConfigRequest,
+    options?: { isSpain?: boolean }
 ): Promise<FiscalConfig> {
     const response = await axiosClient.put<FiscalConfig>(
         `/organizations/${orgId}/fiscal-config`,
-        buildFiscalConfigPayload(data)
+        buildFiscalConfigPayload(data, options)
+    )
+
+    return response.data
+}
+
+export async function getVerifactuFiscalPreviewHtml(orgId: number): Promise<string> {
+    const response = await axiosClient.get<string>(
+        `/organizations/${orgId}/fiscal/verifactu/preview`,
+        { responseType: 'text' }
     )
 
     return response.data

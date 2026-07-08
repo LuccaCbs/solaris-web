@@ -102,11 +102,98 @@ export function parseTusFacturasCredentials(
     }
 }
 
-export function buildFiscalConfigPayload(data: FiscalConfigRequest): FiscalConfigRequest {
+export type VerifactuCredentials = {
+    provider: 'verifactu_native'
+    nif: string
+    serie?: number
+    certBase64: string
+    certPassword: string
+}
+
+export function parseVerifactuCredentials(value: string): VerifactuCredentials | null {
+    const trimmed = value.trim()
+
+    if (!trimmed.startsWith('{')) {
+        return null
+    }
+
+    try {
+        const parsed = JSON.parse(trimmed) as Record<string, unknown>
+        const provider = typeof parsed.provider === 'string' ? parsed.provider.trim().toLowerCase() : ''
+        const nif = typeof parsed.nif === 'string' ? normalizeSpanishTaxId(parsed.nif) : ''
+        const certBase64 = typeof parsed.certBase64 === 'string' ? parsed.certBase64.trim() : ''
+        const certPath = typeof parsed.certPath === 'string' ? parsed.certPath.trim() : ''
+        const certPassword = typeof parsed.certPassword === 'string' ? parsed.certPassword : ''
+        const serie = typeof parsed.serie === 'number' ? parsed.serie : undefined
+
+        if (provider && provider !== 'verifactu_native') {
+            return null
+        }
+
+        if ((!certBase64 && !certPath) || !certPassword) {
+            return null
+        }
+
+        return {
+            provider: 'verifactu_native',
+            nif,
+            serie,
+            certBase64: certBase64 || certPath,
+            certPassword,
+        }
+    } catch {
+        return null
+    }
+}
+
+export function buildVerifactuCredentialsJson(input: {
+    nif: string
+    serie?: number
+    certBase64: string
+    certPassword: string
+}): string {
+    return JSON.stringify({
+        provider: 'verifactu_native',
+        nif: normalizeSpanishTaxId(input.nif),
+        serie: input.serie ?? 1,
+        certBase64: input.certBase64,
+        certPassword: input.certPassword,
+    })
+}
+
+export async function readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => {
+            const result = reader.result
+            if (typeof result !== 'string') {
+                reject(new Error('Unable to read certificate file'))
+                return
+            }
+
+            const base64 = result.includes(',') ? result.split(',')[1] : result
+            resolve(base64)
+        }
+        reader.onerror = () => reject(reader.error ?? new Error('Unable to read certificate file'))
+        reader.readAsDataURL(file)
+    })
+}
+
+export function buildFiscalConfigPayload(
+    data: FiscalConfigRequest,
+    options?: { isSpain?: boolean }
+): FiscalConfigRequest {
     const payload: FiscalConfigRequest = {
         ...data,
-        cuit: data.cuit != null ? normalizeCuit(data.cuit) || undefined : undefined,
         razonSocial: data.razonSocial?.trim() || undefined,
+    }
+
+    if (data.cuit != null) {
+        if (options?.isSpain) {
+            payload.cuit = normalizeSpanishTaxId(data.cuit) || undefined
+        } else {
+            payload.cuit = normalizeCuit(data.cuit) || undefined
+        }
     }
 
     const trimmedApiKey = data.fiscalApiKey?.trim()

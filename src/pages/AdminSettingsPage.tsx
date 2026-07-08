@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { getSystemSettings, updateSystemSettings } from '../api/systemSettingsService'
-import { getFiscalConfig, updateFiscalConfig } from '../api/fiscalService'
+import { getFiscalConfig, getVerifactuFiscalPreviewHtml, updateFiscalConfig } from '../api/fiscalService'
 import { useAuth } from '../context/AuthContext'
 import { useEntitlements } from '../hooks/useEntitlements'
-import type { FiscalJurisdiction, FiscalProviderType, CondicionIva } from '../types/fiscal'
+import type { FiscalJurisdiction, FiscalProviderType, CondicionIva, VerifactuSoftwareDeclaration } from '../types/fiscal'
 import type { SystemSettings } from '../types/systemSettings'
 import PasswordInput from '../components/PasswordInput'
 import LoadingScreen from '../components/LoadingScreen'
@@ -15,6 +15,8 @@ import {
     normalizeCuit,
     normalizeSpanishTaxId,
     parseTusFacturasCredentials,
+    buildVerifactuCredentialsJson,
+    readFileAsBase64,
 } from '../utils/fiscalUtils'
 import { isSpainFiscalJurisdiction } from '../utils/fiscalJurisdiction'
 
@@ -68,6 +70,10 @@ function AdminSettingsPage() {
     const [editingFiscalApiKey, setEditingFiscalApiKey] = useState(false)
     const [savingFiscal, setSavingFiscal] = useState(false)
     const [fiscalJurisdiction, setFiscalJurisdiction] = useState<FiscalJurisdiction | null>(null)
+    const [verifactuCertPassword, setVerifactuCertPassword] = useState('')
+    const [verifactuSoftwareDeclaration, setVerifactuSoftwareDeclaration] =
+        useState<VerifactuSoftwareDeclaration | null>(null)
+    const [previewingVerifactu, setPreviewingVerifactu] = useState(false)
 
     useEffect(() => {
         if (entitlementsLoading) {
@@ -113,6 +119,8 @@ function AdminSettingsPage() {
                     setHasFiscalApiKey(fiscal.hasFiscalApiKey)
                     setEditingFiscalApiKey(!fiscal.hasFiscalApiKey)
                     setFiscalApiKey('')
+                    setVerifactuSoftwareDeclaration(fiscal.verifactuSoftwareDeclaration ?? null)
+                    setVerifactuCertPassword('')
                 } catch {
                     toast.error(t('adminSettings.fiscal.loadError'))
                 }
@@ -126,6 +134,26 @@ function AdminSettingsPage() {
     }, [t, orgId, hasFiscalModule, entitlementsLoading])
 
     const isSpainFiscal = isSpainFiscalJurisdiction(fiscalJurisdiction)
+
+    async function handleVerifactuPreview() {
+        if (!orgId) {
+            return
+        }
+
+        setPreviewingVerifactu(true)
+
+        try {
+            const html = await getVerifactuFiscalPreviewHtml(orgId)
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
+            const url = URL.createObjectURL(blob)
+            window.open(url, '_blank', 'noopener,noreferrer')
+            window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
+        } catch (error) {
+            toast.error(getApiErrorMessage(error) || t('adminSettings.fiscal.es.previewError'))
+        } finally {
+            setPreviewingVerifactu(false)
+        }
+    }
 
     async function handleFiscalSubmit(event: React.FormEvent) {
         event.preventDefault()
@@ -148,15 +176,59 @@ function AdminSettingsPage() {
                 return
             }
 
+            if (!fiscalRazonSocial.trim()) {
+                toast.error(t('adminSettings.fiscal.es.razonSocialRequired'))
+                return
+            }
+
+            const needsVerifactuCredentials =
+                fiscalProvider === 'VERIFACTU_NATIVE' &&
+                (!hasFiscalApiKey || editingFiscalApiKey)
+
+            if (needsVerifactuCredentials) {
+                const certInput = document.getElementById('verifactu-cert-file') as HTMLInputElement | null
+                const certFile = certInput?.files?.[0]
+
+                if (!certFile) {
+                    toast.error(t('adminSettings.fiscal.es.certRequired'))
+                    return
+                }
+
+                if (!verifactuCertPassword.trim()) {
+                    toast.error(t('adminSettings.fiscal.es.certPasswordRequired'))
+                    return
+                }
+            }
+
             setSavingFiscal(true)
 
             try {
-                const updated = await updateFiscalConfig(orgId, {
-                    cuit: normalizedNif,
-                    razonSocial: fiscalRazonSocial.trim() || undefined,
-                    fiscalPuntoVenta: fiscalPuntoVenta ? Number(fiscalPuntoVenta) : null,
-                    fiscalProvider: 'MOCK',
-                })
+                let fiscalApiKey: string | undefined
+
+                if (needsVerifactuCredentials) {
+                    const certInput = document.getElementById('verifactu-cert-file') as HTMLInputElement | null
+                    const certFile = certInput?.files?.[0]!
+
+                    const certBase64 = await readFileAsBase64(certFile)
+                    fiscalApiKey = buildVerifactuCredentialsJson({
+                        nif: normalizedNif,
+                        serie: fiscalPuntoVenta ? Number(fiscalPuntoVenta) : 1,
+                        certBase64,
+                        certPassword: verifactuCertPassword,
+                    })
+                }
+
+                const updated = await updateFiscalConfig(
+                    orgId,
+                    {
+                        cuit: normalizedNif,
+                        razonSocial: fiscalRazonSocial.trim(),
+                        fiscalPuntoVenta: fiscalPuntoVenta ? Number(fiscalPuntoVenta) : null,
+                        fiscalProvider,
+                        fiscalApiKey,
+                    },
+                    { isSpain: true }
+                )
 
                 setFiscalJurisdiction(updated.fiscalJurisdiction ?? 'ES_VERIFACTU')
                 setFiscalCuit(updated.cuit ?? '')
@@ -164,6 +236,11 @@ function AdminSettingsPage() {
                 setFiscalPuntoVenta(
                     updated.fiscalPuntoVenta != null ? String(updated.fiscalPuntoVenta) : ''
                 )
+                setFiscalProvider(updated.fiscalProvider ?? 'MOCK')
+                setHasFiscalApiKey(updated.hasFiscalApiKey)
+                setEditingFiscalApiKey(!updated.hasFiscalApiKey)
+                setVerifactuSoftwareDeclaration(updated.verifactuSoftwareDeclaration ?? null)
+                setVerifactuCertPassword('')
                 toast.success(t('adminSettings.fiscal.updateSuccess'))
             } catch (error) {
                 toast.error(getApiErrorMessage(error) || t('adminSettings.fiscal.updateError'))
@@ -453,9 +530,136 @@ function AdminSettingsPage() {
                                 </p>
                             </div>
 
-                            <div className="md:col-span-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm solaris-subtle dark:border-slate-800 dark:bg-slate-900/60">
-                                {t('adminSettings.fiscal.es.providerMockOnly')}
+                            <div>
+                                <label className="text-sm solaris-muted">
+                                    {t('adminSettings.fiscal.provider')}
+                                </label>
+                                <select
+                                    value={fiscalProvider}
+                                    onChange={(event) =>
+                                        setFiscalProvider(event.target.value as FiscalProviderType)
+                                    }
+                                    className="solaris-input mt-2 w-full"
+                                >
+                                    <option value="MOCK">
+                                        {t('adminSettings.fiscal.providerMock')}
+                                    </option>
+                                    <option value="VERIFACTU_NATIVE">
+                                        {t('adminSettings.fiscal.es.providerVerifactu')}
+                                    </option>
+                                </select>
+                                <p className="mt-2 text-sm solaris-subtle">
+                                    {fiscalProvider === 'VERIFACTU_NATIVE'
+                                        ? t('adminSettings.fiscal.es.providerVerifactuHelp')
+                                        : t('adminSettings.fiscal.es.providerMockHelp')}
+                                </p>
                             </div>
+
+                            {fiscalProvider === 'VERIFACTU_NATIVE' && (
+                                <div className="md:col-span-2 space-y-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 dark:border-slate-800 dark:bg-slate-900/60">
+                                    <div>
+                                        <label className="text-sm solaris-muted">
+                                            {t('adminSettings.fiscal.es.certFile')}
+                                        </label>
+
+                                        {hasFiscalApiKey && !editingFiscalApiKey ? (
+                                            <div className="mt-2 space-y-3">
+                                                <div className="flex flex-wrap items-center gap-3">
+                                                    <span className="rounded-lg bg-green-500/10 px-3 py-1 text-sm font-medium text-green-500 dark:text-green-300">
+                                                        {t('adminSettings.fiscal.credentialsConfigured')}
+                                                    </span>
+                                                    <span className="text-sm solaris-subtle">
+                                                        {t('adminSettings.fiscal.es.certSavedHint')}
+                                                    </span>
+                                                </div>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setEditingFiscalApiKey(true)
+                                                        setVerifactuCertPassword('')
+                                                    }}
+                                                    className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                                                >
+                                                    {t('adminSettings.fiscal.replaceCredentials')}
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="mt-2 space-y-2">
+                                                <input
+                                                    id="verifactu-cert-file"
+                                                    type="file"
+                                                    accept=".p12,.pfx,application/x-pkcs12"
+                                                    className="solaris-input w-full text-sm"
+                                                />
+                                                <p className="text-sm solaris-subtle">
+                                                    {t('adminSettings.fiscal.es.certHelp')}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {(editingFiscalApiKey || !hasFiscalApiKey) && (
+                                        <div>
+                                            <label className="text-sm solaris-muted">
+                                                {t('adminSettings.fiscal.es.certPassword')}
+                                            </label>
+                                            <PasswordInput
+                                                value={verifactuCertPassword}
+                                                onChange={setVerifactuCertPassword}
+                                                className="solaris-input mt-2 w-full"
+                                            />
+                                        </div>
+                                    )}
+
+                                    {hasFiscalApiKey && editingFiscalApiKey && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setEditingFiscalApiKey(false)
+                                                setVerifactuCertPassword('')
+                                            }}
+                                            className="text-sm font-medium text-slate-500 hover:text-slate-300"
+                                        >
+                                            {t('adminSettings.fiscal.cancelReplaceCredentials')}
+                                        </button>
+                                    )}
+
+                                    <div className="flex flex-wrap gap-3 pt-2">
+                                        <button
+                                            type="button"
+                                            disabled={previewingVerifactu || fiscalProvider !== 'VERIFACTU_NATIVE'}
+                                            onClick={() => void handleVerifactuPreview()}
+                                            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-white disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
+                                        >
+                                            {previewingVerifactu
+                                                ? t('adminSettings.fiscal.es.previewLoading')
+                                                : t('adminSettings.fiscal.es.previewButton')}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {verifactuSoftwareDeclaration && fiscalProvider === 'VERIFACTU_NATIVE' && (
+                                <div className="md:col-span-2 rounded-xl border border-slate-200 px-4 py-4 text-sm dark:border-slate-800">
+                                    <h3 className="font-semibold">
+                                        {t('adminSettings.fiscal.es.declarationTitle')}
+                                    </h3>
+                                    <p className="mt-2 whitespace-pre-wrap solaris-subtle">
+                                        {verifactuSoftwareDeclaration.declarationText}
+                                    </p>
+                                    {verifactuSoftwareDeclaration.declarationUrl && (
+                                        <a
+                                            href={verifactuSoftwareDeclaration.declarationUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="mt-3 inline-block text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                                        >
+                                            {t('adminSettings.fiscal.es.declarationDocument')}
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     ) : (
                     <div className="mt-6 grid gap-4 md:grid-cols-2">

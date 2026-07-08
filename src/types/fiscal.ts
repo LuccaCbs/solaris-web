@@ -1,4 +1,4 @@
-export type FiscalProviderType = 'MOCK' | 'TUSFACTURAS'
+export type FiscalProviderType = 'MOCK' | 'TUSFACTURAS' | 'AFIP_NATIVE' | 'VERIFACTU_NATIVE'
 
 export type FiscalJurisdiction = 'AR_AFIP' | 'ES_VERIFACTU'
 
@@ -15,6 +15,17 @@ export type CondicionIva =
     | 'CONSUMIDOR_FINAL'
     | 'NO_CATEGORIZADO'
 
+export type VerifactuSoftwareDeclaration = {
+    softwareName: string
+    softwareId: string
+    softwareVersion: string
+    installationNumber: string
+    vendorName: string
+    vendorNif: string | null
+    declarationText: string
+    declarationUrl: string | null
+}
+
 export type FiscalConfig = {
     cuit: string | null
     razonSocial: string
@@ -24,6 +35,7 @@ export type FiscalConfig = {
     hasFiscalApiKey: boolean
     countryCode?: CountryCode
     fiscalJurisdiction?: FiscalJurisdiction
+    verifactuSoftwareDeclaration?: VerifactuSoftwareDeclaration | null
 }
 
 export type FiscalConfigRequest = {
