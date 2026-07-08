@@ -183,7 +183,10 @@ function AdminSettingsPage() {
 
             const needsVerifactuCredentials =
                 fiscalProvider === 'VERIFACTU_NATIVE' &&
-                (!hasFiscalApiKey || editingFiscalApiKey)
+                editingFiscalApiKey &&
+                (verifactuCertPassword.trim().length > 0 ||
+                    (document.getElementById('verifactu-cert-file') as HTMLInputElement | null)?.files?.[0] !=
+                        null)
 
             if (needsVerifactuCredentials) {
                 const certInput = document.getElementById('verifactu-cert-file') as HTMLInputElement | null
@@ -555,6 +558,22 @@ function AdminSettingsPage() {
                                 </p>
                             </div>
 
+                            <div className="md:col-span-2 flex flex-wrap gap-3">
+                                <button
+                                    type="button"
+                                    disabled={previewingVerifactu}
+                                    onClick={() => void handleVerifactuPreview()}
+                                    className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-white disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
+                                >
+                                    {previewingVerifactu
+                                        ? t('adminSettings.fiscal.es.previewLoading')
+                                        : t('adminSettings.fiscal.es.previewButton')}
+                                </button>
+                                <p className="self-center text-sm solaris-subtle">
+                                    {t('adminSettings.fiscal.es.previewNoCertHint')}
+                                </p>
+                            </div>
+
                             {fiscalProvider === 'VERIFACTU_NATIVE' && (
                                 <div className="md:col-span-2 space-y-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 dark:border-slate-800 dark:bg-slate-900/60">
                                     <div>
@@ -625,18 +644,6 @@ function AdminSettingsPage() {
                                         </button>
                                     )}
 
-                                    <div className="flex flex-wrap gap-3 pt-2">
-                                        <button
-                                            type="button"
-                                            disabled={previewingVerifactu || fiscalProvider !== 'VERIFACTU_NATIVE'}
-                                            onClick={() => void handleVerifactuPreview()}
-                                            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-white disabled:opacity-60 dark:border-slate-700 dark:hover:bg-slate-800"
-                                        >
-                                            {previewingVerifactu
-                                                ? t('adminSettings.fiscal.es.previewLoading')
-                                                : t('adminSettings.fiscal.es.previewButton')}
-                                        </button>
-                                    </div>
                                 </div>
                             )}
 

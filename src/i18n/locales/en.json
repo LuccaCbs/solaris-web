@@ -992,6 +992,8 @@
         "previewButton": "Preview fiscal representation",
         "previewLoading": "Generating preview...",
         "previewError": "Could not generate the fiscal preview",
+        "previewNoCertHint": "No certificate required. Save NIF and business name first to see your data in the preview.",
+        "certOptionalForPreview": "The certificate is only required to issue real invoices, not for preview.",
         "declarationTitle": "SIF responsible declaration",
         "declarationDocument": "View responsible declaration document"
       }

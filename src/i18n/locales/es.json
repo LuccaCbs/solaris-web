@@ -992,6 +992,8 @@
         "previewButton": "Vista previa representación fiscal",
         "previewLoading": "Generando vista previa...",
         "previewError": "No se pudo generar la vista previa fiscal",
+        "previewNoCertHint": "No requiere certificado. Guardá NIF y razón social antes para ver tus datos en la vista previa.",
+        "certOptionalForPreview": "El certificado solo es obligatorio para emitir facturas reales, no para la vista previa.",
         "declarationTitle": "Declaración responsable del SIF",
         "declarationDocument": "Ver documento de declaración responsable"
       }
